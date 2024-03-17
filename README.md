@@ -1,4 +1,5 @@
-### Hi there 👋
+# Faizan Adil
+##### Frontend Developer 
 
 <!--
 **faizanibneadil/faizanibneadil** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
