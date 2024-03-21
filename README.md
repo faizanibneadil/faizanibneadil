@@ -2,7 +2,9 @@
 ##### Frontend Developer
 
 ### I'm currently working on.
-#### **Ace On Technology** as _Frontend Developer_
+**Ace On Technology**
+-----------------------
+as _Frontend Developer_
 
 <!--
 **faizanibneadil/faizanibneadil** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
