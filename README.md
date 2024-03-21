@@ -2,7 +2,7 @@
 ##### Frontend Developer
 
 ### I'm currently working on.
-**Ace On Technology**
+###### **Ace On Technology**
 -----------------------
 as _Frontend Developer_
 
