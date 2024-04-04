@@ -9,6 +9,14 @@
 E-Mail faizanibneadil1@gmail.com
 WhatsApp Me +923422342958
 
+### Experience
+- 1 year & 6 Months of Full Stack
+- 1 year of Frontend 
+
+### Skills
+- React.Js
+- Next.Js
+
 <!--
 **faizanibneadil/faizanibneadil** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
