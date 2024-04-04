@@ -16,6 +16,11 @@ WhatsApp Me +923422342958
 ### Skills
 - React.Js
 - Next.Js
+- Typescript
+- JavaScript
+- Html
+- Css
+- Tailwindcss 
 
 <!--
 **faizanibneadil/faizanibneadil** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
