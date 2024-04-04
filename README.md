@@ -6,8 +6,8 @@
 
 
 ### 📫 How to reach me?
-[E-Mail Me](faizanibneadil1@gmail.com)
-[WhatsApp Me]()
+E-Mail faizanibneadil1@gmail.com
+WhatsApp Me +923422342958
 
 <!--
 **faizanibneadil/faizanibneadil** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
