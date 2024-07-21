@@ -2,14 +2,8 @@ import "@/styles/globals.css";
 import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
-import { Metadata } from "next";
 import Providers from "@/providers";
-import ThemeSwitcher from "./_components/theme-switcher";
-import BrandName from "./_components/brand-name";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Menu, Package2 } from "lucide-react";
-import Link from "next/link";
+import { Metadata } from "next";
 import Navigation from "./_components/navigation";
 
 const fontSans = FontSans({

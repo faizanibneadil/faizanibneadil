@@ -1,17 +1,17 @@
 "use client";
 
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import BrandName from "./brand-name";
 import { Button } from "@/components/ui/button";
-import { Menu, Package2 } from "lucide-react";
-import Link from "next/link";
-import ThemeSwitcher from "./theme-switcher";
-import { usePathname } from "next/navigation";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { Package2 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import BrandName from "./brand-name";
+import ThemeSwitcher from "./theme-switcher";
 
 const menus = [
   { name: "Projects", link: "/projects" },
-  { name: "Skills", link: "/skill" },
+  { name: "Skills", link: "/skills" },
   { name: "About Me", link: "/about" },
   { name: "Contact Me", link: "/contact" },
 ];
@@ -73,6 +73,7 @@ export default function Navigation() {
           <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
             {menus?.map((menu) => (
               <Link
+                key={menu.link}
                 href={menu.link}
                 className={cn(
                   "transition-colors hover:text-foreground",
