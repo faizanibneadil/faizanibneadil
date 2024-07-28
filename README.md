@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Faizan Adil
 
-## Getting Started
+### Full Stack Developer ( React.js, Next.js )
 
-First, run the development server:
+## Contact Details
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Whatsapp :** +923422342958
+**Phone :** +923422342958
+**Email :** faizanibneadil1@gmail.com
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Skills
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- HTMl
+- CSS
+- Javascript
+- Tailwind css
+- Typescript
+- React Query
+- React.js
+- Redux.js
+- Next.js
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Courses ( Frontend Masters )
 
-## Learn More
+- [React.js](https://www.frontendmasters.com)
+- [Next.js](https://www.frontendmasters.com)
+- [Redux.js](https://www.frontendmasters.com)
+- [Tailwind.js](https://www.frontendmasters.com)
+- [HTML.js](https://www.frontendmasters.com)
+- [CSS.js](https://www.frontendmasters.com)
 
-To learn more about Next.js, take a look at the following resources:
+## Experience
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- ### Aceon Technology
+  since Dec 2023 - Present
+  - Robust & Scalable Frontend & Responsive Designs.
+  - b
+  - c
+  - d
+- ### Private Clients
+  since from - to
+  - asdzxc
+  - asdsdf
+  - asdwer
+  - asdmn
+- ### Techexport
+  since from - to
+  - sad
+  - asd
+  - asd
+  - asd
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Languages
