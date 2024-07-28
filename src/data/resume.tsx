@@ -83,7 +83,7 @@ export const DATA = {
       badges: [],
       location: "Remote",
       title: "Full Stack Developer ( Frontend heavy )",
-      logoUrl: "/atomic.png",
+      logoUrl: "/techexpert-logo.png",
       start: "May 2021",
       end: "Oct 2022",
       description:
@@ -95,7 +95,8 @@ export const DATA = {
       href: "",
       location: "Remote",
       title: "Full Stack Developer ( Frontend heavy )",
-      logoUrl: "/shopify.svg",
+      logoUrl:
+        "https://www.spw-law.co.uk/tl_files/images/practice-areas/practice-area-page-images/private-client.jpg",
       start: "January 2021",
       end: "April 2021",
       description:
@@ -107,7 +108,8 @@ export const DATA = {
       badges: [],
       location: "Karachi Pakistan",
       title: "Full Stack Developer ( Frontend heavy )",
-      logoUrl: "/nvidia.png",
+      logoUrl:
+        "https://media.licdn.com/dms/image/C4D0BAQFN9kdPSjDDSA/company-logo_200_200/0/1672230508835/aceontechnology_logo?e=1730332800&v=beta&t=kMcGWz9TItuRPW_BZZL6928-jd4Z8Ma4CLtY9BNR_tc",
       start: "January 2020",
       end: "April 2020",
       description:
@@ -119,7 +121,8 @@ export const DATA = {
       school: "Matriculation",
       href: "#",
       degree: "Matriculation",
-      logoUrl: "/buildspace.jpg",
+      logoUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL324OOxfdOv5rv-fM1wazQKXtD3loE4dTFg&s",
       start: "2023",
       end: "2024",
     },
@@ -127,7 +130,8 @@ export const DATA = {
       school: "Intermediate",
       href: "https://uwaterloo.ca",
       degree: "Degree of Computer Science",
-      logoUrl: "/waterloo.png",
+      logoUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwV6eCr4M5uWNfQ6Fi_VVcNGiYCkBsE33Rkw&s",
       start: "2016",
       end: "2021",
     },
@@ -135,7 +139,8 @@ export const DATA = {
       school: "Virtual University",
       href: "https://wlu.ca",
       degree: "Bachelor's Degree of Computer Science (BSC)",
-      logoUrl: "/laurier.png",
+      logoUrl:
+        "https://yt3.googleusercontent.com/ytc/AIdro_lxTgW3Pk5bjw8DwIC9UomYGpFMMsf5TYMed3AowDrZnUo=s900-c-k-c0x00ffffff-no-rj",
       start: "2016",
       end: "2021",
     },
