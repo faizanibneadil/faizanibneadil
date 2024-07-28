@@ -25,6 +25,13 @@ export const DATA = {
     "Zustand.js",
     "Shadcn",
     "Redix UI",
+    "Prisma",
+    "Sequelize.js",
+    "PostgreSQL",
+    "SQL",
+    "MongoDB",
+    "Mongoose",
+    "RESTful APIs",
   ],
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
