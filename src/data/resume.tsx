@@ -7,7 +7,7 @@ export const DATA = {
   url: "https://dillion.io",
   location: "Karachi, Pakistan",
   locationLink: "https://www.google.com/maps/place/sanfrancisco",
-  description: "I'm **Full Developer** ( frontend heavy )",
+  description: "Full Stack ( frontend heavy )",
   summary:
     "Dynamic and innovative Full Stack Developer with 3 years of experience in designing and implementing scalable web applications. Highly proficient in front-end technologies, with a strong aptitude for problem-solving and effective collaboration with cross-functional teams. Demonstrated history of delivering high-quality solutions on time, consistently exceeding client expectations. Committed to staying updated with the latest technologies and continuously enhancing skills to ensure project success.",
   avatarUrl: "/me.jpeg",
