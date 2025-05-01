@@ -5,13 +5,24 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
-import { Users } from './Collections/Users'
-import { Media } from './Collections/Media'
-import { Notes } from './Collections/Notes'
-import { Experiances } from './Collections/Experiances'
-import { Skills } from './Collections/Skills'
-import { Educations } from './Collections/Educations'
-import { Projects } from './Collections/Projects'
+
+import { Users } from '@/collections/Users'
+import { Media } from '@/collections/Media'
+import { Notes } from '@/collections/Notes'
+import { Experiances } from '@/collections/Experiances'
+import { Skills } from '@/collections/Skills'
+import { Educations } from '@/collections/Educations'
+import { Projects } from '@/collections/Projects'
+import { Blogs } from '@/collections/Blogs'
+
+
+import { Me } from '@/blocks/Me'
+import { Contact } from '@/blocks/Contact'
+import { Education } from '@/blocks/Education'
+import { Project } from '@/blocks/Project'
+import { Skill } from '@/blocks/Skill'
+import { Blog } from '@/blocks/blog'
+
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -23,7 +34,8 @@ export default buildConfig({
             baseDir: path.resolve(dirname),
         },
     },
-    collections: [Users, Media, Notes,Experiances,Skills,Educations,Projects],
+    collections: [Users, Media, Notes, Experiances, Skills, Educations, Projects, Blogs],
+    blocks: [Me, Contact, Education, Project, Skill, Blog],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',
     typescript: {
