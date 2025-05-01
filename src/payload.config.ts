@@ -14,7 +14,7 @@ import { Skills } from '@/collections/Skills'
 import { Educations } from '@/collections/Educations'
 import { Projects } from '@/collections/Projects'
 import { Blogs } from '@/collections/Blogs'
-
+import { Pages } from '@/collections/Pages'
 
 import { Me } from '@/blocks/Me'
 import { Contact } from '@/blocks/Contact'
@@ -34,7 +34,7 @@ export default buildConfig({
             baseDir: path.resolve(dirname),
         },
     },
-    collections: [Users, Media, Notes, Experiances, Skills, Educations, Projects, Blogs],
+    collections: [Users, Media, Notes, Experiances, Skills, Educations, Projects, Blogs, Pages],
     blocks: [Me, Contact, Education, Project, Skill, Blog],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',
@@ -46,9 +46,9 @@ export default buildConfig({
         pool: {
             user: process.env.PG_USER,
             password: process.env.PG_PASSWORD,
-            database: process.env.BG_DATABASE,
+            database: process.env.PG_DATABASE,
             port: Number.parseInt(process.env.PG_PORT || ''),
-            host: process.env.BG_HOST,
+            host: process.env.PG_HOST,
             ssl: {
                 rejectUnauthorized: true,
                 ca: `-----BEGIN CERTIFICATE-----
