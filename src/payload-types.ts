@@ -82,6 +82,7 @@ export interface Config {
     educations: Education1;
     projects: Project1;
     blogs: Blog1;
+    pages: Page;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -96,6 +97,7 @@ export interface Config {
     educations: EducationsSelect<false> | EducationsSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -329,6 +331,17 @@ export interface Blog1 {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title?: string | null;
+  layout?: (Blog | Contact | Education | Me | Skill)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -365,6 +378,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'blogs';
         value: number | Blog1;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -495,6 +512,16 @@ export interface ProjectsSelect<T extends boolean = true> {
 export interface BlogsSelect<T extends boolean = true> {
   title?: T;
   content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  layout?: T | {};
   updatedAt?: T;
   createdAt?: T;
 }

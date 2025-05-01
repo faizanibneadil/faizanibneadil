@@ -11,7 +11,7 @@
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
-    "ci": "cross-env NODE_OPTIONS=--no-deprecation payload migrate && yarn build"
+    "ci": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create && payload migrate:status && payload migrate && payload migrate:status && yarn build"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.36.1",
