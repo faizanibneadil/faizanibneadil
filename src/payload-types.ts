@@ -65,15 +65,23 @@ export interface Config {
   auth: {
     users: UserAuthOperations;
   };
-  blocks: {};
+  blocks: {
+    me: Me;
+    contact: Contact;
+    education: Education;
+    project: Project;
+    skill: Skill;
+    blog: Blog;
+  };
   collections: {
     users: User;
     media: Media;
     notes: Note;
     experiances: Experiance;
-    skills: Skill;
-    educations: Education;
-    projects: Project;
+    skills: Skill1;
+    educations: Education1;
+    projects: Project1;
+    blogs: Blog1;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -87,6 +95,7 @@ export interface Config {
     skills: SkillsSelect<false> | SkillsSelect<true>;
     educations: EducationsSelect<false> | EducationsSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    blogs: BlogsSelect<false> | BlogsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -122,6 +131,60 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "me".
+ */
+export interface Me {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'me';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact".
+ */
+export interface Contact {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "education".
+ */
+export interface Education {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'education';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project".
+ */
+export interface Project {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'project';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skill".
+ */
+export interface Skill {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'skill';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog".
+ */
+export interface Blog {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'blog';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -213,7 +276,7 @@ export interface Experiance {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "skills".
  */
-export interface Skill {
+export interface Skill1 {
   id: number;
   title?: string | null;
   updatedAt: string;
@@ -223,7 +286,7 @@ export interface Skill {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "educations".
  */
-export interface Education {
+export interface Education1 {
   id: number;
   title: string;
   updatedAt: string;
@@ -233,9 +296,34 @@ export interface Education {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects".
  */
-export interface Project {
+export interface Project1 {
   id: number;
   title: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs".
+ */
+export interface Blog1 {
+  id: number;
+  title: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -264,15 +352,19 @@ export interface PayloadLockedDocument {
       } | null)
     | ({
         relationTo: 'skills';
-        value: number | Skill;
+        value: number | Skill1;
       } | null)
     | ({
         relationTo: 'educations';
-        value: number | Education;
+        value: number | Education1;
       } | null)
     | ({
         relationTo: 'projects';
-        value: number | Project;
+        value: number | Project1;
+      } | null)
+    | ({
+        relationTo: 'blogs';
+        value: number | Blog1;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -393,6 +485,16 @@ export interface EducationsSelect<T extends boolean = true> {
  */
 export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs_select".
+ */
+export interface BlogsSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
   updatedAt?: T;
   createdAt?: T;
 }

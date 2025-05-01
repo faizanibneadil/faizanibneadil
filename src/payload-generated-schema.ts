@@ -241,6 +241,33 @@ export const projects = pgTable(
   }),
 );
 
+export const blogs = pgTable(
+  "blogs",
+  {
+    id: serial("id").primaryKey(),
+    title: varchar("title").notNull(),
+    content: jsonb("content"),
+    updatedAt: timestamp("updated_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp("created_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .defaultNow()
+      .notNull(),
+  },
+  (columns) => ({
+    blogs_updated_at_idx: index("blogs_updated_at_idx").on(columns.updatedAt),
+    blogs_created_at_idx: index("blogs_created_at_idx").on(columns.createdAt),
+  }),
+);
+
 export const payload_locked_documents = pgTable(
   "payload_locked_documents",
   {
@@ -288,6 +315,7 @@ export const payload_locked_documents_rels = pgTable(
     skillsID: integer("skills_id"),
     educationsID: integer("educations_id"),
     projectsID: integer("projects_id"),
+    blogsID: integer("blogs_id"),
   },
   (columns) => ({
     order: index("payload_locked_documents_rels_order_idx").on(columns.order),
@@ -316,6 +344,9 @@ export const payload_locked_documents_rels = pgTable(
     payload_locked_documents_rels_projects_id_idx: index(
       "payload_locked_documents_rels_projects_id_idx",
     ).on(columns.projectsID),
+    payload_locked_documents_rels_blogs_id_idx: index(
+      "payload_locked_documents_rels_blogs_id_idx",
+    ).on(columns.blogsID),
     parentFk: foreignKey({
       columns: [columns["parent"]],
       foreignColumns: [payload_locked_documents.id],
@@ -355,6 +386,11 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns["projectsID"]],
       foreignColumns: [projects.id],
       name: "payload_locked_documents_rels_projects_fk",
+    }).onDelete("cascade"),
+    blogsIdFk: foreignKey({
+      columns: [columns["blogsID"]],
+      foreignColumns: [blogs.id],
+      name: "payload_locked_documents_rels_blogs_fk",
     }).onDelete("cascade"),
   }),
 );
@@ -460,6 +496,7 @@ export const relations_experiances = relations(experiances, () => ({}));
 export const relations_skills = relations(skills, () => ({}));
 export const relations_educations = relations(educations, () => ({}));
 export const relations_projects = relations(projects, () => ({}));
+export const relations_blogs = relations(blogs, () => ({}));
 export const relations_payload_locked_documents_rels = relations(
   payload_locked_documents_rels,
   ({ one }) => ({
@@ -502,6 +539,11 @@ export const relations_payload_locked_documents_rels = relations(
       fields: [payload_locked_documents_rels.projectsID],
       references: [projects.id],
       relationName: "projects",
+    }),
+    blogsID: one(blogs, {
+      fields: [payload_locked_documents_rels.blogsID],
+      references: [blogs.id],
+      relationName: "blogs",
     }),
   }),
 );
@@ -549,6 +591,7 @@ type DatabaseSchema = {
   skills: typeof skills;
   educations: typeof educations;
   projects: typeof projects;
+  blogs: typeof blogs;
   payload_locked_documents: typeof payload_locked_documents;
   payload_locked_documents_rels: typeof payload_locked_documents_rels;
   payload_preferences: typeof payload_preferences;
@@ -561,6 +604,7 @@ type DatabaseSchema = {
   relations_skills: typeof relations_skills;
   relations_educations: typeof relations_educations;
   relations_projects: typeof relations_projects;
+  relations_blogs: typeof relations_blogs;
   relations_payload_locked_documents_rels: typeof relations_payload_locked_documents_rels;
   relations_payload_locked_documents: typeof relations_payload_locked_documents;
   relations_payload_preferences_rels: typeof relations_payload_preferences_rels;
