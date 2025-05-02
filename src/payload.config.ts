@@ -23,6 +23,9 @@ import { Project } from '@/blocks/Project'
 import { Skill } from '@/blocks/Skill'
 import { Blog } from '@/blocks/blog'
 
+import { Menu } from '@/globals/Menu'
+import { Socials } from '@/globals/Socials'
+
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -36,6 +39,7 @@ export default buildConfig({
     },
     collections: [Users, Media, Notes, Experiances, Skills, Educations, Projects, Blogs, Pages],
     blocks: [Me, Contact, Education, Project, Skill, Blog],
+    globals: [Menu, Socials],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',
     typescript: {

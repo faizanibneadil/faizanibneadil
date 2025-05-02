@@ -105,8 +105,14 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    menu: Menu;
+    socials: Social;
+  };
+  globalsSelect: {
+    menu: MenuSelect<false> | MenuSelect<true>;
+    socials: SocialsSelect<false> | SocialsSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
@@ -556,6 +562,70 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu".
+ */
+export interface Menu {
+  id: number;
+  menu?:
+    | {
+        label: string;
+        page?: (number | null) | Page;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "socials".
+ */
+export interface Social {
+  id: number;
+  socialsLinks?:
+    | {
+        type?: ('facebook' | 'instagram' | 'twitter' | 'youtube' | 'github' | 'linkedin') | null;
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu_select".
+ */
+export interface MenuSelect<T extends boolean = true> {
+  menu?:
+    | T
+    | {
+        label?: T;
+        page?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "socials_select".
+ */
+export interface SocialsSelect<T extends boolean = true> {
+  socialsLinks?:
+    | T
+    | {
+        type?: T;
+        link?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
