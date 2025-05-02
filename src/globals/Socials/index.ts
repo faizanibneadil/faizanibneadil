@@ -14,8 +14,8 @@ export const Socials: GlobalConfig<'socials'> = {
                     fields: [
                         {
                             type: 'select',
-                            name: 'type',
-                            label: 'Type',
+                            name: 'kind',
+                            label: 'Social Type',
                             options: SocialTypes.map(type => ({ label: type, value: type }))
                         },
                         {
