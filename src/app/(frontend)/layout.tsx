@@ -6,6 +6,9 @@ import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
+import React from "react";
+import { ErrorBoundary } from "react-error-boundary";
+
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -64,7 +67,11 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light">
           <TooltipProvider delayDuration={0}>
             {children}
-            <Navbar />
+            <ErrorBoundary fallback={null}>
+              <React.Suspense fallback='loading...'>
+                <Navbar />
+              </React.Suspense>
+            </ErrorBoundary>
           </TooltipProvider>
         </ThemeProvider>
       </body>
