@@ -145,9 +145,45 @@ export interface UserAuthOperations {
  * via the `definition` "me".
  */
 export interface Me {
+  nameOnResume?: string | null;
+  aboutMe?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  profile?: (number | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'me';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -210,25 +246,6 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -587,7 +604,7 @@ export interface Social {
   id: number;
   socialsLinks?:
     | {
-        type?: ('facebook' | 'instagram' | 'twitter' | 'youtube' | 'github' | 'linkedin') | null;
+        kind?: ('facebook' | 'instagram' | 'twitter' | 'youtube' | 'github' | 'linkedin') | null;
         link?: string | null;
         id?: string | null;
       }[]
@@ -619,7 +636,7 @@ export interface SocialsSelect<T extends boolean = true> {
   socialsLinks?:
     | T
     | {
-        type?: T;
+        kind?: T;
         link?: T;
         id?: T;
       };

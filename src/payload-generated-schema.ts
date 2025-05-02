@@ -17,8 +17,14 @@ import {
   numeric,
   jsonb,
   integer,
+  text,
+  pgEnum,
 } from "@payloadcms/db-postgres/drizzle/pg-core";
 import { sql, relations } from "@payloadcms/db-postgres/drizzle";
+export const enum_socials_socials_links_kind = pgEnum(
+  "enum_socials_socials_links_kind",
+  ["facebook", "instagram", "twitter", "youtube", "github", "linkedin"],
+);
 
 export const users = pgTable(
   "users",
@@ -268,6 +274,153 @@ export const blogs = pgTable(
   }),
 );
 
+export const pages_blocks_blog = pgTable(
+  "pages_blocks_blog",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("pages_blocks_blog_order_idx").on(columns._order),
+    _parentIDIdx: index("pages_blocks_blog_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("pages_blocks_blog_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [pages.id],
+      name: "pages_blocks_blog_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const pages_blocks_contact = pgTable(
+  "pages_blocks_contact",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("pages_blocks_contact_order_idx").on(columns._order),
+    _parentIDIdx: index("pages_blocks_contact_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("pages_blocks_contact_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [pages.id],
+      name: "pages_blocks_contact_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const pages_blocks_education = pgTable(
+  "pages_blocks_education",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("pages_blocks_education_order_idx").on(columns._order),
+    _parentIDIdx: index("pages_blocks_education_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("pages_blocks_education_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [pages.id],
+      name: "pages_blocks_education_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const pages_blocks_me = pgTable(
+  "pages_blocks_me",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    nameOnResume: varchar("name_on_resume"),
+    aboutMe: jsonb("about_me"),
+    profile: integer("profile_id").references(() => media.id, {
+      onDelete: "set null",
+    }),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("pages_blocks_me_order_idx").on(columns._order),
+    _parentIDIdx: index("pages_blocks_me_parent_id_idx").on(columns._parentID),
+    _pathIdx: index("pages_blocks_me_path_idx").on(columns._path),
+    pages_blocks_me_profile_idx: index("pages_blocks_me_profile_idx").on(
+      columns.profile,
+    ),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [pages.id],
+      name: "pages_blocks_me_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const pages_blocks_skill = pgTable(
+  "pages_blocks_skill",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("pages_blocks_skill_order_idx").on(columns._order),
+    _parentIDIdx: index("pages_blocks_skill_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("pages_blocks_skill_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [pages.id],
+      name: "pages_blocks_skill_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const pages = pgTable(
+  "pages",
+  {
+    id: serial("id").primaryKey(),
+    title: varchar("title"),
+    updatedAt: timestamp("updated_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp("created_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .defaultNow()
+      .notNull(),
+  },
+  (columns) => ({
+    pages_updated_at_idx: index("pages_updated_at_idx").on(columns.updatedAt),
+    pages_created_at_idx: index("pages_created_at_idx").on(columns.createdAt),
+  }),
+);
+
 export const payload_locked_documents = pgTable(
   "payload_locked_documents",
   {
@@ -316,6 +469,7 @@ export const payload_locked_documents_rels = pgTable(
     educationsID: integer("educations_id"),
     projectsID: integer("projects_id"),
     blogsID: integer("blogs_id"),
+    pagesID: integer("pages_id"),
   },
   (columns) => ({
     order: index("payload_locked_documents_rels_order_idx").on(columns.order),
@@ -347,6 +501,9 @@ export const payload_locked_documents_rels = pgTable(
     payload_locked_documents_rels_blogs_id_idx: index(
       "payload_locked_documents_rels_blogs_id_idx",
     ).on(columns.blogsID),
+    payload_locked_documents_rels_pages_id_idx: index(
+      "payload_locked_documents_rels_pages_id_idx",
+    ).on(columns.pagesID),
     parentFk: foreignKey({
       columns: [columns["parent"]],
       foreignColumns: [payload_locked_documents.id],
@@ -391,6 +548,11 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns["blogsID"]],
       foreignColumns: [blogs.id],
       name: "payload_locked_documents_rels_blogs_fk",
+    }).onDelete("cascade"),
+    pagesIdFk: foreignKey({
+      columns: [columns["pagesID"]],
+      foreignColumns: [pages.id],
+      name: "payload_locked_documents_rels_pages_fk",
     }).onDelete("cascade"),
   }),
 );
@@ -489,6 +651,79 @@ export const payload_migrations = pgTable(
   }),
 );
 
+export const menu_menu = pgTable(
+  "menu_menu",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    id: varchar("id").primaryKey(),
+    label: varchar("label").notNull(),
+    page: integer("page_id").references(() => pages.id, {
+      onDelete: "set null",
+    }),
+  },
+  (columns) => ({
+    _orderIdx: index("menu_menu_order_idx").on(columns._order),
+    _parentIDIdx: index("menu_menu_parent_id_idx").on(columns._parentID),
+    menu_menu_page_idx: index("menu_menu_page_idx").on(columns.page),
+    _parentIDFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [menu.id],
+      name: "menu_menu_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const menu = pgTable("menu", {
+  id: serial("id").primaryKey(),
+  updatedAt: timestamp("updated_at", {
+    mode: "string",
+    withTimezone: true,
+    precision: 3,
+  }),
+  createdAt: timestamp("created_at", {
+    mode: "string",
+    withTimezone: true,
+    precision: 3,
+  }),
+});
+
+export const socials_socials_links = pgTable(
+  "socials_socials_links",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    id: varchar("id").primaryKey(),
+    kind: enum_socials_socials_links_kind("kind"),
+    link: varchar("link"),
+  },
+  (columns) => ({
+    _orderIdx: index("socials_socials_links_order_idx").on(columns._order),
+    _parentIDIdx: index("socials_socials_links_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _parentIDFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [socials.id],
+      name: "socials_socials_links_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const socials = pgTable("socials", {
+  id: serial("id").primaryKey(),
+  updatedAt: timestamp("updated_at", {
+    mode: "string",
+    withTimezone: true,
+    precision: 3,
+  }),
+  createdAt: timestamp("created_at", {
+    mode: "string",
+    withTimezone: true,
+    precision: 3,
+  }),
+});
+
 export const relations_users = relations(users, () => ({}));
 export const relations_media = relations(media, () => ({}));
 export const relations_notes = relations(notes, () => ({}));
@@ -497,6 +732,78 @@ export const relations_skills = relations(skills, () => ({}));
 export const relations_educations = relations(educations, () => ({}));
 export const relations_projects = relations(projects, () => ({}));
 export const relations_blogs = relations(blogs, () => ({}));
+export const relations_pages_blocks_blog = relations(
+  pages_blocks_blog,
+  ({ one }) => ({
+    _parentID: one(pages, {
+      fields: [pages_blocks_blog._parentID],
+      references: [pages.id],
+      relationName: "_blocks_blog",
+    }),
+  }),
+);
+export const relations_pages_blocks_contact = relations(
+  pages_blocks_contact,
+  ({ one }) => ({
+    _parentID: one(pages, {
+      fields: [pages_blocks_contact._parentID],
+      references: [pages.id],
+      relationName: "_blocks_contact",
+    }),
+  }),
+);
+export const relations_pages_blocks_education = relations(
+  pages_blocks_education,
+  ({ one }) => ({
+    _parentID: one(pages, {
+      fields: [pages_blocks_education._parentID],
+      references: [pages.id],
+      relationName: "_blocks_education",
+    }),
+  }),
+);
+export const relations_pages_blocks_me = relations(
+  pages_blocks_me,
+  ({ one }) => ({
+    _parentID: one(pages, {
+      fields: [pages_blocks_me._parentID],
+      references: [pages.id],
+      relationName: "_blocks_me",
+    }),
+    profile: one(media, {
+      fields: [pages_blocks_me.profile],
+      references: [media.id],
+      relationName: "profile",
+    }),
+  }),
+);
+export const relations_pages_blocks_skill = relations(
+  pages_blocks_skill,
+  ({ one }) => ({
+    _parentID: one(pages, {
+      fields: [pages_blocks_skill._parentID],
+      references: [pages.id],
+      relationName: "_blocks_skill",
+    }),
+  }),
+);
+export const relations_pages = relations(pages, ({ many }) => ({
+  _blocks_blog: many(pages_blocks_blog, {
+    relationName: "_blocks_blog",
+  }),
+  _blocks_contact: many(pages_blocks_contact, {
+    relationName: "_blocks_contact",
+  }),
+  _blocks_education: many(pages_blocks_education, {
+    relationName: "_blocks_education",
+  }),
+  _blocks_me: many(pages_blocks_me, {
+    relationName: "_blocks_me",
+  }),
+  _blocks_skill: many(pages_blocks_skill, {
+    relationName: "_blocks_skill",
+  }),
+}));
 export const relations_payload_locked_documents_rels = relations(
   payload_locked_documents_rels,
   ({ one }) => ({
@@ -545,6 +852,11 @@ export const relations_payload_locked_documents_rels = relations(
       references: [blogs.id],
       relationName: "blogs",
     }),
+    pagesID: one(pages, {
+      fields: [payload_locked_documents_rels.pagesID],
+      references: [pages.id],
+      relationName: "pages",
+    }),
   }),
 );
 export const relations_payload_locked_documents = relations(
@@ -582,8 +894,41 @@ export const relations_payload_migrations = relations(
   payload_migrations,
   () => ({}),
 );
+export const relations_menu_menu = relations(menu_menu, ({ one }) => ({
+  _parentID: one(menu, {
+    fields: [menu_menu._parentID],
+    references: [menu.id],
+    relationName: "menu",
+  }),
+  page: one(pages, {
+    fields: [menu_menu.page],
+    references: [pages.id],
+    relationName: "page",
+  }),
+}));
+export const relations_menu = relations(menu, ({ many }) => ({
+  menu: many(menu_menu, {
+    relationName: "menu",
+  }),
+}));
+export const relations_socials_socials_links = relations(
+  socials_socials_links,
+  ({ one }) => ({
+    _parentID: one(socials, {
+      fields: [socials_socials_links._parentID],
+      references: [socials.id],
+      relationName: "socialsLinks",
+    }),
+  }),
+);
+export const relations_socials = relations(socials, ({ many }) => ({
+  socialsLinks: many(socials_socials_links, {
+    relationName: "socialsLinks",
+  }),
+}));
 
 type DatabaseSchema = {
+  enum_socials_socials_links_kind: typeof enum_socials_socials_links_kind;
   users: typeof users;
   media: typeof media;
   notes: typeof notes;
@@ -592,11 +937,21 @@ type DatabaseSchema = {
   educations: typeof educations;
   projects: typeof projects;
   blogs: typeof blogs;
+  pages_blocks_blog: typeof pages_blocks_blog;
+  pages_blocks_contact: typeof pages_blocks_contact;
+  pages_blocks_education: typeof pages_blocks_education;
+  pages_blocks_me: typeof pages_blocks_me;
+  pages_blocks_skill: typeof pages_blocks_skill;
+  pages: typeof pages;
   payload_locked_documents: typeof payload_locked_documents;
   payload_locked_documents_rels: typeof payload_locked_documents_rels;
   payload_preferences: typeof payload_preferences;
   payload_preferences_rels: typeof payload_preferences_rels;
   payload_migrations: typeof payload_migrations;
+  menu_menu: typeof menu_menu;
+  menu: typeof menu;
+  socials_socials_links: typeof socials_socials_links;
+  socials: typeof socials;
   relations_users: typeof relations_users;
   relations_media: typeof relations_media;
   relations_notes: typeof relations_notes;
@@ -605,11 +960,21 @@ type DatabaseSchema = {
   relations_educations: typeof relations_educations;
   relations_projects: typeof relations_projects;
   relations_blogs: typeof relations_blogs;
+  relations_pages_blocks_blog: typeof relations_pages_blocks_blog;
+  relations_pages_blocks_contact: typeof relations_pages_blocks_contact;
+  relations_pages_blocks_education: typeof relations_pages_blocks_education;
+  relations_pages_blocks_me: typeof relations_pages_blocks_me;
+  relations_pages_blocks_skill: typeof relations_pages_blocks_skill;
+  relations_pages: typeof relations_pages;
   relations_payload_locked_documents_rels: typeof relations_payload_locked_documents_rels;
   relations_payload_locked_documents: typeof relations_payload_locked_documents;
   relations_payload_preferences_rels: typeof relations_payload_preferences_rels;
   relations_payload_preferences: typeof relations_payload_preferences;
   relations_payload_migrations: typeof relations_payload_migrations;
+  relations_menu_menu: typeof relations_menu_menu;
+  relations_menu: typeof relations_menu;
+  relations_socials_socials_links: typeof relations_socials_socials_links;
+  relations_socials: typeof relations_socials;
 };
 
 declare module "@payloadcms/db-postgres" {
