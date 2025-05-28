@@ -1,14 +1,17 @@
 import type { Block } from "payload";
 
-export const Skill: Block = {
-    slug: 'skill',
+export const Skills: Block = {
+    slug: 'skills',
     fields: [
         {
-            type: 'relationship',
-            relationTo: 'skills',
+            type: 'array',
             name: 'skills',
-            label: 'Skills',
-            hasMany: true
+            fields: [
+                {
+                    type: 'text',
+                    name: 'skill'
+                }
+            ]
         }
     ]
 }

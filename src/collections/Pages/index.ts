@@ -14,7 +14,7 @@ export const Pages: CollectionConfig<'pages'> = {
             name: 'layout',
             label: 'Design You\'r Page',
             blocks: [],
-            blockReferences: ['blog', 'contact', 'education', 'me', 'skill']
+            blockReferences: ['blog', 'contact', 'education', 'me', 'skills', 'experiances']
         }
     ]
 }
