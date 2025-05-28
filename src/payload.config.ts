@@ -12,13 +12,14 @@ import { Notes } from '@/collections/Notes'
 import { Blogs } from '@/collections/Blogs'
 import { Pages } from '@/collections/Pages'
 
-import { Me } from '@/blocks/Me'
+import { Hero } from '@/blocks/Hero'
 import { Contact } from '@/blocks/Contact'
 import { Education } from '@/blocks/Education'
 import { Projects } from '@/blocks/Project'
 import { Skills } from '@/blocks/Skill'
 import { Blog } from '@/blocks/blog'
 import { Experiances } from '@/blocks/Experiances'
+import { About } from '@/blocks/About'
 
 import { Menu } from '@/globals/Menu'
 import { Socials } from '@/globals/Socials'
@@ -35,7 +36,7 @@ export default buildConfig({
         },
     },
     collections: [Users, Media, Notes, Blogs, Pages],
-    blocks: [Me, Contact, Education, Projects, Skills, Blog, Experiances],
+    blocks: [Hero, Contact, Education, Projects, Skills, Blog, Experiances, About],
     globals: [Menu, Socials],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',

@@ -83,13 +83,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
-  CREATE TABLE IF NOT EXISTS "pages_blocks_me" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_hero" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
   	"name_on_resume" varchar,
-  	"about_me" jsonb,
   	"profile_id" integer,
   	"block_name" varchar
   );
@@ -122,6 +121,15 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_about" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"content" jsonb,
   	"block_name" varchar
   );
   
@@ -234,13 +242,13 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "pages_blocks_me" ADD CONSTRAINT "pages_blocks_me_profile_id_media_id_fk" FOREIGN KEY ("profile_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
+   ALTER TABLE "pages_blocks_hero" ADD CONSTRAINT "pages_blocks_hero_profile_id_media_id_fk" FOREIGN KEY ("profile_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
   
   DO $$ BEGIN
-   ALTER TABLE "pages_blocks_me" ADD CONSTRAINT "pages_blocks_me_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "pages_blocks_hero" ADD CONSTRAINT "pages_blocks_hero_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -265,6 +273,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_experiances" ADD CONSTRAINT "pages_blocks_experiances_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_about" ADD CONSTRAINT "pages_blocks_about_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -357,10 +371,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "pages_blocks_education_order_idx" ON "pages_blocks_education" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "pages_blocks_education_parent_id_idx" ON "pages_blocks_education" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "pages_blocks_education_path_idx" ON "pages_blocks_education" USING btree ("_path");
-  CREATE INDEX IF NOT EXISTS "pages_blocks_me_order_idx" ON "pages_blocks_me" USING btree ("_order");
-  CREATE INDEX IF NOT EXISTS "pages_blocks_me_parent_id_idx" ON "pages_blocks_me" USING btree ("_parent_id");
-  CREATE INDEX IF NOT EXISTS "pages_blocks_me_path_idx" ON "pages_blocks_me" USING btree ("_path");
-  CREATE INDEX IF NOT EXISTS "pages_blocks_me_profile_idx" ON "pages_blocks_me" USING btree ("profile_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_order_idx" ON "pages_blocks_hero" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_parent_id_idx" ON "pages_blocks_hero" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_path_idx" ON "pages_blocks_hero" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_profile_idx" ON "pages_blocks_hero" USING btree ("profile_id");
   CREATE INDEX IF NOT EXISTS "pages_blocks_skills_skills_order_idx" ON "pages_blocks_skills_skills" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "pages_blocks_skills_skills_parent_id_idx" ON "pages_blocks_skills_skills" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "pages_blocks_skills_order_idx" ON "pages_blocks_skills" USING btree ("_order");
@@ -371,6 +385,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "pages_blocks_experiances_order_idx" ON "pages_blocks_experiances" USING btree ("_order");
   CREATE INDEX IF NOT EXISTS "pages_blocks_experiances_parent_id_idx" ON "pages_blocks_experiances" USING btree ("_parent_id");
   CREATE INDEX IF NOT EXISTS "pages_blocks_experiances_path_idx" ON "pages_blocks_experiances" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_about_order_idx" ON "pages_blocks_about" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_about_parent_id_idx" ON "pages_blocks_about" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_about_path_idx" ON "pages_blocks_about" USING btree ("_path");
   CREATE INDEX IF NOT EXISTS "pages_updated_at_idx" ON "pages" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "pages_created_at_idx" ON "pages" USING btree ("created_at");
   CREATE INDEX IF NOT EXISTS "payload_locked_documents_global_slug_idx" ON "payload_locked_documents" USING btree ("global_slug");
@@ -410,11 +427,12 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "pages_blocks_contact" CASCADE;
   DROP TABLE "pages_blocks_education_edus" CASCADE;
   DROP TABLE "pages_blocks_education" CASCADE;
-  DROP TABLE "pages_blocks_me" CASCADE;
+  DROP TABLE "pages_blocks_hero" CASCADE;
   DROP TABLE "pages_blocks_skills_skills" CASCADE;
   DROP TABLE "pages_blocks_skills" CASCADE;
   DROP TABLE "pages_blocks_experiances_experiances" CASCADE;
   DROP TABLE "pages_blocks_experiances" CASCADE;
+  DROP TABLE "pages_blocks_about" CASCADE;
   DROP TABLE "pages" CASCADE;
   DROP TABLE "payload_locked_documents" CASCADE;
   DROP TABLE "payload_locked_documents_rels" CASCADE;
