@@ -1208,7 +1208,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@payloadcms/db-postgres@^3.39.1":
+"@payloadcms/db-postgres@^3.38.0":
   version "3.39.1"
   resolved "https://registry.yarnpkg.com/@payloadcms/db-postgres/-/db-postgres-3.39.1.tgz#acd702d7670b5241f2debb700547826596c3ad2d"
   integrity sha512-L8US5lwLMm8T+s4U5psC+DltTm7Bl+R/j0WinEK1ZJLJqGnr0G9Uw0q0CJMJKfWvuhB8BFU/dTzIdNhffTftMg==
@@ -1245,7 +1245,7 @@
     ts-essentials "10.0.3"
     tsx "4.19.2"
 
-"@payloadcms/next@^3.39.1":
+"@payloadcms/next@^3.38.0":
   version "3.39.1"
   resolved "https://registry.yarnpkg.com/@payloadcms/next/-/next-3.39.1.tgz#493513928acf5f94b16a4bbba85777d84eb70409"
   integrity sha512-VDNXCQXuxEWQ7m1U9e0gz14u233sWUAv4H0z8hM3C9+te2fC+EKToPqdWPY6eBYlhiRHNPfwNK4N/tqFAZKWAg==
@@ -1266,7 +1266,7 @@
     sass "1.77.4"
     uuid "10.0.0"
 
-"@payloadcms/richtext-lexical@^3.39.1":
+"@payloadcms/richtext-lexical@^3.38.0":
   version "3.39.1"
   resolved "https://registry.yarnpkg.com/@payloadcms/richtext-lexical/-/richtext-lexical-3.39.1.tgz#ab7a40f7ad78c6bb561c9920e8ba8dd546d6a3f2"
   integrity sha512-8uZwOxngPKndTQdJNr3LvDa3RNSlT7NnC4N7H5FOPw1icAYrhzUhE36ak0/XmvMBVdMKxvgn7UVvWJi78JKuIw==
@@ -4746,7 +4746,7 @@ path-type@^4.0.0:
   resolved "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-payload@^3.39.1:
+payload@^3.38.0:
   version "3.39.1"
   resolved "https://registry.yarnpkg.com/payload/-/payload-3.39.1.tgz#f6a100e7a5cad289e379669eb54db7288b113528"
   integrity sha512-VDJe5hGkAAmwJugsu/Cc41G3XIEdqX5Yc6N/s+c5BycKwvM4sPUno/UoFZp7oedPIfUnMUus3wHq6oDNH5se0A==
