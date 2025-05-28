@@ -1,4 +1,7 @@
+import { slugField } from "@/fields/slug";
 import type { CollectionConfig } from "payload";
+import { revalidateDelete, revalidatePage } from "./hooks/revalidatePage";
+import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
@@ -14,7 +17,29 @@ export const Pages: CollectionConfig<'pages'> = {
             name: 'layout',
             label: 'Design You\'r Page',
             blocks: [],
-            blockReferences: ['blog', 'contact', 'education', 'hero', 'skills', 'experiances','about']
-        }
-    ]
+            blockReferences: ['blog', 'contact', 'education', 'hero', 'skills', 'experiances', 'about']
+        },
+        {
+            name: 'publishedAt',
+            type: 'date',
+            admin: {
+                position: 'sidebar',
+            },
+        },
+        ...slugField()
+    ],
+    hooks: {
+        afterChange: [revalidatePage],
+        beforeChange: [populatePublishedAt],
+        afterDelete: [revalidateDelete],
+    },
+    versions: {
+        drafts: {
+            autosave: {
+                interval: 100,
+            },
+            schedulePublish: true,
+        },
+        maxPerDoc: 50,
+    },
 }

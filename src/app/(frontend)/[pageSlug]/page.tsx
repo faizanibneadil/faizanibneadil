@@ -3,13 +3,12 @@ import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import { cache } from "react";
 
 type Props = {
-  params: Promise<{ page: string }>
+  params: Promise<{ pageSlug: string }>
 }
 
 export default async function Page({ params }: Props) {
-  const { page: pageId = 36 } = (await params)
-  console.log({ pageId })
-  const page = await queryPageById({ id: pageId })
+  const { pageSlug = 'home' } = (await params)
+  const page = await queryPageBySlug({ slug: pageSlug })
   if (!page) return null
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10">
@@ -19,7 +18,7 @@ export default async function Page({ params }: Props) {
 }
 
 
-const queryPageById = cache(async ({ id }: { id: string | number }) => {
+const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
 
   const payload = await getPayloadConfig()
 
@@ -28,8 +27,8 @@ const queryPageById = cache(async ({ id }: { id: string | number }) => {
     limit: 1,
     pagination: false,
     where: {
-      id: {
-        equals: id,
+      slug: {
+        equals: slug,
       },
     },
   })

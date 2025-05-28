@@ -83,6 +83,16 @@ d3NrMpQ6S5FyRXcFUBlOdj76qfKcjVOhTsp1z9mwqiE4s/DMxA==
     }),
     // database-adapter-config-end
     sharp,
+    onInit: async (payload) => {
+        payload.logger.info('App is initialized ...')
+        payload.logger.info('Finding home page in pages collection...')
+        const isHomePageAvailable = await payload.find({ collection: 'pages', where: { slug: { equals: 'home' } } })
+        if (Boolean(isHomePageAvailable.docs.length)) {
+            payload.logger.info('Home page is already exist in your pages collection')
+        } else {
+            await payload.create({ collection: 'pages', data: { slug: 'home', title: 'Home' } })
+        }
+    },
     plugins: [
         // payloadCloudPlugin(),
         // storage-adapter-placeholder
