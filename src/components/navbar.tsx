@@ -29,7 +29,7 @@ export default async function Navbar() {
     return {
       id,
       label,
-      href: page && typeof page === 'object' && page.id ? `/${page.slug}` : '/',
+      href: page && typeof page === 'object' && page.slug ? `/${page.slug}` : '/',
       icon: page && typeof page === 'object' && ICONS[label as keyof typeof ICONS]
     }
   })
