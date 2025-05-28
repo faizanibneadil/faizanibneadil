@@ -9,19 +9,16 @@ import sharp from 'sharp'
 import { Users } from '@/collections/Users'
 import { Media } from '@/collections/Media'
 import { Notes } from '@/collections/Notes'
-import { Experiances } from '@/collections/Experiances'
-import { Skills } from '@/collections/Skills'
-import { Educations } from '@/collections/Educations'
-import { Projects } from '@/collections/Projects'
 import { Blogs } from '@/collections/Blogs'
 import { Pages } from '@/collections/Pages'
 
 import { Me } from '@/blocks/Me'
 import { Contact } from '@/blocks/Contact'
 import { Education } from '@/blocks/Education'
-import { Project } from '@/blocks/Project'
-import { Skill } from '@/blocks/Skill'
+import { Projects } from '@/blocks/Project'
+import { Skills } from '@/blocks/Skill'
 import { Blog } from '@/blocks/blog'
+import { Experiances } from '@/blocks/Experiances'
 
 import { Menu } from '@/globals/Menu'
 import { Socials } from '@/globals/Socials'
@@ -37,8 +34,8 @@ export default buildConfig({
             baseDir: path.resolve(dirname),
         },
     },
-    collections: [Users, Media, Notes, Experiances, Skills, Educations, Projects, Blogs, Pages],
-    blocks: [Me, Contact, Education, Project, Skill, Blog],
+    collections: [Users, Media, Notes, Blogs, Pages],
+    blocks: [Me, Contact, Education, Projects, Skills, Blog, Experiances],
     globals: [Menu, Socials],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',

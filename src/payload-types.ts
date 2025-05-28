@@ -69,18 +69,15 @@ export interface Config {
     me: Me;
     contact: Contact;
     education: Education;
-    project: Project;
-    skill: Skill;
+    projects: Projects;
+    skills: Skills;
     blog: Blog;
+    experiances: Experiances;
   };
   collections: {
     users: User;
     media: Media;
     notes: Note;
-    experiances: Experiance;
-    skills: Skill1;
-    educations: Education1;
-    projects: Project1;
     blogs: Blog1;
     pages: Page;
     'payload-locked-documents': PayloadLockedDocument;
@@ -92,10 +89,6 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     notes: NotesSelect<false> | NotesSelect<true>;
-    experiances: ExperiancesSelect<false> | ExperiancesSelect<true>;
-    skills: SkillsSelect<false> | SkillsSelect<true>;
-    educations: EducationsSelect<false> | EducationsSelect<true>;
-    projects: ProjectsSelect<false> | ProjectsSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -215,32 +208,27 @@ export interface Education {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "project".
+ * via the `definition` "projects".
  */
-export interface Project {
+export interface Projects {
   id?: string | null;
   blockName?: string | null;
-  blockType: 'project';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "skill".
- */
-export interface Skill {
-  skills?: (number | Skill1)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'skill';
+  blockType: 'projects';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "skills".
  */
-export interface Skill1 {
-  id: number;
-  title?: string | null;
-  updatedAt: string;
-  createdAt: string;
+export interface Skills {
+  skills?:
+    | {
+        skill?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'skills';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -250,6 +238,36 @@ export interface Blog {
   id?: string | null;
   blockName?: string | null;
   blockType: 'blog';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experiances".
+ */
+export interface Experiances {
+  experiances?:
+    | {
+        title: string;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'experiances';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -295,51 +313,6 @@ export interface Note {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "experiances".
- */
-export interface Experiance {
-  id: number;
-  title: string;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "educations".
- */
-export interface Education1 {
-  id: number;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "projects".
- */
-export interface Project1 {
-  id: number;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "blogs".
  */
 export interface Blog1 {
@@ -370,7 +343,7 @@ export interface Blog1 {
 export interface Page {
   id: number;
   title?: string | null;
-  layout?: (Blog | Contact | Education | Me | Skill)[] | null;
+  layout?: (Blog | Contact | Education | Me | Skills | Experiances)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -392,22 +365,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'notes';
         value: number | Note;
-      } | null)
-    | ({
-        relationTo: 'experiances';
-        value: number | Experiance;
-      } | null)
-    | ({
-        relationTo: 'skills';
-        value: number | Skill1;
-      } | null)
-    | ({
-        relationTo: 'educations';
-        value: number | Education1;
-      } | null)
-    | ({
-        relationTo: 'projects';
-        value: number | Project1;
       } | null)
     | ({
         relationTo: 'blogs';
@@ -499,43 +456,6 @@ export interface MediaSelect<T extends boolean = true> {
 export interface NotesSelect<T extends boolean = true> {
   title?: T;
   content?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "experiances_select".
- */
-export interface ExperiancesSelect<T extends boolean = true> {
-  title?: T;
-  content?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "skills_select".
- */
-export interface SkillsSelect<T extends boolean = true> {
-  title?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "educations_select".
- */
-export interface EducationsSelect<T extends boolean = true> {
-  title?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "projects_select".
- */
-export interface ProjectsSelect<T extends boolean = true> {
-  title?: T;
   updatedAt?: T;
   createdAt?: T;
 }

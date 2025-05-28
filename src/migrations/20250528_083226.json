@@ -1,5 +1,5 @@
 {
-  "id": "c31eb23b-41de-4873-9727-bd0e987a2ddd",
+  "id": "cb0f1a9a-827a-4f46-b1d6-72c8a46a4482",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -341,292 +341,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.experiances": {
-      "name": "experiances",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "title": {
-          "name": "title",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "content": {
-          "name": "content",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "experiances_updated_at_idx": {
-          "name": "experiances_updated_at_idx",
-          "columns": [
-            {
-              "expression": "updated_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "experiances_created_at_idx": {
-          "name": "experiances_created_at_idx",
-          "columns": [
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.skills": {
-      "name": "skills",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "title": {
-          "name": "title",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "skills_updated_at_idx": {
-          "name": "skills_updated_at_idx",
-          "columns": [
-            {
-              "expression": "updated_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "skills_created_at_idx": {
-          "name": "skills_created_at_idx",
-          "columns": [
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.educations": {
-      "name": "educations",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "title": {
-          "name": "title",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "educations_updated_at_idx": {
-          "name": "educations_updated_at_idx",
-          "columns": [
-            {
-              "expression": "updated_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "educations_created_at_idx": {
-          "name": "educations_created_at_idx",
-          "columns": [
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.projects": {
-      "name": "projects",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "title": {
-          "name": "title",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "projects_updated_at_idx": {
-          "name": "projects_updated_at_idx",
-          "columns": [
-            {
-              "expression": "updated_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "projects_created_at_idx": {
-          "name": "projects_created_at_idx",
-          "columns": [
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.blogs": {
       "name": "blogs",
       "schema": "",
@@ -909,6 +623,140 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.pages_blocks_education_edus": {
+      "name": "pages_blocks_education_edus",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "label": {
+          "name": "label",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "from": {
+          "name": "from",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "to": {
+          "name": "to",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "short_description": {
+          "name": "short_description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "institute_image_id": {
+          "name": "institute_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_education_edus_order_idx": {
+          "name": "pages_blocks_education_edus_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_education_edus_parent_id_idx": {
+          "name": "pages_blocks_education_edus_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_education_edus_institute_image_idx": {
+          "name": "pages_blocks_education_edus_institute_image_idx",
+          "columns": [
+            {
+              "expression": "institute_image_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_education_edus_institute_image_id_media_id_fk": {
+          "name": "pages_blocks_education_edus_institute_image_id_media_id_fk",
+          "tableFrom": "pages_blocks_education_edus",
+          "tableTo": "media",
+          "columnsFrom": [
+            "institute_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "pages_blocks_education_edus_parent_id_fk": {
+          "name": "pages_blocks_education_edus_parent_id_fk",
+          "tableFrom": "pages_blocks_education_edus",
+          "tableTo": "pages_blocks_education",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.pages_blocks_education": {
       "name": "pages_blocks_education",
       "schema": "",
@@ -1052,6 +900,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "profile_id": {
+          "name": "profile_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "block_name": {
           "name": "block_name",
           "type": "varchar",
@@ -1104,9 +958,37 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "pages_blocks_me_profile_idx": {
+          "name": "pages_blocks_me_profile_idx",
+          "columns": [
+            {
+              "expression": "profile_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {
+        "pages_blocks_me_profile_id_media_id_fk": {
+          "name": "pages_blocks_me_profile_id_media_id_fk",
+          "tableFrom": "pages_blocks_me",
+          "tableTo": "media",
+          "columnsFrom": [
+            "profile_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "pages_blocks_me_parent_id_fk": {
           "name": "pages_blocks_me_parent_id_fk",
           "tableFrom": "pages_blocks_me",
@@ -1127,8 +1009,90 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.pages_blocks_skill": {
-      "name": "pages_blocks_skill",
+    "public.pages_blocks_skills_skills": {
+      "name": "pages_blocks_skills_skills",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "skill": {
+          "name": "skill",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_skills_skills_order_idx": {
+          "name": "pages_blocks_skills_skills_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_skills_skills_parent_id_idx": {
+          "name": "pages_blocks_skills_skills_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_skills_skills_parent_id_fk": {
+          "name": "pages_blocks_skills_skills_parent_id_fk",
+          "tableFrom": "pages_blocks_skills_skills",
+          "tableTo": "pages_blocks_skills",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages_blocks_skills": {
+      "name": "pages_blocks_skills",
       "schema": "",
       "columns": {
         "_order": {
@@ -1163,8 +1127,8 @@
         }
       },
       "indexes": {
-        "pages_blocks_skill_order_idx": {
-          "name": "pages_blocks_skill_order_idx",
+        "pages_blocks_skills_order_idx": {
+          "name": "pages_blocks_skills_order_idx",
           "columns": [
             {
               "expression": "_order",
@@ -1178,8 +1142,8 @@
           "method": "btree",
           "with": {}
         },
-        "pages_blocks_skill_parent_id_idx": {
-          "name": "pages_blocks_skill_parent_id_idx",
+        "pages_blocks_skills_parent_id_idx": {
+          "name": "pages_blocks_skills_parent_id_idx",
           "columns": [
             {
               "expression": "_parent_id",
@@ -1193,8 +1157,8 @@
           "method": "btree",
           "with": {}
         },
-        "pages_blocks_skill_path_idx": {
-          "name": "pages_blocks_skill_path_idx",
+        "pages_blocks_skills_path_idx": {
+          "name": "pages_blocks_skills_path_idx",
           "columns": [
             {
               "expression": "_path",
@@ -1210,9 +1174,200 @@
         }
       },
       "foreignKeys": {
-        "pages_blocks_skill_parent_id_fk": {
-          "name": "pages_blocks_skill_parent_id_fk",
-          "tableFrom": "pages_blocks_skill",
+        "pages_blocks_skills_parent_id_fk": {
+          "name": "pages_blocks_skills_parent_id_fk",
+          "tableFrom": "pages_blocks_skills",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages_blocks_experiances_experiances": {
+      "name": "pages_blocks_experiances_experiances",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_experiances_experiances_order_idx": {
+          "name": "pages_blocks_experiances_experiances_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_experiances_experiances_parent_id_idx": {
+          "name": "pages_blocks_experiances_experiances_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_experiances_experiances_parent_id_fk": {
+          "name": "pages_blocks_experiances_experiances_parent_id_fk",
+          "tableFrom": "pages_blocks_experiances_experiances",
+          "tableTo": "pages_blocks_experiances",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages_blocks_experiances": {
+      "name": "pages_blocks_experiances",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_experiances_order_idx": {
+          "name": "pages_blocks_experiances_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_experiances_parent_id_idx": {
+          "name": "pages_blocks_experiances_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_experiances_path_idx": {
+          "name": "pages_blocks_experiances_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_experiances_parent_id_fk": {
+          "name": "pages_blocks_experiances_parent_id_fk",
+          "tableFrom": "pages_blocks_experiances",
           "tableTo": "pages",
           "columnsFrom": [
             "_parent_id"
@@ -1431,30 +1586,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "experiances_id": {
-          "name": "experiances_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "skills_id": {
-          "name": "skills_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "educations_id": {
-          "name": "educations_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "projects_id": {
-          "name": "projects_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
         "blogs_id": {
           "name": "blogs_id",
           "type": "integer",
@@ -1559,66 +1690,6 @@
           "method": "btree",
           "with": {}
         },
-        "payload_locked_documents_rels_experiances_id_idx": {
-          "name": "payload_locked_documents_rels_experiances_id_idx",
-          "columns": [
-            {
-              "expression": "experiances_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "payload_locked_documents_rels_skills_id_idx": {
-          "name": "payload_locked_documents_rels_skills_id_idx",
-          "columns": [
-            {
-              "expression": "skills_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "payload_locked_documents_rels_educations_id_idx": {
-          "name": "payload_locked_documents_rels_educations_id_idx",
-          "columns": [
-            {
-              "expression": "educations_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "payload_locked_documents_rels_projects_id_idx": {
-          "name": "payload_locked_documents_rels_projects_id_idx",
-          "columns": [
-            {
-              "expression": "projects_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
         "payload_locked_documents_rels_blogs_id_idx": {
           "name": "payload_locked_documents_rels_blogs_id_idx",
           "columns": [
@@ -1696,58 +1767,6 @@
           "tableTo": "notes",
           "columnsFrom": [
             "notes_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "payload_locked_documents_rels_experiances_fk": {
-          "name": "payload_locked_documents_rels_experiances_fk",
-          "tableFrom": "payload_locked_documents_rels",
-          "tableTo": "experiances",
-          "columnsFrom": [
-            "experiances_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "payload_locked_documents_rels_skills_fk": {
-          "name": "payload_locked_documents_rels_skills_fk",
-          "tableFrom": "payload_locked_documents_rels",
-          "tableTo": "skills",
-          "columnsFrom": [
-            "skills_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "payload_locked_documents_rels_educations_fk": {
-          "name": "payload_locked_documents_rels_educations_fk",
-          "tableFrom": "payload_locked_documents_rels",
-          "tableTo": "educations",
-          "columnsFrom": [
-            "educations_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "payload_locked_documents_rels_projects_fk": {
-          "name": "payload_locked_documents_rels_projects_fk",
-          "tableFrom": "payload_locked_documents_rels",
-          "tableTo": "projects",
-          "columnsFrom": [
-            "projects_id"
           ],
           "columnsTo": [
             "id"
@@ -2255,9 +2274,9 @@
           "primaryKey": true,
           "notNull": true
         },
-        "type": {
-          "name": "type",
-          "type": "enum_socials_socials_links_type",
+        "kind": {
+          "name": "kind",
+          "type": "enum_socials_socials_links_kind",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -2355,8 +2374,8 @@
     }
   },
   "enums": {
-    "public.enum_socials_socials_links_type": {
-      "name": "enum_socials_socials_links_type",
+    "public.enum_socials_socials_links_kind": {
+      "name": "enum_socials_socials_links_kind",
       "schema": "public",
       "values": [
         "facebook",

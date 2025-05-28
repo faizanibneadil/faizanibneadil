@@ -1,6 +1,6 @@
 import { Block } from "payload";
 
-export const Project: Block = {
-    slug: 'project',
+export const Projects: Block = {
+    slug: 'projects',
     fields: []
 }
