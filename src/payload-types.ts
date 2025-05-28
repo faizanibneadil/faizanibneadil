@@ -68,11 +68,11 @@ export interface Config {
   blocks: {
     hero: IHeroProps;
     contact: Contact;
-    education: Education;
+    education: TEducationProps;
     projects: Projects;
-    skills: Skills;
+    skills: ISkillsProps;
     blog: Blog;
-    experiances: Experiances;
+    experiances: IExperiancesProps;
     about: IAboutProps;
   };
   collections: {
@@ -183,16 +183,17 @@ export interface Contact {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "education".
+ * via the `definition` "TEducationProps".
  */
-export interface Education {
-  edus?:
+export interface TEducationProps {
+  educations?:
     | {
-        label?: string | null;
-        from?: string | null;
-        to?: string | null;
-        short_description?: string | null;
-        institute_image?: (number | null) | Media;
+        title: string;
+        academy?: string | null;
+        degree?: string | null;
+        start?: string | null;
+        end?: string | null;
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -211,9 +212,9 @@ export interface Projects {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "skills".
+ * via the `definition` "ISkillsProps".
  */
-export interface Skills {
+export interface ISkillsProps {
   skills?:
     | {
         skill?: string | null;
@@ -235,27 +236,17 @@ export interface Blog {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "experiances".
+ * via the `definition` "IExperiancesProps".
  */
-export interface Experiances {
+export interface IExperiancesProps {
   experiances?:
     | {
         title: string;
-        content?: {
-          root: {
-            type: string;
-            children: {
-              type: string;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
+        company?: string | null;
+        subtitle?: string | null;
+        start?: string | null;
+        end?: string | null;
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -361,7 +352,7 @@ export interface Blog1 {
 export interface Page {
   id: number;
   title?: string | null;
-  layout?: (Blog | Contact | Education | IHeroProps | Skills | Experiances | IAboutProps)[] | null;
+  layout?: (Blog | Contact | TEducationProps | IHeroProps | ISkillsProps | IExperiancesProps | IAboutProps)[] | null;
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
