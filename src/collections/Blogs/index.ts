@@ -3,7 +3,9 @@ import type { CollectionConfig } from "payload";
 
 export const Blogs: CollectionConfig<'blogs'> = {
     slug: 'blogs',
-    admin: { useAsTitle: 'title' },
+    admin: { 
+        useAsTitle: 'title',
+    },
     fields: [
         {
             type: 'text',
