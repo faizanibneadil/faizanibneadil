@@ -199,6 +199,16 @@ export interface Contact {
  * via the `definition` "education".
  */
 export interface Education {
+  edus?:
+    | {
+        label?: string | null;
+        from?: string | null;
+        to?: string | null;
+        short_description?: string | null;
+        institute_image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'education';
@@ -217,9 +227,20 @@ export interface Project {
  * via the `definition` "skill".
  */
 export interface Skill {
+  skills?: (number | Skill1)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'skill';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skills".
+ */
+export interface Skill1 {
+  id: number;
+  title?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -294,16 +315,6 @@ export interface Experiance {
     };
     [k: string]: unknown;
   } | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "skills".
- */
-export interface Skill1 {
-  id: number;
-  title?: string | null;
   updatedAt: string;
   createdAt: string;
 }
