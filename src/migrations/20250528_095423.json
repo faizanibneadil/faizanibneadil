@@ -1,5 +1,5 @@
 {
-  "id": "75b8b476-c01b-4f19-ae80-359bd789905b",
+  "id": "0843fa98-714a-4445-904f-e21b134b2f03",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -860,8 +860,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.pages_blocks_me": {
-      "name": "pages_blocks_me",
+    "public.pages_blocks_hero": {
+      "name": "pages_blocks_hero",
       "schema": "",
       "columns": {
         "_order": {
@@ -894,12 +894,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "about_me": {
-          "name": "about_me",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
         "profile_id": {
           "name": "profile_id",
           "type": "integer",
@@ -914,8 +908,8 @@
         }
       },
       "indexes": {
-        "pages_blocks_me_order_idx": {
-          "name": "pages_blocks_me_order_idx",
+        "pages_blocks_hero_order_idx": {
+          "name": "pages_blocks_hero_order_idx",
           "columns": [
             {
               "expression": "_order",
@@ -929,8 +923,8 @@
           "method": "btree",
           "with": {}
         },
-        "pages_blocks_me_parent_id_idx": {
-          "name": "pages_blocks_me_parent_id_idx",
+        "pages_blocks_hero_parent_id_idx": {
+          "name": "pages_blocks_hero_parent_id_idx",
           "columns": [
             {
               "expression": "_parent_id",
@@ -944,8 +938,8 @@
           "method": "btree",
           "with": {}
         },
-        "pages_blocks_me_path_idx": {
-          "name": "pages_blocks_me_path_idx",
+        "pages_blocks_hero_path_idx": {
+          "name": "pages_blocks_hero_path_idx",
           "columns": [
             {
               "expression": "_path",
@@ -959,8 +953,8 @@
           "method": "btree",
           "with": {}
         },
-        "pages_blocks_me_profile_idx": {
-          "name": "pages_blocks_me_profile_idx",
+        "pages_blocks_hero_profile_idx": {
+          "name": "pages_blocks_hero_profile_idx",
           "columns": [
             {
               "expression": "profile_id",
@@ -976,9 +970,9 @@
         }
       },
       "foreignKeys": {
-        "pages_blocks_me_profile_id_media_id_fk": {
-          "name": "pages_blocks_me_profile_id_media_id_fk",
-          "tableFrom": "pages_blocks_me",
+        "pages_blocks_hero_profile_id_media_id_fk": {
+          "name": "pages_blocks_hero_profile_id_media_id_fk",
+          "tableFrom": "pages_blocks_hero",
           "tableTo": "media",
           "columnsFrom": [
             "profile_id"
@@ -989,9 +983,9 @@
           "onDelete": "set null",
           "onUpdate": "no action"
         },
-        "pages_blocks_me_parent_id_fk": {
-          "name": "pages_blocks_me_parent_id_fk",
-          "tableFrom": "pages_blocks_me",
+        "pages_blocks_hero_parent_id_fk": {
+          "name": "pages_blocks_hero_parent_id_fk",
+          "tableFrom": "pages_blocks_hero",
           "tableTo": "pages",
           "columnsFrom": [
             "_parent_id"
@@ -1368,6 +1362,115 @@
         "pages_blocks_experiances_parent_id_fk": {
           "name": "pages_blocks_experiances_parent_id_fk",
           "tableFrom": "pages_blocks_experiances",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages_blocks_about": {
+      "name": "pages_blocks_about",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_about_order_idx": {
+          "name": "pages_blocks_about_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_about_parent_id_idx": {
+          "name": "pages_blocks_about_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_about_path_idx": {
+          "name": "pages_blocks_about_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_about_parent_id_fk": {
+          "name": "pages_blocks_about_parent_id_fk",
+          "tableFrom": "pages_blocks_about",
           "tableTo": "pages",
           "columnsFrom": [
             "_parent_id"

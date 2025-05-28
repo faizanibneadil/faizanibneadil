@@ -66,13 +66,14 @@ export interface Config {
     users: UserAuthOperations;
   };
   blocks: {
-    me: Me;
+    hero: IHeroProps;
     contact: Contact;
     education: Education;
     projects: Projects;
     skills: Skills;
     blog: Blog;
     experiances: Experiances;
+    about: IAboutProps;
   };
   collections: {
     users: User;
@@ -135,29 +136,14 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "me".
+ * via the `definition` "IHeroProps".
  */
-export interface Me {
+export interface IHeroProps {
   nameOnResume?: string | null;
-  aboutMe?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
   profile?: (number | null) | Media;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'me';
+  blockType: 'hero';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -271,6 +257,30 @@ export interface Experiances {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IAboutProps".
+ */
+export interface IAboutProps {
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'about';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -343,7 +353,7 @@ export interface Blog1 {
 export interface Page {
   id: number;
   title?: string | null;
-  layout?: (Blog | Contact | Education | Me | Skills | Experiances)[] | null;
+  layout?: (Blog | Contact | Education | IHeroProps | Skills | Experiances | IAboutProps)[] | null;
   updatedAt: string;
   createdAt: string;
 }
