@@ -7,7 +7,7 @@ type Props = {
 }
 
 export default async function Page({ params }: Props) {
-  const { page: pageId = 1 } = (await params)
+  const { page: pageId = 36 } = (await params)
   console.log({ pageId })
   const page = await queryPageById({ id: pageId })
   if (!page) return null

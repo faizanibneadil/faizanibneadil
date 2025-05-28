@@ -1,19 +1,17 @@
 import { Page } from "@/payload-types";
 import dynamic from "next/dynamic";
 import { Fragment } from "react";
+import { Hero } from "./Hero/components/hero";
+import { About } from "./About/components/about";
 
 const _blocks = {
-    hero: dynamic(() => import('@/blocks/Hero/components/hero').then(module => ({
-        default: module.Hero
-    }))),
-    blog: () => null,
-    contact: () => null,
-    education: () => null,
-    skills: () => null,
-    experiances: () => null,
-    about: dynamic(() => import('@/blocks/About/components/about').then(module => ({
-        default: module.About
-    }))),
+    hero: Hero,
+    blog: () => <div>Blog</div>,
+    contact: () => <div>contact</div>,
+    education: () => <div>edu</div>,
+    skills: () => <div>skillll</div>,
+    experiances: () => <div>exp</div>,
+    about: About
 }
 
 export function BlocksRenderrer(props: { blocks: Page['layout'][][0] }) {

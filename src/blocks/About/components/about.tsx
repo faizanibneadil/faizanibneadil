@@ -1,12 +1,6 @@
 import config from '@payload-config'
 import BlurFade from "@/components/magicui/blur-fade";
 import Markdown from "react-markdown";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-
-import {
-    convertLexicalToMarkdown,
-    editorConfigFactory,
-} from '@payloadcms/richtext-lexical'
 import { IAboutProps } from '@/payload-types';
 
 const BLUR_FADE_DELAY = 0.04;
@@ -14,10 +8,6 @@ const BLUR_FADE_DELAY = 0.04;
 
 export async function About(props: IAboutProps) {
     const { content } = props || {}
-    //const markdown = convertLexicalToMarkdown({
-    //    data: content as SerializedEditorState,
-    //    editorConfig: await editorConfigFactory.default({ config }),
-    //})
     return (
         <section id="about">
             <BlurFade delay={BLUR_FADE_DELAY * 3}>
