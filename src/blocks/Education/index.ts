@@ -2,42 +2,42 @@ import type { Block } from "payload";
 
 export const Education: Block = {
     slug: 'education',
+    interfaceName: 'TEducationProps',
     fields: [
         {
             type: 'array',
-            name: 'edus',
-            label: 'Education',
+            name: 'educations',
             fields: [
                 {
-                    type: 'row',
-                    fields: [
-                        {
-                            type: 'text',
-                            name: 'label',
-                            label: 'Label'
-                        },
-                        {
-                            type: 'date',
-                            name: 'from',
-                            label: 'From'
-                        },
-                        {
-                            type: 'date',
-                            name: 'to',
-                            label: 'To'
-                        }
-                    ]
+                    type: 'text',
+                    label: 'Title',
+                    name: 'title',
+                    required: true
                 },
                 {
                     type: 'text',
-                    name: 'short_description',
-                    label: 'Short Description'
+                    label: 'Academy',
+                    name: 'academy',
                 },
                 {
-                    type: 'relationship',
-                    relationTo: 'media',
-                    name: 'institute_image',
-                    label: 'Select Institute Logo'
+                    type: 'text',
+                    label: 'Degree',
+                    name: 'degree',
+                },
+                {
+                    type: 'date',
+                    name: 'start',
+                    label: 'Start'
+                },
+                {
+                    type: 'date',
+                    name: 'end',
+                    label: 'End'
+                },
+                {
+                    type: 'textarea',
+                    name: 'description',
+                    label: 'Description'
                 }
             ]
         }

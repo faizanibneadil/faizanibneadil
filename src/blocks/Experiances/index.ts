@@ -1,8 +1,8 @@
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { Block } from "payload";
 
 export const Experiances: Block = {
     slug: 'experiances',
+    interfaceName: 'IExperiancesProps',
     fields: [
         {
             type: 'array',
@@ -15,9 +15,29 @@ export const Experiances: Block = {
                     required: true
                 },
                 {
-                    type: 'richText',
-                    editor: lexicalEditor(),
-                    name: 'content'
+                    type: 'text',
+                    label: 'Company',
+                    name: 'company',
+                },
+                {
+                    type: 'text',
+                    label: 'Sub Title',
+                    name: 'subtitle',
+                },
+                {
+                    type: 'date',
+                    name: 'start',
+                    label: 'Start'
+                },
+                {
+                    type: 'date',
+                    name: 'end',
+                    label: 'End'
+                },
+                {
+                    type: 'textarea',
+                    name: 'description',
+                    label: 'Description'
                 }
             ]
         }

@@ -3,14 +3,17 @@ import dynamic from "next/dynamic";
 import { Fragment } from "react";
 import { Hero } from "./Hero/components/hero";
 import { About } from "./About/components/about";
+import { Experiances } from "./Experiances/components/experiances";
+import { Education } from "./Education/components/educations";
+import { Skills } from "./Skill/components/skills";
 
 const _blocks = {
     hero: Hero,
     blog: () => <div>Blog</div>,
     contact: () => <div>contact</div>,
-    education: () => <div>edu</div>,
-    skills: () => <div>skillll</div>,
-    experiances: () => <div>exp</div>,
+    education: Education,
+    skills: Skills,
+    experiances: Experiances,
     about: About
 }
 
