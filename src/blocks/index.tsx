@@ -6,11 +6,12 @@ import { About } from "./About/components/about";
 import { Experiances } from "./Experiances/components/experiances";
 import { Education } from "./Education/components/educations";
 import { Skills } from "./Skill/components/skills";
+import { Contact } from "./Contact/components/contact";
 
 const _blocks = {
     hero: Hero,
     blog: () => <div>Blog</div>,
-    contact: () => <div>contact</div>,
+    contact: Contact,
     education: Education,
     skills: Skills,
     experiances: Experiances,

@@ -17,7 +17,6 @@ import { Contact } from '@/blocks/Contact'
 import { Education } from '@/blocks/Education'
 import { Projects } from '@/blocks/Project'
 import { Skills } from '@/blocks/Skill'
-import { Blog } from '@/blocks/blog'
 import { Experiances } from '@/blocks/Experiances'
 import { About } from '@/blocks/About'
 
@@ -36,7 +35,7 @@ export default buildConfig({
         },
     },
     collections: [Users, Media, Notes, Blogs, Pages],
-    blocks: [Hero, Contact, Education, Projects, Skills, Blog, Experiances, About],
+    blocks: [Hero, Contact, Education, Projects, Skills, Experiances, About],
     globals: [Menu, Socials],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',
