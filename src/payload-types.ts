@@ -71,7 +71,6 @@ export interface Config {
     education: TEducationProps;
     projects: Projects;
     skills: ISkillsProps;
-    blog: Blog;
     experiances: IExperiancesProps;
     about: IAboutProps;
   };
@@ -79,7 +78,7 @@ export interface Config {
     users: User;
     media: Media;
     notes: Note;
-    blogs: Blog1;
+    blogs: Blog;
     pages: Page;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -227,15 +226,6 @@ export interface ISkillsProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "blog".
- */
-export interface Blog {
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'blog';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "IExperiancesProps".
  */
 export interface IExperiancesProps {
@@ -324,7 +314,7 @@ export interface Note {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "blogs".
  */
-export interface Blog1 {
+export interface Blog {
   id: number;
   title: string;
   content?: {
@@ -352,7 +342,7 @@ export interface Blog1 {
 export interface Page {
   id: number;
   title?: string | null;
-  layout?: (Blog | Contact | TEducationProps | IHeroProps | ISkillsProps | IExperiancesProps | IAboutProps)[] | null;
+  layout?: (Contact | TEducationProps | IHeroProps | ISkillsProps | IExperiancesProps | IAboutProps)[] | null;
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -473,7 +463,7 @@ export interface PayloadLockedDocument {
       } | null)
     | ({
         relationTo: 'blogs';
-        value: number | Blog1;
+        value: number | Blog;
       } | null)
     | ({
         relationTo: 'pages';
