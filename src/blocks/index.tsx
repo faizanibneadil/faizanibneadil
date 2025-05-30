@@ -10,7 +10,6 @@ import { Contact } from "./Contact/components/contact";
 
 const _blocks = {
     hero: Hero,
-    blog: () => <div>Blog</div>,
     contact: Contact,
     education: Education,
     skills: Skills,
