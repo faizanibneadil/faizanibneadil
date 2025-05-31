@@ -653,6 +653,10 @@ export interface Menu {
   id: number;
   menu?:
     | {
+        /**
+         * If it is checked then this will be a collection of docs.
+         */
+        asCollection?: boolean | null;
         label: string;
         page?: (number | null) | Page;
         id?: string | null;
@@ -685,6 +689,7 @@ export interface MenuSelect<T extends boolean = true> {
   menu?:
     | T
     | {
+        asCollection?: T;
         label?: T;
         page?: T;
         id?: T;
