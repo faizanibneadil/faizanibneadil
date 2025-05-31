@@ -1,4 +1,4 @@
-import Page from "./[pageSlug]/page";
+import Page from "./p/[slug]/page";
 
 
 
