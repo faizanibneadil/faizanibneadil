@@ -1,5 +1,6 @@
 import type { GlobalConfig } from "payload";
 import { revalidateMenu } from "./hooks/revalidateMenu";
+import { iconField } from "@/fields/icon";
 
 export const Menu: GlobalConfig<'menu'> = {
     slug: 'menu',
@@ -24,7 +25,8 @@ export const Menu: GlobalConfig<'menu'> = {
                             admin: {
                                 description: 'If it is checked then this will be a collection of docs.'
                             }
-                        }
+                        },
+                        iconField
                     ]
                 },
                 {

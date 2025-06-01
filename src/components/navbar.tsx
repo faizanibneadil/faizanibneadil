@@ -11,15 +11,8 @@ import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
 import { Menu } from '@/payload-types';
 import { getCachedGlobal } from '@/utilities/getGlobals';
-import { CodeIcon, HomeIcon, NotebookIcon, PencilLine } from "lucide-react";
 import Link from "next/link";
-
-const ICONS = {
-  'Home': HomeIcon,
-  'Blogs': NotebookIcon,
-  'Projects': CodeIcon,
-  'Notes': PencilLine
-}
+import { LucideIcon } from "@/components/ui/lucied-icon";
 
 export default async function Navbar() {
   const menu: Menu = await getCachedGlobal('menu', 1)()
@@ -29,7 +22,6 @@ export default async function Navbar() {
       <div className="fixed bottom-0 inset-x-0 h-16 w-full bg-background to-transparent backdrop-blur-lg [-webkit-mask-image:linear-gradient(to_top,black,transparent)] dark:bg-background"></div>
       <Dock className="z-50 pointer-events-auto relative mx-auto flex min-h-full h-full items-center px-1 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] ">
         {menu?.menu?.map((item, idx) => {
-          const Icon = ICONS[item.label as keyof typeof ICONS]
           const href = item.asCollection && item.page && typeof item.page === 'object' && item.page.slug
             ? `/c/${item.page.slug}`
             : item.page && typeof item.page === 'object' && item.page.slug
@@ -40,7 +32,9 @@ export default async function Navbar() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link href={href} className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
-                    <Icon className="size-4" />
+                    {item?.icon && (
+                      <LucideIcon icon={item.icon} luciedProps={{ className: 'size-4' }} />
+                    )}
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent>
