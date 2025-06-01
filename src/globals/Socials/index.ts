@@ -1,8 +1,12 @@
-import { SocialTypes } from "@/constants/SocialsTypes";
+import { iconField } from "@/fields/icon";
 import type { GlobalConfig } from "payload";
+import { revalidateSocials } from "./hooks/revalidateSocials";
 
 export const Socials: GlobalConfig<'socials'> = {
     slug: 'socials',
+    hooks: {
+        afterChange: [revalidateSocials],
+    },
     fields: [
         {
             type: 'array',
@@ -13,16 +17,18 @@ export const Socials: GlobalConfig<'socials'> = {
                     type: 'row',
                     fields: [
                         {
-                            type: 'select',
-                            name: 'kind',
-                            label: 'Social Type',
-                            options: SocialTypes.map(type => ({ label: type, value: type }))
+                            type: 'text',
+                            name: 'title',
+                            label: 'Title',
+                            required: true
                         },
                         {
                             type: 'text',
                             name: 'link',
-                            label: 'Link'
-                        }
+                            label: 'Link',
+                            required: true
+                        },
+                        iconField
                     ]
                 }
             ]
