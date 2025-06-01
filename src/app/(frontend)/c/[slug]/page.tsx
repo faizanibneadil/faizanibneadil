@@ -4,19 +4,44 @@ import React from "react";
 
 type TExcludeCollectionSlug = "users" | "media" | "pages" | "payload-jobs" | "payload-locked-documents" | "payload-preferences" | "payload-migrations"
 type TCollections = Exclude<CollectionSlug, TExcludeCollectionSlug>
-type TCollectionComponent = (props: PaginatedDocs<DataFromCollectionSlug<TCollections>>) => React.ReactNode
-const _collections: Record<TCollections, TCollectionComponent> = {
+type TCollectionReactNode = (props: PaginatedDocs<DataFromCollectionSlug<TCollections>>) => React.ReactNode
+
+const _collections: Record<TCollections, TCollectionReactNode> = {
     blogs: (props: PaginatedDocs<DataFromCollectionSlug<'blogs'>>) => {
         const { docs } = props || {}
-        return <div>{docs.map(doc => <div key={doc.id}>{doc.title}</div>)}</div>
+        const blogs = docs.map(doc => {
+            return (
+                <div key={doc.id} className="flex flex-col gap-4">
+                    <h3>{doc.title}</h3>
+                    <p>Short Descriptin Of The Blog</p>
+                </div>
+            )
+        })
+        return <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{blogs}</div>
     },
     notes: (props: PaginatedDocs<DataFromCollectionSlug<'notes'>>) => {
         const { docs } = props || {}
-        return <div>{docs.map(doc => <div key={doc.id}>{doc.title}</div>)}</div>
+        const notes = docs.map(doc => {
+            return (
+                <div key={doc.id} className="flex flex-col gap-4">
+                    <h3>{doc.title}</h3>
+                    <p>Short Descriptin Of The Note</p>
+                </div>
+            )
+        })
+        return <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{notes}</div>
     },
     projects: (props: PaginatedDocs<DataFromCollectionSlug<'projects'>>) => {
         const { docs } = props || {}
-        return <div>{docs.map(doc => <div key={doc.id}>{doc.title}</div>)}</div>
+        const projects = docs.map(doc => {
+            return (
+                <div key={doc.id} className="flex flex-col gap-4">
+                    <h3>{doc.title}</h3>
+                    <p>Short Descriptin Of The Project</p>
+                </div>
+            )
+        })
+        return <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{projects}</div>
     }
 }
 
