@@ -9,13 +9,14 @@ import {
 } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
-import { Menu } from '@/payload-types';
+import { Menu, Social } from '@/payload-types';
 import { getCachedGlobal } from '@/utilities/getGlobals';
 import Link from "next/link";
 import { LucideIcon } from "@/components/ui/lucied-icon";
 
 export default async function Navbar() {
   const menu: Menu = await getCachedGlobal('menu', 1)()
+  const socials: Social = await getCachedGlobal('socials', 1)()
 
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 mx-auto mb-4 flex origin-bottom h-full max-h-14">
@@ -45,28 +46,24 @@ export default async function Navbar() {
           )
         })}
         <Separator orientation="vertical" className="h-full" />
-        {Object.entries(DATA.contact.social)
-          .filter(([_, social]) => social.navbar)
-          .map(([name, social]) => (
-            <DockIcon key={name}>
+        {socials?.socialsLinks?.map(item => {
+          return (
+            <DockIcon key={item.id}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Link
-                    href={social.url}
-                    className={cn(
-                      buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12"
+                  <Link href={item?.link} className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
+                    {item?.icon && (
+                      <LucideIcon icon={item?.icon} luciedProps={{ className: 'size-4' }} />
                     )}
-                  >
-                    <social.icon className="size-4" />
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{name}</p>
+                  <p>{item?.title}</p>
                 </TooltipContent>
               </Tooltip>
             </DockIcon>
-          ))}
+          )
+        })}
         <Separator orientation="vertical" className="h-full py-2" />
         <DockIcon>
           <Tooltip>

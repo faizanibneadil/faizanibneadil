@@ -3656,8 +3656,9 @@ export interface Social {
   id: number;
   socialsLinks?:
     | {
-        kind?: ('facebook' | 'instagram' | 'twitter' | 'youtube' | 'github' | 'linkedin') | null;
-        link?: string | null;
+        title: string;
+        link: string;
+        icon?: TLuciedIcons;
         id?: string | null;
       }[]
     | null;
@@ -3690,8 +3691,9 @@ export interface SocialsSelect<T extends boolean = true> {
   socialsLinks?:
     | T
     | {
-        kind?: T;
+        title?: T;
         link?: T;
+        icon?: T;
         id?: T;
       };
   updatedAt?: T;
