@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload";
 import { slugField } from "@/fields/slug";
+import { icons } from 'lucide-react'
 
 
 export const Projects: CollectionConfig<'projects'> = {
@@ -11,6 +12,19 @@ export const Projects: CollectionConfig<'projects'> = {
             name: 'title',
             label: 'Title',
             required: true
+        },
+        {
+            type: 'select',
+            name: 'icon',
+            label: 'Icon',
+            options: Object.keys(icons).map(icon => ({ label: icon, value: icon }))
+        },
+        {
+            name: 'publishedAt',
+            type: 'date',
+            admin: {
+                position: 'sidebar',
+            },
         },
         ...slugField()
     ],
