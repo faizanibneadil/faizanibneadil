@@ -1,0 +1,7549 @@
+{
+  "id": "35e0df4c-625b-4325-9ca9-e7478bfe8cab",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reset_password_token": {
+          "name": "reset_password_token",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reset_password_expiration": {
+          "name": "reset_password_expiration",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "salt": {
+          "name": "salt",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hash": {
+          "name": "hash",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "login_attempts": {
+          "name": "login_attempts",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "lock_until": {
+          "name": "lock_until",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "users_updated_at_idx": {
+          "name": "users_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "users_created_at_idx": {
+          "name": "users_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "users_email_idx": {
+          "name": "users_email_idx",
+          "columns": [
+            {
+              "expression": "email",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.media": {
+      "name": "media",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "alt": {
+          "name": "alt",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "thumbnail_u_r_l": {
+          "name": "thumbnail_u_r_l",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "filename": {
+          "name": "filename",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mime_type": {
+          "name": "mime_type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "filesize": {
+          "name": "filesize",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "height": {
+          "name": "height",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "focal_x": {
+          "name": "focal_x",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "focal_y": {
+          "name": "focal_y",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "media_updated_at_idx": {
+          "name": "media_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "media_created_at_idx": {
+          "name": "media_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "media_filename_idx": {
+          "name": "media_filename_idx",
+          "columns": [
+            {
+              "expression": "filename",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.notes": {
+      "name": "notes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "notes_updated_at_idx": {
+          "name": "notes_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "notes_created_at_idx": {
+          "name": "notes_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.blogs": {
+      "name": "blogs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "blogs_updated_at_idx": {
+          "name": "blogs_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "blogs_created_at_idx": {
+          "name": "blogs_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages_blocks_contact": {
+      "name": "pages_blocks_contact",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_contact_order_idx": {
+          "name": "pages_blocks_contact_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_contact_parent_id_idx": {
+          "name": "pages_blocks_contact_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_contact_path_idx": {
+          "name": "pages_blocks_contact_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_contact_parent_id_fk": {
+          "name": "pages_blocks_contact_parent_id_fk",
+          "tableFrom": "pages_blocks_contact",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages_blocks_education_educations": {
+      "name": "pages_blocks_education_educations",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "academy": {
+          "name": "academy",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "degree": {
+          "name": "degree",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "start": {
+          "name": "start",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end": {
+          "name": "end",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_education_educations_order_idx": {
+          "name": "pages_blocks_education_educations_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_education_educations_parent_id_idx": {
+          "name": "pages_blocks_education_educations_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_education_educations_parent_id_fk": {
+          "name": "pages_blocks_education_educations_parent_id_fk",
+          "tableFrom": "pages_blocks_education_educations",
+          "tableTo": "pages_blocks_education",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages_blocks_education": {
+      "name": "pages_blocks_education",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_education_order_idx": {
+          "name": "pages_blocks_education_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_education_parent_id_idx": {
+          "name": "pages_blocks_education_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_education_path_idx": {
+          "name": "pages_blocks_education_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_education_parent_id_fk": {
+          "name": "pages_blocks_education_parent_id_fk",
+          "tableFrom": "pages_blocks_education",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages_blocks_hero": {
+      "name": "pages_blocks_hero",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name_on_resume": {
+          "name": "name_on_resume",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "profile_id": {
+          "name": "profile_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_hero_order_idx": {
+          "name": "pages_blocks_hero_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_hero_parent_id_idx": {
+          "name": "pages_blocks_hero_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_hero_path_idx": {
+          "name": "pages_blocks_hero_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_hero_profile_idx": {
+          "name": "pages_blocks_hero_profile_idx",
+          "columns": [
+            {
+              "expression": "profile_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_hero_profile_id_media_id_fk": {
+          "name": "pages_blocks_hero_profile_id_media_id_fk",
+          "tableFrom": "pages_blocks_hero",
+          "tableTo": "media",
+          "columnsFrom": [
+            "profile_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "pages_blocks_hero_parent_id_fk": {
+          "name": "pages_blocks_hero_parent_id_fk",
+          "tableFrom": "pages_blocks_hero",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages_blocks_skills_skills": {
+      "name": "pages_blocks_skills_skills",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "skill": {
+          "name": "skill",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_skills_skills_order_idx": {
+          "name": "pages_blocks_skills_skills_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_skills_skills_parent_id_idx": {
+          "name": "pages_blocks_skills_skills_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_skills_skills_parent_id_fk": {
+          "name": "pages_blocks_skills_skills_parent_id_fk",
+          "tableFrom": "pages_blocks_skills_skills",
+          "tableTo": "pages_blocks_skills",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages_blocks_skills": {
+      "name": "pages_blocks_skills",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_skills_order_idx": {
+          "name": "pages_blocks_skills_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_skills_parent_id_idx": {
+          "name": "pages_blocks_skills_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_skills_path_idx": {
+          "name": "pages_blocks_skills_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_skills_parent_id_fk": {
+          "name": "pages_blocks_skills_parent_id_fk",
+          "tableFrom": "pages_blocks_skills",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages_blocks_experiances_experiances": {
+      "name": "pages_blocks_experiances_experiances",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "company": {
+          "name": "company",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "subtitle": {
+          "name": "subtitle",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "start": {
+          "name": "start",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end": {
+          "name": "end",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_experiances_experiances_order_idx": {
+          "name": "pages_blocks_experiances_experiances_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_experiances_experiances_parent_id_idx": {
+          "name": "pages_blocks_experiances_experiances_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_experiances_experiances_parent_id_fk": {
+          "name": "pages_blocks_experiances_experiances_parent_id_fk",
+          "tableFrom": "pages_blocks_experiances_experiances",
+          "tableTo": "pages_blocks_experiances",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages_blocks_experiances": {
+      "name": "pages_blocks_experiances",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_experiances_order_idx": {
+          "name": "pages_blocks_experiances_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_experiances_parent_id_idx": {
+          "name": "pages_blocks_experiances_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_experiances_path_idx": {
+          "name": "pages_blocks_experiances_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_experiances_parent_id_fk": {
+          "name": "pages_blocks_experiances_parent_id_fk",
+          "tableFrom": "pages_blocks_experiances",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages_blocks_about": {
+      "name": "pages_blocks_about",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "pages_blocks_about_order_idx": {
+          "name": "pages_blocks_about_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_about_parent_id_idx": {
+          "name": "pages_blocks_about_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_blocks_about_path_idx": {
+          "name": "pages_blocks_about_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "pages_blocks_about_parent_id_fk": {
+          "name": "pages_blocks_about_parent_id_fk",
+          "tableFrom": "pages_blocks_about",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages": {
+      "name": "pages",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "published_at": {
+          "name": "published_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slug_lock": {
+          "name": "slug_lock",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_pages_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        }
+      },
+      "indexes": {
+        "pages_slug_idx": {
+          "name": "pages_slug_idx",
+          "columns": [
+            {
+              "expression": "slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_updated_at_idx": {
+          "name": "pages_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages_created_at_idx": {
+          "name": "pages_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "pages__status_idx": {
+          "name": "pages__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._pages_v_blocks_contact": {
+      "name": "_pages_v_blocks_contact",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_contact_order_idx": {
+          "name": "_pages_v_blocks_contact_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_contact_parent_id_idx": {
+          "name": "_pages_v_blocks_contact_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_contact_path_idx": {
+          "name": "_pages_v_blocks_contact_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_contact_parent_id_fk": {
+          "name": "_pages_v_blocks_contact_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_contact",
+          "tableTo": "_pages_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._pages_v_blocks_education_educations": {
+      "name": "_pages_v_blocks_education_educations",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "academy": {
+          "name": "academy",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "degree": {
+          "name": "degree",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "start": {
+          "name": "start",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end": {
+          "name": "end",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_education_educations_order_idx": {
+          "name": "_pages_v_blocks_education_educations_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_education_educations_parent_id_idx": {
+          "name": "_pages_v_blocks_education_educations_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_education_educations_parent_id_fk": {
+          "name": "_pages_v_blocks_education_educations_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_education_educations",
+          "tableTo": "_pages_v_blocks_education",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._pages_v_blocks_education": {
+      "name": "_pages_v_blocks_education",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_education_order_idx": {
+          "name": "_pages_v_blocks_education_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_education_parent_id_idx": {
+          "name": "_pages_v_blocks_education_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_education_path_idx": {
+          "name": "_pages_v_blocks_education_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_education_parent_id_fk": {
+          "name": "_pages_v_blocks_education_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_education",
+          "tableTo": "_pages_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._pages_v_blocks_hero": {
+      "name": "_pages_v_blocks_hero",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name_on_resume": {
+          "name": "name_on_resume",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "profile_id": {
+          "name": "profile_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_hero_order_idx": {
+          "name": "_pages_v_blocks_hero_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_hero_parent_id_idx": {
+          "name": "_pages_v_blocks_hero_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_hero_path_idx": {
+          "name": "_pages_v_blocks_hero_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_hero_profile_idx": {
+          "name": "_pages_v_blocks_hero_profile_idx",
+          "columns": [
+            {
+              "expression": "profile_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_hero_profile_id_media_id_fk": {
+          "name": "_pages_v_blocks_hero_profile_id_media_id_fk",
+          "tableFrom": "_pages_v_blocks_hero",
+          "tableTo": "media",
+          "columnsFrom": [
+            "profile_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "_pages_v_blocks_hero_parent_id_fk": {
+          "name": "_pages_v_blocks_hero_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_hero",
+          "tableTo": "_pages_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._pages_v_blocks_skills_skills": {
+      "name": "_pages_v_blocks_skills_skills",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "skill": {
+          "name": "skill",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_skills_skills_order_idx": {
+          "name": "_pages_v_blocks_skills_skills_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_skills_skills_parent_id_idx": {
+          "name": "_pages_v_blocks_skills_skills_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_skills_skills_parent_id_fk": {
+          "name": "_pages_v_blocks_skills_skills_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_skills_skills",
+          "tableTo": "_pages_v_blocks_skills",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._pages_v_blocks_skills": {
+      "name": "_pages_v_blocks_skills",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_skills_order_idx": {
+          "name": "_pages_v_blocks_skills_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_skills_parent_id_idx": {
+          "name": "_pages_v_blocks_skills_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_skills_path_idx": {
+          "name": "_pages_v_blocks_skills_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_skills_parent_id_fk": {
+          "name": "_pages_v_blocks_skills_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_skills",
+          "tableTo": "_pages_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._pages_v_blocks_experiances_experiances": {
+      "name": "_pages_v_blocks_experiances_experiances",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "company": {
+          "name": "company",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "subtitle": {
+          "name": "subtitle",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "start": {
+          "name": "start",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end": {
+          "name": "end",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_experiances_experiances_order_idx": {
+          "name": "_pages_v_blocks_experiances_experiances_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_experiances_experiances_parent_id_idx": {
+          "name": "_pages_v_blocks_experiances_experiances_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_experiances_experiances_parent_id_fk": {
+          "name": "_pages_v_blocks_experiances_experiances_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_experiances_experiances",
+          "tableTo": "_pages_v_blocks_experiances",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._pages_v_blocks_experiances": {
+      "name": "_pages_v_blocks_experiances",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_experiances_order_idx": {
+          "name": "_pages_v_blocks_experiances_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_experiances_parent_id_idx": {
+          "name": "_pages_v_blocks_experiances_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_experiances_path_idx": {
+          "name": "_pages_v_blocks_experiances_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_experiances_parent_id_fk": {
+          "name": "_pages_v_blocks_experiances_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_experiances",
+          "tableTo": "_pages_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._pages_v_blocks_about": {
+      "name": "_pages_v_blocks_about",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_path": {
+          "name": "_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "block_name": {
+          "name": "block_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_pages_v_blocks_about_order_idx": {
+          "name": "_pages_v_blocks_about_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_about_parent_id_idx": {
+          "name": "_pages_v_blocks_about_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_blocks_about_path_idx": {
+          "name": "_pages_v_blocks_about_path_idx",
+          "columns": [
+            {
+              "expression": "_path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_blocks_about_parent_id_fk": {
+          "name": "_pages_v_blocks_about_parent_id_fk",
+          "tableFrom": "_pages_v_blocks_about",
+          "tableTo": "_pages_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._pages_v": {
+      "name": "_pages_v",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_title": {
+          "name": "version_title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_published_at": {
+          "name": "version_published_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_slug": {
+          "name": "version_slug",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_slug_lock": {
+          "name": "version_slug_lock",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "version_updated_at": {
+          "name": "version_updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_created_at": {
+          "name": "version_created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__pages_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_pages_v_parent_idx": {
+          "name": "_pages_v_parent_idx",
+          "columns": [
+            {
+              "expression": "parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_version_version_slug_idx": {
+          "name": "_pages_v_version_version_slug_idx",
+          "columns": [
+            {
+              "expression": "version_slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_version_version_updated_at_idx": {
+          "name": "_pages_v_version_version_updated_at_idx",
+          "columns": [
+            {
+              "expression": "version_updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_version_version_created_at_idx": {
+          "name": "_pages_v_version_version_created_at_idx",
+          "columns": [
+            {
+              "expression": "version_created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_version_version__status_idx": {
+          "name": "_pages_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_created_at_idx": {
+          "name": "_pages_v_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_updated_at_idx": {
+          "name": "_pages_v_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_latest_idx": {
+          "name": "_pages_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_autosave_idx": {
+          "name": "_pages_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_pages_v_parent_id_pages_id_fk": {
+          "name": "_pages_v_parent_id_pages_id_fk",
+          "tableFrom": "_pages_v",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.projects": {
+      "name": "projects",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "icon": {
+          "name": "icon",
+          "type": "enum_projects_icon",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "published_at": {
+          "name": "published_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slug_lock": {
+          "name": "slug_lock",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_projects_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        }
+      },
+      "indexes": {
+        "projects_slug_idx": {
+          "name": "projects_slug_idx",
+          "columns": [
+            {
+              "expression": "slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "projects_updated_at_idx": {
+          "name": "projects_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "projects_created_at_idx": {
+          "name": "projects_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "projects__status_idx": {
+          "name": "projects__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._projects_v": {
+      "name": "_projects_v",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_title": {
+          "name": "version_title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_icon": {
+          "name": "version_icon",
+          "type": "enum__projects_v_version_icon",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_published_at": {
+          "name": "version_published_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_slug": {
+          "name": "version_slug",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_slug_lock": {
+          "name": "version_slug_lock",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "version_updated_at": {
+          "name": "version_updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_created_at": {
+          "name": "version_created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__projects_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "_projects_v_parent_idx": {
+          "name": "_projects_v_parent_idx",
+          "columns": [
+            {
+              "expression": "parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_projects_v_version_version_slug_idx": {
+          "name": "_projects_v_version_version_slug_idx",
+          "columns": [
+            {
+              "expression": "version_slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_projects_v_version_version_updated_at_idx": {
+          "name": "_projects_v_version_version_updated_at_idx",
+          "columns": [
+            {
+              "expression": "version_updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_projects_v_version_version_created_at_idx": {
+          "name": "_projects_v_version_version_created_at_idx",
+          "columns": [
+            {
+              "expression": "version_created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_projects_v_version_version__status_idx": {
+          "name": "_projects_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_projects_v_created_at_idx": {
+          "name": "_projects_v_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_projects_v_updated_at_idx": {
+          "name": "_projects_v_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_projects_v_latest_idx": {
+          "name": "_projects_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_projects_v_autosave_idx": {
+          "name": "_projects_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "_projects_v_parent_id_projects_id_fk": {
+          "name": "_projects_v_parent_id_projects_id_fk",
+          "tableFrom": "_projects_v",
+          "tableTo": "projects",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.payload_jobs_log": {
+      "name": "payload_jobs_log",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "executed_at": {
+          "name": "executed_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "task_slug": {
+          "name": "task_slug",
+          "type": "enum_payload_jobs_log_task_slug",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "task_i_d": {
+          "name": "task_i_d",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "input": {
+          "name": "input",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "output": {
+          "name": "output",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "state": {
+          "name": "state",
+          "type": "enum_payload_jobs_log_state",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "error": {
+          "name": "error",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "payload_jobs_log_order_idx": {
+          "name": "payload_jobs_log_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_jobs_log_parent_id_idx": {
+          "name": "payload_jobs_log_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "payload_jobs_log_parent_id_fk": {
+          "name": "payload_jobs_log_parent_id_fk",
+          "tableFrom": "payload_jobs_log",
+          "tableTo": "payload_jobs",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.payload_jobs": {
+      "name": "payload_jobs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "input": {
+          "name": "input",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "total_tried": {
+          "name": "total_tried",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "has_error": {
+          "name": "has_error",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "error": {
+          "name": "error",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "task_slug": {
+          "name": "task_slug",
+          "type": "enum_payload_jobs_task_slug",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "queue": {
+          "name": "queue",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'default'"
+        },
+        "wait_until": {
+          "name": "wait_until",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "processing": {
+          "name": "processing",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "payload_jobs_completed_at_idx": {
+          "name": "payload_jobs_completed_at_idx",
+          "columns": [
+            {
+              "expression": "completed_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_jobs_total_tried_idx": {
+          "name": "payload_jobs_total_tried_idx",
+          "columns": [
+            {
+              "expression": "total_tried",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_jobs_has_error_idx": {
+          "name": "payload_jobs_has_error_idx",
+          "columns": [
+            {
+              "expression": "has_error",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_jobs_task_slug_idx": {
+          "name": "payload_jobs_task_slug_idx",
+          "columns": [
+            {
+              "expression": "task_slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_jobs_queue_idx": {
+          "name": "payload_jobs_queue_idx",
+          "columns": [
+            {
+              "expression": "queue",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_jobs_wait_until_idx": {
+          "name": "payload_jobs_wait_until_idx",
+          "columns": [
+            {
+              "expression": "wait_until",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_jobs_processing_idx": {
+          "name": "payload_jobs_processing_idx",
+          "columns": [
+            {
+              "expression": "processing",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_jobs_updated_at_idx": {
+          "name": "payload_jobs_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_jobs_created_at_idx": {
+          "name": "payload_jobs_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.payload_locked_documents": {
+      "name": "payload_locked_documents",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "global_slug": {
+          "name": "global_slug",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "payload_locked_documents_global_slug_idx": {
+          "name": "payload_locked_documents_global_slug_idx",
+          "columns": [
+            {
+              "expression": "global_slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_updated_at_idx": {
+          "name": "payload_locked_documents_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_created_at_idx": {
+          "name": "payload_locked_documents_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.payload_locked_documents_rels": {
+      "name": "payload_locked_documents_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "users_id": {
+          "name": "users_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "media_id": {
+          "name": "media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "notes_id": {
+          "name": "notes_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "blogs_id": {
+          "name": "blogs_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pages_id": {
+          "name": "pages_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "projects_id": {
+          "name": "projects_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "payload_jobs_id": {
+          "name": "payload_jobs_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "payload_locked_documents_rels_order_idx": {
+          "name": "payload_locked_documents_rels_order_idx",
+          "columns": [
+            {
+              "expression": "order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_parent_idx": {
+          "name": "payload_locked_documents_rels_parent_idx",
+          "columns": [
+            {
+              "expression": "parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_path_idx": {
+          "name": "payload_locked_documents_rels_path_idx",
+          "columns": [
+            {
+              "expression": "path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_users_id_idx": {
+          "name": "payload_locked_documents_rels_users_id_idx",
+          "columns": [
+            {
+              "expression": "users_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_media_id_idx": {
+          "name": "payload_locked_documents_rels_media_id_idx",
+          "columns": [
+            {
+              "expression": "media_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_notes_id_idx": {
+          "name": "payload_locked_documents_rels_notes_id_idx",
+          "columns": [
+            {
+              "expression": "notes_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_blogs_id_idx": {
+          "name": "payload_locked_documents_rels_blogs_id_idx",
+          "columns": [
+            {
+              "expression": "blogs_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_pages_id_idx": {
+          "name": "payload_locked_documents_rels_pages_id_idx",
+          "columns": [
+            {
+              "expression": "pages_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_projects_id_idx": {
+          "name": "payload_locked_documents_rels_projects_id_idx",
+          "columns": [
+            {
+              "expression": "projects_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_locked_documents_rels_payload_jobs_id_idx": {
+          "name": "payload_locked_documents_rels_payload_jobs_id_idx",
+          "columns": [
+            {
+              "expression": "payload_jobs_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "payload_locked_documents_rels_parent_fk": {
+          "name": "payload_locked_documents_rels_parent_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "payload_locked_documents",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_users_fk": {
+          "name": "payload_locked_documents_rels_users_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "users",
+          "columnsFrom": [
+            "users_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_media_fk": {
+          "name": "payload_locked_documents_rels_media_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "media",
+          "columnsFrom": [
+            "media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_notes_fk": {
+          "name": "payload_locked_documents_rels_notes_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "notes",
+          "columnsFrom": [
+            "notes_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_blogs_fk": {
+          "name": "payload_locked_documents_rels_blogs_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "blogs",
+          "columnsFrom": [
+            "blogs_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_pages_fk": {
+          "name": "payload_locked_documents_rels_pages_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "pages_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_projects_fk": {
+          "name": "payload_locked_documents_rels_projects_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "projects",
+          "columnsFrom": [
+            "projects_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_payload_jobs_fk": {
+          "name": "payload_locked_documents_rels_payload_jobs_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "payload_jobs",
+          "columnsFrom": [
+            "payload_jobs_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.payload_preferences": {
+      "name": "payload_preferences",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "key": {
+          "name": "key",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "value": {
+          "name": "value",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "payload_preferences_key_idx": {
+          "name": "payload_preferences_key_idx",
+          "columns": [
+            {
+              "expression": "key",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_preferences_updated_at_idx": {
+          "name": "payload_preferences_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_preferences_created_at_idx": {
+          "name": "payload_preferences_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.payload_preferences_rels": {
+      "name": "payload_preferences_rels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "users_id": {
+          "name": "users_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "payload_preferences_rels_order_idx": {
+          "name": "payload_preferences_rels_order_idx",
+          "columns": [
+            {
+              "expression": "order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_preferences_rels_parent_idx": {
+          "name": "payload_preferences_rels_parent_idx",
+          "columns": [
+            {
+              "expression": "parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_preferences_rels_path_idx": {
+          "name": "payload_preferences_rels_path_idx",
+          "columns": [
+            {
+              "expression": "path",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_preferences_rels_users_id_idx": {
+          "name": "payload_preferences_rels_users_id_idx",
+          "columns": [
+            {
+              "expression": "users_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "payload_preferences_rels_parent_fk": {
+          "name": "payload_preferences_rels_parent_fk",
+          "tableFrom": "payload_preferences_rels",
+          "tableTo": "payload_preferences",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_preferences_rels_users_fk": {
+          "name": "payload_preferences_rels_users_fk",
+          "tableFrom": "payload_preferences_rels",
+          "tableTo": "users",
+          "columnsFrom": [
+            "users_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.payload_migrations": {
+      "name": "payload_migrations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "batch": {
+          "name": "batch",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "payload_migrations_updated_at_idx": {
+          "name": "payload_migrations_updated_at_idx",
+          "columns": [
+            {
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payload_migrations_created_at_idx": {
+          "name": "payload_migrations_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.menu_menu": {
+      "name": "menu_menu",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "as_collection": {
+          "name": "as_collection",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "label": {
+          "name": "label",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "page_id": {
+          "name": "page_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "menu_menu_order_idx": {
+          "name": "menu_menu_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "menu_menu_parent_id_idx": {
+          "name": "menu_menu_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "menu_menu_page_idx": {
+          "name": "menu_menu_page_idx",
+          "columns": [
+            {
+              "expression": "page_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "menu_menu_page_id_pages_id_fk": {
+          "name": "menu_menu_page_id_pages_id_fk",
+          "tableFrom": "menu_menu",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "page_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "menu_menu_parent_id_fk": {
+          "name": "menu_menu_parent_id_fk",
+          "tableFrom": "menu_menu",
+          "tableTo": "menu",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.menu": {
+      "name": "menu",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.socials_socials_links": {
+      "name": "socials_socials_links",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "enum_socials_socials_links_kind",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "link": {
+          "name": "link",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "socials_socials_links_order_idx": {
+          "name": "socials_socials_links_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "socials_socials_links_parent_id_idx": {
+          "name": "socials_socials_links_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "socials_socials_links_parent_id_fk": {
+          "name": "socials_socials_links_parent_id_fk",
+          "tableFrom": "socials_socials_links",
+          "tableTo": "socials",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.socials": {
+      "name": "socials",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.enum_pages_status": {
+      "name": "enum_pages_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
+    "public.enum__pages_v_version_status": {
+      "name": "enum__pages_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
+    "public.enum_projects_icon": {
+      "name": "enum_projects_icon",
+      "schema": "public",
+      "values": [
+        "AArrowDown",
+        "AArrowUp",
+        "ALargeSmall",
+        "Accessibility",
+        "Activity",
+        "AirVent",
+        "Airplay",
+        "AlarmClock",
+        "AlarmClockCheck",
+        "AlarmClockMinus",
+        "AlarmClockOff",
+        "AlarmClockPlus",
+        "AlarmSmoke",
+        "Album",
+        "AlignCenter",
+        "AlignCenterHorizontal",
+        "AlignCenterVertical",
+        "AlignEndHorizontal",
+        "AlignEndVertical",
+        "AlignHorizontalDistributeCenter",
+        "AlignHorizontalDistributeEnd",
+        "AlignHorizontalDistributeStart",
+        "AlignHorizontalJustifyCenter",
+        "AlignHorizontalJustifyEnd",
+        "AlignHorizontalJustifyStart",
+        "AlignHorizontalSpaceAround",
+        "AlignHorizontalSpaceBetween",
+        "AlignJustify",
+        "AlignLeft",
+        "AlignRight",
+        "AlignStartHorizontal",
+        "AlignStartVertical",
+        "AlignVerticalDistributeCenter",
+        "AlignVerticalDistributeEnd",
+        "AlignVerticalDistributeStart",
+        "AlignVerticalJustifyCenter",
+        "AlignVerticalJustifyEnd",
+        "AlignVerticalJustifyStart",
+        "AlignVerticalSpaceAround",
+        "AlignVerticalSpaceBetween",
+        "Ambulance",
+        "Ampersand",
+        "Ampersands",
+        "Anchor",
+        "Angry",
+        "Annoyed",
+        "Antenna",
+        "Anvil",
+        "Aperture",
+        "AppWindow",
+        "AppWindowMac",
+        "Apple",
+        "Archive",
+        "ArchiveRestore",
+        "ArchiveX",
+        "AreaChart",
+        "Armchair",
+        "ArrowBigDown",
+        "ArrowBigDownDash",
+        "ArrowBigLeft",
+        "ArrowBigLeftDash",
+        "ArrowBigRight",
+        "ArrowBigRightDash",
+        "ArrowBigUp",
+        "ArrowBigUpDash",
+        "ArrowDown",
+        "ArrowDown01",
+        "ArrowDown10",
+        "ArrowDownAZ",
+        "ArrowDownFromLine",
+        "ArrowDownLeft",
+        "ArrowDownNarrowWide",
+        "ArrowDownRight",
+        "ArrowDownToDot",
+        "ArrowDownToLine",
+        "ArrowDownUp",
+        "ArrowDownWideNarrow",
+        "ArrowDownZA",
+        "ArrowLeft",
+        "ArrowLeftFromLine",
+        "ArrowLeftRight",
+        "ArrowLeftToLine",
+        "ArrowRight",
+        "ArrowRightFromLine",
+        "ArrowRightLeft",
+        "ArrowRightToLine",
+        "ArrowUp",
+        "ArrowUp01",
+        "ArrowUp10",
+        "ArrowUpAZ",
+        "ArrowUpDown",
+        "ArrowUpFromDot",
+        "ArrowUpFromLine",
+        "ArrowUpLeft",
+        "ArrowUpNarrowWide",
+        "ArrowUpRight",
+        "ArrowUpToLine",
+        "ArrowUpWideNarrow",
+        "ArrowUpZA",
+        "ArrowsUpFromLine",
+        "Asterisk",
+        "AtSign",
+        "Atom",
+        "AudioLines",
+        "AudioWaveform",
+        "Award",
+        "Axe",
+        "Axis3d",
+        "Baby",
+        "Backpack",
+        "Badge",
+        "BadgeAlert",
+        "BadgeCent",
+        "BadgeCheck",
+        "BadgeDollarSign",
+        "BadgeEuro",
+        "BadgeHelp",
+        "BadgeIndianRupee",
+        "BadgeInfo",
+        "BadgeJapaneseYen",
+        "BadgeMinus",
+        "BadgePercent",
+        "BadgePlus",
+        "BadgePoundSterling",
+        "BadgeRussianRuble",
+        "BadgeSwissFranc",
+        "BadgeX",
+        "BaggageClaim",
+        "Ban",
+        "Banana",
+        "Banknote",
+        "BarChart",
+        "BarChart2",
+        "BarChart3",
+        "BarChart4",
+        "BarChartBig",
+        "BarChartHorizontal",
+        "BarChartHorizontalBig",
+        "Barcode",
+        "Baseline",
+        "Bath",
+        "Battery",
+        "BatteryCharging",
+        "BatteryFull",
+        "BatteryLow",
+        "BatteryMedium",
+        "BatteryWarning",
+        "Beaker",
+        "Bean",
+        "BeanOff",
+        "Bed",
+        "BedDouble",
+        "BedSingle",
+        "Beef",
+        "Beer",
+        "BeerOff",
+        "Bell",
+        "BellDot",
+        "BellElectric",
+        "BellMinus",
+        "BellOff",
+        "BellPlus",
+        "BellRing",
+        "BetweenHorizontalEnd",
+        "BetweenHorizontalStart",
+        "BetweenVerticalEnd",
+        "BetweenVerticalStart",
+        "BicepsFlexed",
+        "Bike",
+        "Binary",
+        "Biohazard",
+        "Bird",
+        "Bitcoin",
+        "Blend",
+        "Blinds",
+        "Blocks",
+        "Bluetooth",
+        "BluetoothConnected",
+        "BluetoothOff",
+        "BluetoothSearching",
+        "Bold",
+        "Bolt",
+        "Bomb",
+        "Bone",
+        "Book",
+        "BookA",
+        "BookAudio",
+        "BookCheck",
+        "BookCopy",
+        "BookDashed",
+        "BookDown",
+        "BookHeadphones",
+        "BookHeart",
+        "BookImage",
+        "BookKey",
+        "BookLock",
+        "BookMarked",
+        "BookMinus",
+        "BookOpen",
+        "BookOpenCheck",
+        "BookOpenText",
+        "BookPlus",
+        "BookText",
+        "BookType",
+        "BookUp",
+        "BookUp2",
+        "BookUser",
+        "BookX",
+        "Bookmark",
+        "BookmarkCheck",
+        "BookmarkMinus",
+        "BookmarkPlus",
+        "BookmarkX",
+        "BoomBox",
+        "Bot",
+        "BotMessageSquare",
+        "BotOff",
+        "Box",
+        "BoxSelect",
+        "Boxes",
+        "Braces",
+        "Brackets",
+        "Brain",
+        "BrainCircuit",
+        "BrainCog",
+        "BrickWall",
+        "Briefcase",
+        "BriefcaseBusiness",
+        "BriefcaseMedical",
+        "BringToFront",
+        "Brush",
+        "Bug",
+        "BugOff",
+        "BugPlay",
+        "Building",
+        "Building2",
+        "Bus",
+        "BusFront",
+        "Cable",
+        "CableCar",
+        "Cake",
+        "CakeSlice",
+        "Calculator",
+        "Calendar",
+        "CalendarCheck",
+        "CalendarCheck2",
+        "CalendarClock",
+        "CalendarCog",
+        "CalendarDays",
+        "CalendarFold",
+        "CalendarHeart",
+        "CalendarMinus",
+        "CalendarMinus2",
+        "CalendarOff",
+        "CalendarPlus",
+        "CalendarPlus2",
+        "CalendarRange",
+        "CalendarSearch",
+        "CalendarX",
+        "CalendarX2",
+        "Camera",
+        "CameraOff",
+        "CandlestickChart",
+        "Candy",
+        "CandyCane",
+        "CandyOff",
+        "Cannabis",
+        "Captions",
+        "CaptionsOff",
+        "Car",
+        "CarFront",
+        "CarTaxiFront",
+        "Caravan",
+        "Carrot",
+        "CaseLower",
+        "CaseSensitive",
+        "CaseUpper",
+        "CassetteTape",
+        "Cast",
+        "Castle",
+        "Cat",
+        "Cctv",
+        "Check",
+        "CheckCheck",
+        "ChefHat",
+        "Cherry",
+        "ChevronDown",
+        "ChevronFirst",
+        "ChevronLast",
+        "ChevronLeft",
+        "ChevronRight",
+        "ChevronUp",
+        "ChevronsDown",
+        "ChevronsDownUp",
+        "ChevronsLeft",
+        "ChevronsLeftRight",
+        "ChevronsRight",
+        "ChevronsRightLeft",
+        "ChevronsUp",
+        "ChevronsUpDown",
+        "Chrome",
+        "Church",
+        "Cigarette",
+        "CigaretteOff",
+        "Circle",
+        "CircleAlert",
+        "CircleArrowDown",
+        "CircleArrowLeft",
+        "CircleArrowOutDownLeft",
+        "CircleArrowOutDownRight",
+        "CircleArrowOutUpLeft",
+        "CircleArrowOutUpRight",
+        "CircleArrowRight",
+        "CircleArrowUp",
+        "CircleCheck",
+        "CircleCheckBig",
+        "CircleChevronDown",
+        "CircleChevronLeft",
+        "CircleChevronRight",
+        "CircleChevronUp",
+        "CircleDashed",
+        "CircleDivide",
+        "CircleDollarSign",
+        "CircleDot",
+        "CircleDotDashed",
+        "CircleEllipsis",
+        "CircleEqual",
+        "CircleFadingPlus",
+        "CircleGauge",
+        "CircleHelp",
+        "CircleMinus",
+        "CircleOff",
+        "CircleParking",
+        "CircleParkingOff",
+        "CirclePause",
+        "CirclePercent",
+        "CirclePlay",
+        "CirclePlus",
+        "CirclePower",
+        "CircleSlash",
+        "CircleSlash2",
+        "CircleStop",
+        "CircleUser",
+        "CircleUserRound",
+        "CircleX",
+        "CircuitBoard",
+        "Citrus",
+        "Clapperboard",
+        "Clipboard",
+        "ClipboardCheck",
+        "ClipboardCopy",
+        "ClipboardList",
+        "ClipboardMinus",
+        "ClipboardPaste",
+        "ClipboardPen",
+        "ClipboardPenLine",
+        "ClipboardPlus",
+        "ClipboardType",
+        "ClipboardX",
+        "Clock",
+        "Clock1",
+        "Clock10",
+        "Clock11",
+        "Clock12",
+        "Clock2",
+        "Clock3",
+        "Clock4",
+        "Clock5",
+        "Clock6",
+        "Clock7",
+        "Clock8",
+        "Clock9",
+        "Cloud",
+        "CloudCog",
+        "CloudDownload",
+        "CloudDrizzle",
+        "CloudFog",
+        "CloudHail",
+        "CloudLightning",
+        "CloudMoon",
+        "CloudMoonRain",
+        "CloudOff",
+        "CloudRain",
+        "CloudRainWind",
+        "CloudSnow",
+        "CloudSun",
+        "CloudSunRain",
+        "CloudUpload",
+        "Cloudy",
+        "Clover",
+        "Club",
+        "Code",
+        "CodeXml",
+        "Codepen",
+        "Codesandbox",
+        "Coffee",
+        "Cog",
+        "Coins",
+        "Columns2",
+        "Columns3",
+        "Columns4",
+        "Combine",
+        "Command",
+        "Compass",
+        "Component",
+        "Computer",
+        "ConciergeBell",
+        "Cone",
+        "Construction",
+        "Contact",
+        "ContactRound",
+        "Container",
+        "Contrast",
+        "Cookie",
+        "CookingPot",
+        "Copy",
+        "CopyCheck",
+        "CopyMinus",
+        "CopyPlus",
+        "CopySlash",
+        "CopyX",
+        "Copyleft",
+        "Copyright",
+        "CornerDownLeft",
+        "CornerDownRight",
+        "CornerLeftDown",
+        "CornerLeftUp",
+        "CornerRightDown",
+        "CornerRightUp",
+        "CornerUpLeft",
+        "CornerUpRight",
+        "Cpu",
+        "CreativeCommons",
+        "CreditCard",
+        "Croissant",
+        "Crop",
+        "Cross",
+        "Crosshair",
+        "Crown",
+        "Cuboid",
+        "CupSoda",
+        "Currency",
+        "Cylinder",
+        "Database",
+        "DatabaseBackup",
+        "DatabaseZap",
+        "Delete",
+        "Dessert",
+        "Diameter",
+        "Diamond",
+        "DiamondMinus",
+        "DiamondPercent",
+        "DiamondPlus",
+        "Dice1",
+        "Dice2",
+        "Dice3",
+        "Dice4",
+        "Dice5",
+        "Dice6",
+        "Dices",
+        "Diff",
+        "Disc",
+        "Disc2",
+        "Disc3",
+        "DiscAlbum",
+        "Divide",
+        "Dna",
+        "DnaOff",
+        "Dock",
+        "Dog",
+        "DollarSign",
+        "Donut",
+        "DoorClosed",
+        "DoorOpen",
+        "Dot",
+        "Download",
+        "DraftingCompass",
+        "Drama",
+        "Dribbble",
+        "Drill",
+        "Droplet",
+        "Droplets",
+        "Drum",
+        "Drumstick",
+        "Dumbbell",
+        "Ear",
+        "EarOff",
+        "Earth",
+        "EarthLock",
+        "Eclipse",
+        "Egg",
+        "EggFried",
+        "EggOff",
+        "Ellipsis",
+        "EllipsisVertical",
+        "Equal",
+        "EqualNot",
+        "Eraser",
+        "Euro",
+        "Expand",
+        "ExternalLink",
+        "Eye",
+        "EyeOff",
+        "Facebook",
+        "Factory",
+        "Fan",
+        "FastForward",
+        "Feather",
+        "Fence",
+        "FerrisWheel",
+        "Figma",
+        "File",
+        "FileArchive",
+        "FileAudio",
+        "FileAudio2",
+        "FileAxis3d",
+        "FileBadge",
+        "FileBadge2",
+        "FileBarChart",
+        "FileBarChart2",
+        "FileBox",
+        "FileCheck",
+        "FileCheck2",
+        "FileClock",
+        "FileCode",
+        "FileCode2",
+        "FileCog",
+        "FileDiff",
+        "FileDigit",
+        "FileDown",
+        "FileHeart",
+        "FileImage",
+        "FileInput",
+        "FileJson",
+        "FileJson2",
+        "FileKey",
+        "FileKey2",
+        "FileLineChart",
+        "FileLock",
+        "FileLock2",
+        "FileMinus",
+        "FileMinus2",
+        "FileMusic",
+        "FileOutput",
+        "FilePen",
+        "FilePenLine",
+        "FilePieChart",
+        "FilePlus",
+        "FilePlus2",
+        "FileQuestion",
+        "FileScan",
+        "FileSearch",
+        "FileSearch2",
+        "FileSliders",
+        "FileSpreadsheet",
+        "FileStack",
+        "FileSymlink",
+        "FileTerminal",
+        "FileText",
+        "FileType",
+        "FileType2",
+        "FileUp",
+        "FileVideo",
+        "FileVideo2",
+        "FileVolume",
+        "FileVolume2",
+        "FileWarning",
+        "FileX",
+        "FileX2",
+        "Files",
+        "Film",
+        "Filter",
+        "FilterX",
+        "Fingerprint",
+        "FireExtinguisher",
+        "Fish",
+        "FishOff",
+        "FishSymbol",
+        "Flag",
+        "FlagOff",
+        "FlagTriangleLeft",
+        "FlagTriangleRight",
+        "Flame",
+        "FlameKindling",
+        "Flashlight",
+        "FlashlightOff",
+        "FlaskConical",
+        "FlaskConicalOff",
+        "FlaskRound",
+        "FlipHorizontal",
+        "FlipHorizontal2",
+        "FlipVertical",
+        "FlipVertical2",
+        "Flower",
+        "Flower2",
+        "Focus",
+        "FoldHorizontal",
+        "FoldVertical",
+        "Folder",
+        "FolderArchive",
+        "FolderCheck",
+        "FolderClock",
+        "FolderClosed",
+        "FolderCog",
+        "FolderDot",
+        "FolderDown",
+        "FolderGit",
+        "FolderGit2",
+        "FolderHeart",
+        "FolderInput",
+        "FolderKanban",
+        "FolderKey",
+        "FolderLock",
+        "FolderMinus",
+        "FolderOpen",
+        "FolderOpenDot",
+        "FolderOutput",
+        "FolderPen",
+        "FolderPlus",
+        "FolderRoot",
+        "FolderSearch",
+        "FolderSearch2",
+        "FolderSymlink",
+        "FolderSync",
+        "FolderTree",
+        "FolderUp",
+        "FolderX",
+        "Folders",
+        "Footprints",
+        "Forklift",
+        "Forward",
+        "Frame",
+        "Framer",
+        "Frown",
+        "Fuel",
+        "Fullscreen",
+        "GalleryHorizontal",
+        "GalleryHorizontalEnd",
+        "GalleryThumbnails",
+        "GalleryVertical",
+        "GalleryVerticalEnd",
+        "Gamepad",
+        "Gamepad2",
+        "GanttChart",
+        "Gauge",
+        "Gavel",
+        "Gem",
+        "Ghost",
+        "Gift",
+        "GitBranch",
+        "GitBranchPlus",
+        "GitCommitHorizontal",
+        "GitCommitVertical",
+        "GitCompare",
+        "GitCompareArrows",
+        "GitFork",
+        "GitGraph",
+        "GitMerge",
+        "GitPullRequest",
+        "GitPullRequestArrow",
+        "GitPullRequestClosed",
+        "GitPullRequestCreate",
+        "GitPullRequestCreateArrow",
+        "GitPullRequestDraft",
+        "Github",
+        "Gitlab",
+        "GlassWater",
+        "Glasses",
+        "Globe",
+        "GlobeLock",
+        "Goal",
+        "Grab",
+        "GraduationCap",
+        "Grape",
+        "Grid2x2",
+        "Grid2x2Check",
+        "Grid2x2X",
+        "Grid3x3",
+        "Grip",
+        "GripHorizontal",
+        "GripVertical",
+        "Group",
+        "Guitar",
+        "Ham",
+        "Hammer",
+        "Hand",
+        "HandCoins",
+        "HandHeart",
+        "HandHelping",
+        "HandMetal",
+        "HandPlatter",
+        "Handshake",
+        "HardDrive",
+        "HardDriveDownload",
+        "HardDriveUpload",
+        "HardHat",
+        "Hash",
+        "Haze",
+        "HdmiPort",
+        "Heading",
+        "Heading1",
+        "Heading2",
+        "Heading3",
+        "Heading4",
+        "Heading5",
+        "Heading6",
+        "Headphones",
+        "Headset",
+        "Heart",
+        "HeartCrack",
+        "HeartHandshake",
+        "HeartOff",
+        "HeartPulse",
+        "Heater",
+        "Hexagon",
+        "Highlighter",
+        "History",
+        "Home",
+        "Hop",
+        "HopOff",
+        "Hospital",
+        "Hotel",
+        "Hourglass",
+        "IceCreamBowl",
+        "IceCreamCone",
+        "Image",
+        "ImageDown",
+        "ImageMinus",
+        "ImageOff",
+        "ImagePlay",
+        "ImagePlus",
+        "ImageUp",
+        "Images",
+        "Import",
+        "Inbox",
+        "IndentDecrease",
+        "IndentIncrease",
+        "IndianRupee",
+        "Infinity",
+        "Info",
+        "InspectionPanel",
+        "Instagram",
+        "Italic",
+        "IterationCcw",
+        "IterationCw",
+        "JapaneseYen",
+        "Joystick",
+        "Kanban",
+        "Key",
+        "KeyRound",
+        "KeySquare",
+        "Keyboard",
+        "KeyboardMusic",
+        "KeyboardOff",
+        "Lamp",
+        "LampCeiling",
+        "LampDesk",
+        "LampFloor",
+        "LampWallDown",
+        "LampWallUp",
+        "LandPlot",
+        "Landmark",
+        "Languages",
+        "Laptop",
+        "LaptopMinimal",
+        "Lasso",
+        "LassoSelect",
+        "Laugh",
+        "Layers",
+        "Layers2",
+        "Layers3",
+        "LayoutDashboard",
+        "LayoutGrid",
+        "LayoutList",
+        "LayoutPanelLeft",
+        "LayoutPanelTop",
+        "LayoutTemplate",
+        "Leaf",
+        "LeafyGreen",
+        "Lectern",
+        "Library",
+        "LibraryBig",
+        "LifeBuoy",
+        "Ligature",
+        "Lightbulb",
+        "LightbulbOff",
+        "LineChart",
+        "Link",
+        "Link2",
+        "Link2Off",
+        "Linkedin",
+        "List",
+        "ListChecks",
+        "ListCollapse",
+        "ListEnd",
+        "ListFilter",
+        "ListMinus",
+        "ListMusic",
+        "ListOrdered",
+        "ListPlus",
+        "ListRestart",
+        "ListStart",
+        "ListTodo",
+        "ListTree",
+        "ListVideo",
+        "ListX",
+        "Loader",
+        "LoaderCircle",
+        "LoaderPinwheel",
+        "Locate",
+        "LocateFixed",
+        "LocateOff",
+        "Lock",
+        "LockKeyhole",
+        "LockKeyholeOpen",
+        "LockOpen",
+        "LogIn",
+        "LogOut",
+        "Lollipop",
+        "Luggage",
+        "Magnet",
+        "Mail",
+        "MailCheck",
+        "MailMinus",
+        "MailOpen",
+        "MailPlus",
+        "MailQuestion",
+        "MailSearch",
+        "MailWarning",
+        "MailX",
+        "Mailbox",
+        "Mails",
+        "Map",
+        "MapPin",
+        "MapPinOff",
+        "MapPinned",
+        "Martini",
+        "Maximize",
+        "Maximize2",
+        "Medal",
+        "Megaphone",
+        "MegaphoneOff",
+        "Meh",
+        "MemoryStick",
+        "Menu",
+        "Merge",
+        "MessageCircle",
+        "MessageCircleCode",
+        "MessageCircleDashed",
+        "MessageCircleHeart",
+        "MessageCircleMore",
+        "MessageCircleOff",
+        "MessageCirclePlus",
+        "MessageCircleQuestion",
+        "MessageCircleReply",
+        "MessageCircleWarning",
+        "MessageCircleX",
+        "MessageSquare",
+        "MessageSquareCode",
+        "MessageSquareDashed",
+        "MessageSquareDiff",
+        "MessageSquareDot",
+        "MessageSquareHeart",
+        "MessageSquareMore",
+        "MessageSquareOff",
+        "MessageSquarePlus",
+        "MessageSquareQuote",
+        "MessageSquareReply",
+        "MessageSquareShare",
+        "MessageSquareText",
+        "MessageSquareWarning",
+        "MessageSquareX",
+        "MessagesSquare",
+        "Mic",
+        "MicOff",
+        "MicVocal",
+        "Microscope",
+        "Microwave",
+        "Milestone",
+        "Milk",
+        "MilkOff",
+        "Minimize",
+        "Minimize2",
+        "Minus",
+        "Monitor",
+        "MonitorCheck",
+        "MonitorDot",
+        "MonitorDown",
+        "MonitorOff",
+        "MonitorPause",
+        "MonitorPlay",
+        "MonitorSmartphone",
+        "MonitorSpeaker",
+        "MonitorStop",
+        "MonitorUp",
+        "MonitorX",
+        "Moon",
+        "MoonStar",
+        "Mountain",
+        "MountainSnow",
+        "Mouse",
+        "MouseOff",
+        "MousePointer",
+        "MousePointer2",
+        "MousePointerBan",
+        "MousePointerClick",
+        "Move",
+        "Move3d",
+        "MoveDiagonal",
+        "MoveDiagonal2",
+        "MoveDown",
+        "MoveDownLeft",
+        "MoveDownRight",
+        "MoveHorizontal",
+        "MoveLeft",
+        "MoveRight",
+        "MoveUp",
+        "MoveUpLeft",
+        "MoveUpRight",
+        "MoveVertical",
+        "Music",
+        "Music2",
+        "Music3",
+        "Music4",
+        "Navigation",
+        "Navigation2",
+        "Navigation2Off",
+        "NavigationOff",
+        "Network",
+        "Newspaper",
+        "Nfc",
+        "Notebook",
+        "NotebookPen",
+        "NotebookTabs",
+        "NotebookText",
+        "NotepadText",
+        "NotepadTextDashed",
+        "Nut",
+        "NutOff",
+        "Octagon",
+        "OctagonAlert",
+        "OctagonPause",
+        "OctagonX",
+        "Option",
+        "Orbit",
+        "Origami",
+        "Package",
+        "Package2",
+        "PackageCheck",
+        "PackageMinus",
+        "PackageOpen",
+        "PackagePlus",
+        "PackageSearch",
+        "PackageX",
+        "PaintBucket",
+        "PaintRoller",
+        "Paintbrush",
+        "PaintbrushVertical",
+        "Palette",
+        "PanelBottom",
+        "PanelBottomClose",
+        "PanelBottomDashed",
+        "PanelBottomOpen",
+        "PanelLeft",
+        "PanelLeftClose",
+        "PanelLeftDashed",
+        "PanelLeftOpen",
+        "PanelRight",
+        "PanelRightClose",
+        "PanelRightDashed",
+        "PanelRightOpen",
+        "PanelTop",
+        "PanelTopClose",
+        "PanelTopDashed",
+        "PanelTopOpen",
+        "PanelsLeftBottom",
+        "PanelsRightBottom",
+        "PanelsTopLeft",
+        "Paperclip",
+        "Parentheses",
+        "ParkingMeter",
+        "PartyPopper",
+        "Pause",
+        "PawPrint",
+        "PcCase",
+        "Pen",
+        "PenLine",
+        "PenOff",
+        "PenTool",
+        "Pencil",
+        "PencilLine",
+        "PencilOff",
+        "PencilRuler",
+        "Pentagon",
+        "Percent",
+        "PersonStanding",
+        "Phone",
+        "PhoneCall",
+        "PhoneForwarded",
+        "PhoneIncoming",
+        "PhoneMissed",
+        "PhoneOff",
+        "PhoneOutgoing",
+        "Pi",
+        "Piano",
+        "Pickaxe",
+        "PictureInPicture",
+        "PictureInPicture2",
+        "PieChart",
+        "PiggyBank",
+        "Pilcrow",
+        "PilcrowLeft",
+        "PilcrowRight",
+        "Pill",
+        "PillBottle",
+        "Pin",
+        "PinOff",
+        "Pipette",
+        "Pizza",
+        "Plane",
+        "PlaneLanding",
+        "PlaneTakeoff",
+        "Play",
+        "Plug",
+        "Plug2",
+        "PlugZap",
+        "PlugZap2",
+        "Plus",
+        "Pocket",
+        "PocketKnife",
+        "Podcast",
+        "Pointer",
+        "PointerOff",
+        "Popcorn",
+        "Popsicle",
+        "PoundSterling",
+        "Power",
+        "PowerOff",
+        "Presentation",
+        "Printer",
+        "Projector",
+        "Proportions",
+        "Puzzle",
+        "Pyramid",
+        "QrCode",
+        "Quote",
+        "Rabbit",
+        "Radar",
+        "Radiation",
+        "Radical",
+        "Radio",
+        "RadioReceiver",
+        "RadioTower",
+        "Radius",
+        "RailSymbol",
+        "Rainbow",
+        "Rat",
+        "Ratio",
+        "Receipt",
+        "ReceiptCent",
+        "ReceiptEuro",
+        "ReceiptIndianRupee",
+        "ReceiptJapaneseYen",
+        "ReceiptPoundSterling",
+        "ReceiptRussianRuble",
+        "ReceiptSwissFranc",
+        "ReceiptText",
+        "RectangleEllipsis",
+        "RectangleHorizontal",
+        "RectangleVertical",
+        "Recycle",
+        "Redo",
+        "Redo2",
+        "RedoDot",
+        "RefreshCcw",
+        "RefreshCcwDot",
+        "RefreshCw",
+        "RefreshCwOff",
+        "Refrigerator",
+        "Regex",
+        "RemoveFormatting",
+        "Repeat",
+        "Repeat1",
+        "Repeat2",
+        "Replace",
+        "ReplaceAll",
+        "Reply",
+        "ReplyAll",
+        "Rewind",
+        "Ribbon",
+        "Rocket",
+        "RockingChair",
+        "RollerCoaster",
+        "Rotate3d",
+        "RotateCcw",
+        "RotateCcwSquare",
+        "RotateCw",
+        "RotateCwSquare",
+        "Route",
+        "RouteOff",
+        "Router",
+        "Rows2",
+        "Rows3",
+        "Rows4",
+        "Rss",
+        "Ruler",
+        "RussianRuble",
+        "Sailboat",
+        "Salad",
+        "Sandwich",
+        "Satellite",
+        "SatelliteDish",
+        "Save",
+        "SaveAll",
+        "Scale",
+        "Scale3d",
+        "Scaling",
+        "Scan",
+        "ScanBarcode",
+        "ScanEye",
+        "ScanFace",
+        "ScanLine",
+        "ScanSearch",
+        "ScanText",
+        "ScatterChart",
+        "School",
+        "Scissors",
+        "ScissorsLineDashed",
+        "ScreenShare",
+        "ScreenShareOff",
+        "Scroll",
+        "ScrollText",
+        "Search",
+        "SearchCheck",
+        "SearchCode",
+        "SearchSlash",
+        "SearchX",
+        "Section",
+        "Send",
+        "SendHorizontal",
+        "SendToBack",
+        "SeparatorHorizontal",
+        "SeparatorVertical",
+        "Server",
+        "ServerCog",
+        "ServerCrash",
+        "ServerOff",
+        "Settings",
+        "Settings2",
+        "Shapes",
+        "Share",
+        "Share2",
+        "Sheet",
+        "Shell",
+        "Shield",
+        "ShieldAlert",
+        "ShieldBan",
+        "ShieldCheck",
+        "ShieldEllipsis",
+        "ShieldHalf",
+        "ShieldMinus",
+        "ShieldOff",
+        "ShieldPlus",
+        "ShieldQuestion",
+        "ShieldX",
+        "Ship",
+        "ShipWheel",
+        "Shirt",
+        "ShoppingBag",
+        "ShoppingBasket",
+        "ShoppingCart",
+        "Shovel",
+        "ShowerHead",
+        "Shrink",
+        "Shrub",
+        "Shuffle",
+        "Sigma",
+        "Signal",
+        "SignalHigh",
+        "SignalLow",
+        "SignalMedium",
+        "SignalZero",
+        "Signpost",
+        "SignpostBig",
+        "Siren",
+        "SkipBack",
+        "SkipForward",
+        "Skull",
+        "Slack",
+        "Slash",
+        "Slice",
+        "SlidersHorizontal",
+        "SlidersVertical",
+        "Smartphone",
+        "SmartphoneCharging",
+        "SmartphoneNfc",
+        "Smile",
+        "SmilePlus",
+        "Snail",
+        "Snowflake",
+        "Sofa",
+        "Soup",
+        "Space",
+        "Spade",
+        "Sparkle",
+        "Sparkles",
+        "Speaker",
+        "Speech",
+        "SpellCheck",
+        "SpellCheck2",
+        "Spline",
+        "Split",
+        "SprayCan",
+        "Sprout",
+        "Square",
+        "SquareActivity",
+        "SquareArrowDown",
+        "SquareArrowDownLeft",
+        "SquareArrowDownRight",
+        "SquareArrowLeft",
+        "SquareArrowOutDownLeft",
+        "SquareArrowOutDownRight",
+        "SquareArrowOutUpLeft",
+        "SquareArrowOutUpRight",
+        "SquareArrowRight",
+        "SquareArrowUp",
+        "SquareArrowUpLeft",
+        "SquareArrowUpRight",
+        "SquareAsterisk",
+        "SquareBottomDashedScissors",
+        "SquareCheck",
+        "SquareCheckBig",
+        "SquareChevronDown",
+        "SquareChevronLeft",
+        "SquareChevronRight",
+        "SquareChevronUp",
+        "SquareCode",
+        "SquareDashedBottom",
+        "SquareDashedBottomCode",
+        "SquareDashedKanban",
+        "SquareDashedMousePointer",
+        "SquareDivide",
+        "SquareDot",
+        "SquareEqual",
+        "SquareFunction",
+        "SquareGanttChart",
+        "SquareKanban",
+        "SquareLibrary",
+        "SquareM",
+        "SquareMenu",
+        "SquareMinus",
+        "SquareMousePointer",
+        "SquareParking",
+        "SquareParkingOff",
+        "SquarePen",
+        "SquarePercent",
+        "SquarePi",
+        "SquarePilcrow",
+        "SquarePlay",
+        "SquarePlus",
+        "SquarePower",
+        "SquareRadical",
+        "SquareScissors",
+        "SquareSigma",
+        "SquareSlash",
+        "SquareSplitHorizontal",
+        "SquareSplitVertical",
+        "SquareStack",
+        "SquareTerminal",
+        "SquareUser",
+        "SquareUserRound",
+        "SquareX",
+        "Squircle",
+        "Squirrel",
+        "Stamp",
+        "Star",
+        "StarHalf",
+        "StarOff",
+        "StepBack",
+        "StepForward",
+        "Stethoscope",
+        "Sticker",
+        "StickyNote",
+        "Store",
+        "StretchHorizontal",
+        "StretchVertical",
+        "Strikethrough",
+        "Subscript",
+        "Sun",
+        "SunDim",
+        "SunMedium",
+        "SunMoon",
+        "SunSnow",
+        "Sunrise",
+        "Sunset",
+        "Superscript",
+        "SwatchBook",
+        "SwissFranc",
+        "SwitchCamera",
+        "Sword",
+        "Swords",
+        "Syringe",
+        "Table",
+        "Table2",
+        "TableCellsMerge",
+        "TableCellsSplit",
+        "TableColumnsSplit",
+        "TableProperties",
+        "TableRowsSplit",
+        "Tablet",
+        "TabletSmartphone",
+        "Tablets",
+        "Tag",
+        "Tags",
+        "Tally1",
+        "Tally2",
+        "Tally3",
+        "Tally4",
+        "Tally5",
+        "Tangent",
+        "Target",
+        "Telescope",
+        "Tent",
+        "TentTree",
+        "Terminal",
+        "TestTube",
+        "TestTubeDiagonal",
+        "TestTubes",
+        "Text",
+        "TextCursor",
+        "TextCursorInput",
+        "TextQuote",
+        "TextSearch",
+        "TextSelect",
+        "Theater",
+        "Thermometer",
+        "ThermometerSnowflake",
+        "ThermometerSun",
+        "ThumbsDown",
+        "ThumbsUp",
+        "Ticket",
+        "TicketCheck",
+        "TicketMinus",
+        "TicketPercent",
+        "TicketPlus",
+        "TicketSlash",
+        "TicketX",
+        "Timer",
+        "TimerOff",
+        "TimerReset",
+        "ToggleLeft",
+        "ToggleRight",
+        "Tornado",
+        "Torus",
+        "Touchpad",
+        "TouchpadOff",
+        "TowerControl",
+        "ToyBrick",
+        "Tractor",
+        "TrafficCone",
+        "TrainFront",
+        "TrainFrontTunnel",
+        "TrainTrack",
+        "TramFront",
+        "Trash",
+        "Trash2",
+        "TreeDeciduous",
+        "TreePalm",
+        "TreePine",
+        "Trees",
+        "Trello",
+        "TrendingDown",
+        "TrendingUp",
+        "Triangle",
+        "TriangleAlert",
+        "TriangleRight",
+        "Trophy",
+        "Truck",
+        "Turtle",
+        "Tv",
+        "TvMinimal",
+        "TvMinimalPlay",
+        "Twitch",
+        "Twitter",
+        "Type",
+        "Umbrella",
+        "UmbrellaOff",
+        "Underline",
+        "Undo",
+        "Undo2",
+        "UndoDot",
+        "UnfoldHorizontal",
+        "UnfoldVertical",
+        "Ungroup",
+        "University",
+        "Unlink",
+        "Unlink2",
+        "Unplug",
+        "Upload",
+        "Usb",
+        "User",
+        "UserCheck",
+        "UserCog",
+        "UserMinus",
+        "UserPlus",
+        "UserRound",
+        "UserRoundCheck",
+        "UserRoundCog",
+        "UserRoundMinus",
+        "UserRoundPlus",
+        "UserRoundSearch",
+        "UserRoundX",
+        "UserSearch",
+        "UserX",
+        "Users",
+        "UsersRound",
+        "Utensils",
+        "UtensilsCrossed",
+        "UtilityPole",
+        "Variable",
+        "Vault",
+        "Vegan",
+        "VenetianMask",
+        "Vibrate",
+        "VibrateOff",
+        "Video",
+        "VideoOff",
+        "Videotape",
+        "View",
+        "Voicemail",
+        "Volume",
+        "Volume1",
+        "Volume2",
+        "VolumeX",
+        "Vote",
+        "Wallet",
+        "WalletCards",
+        "WalletMinimal",
+        "Wallpaper",
+        "Wand",
+        "WandSparkles",
+        "Warehouse",
+        "WashingMachine",
+        "Watch",
+        "Waves",
+        "Waypoints",
+        "Webcam",
+        "Webhook",
+        "WebhookOff",
+        "Weight",
+        "Wheat",
+        "WheatOff",
+        "WholeWord",
+        "Wifi",
+        "WifiOff",
+        "Wind",
+        "Wine",
+        "WineOff",
+        "Workflow",
+        "Worm",
+        "WrapText",
+        "Wrench",
+        "X",
+        "Youtube",
+        "Zap",
+        "ZapOff",
+        "ZoomIn",
+        "ZoomOut"
+      ]
+    },
+    "public.enum_projects_status": {
+      "name": "enum_projects_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
+    "public.enum__projects_v_version_icon": {
+      "name": "enum__projects_v_version_icon",
+      "schema": "public",
+      "values": [
+        "AArrowDown",
+        "AArrowUp",
+        "ALargeSmall",
+        "Accessibility",
+        "Activity",
+        "AirVent",
+        "Airplay",
+        "AlarmClock",
+        "AlarmClockCheck",
+        "AlarmClockMinus",
+        "AlarmClockOff",
+        "AlarmClockPlus",
+        "AlarmSmoke",
+        "Album",
+        "AlignCenter",
+        "AlignCenterHorizontal",
+        "AlignCenterVertical",
+        "AlignEndHorizontal",
+        "AlignEndVertical",
+        "AlignHorizontalDistributeCenter",
+        "AlignHorizontalDistributeEnd",
+        "AlignHorizontalDistributeStart",
+        "AlignHorizontalJustifyCenter",
+        "AlignHorizontalJustifyEnd",
+        "AlignHorizontalJustifyStart",
+        "AlignHorizontalSpaceAround",
+        "AlignHorizontalSpaceBetween",
+        "AlignJustify",
+        "AlignLeft",
+        "AlignRight",
+        "AlignStartHorizontal",
+        "AlignStartVertical",
+        "AlignVerticalDistributeCenter",
+        "AlignVerticalDistributeEnd",
+        "AlignVerticalDistributeStart",
+        "AlignVerticalJustifyCenter",
+        "AlignVerticalJustifyEnd",
+        "AlignVerticalJustifyStart",
+        "AlignVerticalSpaceAround",
+        "AlignVerticalSpaceBetween",
+        "Ambulance",
+        "Ampersand",
+        "Ampersands",
+        "Anchor",
+        "Angry",
+        "Annoyed",
+        "Antenna",
+        "Anvil",
+        "Aperture",
+        "AppWindow",
+        "AppWindowMac",
+        "Apple",
+        "Archive",
+        "ArchiveRestore",
+        "ArchiveX",
+        "AreaChart",
+        "Armchair",
+        "ArrowBigDown",
+        "ArrowBigDownDash",
+        "ArrowBigLeft",
+        "ArrowBigLeftDash",
+        "ArrowBigRight",
+        "ArrowBigRightDash",
+        "ArrowBigUp",
+        "ArrowBigUpDash",
+        "ArrowDown",
+        "ArrowDown01",
+        "ArrowDown10",
+        "ArrowDownAZ",
+        "ArrowDownFromLine",
+        "ArrowDownLeft",
+        "ArrowDownNarrowWide",
+        "ArrowDownRight",
+        "ArrowDownToDot",
+        "ArrowDownToLine",
+        "ArrowDownUp",
+        "ArrowDownWideNarrow",
+        "ArrowDownZA",
+        "ArrowLeft",
+        "ArrowLeftFromLine",
+        "ArrowLeftRight",
+        "ArrowLeftToLine",
+        "ArrowRight",
+        "ArrowRightFromLine",
+        "ArrowRightLeft",
+        "ArrowRightToLine",
+        "ArrowUp",
+        "ArrowUp01",
+        "ArrowUp10",
+        "ArrowUpAZ",
+        "ArrowUpDown",
+        "ArrowUpFromDot",
+        "ArrowUpFromLine",
+        "ArrowUpLeft",
+        "ArrowUpNarrowWide",
+        "ArrowUpRight",
+        "ArrowUpToLine",
+        "ArrowUpWideNarrow",
+        "ArrowUpZA",
+        "ArrowsUpFromLine",
+        "Asterisk",
+        "AtSign",
+        "Atom",
+        "AudioLines",
+        "AudioWaveform",
+        "Award",
+        "Axe",
+        "Axis3d",
+        "Baby",
+        "Backpack",
+        "Badge",
+        "BadgeAlert",
+        "BadgeCent",
+        "BadgeCheck",
+        "BadgeDollarSign",
+        "BadgeEuro",
+        "BadgeHelp",
+        "BadgeIndianRupee",
+        "BadgeInfo",
+        "BadgeJapaneseYen",
+        "BadgeMinus",
+        "BadgePercent",
+        "BadgePlus",
+        "BadgePoundSterling",
+        "BadgeRussianRuble",
+        "BadgeSwissFranc",
+        "BadgeX",
+        "BaggageClaim",
+        "Ban",
+        "Banana",
+        "Banknote",
+        "BarChart",
+        "BarChart2",
+        "BarChart3",
+        "BarChart4",
+        "BarChartBig",
+        "BarChartHorizontal",
+        "BarChartHorizontalBig",
+        "Barcode",
+        "Baseline",
+        "Bath",
+        "Battery",
+        "BatteryCharging",
+        "BatteryFull",
+        "BatteryLow",
+        "BatteryMedium",
+        "BatteryWarning",
+        "Beaker",
+        "Bean",
+        "BeanOff",
+        "Bed",
+        "BedDouble",
+        "BedSingle",
+        "Beef",
+        "Beer",
+        "BeerOff",
+        "Bell",
+        "BellDot",
+        "BellElectric",
+        "BellMinus",
+        "BellOff",
+        "BellPlus",
+        "BellRing",
+        "BetweenHorizontalEnd",
+        "BetweenHorizontalStart",
+        "BetweenVerticalEnd",
+        "BetweenVerticalStart",
+        "BicepsFlexed",
+        "Bike",
+        "Binary",
+        "Biohazard",
+        "Bird",
+        "Bitcoin",
+        "Blend",
+        "Blinds",
+        "Blocks",
+        "Bluetooth",
+        "BluetoothConnected",
+        "BluetoothOff",
+        "BluetoothSearching",
+        "Bold",
+        "Bolt",
+        "Bomb",
+        "Bone",
+        "Book",
+        "BookA",
+        "BookAudio",
+        "BookCheck",
+        "BookCopy",
+        "BookDashed",
+        "BookDown",
+        "BookHeadphones",
+        "BookHeart",
+        "BookImage",
+        "BookKey",
+        "BookLock",
+        "BookMarked",
+        "BookMinus",
+        "BookOpen",
+        "BookOpenCheck",
+        "BookOpenText",
+        "BookPlus",
+        "BookText",
+        "BookType",
+        "BookUp",
+        "BookUp2",
+        "BookUser",
+        "BookX",
+        "Bookmark",
+        "BookmarkCheck",
+        "BookmarkMinus",
+        "BookmarkPlus",
+        "BookmarkX",
+        "BoomBox",
+        "Bot",
+        "BotMessageSquare",
+        "BotOff",
+        "Box",
+        "BoxSelect",
+        "Boxes",
+        "Braces",
+        "Brackets",
+        "Brain",
+        "BrainCircuit",
+        "BrainCog",
+        "BrickWall",
+        "Briefcase",
+        "BriefcaseBusiness",
+        "BriefcaseMedical",
+        "BringToFront",
+        "Brush",
+        "Bug",
+        "BugOff",
+        "BugPlay",
+        "Building",
+        "Building2",
+        "Bus",
+        "BusFront",
+        "Cable",
+        "CableCar",
+        "Cake",
+        "CakeSlice",
+        "Calculator",
+        "Calendar",
+        "CalendarCheck",
+        "CalendarCheck2",
+        "CalendarClock",
+        "CalendarCog",
+        "CalendarDays",
+        "CalendarFold",
+        "CalendarHeart",
+        "CalendarMinus",
+        "CalendarMinus2",
+        "CalendarOff",
+        "CalendarPlus",
+        "CalendarPlus2",
+        "CalendarRange",
+        "CalendarSearch",
+        "CalendarX",
+        "CalendarX2",
+        "Camera",
+        "CameraOff",
+        "CandlestickChart",
+        "Candy",
+        "CandyCane",
+        "CandyOff",
+        "Cannabis",
+        "Captions",
+        "CaptionsOff",
+        "Car",
+        "CarFront",
+        "CarTaxiFront",
+        "Caravan",
+        "Carrot",
+        "CaseLower",
+        "CaseSensitive",
+        "CaseUpper",
+        "CassetteTape",
+        "Cast",
+        "Castle",
+        "Cat",
+        "Cctv",
+        "Check",
+        "CheckCheck",
+        "ChefHat",
+        "Cherry",
+        "ChevronDown",
+        "ChevronFirst",
+        "ChevronLast",
+        "ChevronLeft",
+        "ChevronRight",
+        "ChevronUp",
+        "ChevronsDown",
+        "ChevronsDownUp",
+        "ChevronsLeft",
+        "ChevronsLeftRight",
+        "ChevronsRight",
+        "ChevronsRightLeft",
+        "ChevronsUp",
+        "ChevronsUpDown",
+        "Chrome",
+        "Church",
+        "Cigarette",
+        "CigaretteOff",
+        "Circle",
+        "CircleAlert",
+        "CircleArrowDown",
+        "CircleArrowLeft",
+        "CircleArrowOutDownLeft",
+        "CircleArrowOutDownRight",
+        "CircleArrowOutUpLeft",
+        "CircleArrowOutUpRight",
+        "CircleArrowRight",
+        "CircleArrowUp",
+        "CircleCheck",
+        "CircleCheckBig",
+        "CircleChevronDown",
+        "CircleChevronLeft",
+        "CircleChevronRight",
+        "CircleChevronUp",
+        "CircleDashed",
+        "CircleDivide",
+        "CircleDollarSign",
+        "CircleDot",
+        "CircleDotDashed",
+        "CircleEllipsis",
+        "CircleEqual",
+        "CircleFadingPlus",
+        "CircleGauge",
+        "CircleHelp",
+        "CircleMinus",
+        "CircleOff",
+        "CircleParking",
+        "CircleParkingOff",
+        "CirclePause",
+        "CirclePercent",
+        "CirclePlay",
+        "CirclePlus",
+        "CirclePower",
+        "CircleSlash",
+        "CircleSlash2",
+        "CircleStop",
+        "CircleUser",
+        "CircleUserRound",
+        "CircleX",
+        "CircuitBoard",
+        "Citrus",
+        "Clapperboard",
+        "Clipboard",
+        "ClipboardCheck",
+        "ClipboardCopy",
+        "ClipboardList",
+        "ClipboardMinus",
+        "ClipboardPaste",
+        "ClipboardPen",
+        "ClipboardPenLine",
+        "ClipboardPlus",
+        "ClipboardType",
+        "ClipboardX",
+        "Clock",
+        "Clock1",
+        "Clock10",
+        "Clock11",
+        "Clock12",
+        "Clock2",
+        "Clock3",
+        "Clock4",
+        "Clock5",
+        "Clock6",
+        "Clock7",
+        "Clock8",
+        "Clock9",
+        "Cloud",
+        "CloudCog",
+        "CloudDownload",
+        "CloudDrizzle",
+        "CloudFog",
+        "CloudHail",
+        "CloudLightning",
+        "CloudMoon",
+        "CloudMoonRain",
+        "CloudOff",
+        "CloudRain",
+        "CloudRainWind",
+        "CloudSnow",
+        "CloudSun",
+        "CloudSunRain",
+        "CloudUpload",
+        "Cloudy",
+        "Clover",
+        "Club",
+        "Code",
+        "CodeXml",
+        "Codepen",
+        "Codesandbox",
+        "Coffee",
+        "Cog",
+        "Coins",
+        "Columns2",
+        "Columns3",
+        "Columns4",
+        "Combine",
+        "Command",
+        "Compass",
+        "Component",
+        "Computer",
+        "ConciergeBell",
+        "Cone",
+        "Construction",
+        "Contact",
+        "ContactRound",
+        "Container",
+        "Contrast",
+        "Cookie",
+        "CookingPot",
+        "Copy",
+        "CopyCheck",
+        "CopyMinus",
+        "CopyPlus",
+        "CopySlash",
+        "CopyX",
+        "Copyleft",
+        "Copyright",
+        "CornerDownLeft",
+        "CornerDownRight",
+        "CornerLeftDown",
+        "CornerLeftUp",
+        "CornerRightDown",
+        "CornerRightUp",
+        "CornerUpLeft",
+        "CornerUpRight",
+        "Cpu",
+        "CreativeCommons",
+        "CreditCard",
+        "Croissant",
+        "Crop",
+        "Cross",
+        "Crosshair",
+        "Crown",
+        "Cuboid",
+        "CupSoda",
+        "Currency",
+        "Cylinder",
+        "Database",
+        "DatabaseBackup",
+        "DatabaseZap",
+        "Delete",
+        "Dessert",
+        "Diameter",
+        "Diamond",
+        "DiamondMinus",
+        "DiamondPercent",
+        "DiamondPlus",
+        "Dice1",
+        "Dice2",
+        "Dice3",
+        "Dice4",
+        "Dice5",
+        "Dice6",
+        "Dices",
+        "Diff",
+        "Disc",
+        "Disc2",
+        "Disc3",
+        "DiscAlbum",
+        "Divide",
+        "Dna",
+        "DnaOff",
+        "Dock",
+        "Dog",
+        "DollarSign",
+        "Donut",
+        "DoorClosed",
+        "DoorOpen",
+        "Dot",
+        "Download",
+        "DraftingCompass",
+        "Drama",
+        "Dribbble",
+        "Drill",
+        "Droplet",
+        "Droplets",
+        "Drum",
+        "Drumstick",
+        "Dumbbell",
+        "Ear",
+        "EarOff",
+        "Earth",
+        "EarthLock",
+        "Eclipse",
+        "Egg",
+        "EggFried",
+        "EggOff",
+        "Ellipsis",
+        "EllipsisVertical",
+        "Equal",
+        "EqualNot",
+        "Eraser",
+        "Euro",
+        "Expand",
+        "ExternalLink",
+        "Eye",
+        "EyeOff",
+        "Facebook",
+        "Factory",
+        "Fan",
+        "FastForward",
+        "Feather",
+        "Fence",
+        "FerrisWheel",
+        "Figma",
+        "File",
+        "FileArchive",
+        "FileAudio",
+        "FileAudio2",
+        "FileAxis3d",
+        "FileBadge",
+        "FileBadge2",
+        "FileBarChart",
+        "FileBarChart2",
+        "FileBox",
+        "FileCheck",
+        "FileCheck2",
+        "FileClock",
+        "FileCode",
+        "FileCode2",
+        "FileCog",
+        "FileDiff",
+        "FileDigit",
+        "FileDown",
+        "FileHeart",
+        "FileImage",
+        "FileInput",
+        "FileJson",
+        "FileJson2",
+        "FileKey",
+        "FileKey2",
+        "FileLineChart",
+        "FileLock",
+        "FileLock2",
+        "FileMinus",
+        "FileMinus2",
+        "FileMusic",
+        "FileOutput",
+        "FilePen",
+        "FilePenLine",
+        "FilePieChart",
+        "FilePlus",
+        "FilePlus2",
+        "FileQuestion",
+        "FileScan",
+        "FileSearch",
+        "FileSearch2",
+        "FileSliders",
+        "FileSpreadsheet",
+        "FileStack",
+        "FileSymlink",
+        "FileTerminal",
+        "FileText",
+        "FileType",
+        "FileType2",
+        "FileUp",
+        "FileVideo",
+        "FileVideo2",
+        "FileVolume",
+        "FileVolume2",
+        "FileWarning",
+        "FileX",
+        "FileX2",
+        "Files",
+        "Film",
+        "Filter",
+        "FilterX",
+        "Fingerprint",
+        "FireExtinguisher",
+        "Fish",
+        "FishOff",
+        "FishSymbol",
+        "Flag",
+        "FlagOff",
+        "FlagTriangleLeft",
+        "FlagTriangleRight",
+        "Flame",
+        "FlameKindling",
+        "Flashlight",
+        "FlashlightOff",
+        "FlaskConical",
+        "FlaskConicalOff",
+        "FlaskRound",
+        "FlipHorizontal",
+        "FlipHorizontal2",
+        "FlipVertical",
+        "FlipVertical2",
+        "Flower",
+        "Flower2",
+        "Focus",
+        "FoldHorizontal",
+        "FoldVertical",
+        "Folder",
+        "FolderArchive",
+        "FolderCheck",
+        "FolderClock",
+        "FolderClosed",
+        "FolderCog",
+        "FolderDot",
+        "FolderDown",
+        "FolderGit",
+        "FolderGit2",
+        "FolderHeart",
+        "FolderInput",
+        "FolderKanban",
+        "FolderKey",
+        "FolderLock",
+        "FolderMinus",
+        "FolderOpen",
+        "FolderOpenDot",
+        "FolderOutput",
+        "FolderPen",
+        "FolderPlus",
+        "FolderRoot",
+        "FolderSearch",
+        "FolderSearch2",
+        "FolderSymlink",
+        "FolderSync",
+        "FolderTree",
+        "FolderUp",
+        "FolderX",
+        "Folders",
+        "Footprints",
+        "Forklift",
+        "Forward",
+        "Frame",
+        "Framer",
+        "Frown",
+        "Fuel",
+        "Fullscreen",
+        "GalleryHorizontal",
+        "GalleryHorizontalEnd",
+        "GalleryThumbnails",
+        "GalleryVertical",
+        "GalleryVerticalEnd",
+        "Gamepad",
+        "Gamepad2",
+        "GanttChart",
+        "Gauge",
+        "Gavel",
+        "Gem",
+        "Ghost",
+        "Gift",
+        "GitBranch",
+        "GitBranchPlus",
+        "GitCommitHorizontal",
+        "GitCommitVertical",
+        "GitCompare",
+        "GitCompareArrows",
+        "GitFork",
+        "GitGraph",
+        "GitMerge",
+        "GitPullRequest",
+        "GitPullRequestArrow",
+        "GitPullRequestClosed",
+        "GitPullRequestCreate",
+        "GitPullRequestCreateArrow",
+        "GitPullRequestDraft",
+        "Github",
+        "Gitlab",
+        "GlassWater",
+        "Glasses",
+        "Globe",
+        "GlobeLock",
+        "Goal",
+        "Grab",
+        "GraduationCap",
+        "Grape",
+        "Grid2x2",
+        "Grid2x2Check",
+        "Grid2x2X",
+        "Grid3x3",
+        "Grip",
+        "GripHorizontal",
+        "GripVertical",
+        "Group",
+        "Guitar",
+        "Ham",
+        "Hammer",
+        "Hand",
+        "HandCoins",
+        "HandHeart",
+        "HandHelping",
+        "HandMetal",
+        "HandPlatter",
+        "Handshake",
+        "HardDrive",
+        "HardDriveDownload",
+        "HardDriveUpload",
+        "HardHat",
+        "Hash",
+        "Haze",
+        "HdmiPort",
+        "Heading",
+        "Heading1",
+        "Heading2",
+        "Heading3",
+        "Heading4",
+        "Heading5",
+        "Heading6",
+        "Headphones",
+        "Headset",
+        "Heart",
+        "HeartCrack",
+        "HeartHandshake",
+        "HeartOff",
+        "HeartPulse",
+        "Heater",
+        "Hexagon",
+        "Highlighter",
+        "History",
+        "Home",
+        "Hop",
+        "HopOff",
+        "Hospital",
+        "Hotel",
+        "Hourglass",
+        "IceCreamBowl",
+        "IceCreamCone",
+        "Image",
+        "ImageDown",
+        "ImageMinus",
+        "ImageOff",
+        "ImagePlay",
+        "ImagePlus",
+        "ImageUp",
+        "Images",
+        "Import",
+        "Inbox",
+        "IndentDecrease",
+        "IndentIncrease",
+        "IndianRupee",
+        "Infinity",
+        "Info",
+        "InspectionPanel",
+        "Instagram",
+        "Italic",
+        "IterationCcw",
+        "IterationCw",
+        "JapaneseYen",
+        "Joystick",
+        "Kanban",
+        "Key",
+        "KeyRound",
+        "KeySquare",
+        "Keyboard",
+        "KeyboardMusic",
+        "KeyboardOff",
+        "Lamp",
+        "LampCeiling",
+        "LampDesk",
+        "LampFloor",
+        "LampWallDown",
+        "LampWallUp",
+        "LandPlot",
+        "Landmark",
+        "Languages",
+        "Laptop",
+        "LaptopMinimal",
+        "Lasso",
+        "LassoSelect",
+        "Laugh",
+        "Layers",
+        "Layers2",
+        "Layers3",
+        "LayoutDashboard",
+        "LayoutGrid",
+        "LayoutList",
+        "LayoutPanelLeft",
+        "LayoutPanelTop",
+        "LayoutTemplate",
+        "Leaf",
+        "LeafyGreen",
+        "Lectern",
+        "Library",
+        "LibraryBig",
+        "LifeBuoy",
+        "Ligature",
+        "Lightbulb",
+        "LightbulbOff",
+        "LineChart",
+        "Link",
+        "Link2",
+        "Link2Off",
+        "Linkedin",
+        "List",
+        "ListChecks",
+        "ListCollapse",
+        "ListEnd",
+        "ListFilter",
+        "ListMinus",
+        "ListMusic",
+        "ListOrdered",
+        "ListPlus",
+        "ListRestart",
+        "ListStart",
+        "ListTodo",
+        "ListTree",
+        "ListVideo",
+        "ListX",
+        "Loader",
+        "LoaderCircle",
+        "LoaderPinwheel",
+        "Locate",
+        "LocateFixed",
+        "LocateOff",
+        "Lock",
+        "LockKeyhole",
+        "LockKeyholeOpen",
+        "LockOpen",
+        "LogIn",
+        "LogOut",
+        "Lollipop",
+        "Luggage",
+        "Magnet",
+        "Mail",
+        "MailCheck",
+        "MailMinus",
+        "MailOpen",
+        "MailPlus",
+        "MailQuestion",
+        "MailSearch",
+        "MailWarning",
+        "MailX",
+        "Mailbox",
+        "Mails",
+        "Map",
+        "MapPin",
+        "MapPinOff",
+        "MapPinned",
+        "Martini",
+        "Maximize",
+        "Maximize2",
+        "Medal",
+        "Megaphone",
+        "MegaphoneOff",
+        "Meh",
+        "MemoryStick",
+        "Menu",
+        "Merge",
+        "MessageCircle",
+        "MessageCircleCode",
+        "MessageCircleDashed",
+        "MessageCircleHeart",
+        "MessageCircleMore",
+        "MessageCircleOff",
+        "MessageCirclePlus",
+        "MessageCircleQuestion",
+        "MessageCircleReply",
+        "MessageCircleWarning",
+        "MessageCircleX",
+        "MessageSquare",
+        "MessageSquareCode",
+        "MessageSquareDashed",
+        "MessageSquareDiff",
+        "MessageSquareDot",
+        "MessageSquareHeart",
+        "MessageSquareMore",
+        "MessageSquareOff",
+        "MessageSquarePlus",
+        "MessageSquareQuote",
+        "MessageSquareReply",
+        "MessageSquareShare",
+        "MessageSquareText",
+        "MessageSquareWarning",
+        "MessageSquareX",
+        "MessagesSquare",
+        "Mic",
+        "MicOff",
+        "MicVocal",
+        "Microscope",
+        "Microwave",
+        "Milestone",
+        "Milk",
+        "MilkOff",
+        "Minimize",
+        "Minimize2",
+        "Minus",
+        "Monitor",
+        "MonitorCheck",
+        "MonitorDot",
+        "MonitorDown",
+        "MonitorOff",
+        "MonitorPause",
+        "MonitorPlay",
+        "MonitorSmartphone",
+        "MonitorSpeaker",
+        "MonitorStop",
+        "MonitorUp",
+        "MonitorX",
+        "Moon",
+        "MoonStar",
+        "Mountain",
+        "MountainSnow",
+        "Mouse",
+        "MouseOff",
+        "MousePointer",
+        "MousePointer2",
+        "MousePointerBan",
+        "MousePointerClick",
+        "Move",
+        "Move3d",
+        "MoveDiagonal",
+        "MoveDiagonal2",
+        "MoveDown",
+        "MoveDownLeft",
+        "MoveDownRight",
+        "MoveHorizontal",
+        "MoveLeft",
+        "MoveRight",
+        "MoveUp",
+        "MoveUpLeft",
+        "MoveUpRight",
+        "MoveVertical",
+        "Music",
+        "Music2",
+        "Music3",
+        "Music4",
+        "Navigation",
+        "Navigation2",
+        "Navigation2Off",
+        "NavigationOff",
+        "Network",
+        "Newspaper",
+        "Nfc",
+        "Notebook",
+        "NotebookPen",
+        "NotebookTabs",
+        "NotebookText",
+        "NotepadText",
+        "NotepadTextDashed",
+        "Nut",
+        "NutOff",
+        "Octagon",
+        "OctagonAlert",
+        "OctagonPause",
+        "OctagonX",
+        "Option",
+        "Orbit",
+        "Origami",
+        "Package",
+        "Package2",
+        "PackageCheck",
+        "PackageMinus",
+        "PackageOpen",
+        "PackagePlus",
+        "PackageSearch",
+        "PackageX",
+        "PaintBucket",
+        "PaintRoller",
+        "Paintbrush",
+        "PaintbrushVertical",
+        "Palette",
+        "PanelBottom",
+        "PanelBottomClose",
+        "PanelBottomDashed",
+        "PanelBottomOpen",
+        "PanelLeft",
+        "PanelLeftClose",
+        "PanelLeftDashed",
+        "PanelLeftOpen",
+        "PanelRight",
+        "PanelRightClose",
+        "PanelRightDashed",
+        "PanelRightOpen",
+        "PanelTop",
+        "PanelTopClose",
+        "PanelTopDashed",
+        "PanelTopOpen",
+        "PanelsLeftBottom",
+        "PanelsRightBottom",
+        "PanelsTopLeft",
+        "Paperclip",
+        "Parentheses",
+        "ParkingMeter",
+        "PartyPopper",
+        "Pause",
+        "PawPrint",
+        "PcCase",
+        "Pen",
+        "PenLine",
+        "PenOff",
+        "PenTool",
+        "Pencil",
+        "PencilLine",
+        "PencilOff",
+        "PencilRuler",
+        "Pentagon",
+        "Percent",
+        "PersonStanding",
+        "Phone",
+        "PhoneCall",
+        "PhoneForwarded",
+        "PhoneIncoming",
+        "PhoneMissed",
+        "PhoneOff",
+        "PhoneOutgoing",
+        "Pi",
+        "Piano",
+        "Pickaxe",
+        "PictureInPicture",
+        "PictureInPicture2",
+        "PieChart",
+        "PiggyBank",
+        "Pilcrow",
+        "PilcrowLeft",
+        "PilcrowRight",
+        "Pill",
+        "PillBottle",
+        "Pin",
+        "PinOff",
+        "Pipette",
+        "Pizza",
+        "Plane",
+        "PlaneLanding",
+        "PlaneTakeoff",
+        "Play",
+        "Plug",
+        "Plug2",
+        "PlugZap",
+        "PlugZap2",
+        "Plus",
+        "Pocket",
+        "PocketKnife",
+        "Podcast",
+        "Pointer",
+        "PointerOff",
+        "Popcorn",
+        "Popsicle",
+        "PoundSterling",
+        "Power",
+        "PowerOff",
+        "Presentation",
+        "Printer",
+        "Projector",
+        "Proportions",
+        "Puzzle",
+        "Pyramid",
+        "QrCode",
+        "Quote",
+        "Rabbit",
+        "Radar",
+        "Radiation",
+        "Radical",
+        "Radio",
+        "RadioReceiver",
+        "RadioTower",
+        "Radius",
+        "RailSymbol",
+        "Rainbow",
+        "Rat",
+        "Ratio",
+        "Receipt",
+        "ReceiptCent",
+        "ReceiptEuro",
+        "ReceiptIndianRupee",
+        "ReceiptJapaneseYen",
+        "ReceiptPoundSterling",
+        "ReceiptRussianRuble",
+        "ReceiptSwissFranc",
+        "ReceiptText",
+        "RectangleEllipsis",
+        "RectangleHorizontal",
+        "RectangleVertical",
+        "Recycle",
+        "Redo",
+        "Redo2",
+        "RedoDot",
+        "RefreshCcw",
+        "RefreshCcwDot",
+        "RefreshCw",
+        "RefreshCwOff",
+        "Refrigerator",
+        "Regex",
+        "RemoveFormatting",
+        "Repeat",
+        "Repeat1",
+        "Repeat2",
+        "Replace",
+        "ReplaceAll",
+        "Reply",
+        "ReplyAll",
+        "Rewind",
+        "Ribbon",
+        "Rocket",
+        "RockingChair",
+        "RollerCoaster",
+        "Rotate3d",
+        "RotateCcw",
+        "RotateCcwSquare",
+        "RotateCw",
+        "RotateCwSquare",
+        "Route",
+        "RouteOff",
+        "Router",
+        "Rows2",
+        "Rows3",
+        "Rows4",
+        "Rss",
+        "Ruler",
+        "RussianRuble",
+        "Sailboat",
+        "Salad",
+        "Sandwich",
+        "Satellite",
+        "SatelliteDish",
+        "Save",
+        "SaveAll",
+        "Scale",
+        "Scale3d",
+        "Scaling",
+        "Scan",
+        "ScanBarcode",
+        "ScanEye",
+        "ScanFace",
+        "ScanLine",
+        "ScanSearch",
+        "ScanText",
+        "ScatterChart",
+        "School",
+        "Scissors",
+        "ScissorsLineDashed",
+        "ScreenShare",
+        "ScreenShareOff",
+        "Scroll",
+        "ScrollText",
+        "Search",
+        "SearchCheck",
+        "SearchCode",
+        "SearchSlash",
+        "SearchX",
+        "Section",
+        "Send",
+        "SendHorizontal",
+        "SendToBack",
+        "SeparatorHorizontal",
+        "SeparatorVertical",
+        "Server",
+        "ServerCog",
+        "ServerCrash",
+        "ServerOff",
+        "Settings",
+        "Settings2",
+        "Shapes",
+        "Share",
+        "Share2",
+        "Sheet",
+        "Shell",
+        "Shield",
+        "ShieldAlert",
+        "ShieldBan",
+        "ShieldCheck",
+        "ShieldEllipsis",
+        "ShieldHalf",
+        "ShieldMinus",
+        "ShieldOff",
+        "ShieldPlus",
+        "ShieldQuestion",
+        "ShieldX",
+        "Ship",
+        "ShipWheel",
+        "Shirt",
+        "ShoppingBag",
+        "ShoppingBasket",
+        "ShoppingCart",
+        "Shovel",
+        "ShowerHead",
+        "Shrink",
+        "Shrub",
+        "Shuffle",
+        "Sigma",
+        "Signal",
+        "SignalHigh",
+        "SignalLow",
+        "SignalMedium",
+        "SignalZero",
+        "Signpost",
+        "SignpostBig",
+        "Siren",
+        "SkipBack",
+        "SkipForward",
+        "Skull",
+        "Slack",
+        "Slash",
+        "Slice",
+        "SlidersHorizontal",
+        "SlidersVertical",
+        "Smartphone",
+        "SmartphoneCharging",
+        "SmartphoneNfc",
+        "Smile",
+        "SmilePlus",
+        "Snail",
+        "Snowflake",
+        "Sofa",
+        "Soup",
+        "Space",
+        "Spade",
+        "Sparkle",
+        "Sparkles",
+        "Speaker",
+        "Speech",
+        "SpellCheck",
+        "SpellCheck2",
+        "Spline",
+        "Split",
+        "SprayCan",
+        "Sprout",
+        "Square",
+        "SquareActivity",
+        "SquareArrowDown",
+        "SquareArrowDownLeft",
+        "SquareArrowDownRight",
+        "SquareArrowLeft",
+        "SquareArrowOutDownLeft",
+        "SquareArrowOutDownRight",
+        "SquareArrowOutUpLeft",
+        "SquareArrowOutUpRight",
+        "SquareArrowRight",
+        "SquareArrowUp",
+        "SquareArrowUpLeft",
+        "SquareArrowUpRight",
+        "SquareAsterisk",
+        "SquareBottomDashedScissors",
+        "SquareCheck",
+        "SquareCheckBig",
+        "SquareChevronDown",
+        "SquareChevronLeft",
+        "SquareChevronRight",
+        "SquareChevronUp",
+        "SquareCode",
+        "SquareDashedBottom",
+        "SquareDashedBottomCode",
+        "SquareDashedKanban",
+        "SquareDashedMousePointer",
+        "SquareDivide",
+        "SquareDot",
+        "SquareEqual",
+        "SquareFunction",
+        "SquareGanttChart",
+        "SquareKanban",
+        "SquareLibrary",
+        "SquareM",
+        "SquareMenu",
+        "SquareMinus",
+        "SquareMousePointer",
+        "SquareParking",
+        "SquareParkingOff",
+        "SquarePen",
+        "SquarePercent",
+        "SquarePi",
+        "SquarePilcrow",
+        "SquarePlay",
+        "SquarePlus",
+        "SquarePower",
+        "SquareRadical",
+        "SquareScissors",
+        "SquareSigma",
+        "SquareSlash",
+        "SquareSplitHorizontal",
+        "SquareSplitVertical",
+        "SquareStack",
+        "SquareTerminal",
+        "SquareUser",
+        "SquareUserRound",
+        "SquareX",
+        "Squircle",
+        "Squirrel",
+        "Stamp",
+        "Star",
+        "StarHalf",
+        "StarOff",
+        "StepBack",
+        "StepForward",
+        "Stethoscope",
+        "Sticker",
+        "StickyNote",
+        "Store",
+        "StretchHorizontal",
+        "StretchVertical",
+        "Strikethrough",
+        "Subscript",
+        "Sun",
+        "SunDim",
+        "SunMedium",
+        "SunMoon",
+        "SunSnow",
+        "Sunrise",
+        "Sunset",
+        "Superscript",
+        "SwatchBook",
+        "SwissFranc",
+        "SwitchCamera",
+        "Sword",
+        "Swords",
+        "Syringe",
+        "Table",
+        "Table2",
+        "TableCellsMerge",
+        "TableCellsSplit",
+        "TableColumnsSplit",
+        "TableProperties",
+        "TableRowsSplit",
+        "Tablet",
+        "TabletSmartphone",
+        "Tablets",
+        "Tag",
+        "Tags",
+        "Tally1",
+        "Tally2",
+        "Tally3",
+        "Tally4",
+        "Tally5",
+        "Tangent",
+        "Target",
+        "Telescope",
+        "Tent",
+        "TentTree",
+        "Terminal",
+        "TestTube",
+        "TestTubeDiagonal",
+        "TestTubes",
+        "Text",
+        "TextCursor",
+        "TextCursorInput",
+        "TextQuote",
+        "TextSearch",
+        "TextSelect",
+        "Theater",
+        "Thermometer",
+        "ThermometerSnowflake",
+        "ThermometerSun",
+        "ThumbsDown",
+        "ThumbsUp",
+        "Ticket",
+        "TicketCheck",
+        "TicketMinus",
+        "TicketPercent",
+        "TicketPlus",
+        "TicketSlash",
+        "TicketX",
+        "Timer",
+        "TimerOff",
+        "TimerReset",
+        "ToggleLeft",
+        "ToggleRight",
+        "Tornado",
+        "Torus",
+        "Touchpad",
+        "TouchpadOff",
+        "TowerControl",
+        "ToyBrick",
+        "Tractor",
+        "TrafficCone",
+        "TrainFront",
+        "TrainFrontTunnel",
+        "TrainTrack",
+        "TramFront",
+        "Trash",
+        "Trash2",
+        "TreeDeciduous",
+        "TreePalm",
+        "TreePine",
+        "Trees",
+        "Trello",
+        "TrendingDown",
+        "TrendingUp",
+        "Triangle",
+        "TriangleAlert",
+        "TriangleRight",
+        "Trophy",
+        "Truck",
+        "Turtle",
+        "Tv",
+        "TvMinimal",
+        "TvMinimalPlay",
+        "Twitch",
+        "Twitter",
+        "Type",
+        "Umbrella",
+        "UmbrellaOff",
+        "Underline",
+        "Undo",
+        "Undo2",
+        "UndoDot",
+        "UnfoldHorizontal",
+        "UnfoldVertical",
+        "Ungroup",
+        "University",
+        "Unlink",
+        "Unlink2",
+        "Unplug",
+        "Upload",
+        "Usb",
+        "User",
+        "UserCheck",
+        "UserCog",
+        "UserMinus",
+        "UserPlus",
+        "UserRound",
+        "UserRoundCheck",
+        "UserRoundCog",
+        "UserRoundMinus",
+        "UserRoundPlus",
+        "UserRoundSearch",
+        "UserRoundX",
+        "UserSearch",
+        "UserX",
+        "Users",
+        "UsersRound",
+        "Utensils",
+        "UtensilsCrossed",
+        "UtilityPole",
+        "Variable",
+        "Vault",
+        "Vegan",
+        "VenetianMask",
+        "Vibrate",
+        "VibrateOff",
+        "Video",
+        "VideoOff",
+        "Videotape",
+        "View",
+        "Voicemail",
+        "Volume",
+        "Volume1",
+        "Volume2",
+        "VolumeX",
+        "Vote",
+        "Wallet",
+        "WalletCards",
+        "WalletMinimal",
+        "Wallpaper",
+        "Wand",
+        "WandSparkles",
+        "Warehouse",
+        "WashingMachine",
+        "Watch",
+        "Waves",
+        "Waypoints",
+        "Webcam",
+        "Webhook",
+        "WebhookOff",
+        "Weight",
+        "Wheat",
+        "WheatOff",
+        "WholeWord",
+        "Wifi",
+        "WifiOff",
+        "Wind",
+        "Wine",
+        "WineOff",
+        "Workflow",
+        "Worm",
+        "WrapText",
+        "Wrench",
+        "X",
+        "Youtube",
+        "Zap",
+        "ZapOff",
+        "ZoomIn",
+        "ZoomOut"
+      ]
+    },
+    "public.enum__projects_v_version_status": {
+      "name": "enum__projects_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
+    "public.enum_payload_jobs_log_task_slug": {
+      "name": "enum_payload_jobs_log_task_slug",
+      "schema": "public",
+      "values": [
+        "inline",
+        "schedulePublish"
+      ]
+    },
+    "public.enum_payload_jobs_log_state": {
+      "name": "enum_payload_jobs_log_state",
+      "schema": "public",
+      "values": [
+        "failed",
+        "succeeded"
+      ]
+    },
+    "public.enum_payload_jobs_task_slug": {
+      "name": "enum_payload_jobs_task_slug",
+      "schema": "public",
+      "values": [
+        "inline",
+        "schedulePublish"
+      ]
+    },
+    "public.enum_socials_socials_links_kind": {
+      "name": "enum_socials_socials_links_kind",
+      "schema": "public",
+      "values": [
+        "facebook",
+        "instagram",
+        "twitter",
+        "youtube",
+        "github",
+        "linkedin"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}
