@@ -11,11 +11,12 @@ import { Media } from '@/collections/Media'
 import { Notes } from '@/collections/Notes'
 import { Blogs } from '@/collections/Blogs'
 import { Pages } from '@/collections/Pages'
+import { Projects } from "@/collections/Projects"
 
 import { Hero } from '@/blocks/Hero'
 import { Contact } from '@/blocks/Contact'
 import { Education } from '@/blocks/Education'
-import { Projects } from '@/blocks/Project'
+import { Project } from '@/blocks/Project'
 import { Skills } from '@/blocks/Skill'
 import { Experiances } from '@/blocks/Experiances'
 import { About } from '@/blocks/About'
@@ -34,8 +35,8 @@ export default buildConfig({
             baseDir: path.resolve(dirname),
         },
     },
-    collections: [Users, Media, Notes, Blogs, Pages],
-    blocks: [Hero, Contact, Education, Projects, Skills, Experiances, About],
+    collections: [Users, Media, Notes, Blogs, Pages, Projects],
+    blocks: [Hero, Contact, Education, Project, Skills, Experiances, About],
     globals: [Menu, Socials],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',

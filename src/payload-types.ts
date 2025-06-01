@@ -69,7 +69,7 @@ export interface Config {
     hero: IHeroProps;
     contact: Contact;
     education: TEducationProps;
-    projects: Projects;
+    project: Project;
     skills: ISkillsProps;
     experiances: IExperiancesProps;
     about: IAboutProps;
@@ -80,6 +80,7 @@ export interface Config {
     notes: Note;
     blogs: Blog;
     pages: Page;
+    projects: Project1;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -92,6 +93,7 @@ export interface Config {
     notes: NotesSelect<false> | NotesSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -202,12 +204,12 @@ export interface TEducationProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "projects".
+ * via the `definition` "project".
  */
-export interface Projects {
+export interface Project {
   id?: string | null;
   blockName?: string | null;
-  blockType: 'projects';
+  blockType: 'project';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -352,6 +354,19 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project1 {
+  id: number;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
@@ -470,6 +485,10 @@ export interface PayloadLockedDocument {
         value: number | Page;
       } | null)
     | ({
+        relationTo: 'projects';
+        value: number | Project1;
+      } | null)
+    | ({
         relationTo: 'payload-jobs';
         value: number | PayloadJob;
       } | null);
@@ -576,6 +595,18 @@ export interface PagesSelect<T extends boolean = true> {
   title?: T;
   layout?: T | {};
   publishedAt?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -722,10 +753,15 @@ export interface TaskSchedulePublish {
   input: {
     type?: ('publish' | 'unpublish') | null;
     locale?: string | null;
-    doc?: {
-      relationTo: 'pages';
-      value: number | Page;
-    } | null;
+    doc?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'projects';
+          value: number | Project1;
+        } | null);
     global?: string | null;
     user?: (number | null) | User;
   };
