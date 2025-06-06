@@ -33,7 +33,7 @@ export function Hero(props: IHeroProps) {
                         <Avatar className="size-28 border">
                             <AvatarImage
                                 alt={nameOnResume as string}
-                                src={profile && typeof profile === 'object' && profile.filename ? profile.filename : ''}
+                                src={profile && typeof profile === 'object' && profile._key ? `https://xeu44e20vw.ufs.sh/f/${profile._key}` : ''}
                                 className="object-cover object-top aspect-auto"
                             />
                             <AvatarFallback>{DATA.initials}</AvatarFallback>
