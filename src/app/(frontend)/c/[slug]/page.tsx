@@ -4,7 +4,7 @@ import React from "react";
 
 type TExcludeCollectionSlug = "users" | "media" | "pages" | "payload-jobs" | "payload-locked-documents" | "payload-preferences" | "payload-migrations"
 type TCollections = Exclude<CollectionSlug, TExcludeCollectionSlug>
-type TCollectionReactNode = (props: PaginatedDocs<DataFromCollectionSlug<TCollections>>) => React.ReactNode
+type TCollectionReactNode = React.FC<PaginatedDocs<DataFromCollectionSlug<TCollections>>>
 
 const _collections: Record<TCollections, TCollectionReactNode> = {
     blogs: (props: PaginatedDocs<DataFromCollectionSlug<'blogs'>>) => {
