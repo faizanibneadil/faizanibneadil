@@ -1543,7 +1543,7 @@ export interface Config {
   };
   blocks: {
     hero: IHeroProps;
-    contact: Contact;
+    contact: IContactProps;
     education: TEducationProps;
     project: Project;
     skills: ISkillsProps;
@@ -1651,9 +1651,24 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contact".
+ * via the `definition` "IContactProps".
  */
-export interface Contact {
+export interface IContactProps {
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'contact';
@@ -1820,7 +1835,7 @@ export interface Blog {
 export interface Page {
   id: number;
   title?: string | null;
-  layout?: (Contact | TEducationProps | IHeroProps | ISkillsProps | IExperiancesProps | IAboutProps)[] | null;
+  layout?: (IContactProps | TEducationProps | IHeroProps | ISkillsProps | IExperiancesProps | IAboutProps)[] | null;
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
