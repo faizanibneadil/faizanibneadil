@@ -24,6 +24,8 @@ import { About } from '@/blocks/About'
 import { Menu } from '@/globals/Menu'
 import { Socials } from '@/globals/Socials'
 
+import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
+
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -96,5 +98,14 @@ d3NrMpQ6S5FyRXcFUBlOdj76qfKcjVOhTsp1z9mwqiE4s/DMxA==
     plugins: [
         // payloadCloudPlugin(),
         // storage-adapter-placeholder
+        uploadthingStorage({
+            collections: {
+                media: true,
+            },
+            options: {
+                token: process.env.UPLOADTHING_TOKEN,
+                acl: 'public-read',
+            },
+        }),
     ],
 })

@@ -32,8 +32,8 @@ export function Hero(props: IHeroProps) {
                     <BlurFade delay={BLUR_FADE_DELAY}>
                         <Avatar className="size-28 border">
                             <AvatarImage
-                                alt={DATA.name}
-                                src={DATA.avatarUrl}
+                                alt={nameOnResume as string}
+                                src={profile && typeof profile === 'object' && profile.filename ? profile.filename : ''}
                                 className="object-cover object-top aspect-auto"
                             />
                             <AvatarFallback>{DATA.initials}</AvatarFallback>
