@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { Menu, Social } from '@/payload-types';
 import { getCachedGlobal } from '@/utilities/getGlobals';
 import Link from "next/link";
-import { LucideIcon } from "@/components/ui/lucied-icon";
+import { IconRenderrer } from "@/components/ui/icon-renderrer";
 
 export default async function Navbar() {
   const menu: Menu = await getCachedGlobal('menu', 1)()
@@ -34,7 +34,7 @@ export default async function Navbar() {
                 <TooltipTrigger asChild>
                   <Link href={href} className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
                     {item?.icon && (
-                      <LucideIcon icon={item.icon} luciedProps={{ className: 'size-4' }} />
+                      <IconRenderrer icon={item.icon} className='size-4' />
                     )}
                   </Link>
                 </TooltipTrigger>
@@ -53,7 +53,7 @@ export default async function Navbar() {
                 <TooltipTrigger asChild>
                   <Link href={item?.link} className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
                     {item?.icon && (
-                      <LucideIcon icon={item?.icon} luciedProps={{ className: 'size-4' }} />
+                      <IconRenderrer icon={item?.icon} className='size-4' />
                     )}
                   </Link>
                 </TooltipTrigger>
