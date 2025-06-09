@@ -13,6 +13,7 @@ import { Menu, Social } from '@/payload-types';
 import { getCachedGlobal } from '@/utilities/getGlobals';
 import Link from "next/link";
 import { IconRenderrer } from "@/components/ui/icon-renderrer";
+import { MenuItem } from "./menu-item";
 
 export default async function Navbar() {
   const menu: Menu = await getCachedGlobal('menu', 1)()
@@ -29,20 +30,7 @@ export default async function Navbar() {
               ? `/p/${item.page.slug}`
               : '/'
           return (
-            <DockIcon key={item.id}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link href={href} className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
-                    {item?.icon && (
-                      <IconRenderrer icon={item.icon} className='size-4' />
-                    )}
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{item.label}</p>
-                </TooltipContent>
-              </Tooltip>
-            </DockIcon>
+            <MenuItem key={item?.id} item={item} />
           )
         })}
         <Separator orientation="vertical" className="h-full" />
