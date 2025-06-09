@@ -1,6 +1,7 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -25,6 +26,7 @@ import { Menu } from '@/globals/Menu'
 import { Socials } from '@/globals/Socials'
 
 import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
+import { Config } from './payload-types'
 
 
 const filename = fileURLToPath(import.meta.url)
@@ -37,7 +39,39 @@ export default buildConfig({
             baseDir: path.resolve(dirname),
         },
     },
-    collections: [Users, Media, Notes, Blogs, Pages, Projects],
+    collections: [
+        Users,
+        Media,
+        Notes,
+        Blogs,
+        Pages,
+        Projects,
+        {
+            slug: 'tenants',
+            admin: {
+                useAsTitle: 'name'
+            },
+            fields: [
+                // remember, you own these fields
+                // these are merely suggestions/examples
+                {
+                    name: 'name',
+                    type: 'text',
+                    required: true,
+                },
+                {
+                    name: 'slug',
+                    type: 'text',
+                    required: true,
+                },
+                {
+                    name: 'domain',
+                    type: 'text',
+                    required: true,
+                }
+            ],
+        }
+    ],
     blocks: [Hero, Contact, Education, Project, Skills, Experiances, About],
     globals: [Menu, Socials],
     editor: lexicalEditor(),
@@ -107,5 +141,8 @@ d3NrMpQ6S5FyRXcFUBlOdj76qfKcjVOhTsp1z9mwqiE4s/DMxA==
                 acl: 'public-read',
             },
         }),
+        multiTenantPlugin<Config>({
+            collections: {}
+        })
     ],
 })

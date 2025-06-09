@@ -1281,6 +1281,11 @@
     find-node-modules "^2.1.3"
     range-parser "^1.2.1"
 
+"@payloadcms/plugin-multi-tenant@^3.38.0":
+  version "3.41.0"
+  resolved "https://registry.yarnpkg.com/@payloadcms/plugin-multi-tenant/-/plugin-multi-tenant-3.41.0.tgz#1c0d883d946412bd65464a089dff08da00bceff8"
+  integrity sha512-VtIeHT6vOKIczRpPRrzkn887EbsjXAdc/UNfbjEih7f146rpsNPkyNdrOOYqA2ZI4J+WbjVU+C+uDfvW8WArwg==
+
 "@payloadcms/richtext-lexical@^3.38.0":
   version "3.41.0"
   resolved "https://registry.yarnpkg.com/@payloadcms/richtext-lexical/-/richtext-lexical-3.41.0.tgz#1c96c4ca0dba4ef0be0a5dbb840d724f99de882c"
