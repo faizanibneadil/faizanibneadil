@@ -7714,9 +7714,12 @@ export interface IAboutProps {
  */
 export interface User {
   id: number;
+  roles?: ('super-admin' | 'user')[] | null;
+  username?: string | null;
   tenants?:
     | {
         tenant: number | Tenant;
+        roles: ('tenant-admin' | 'tenant-viewer')[];
         id?: string | null;
       }[]
     | null;
@@ -7799,6 +7802,7 @@ export interface Blog {
  */
 export interface Page {
   id: number;
+  tenant?: (number | null) | Tenant;
   title?: string | null;
   layout?: (IContactProps | TEducationProps | IHeroProps | ISkillsProps | IExperiancesProps | IAboutProps)[] | null;
   publishedAt?: string | null;
@@ -9472,10 +9476,13 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  roles?: T;
+  username?: T;
   tenants?:
     | T
     | {
         tenant?: T;
+        roles?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -9532,6 +9539,7 @@ export interface BlogsSelect<T extends boolean = true> {
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   layout?: T | {};
   publishedAt?: T;
