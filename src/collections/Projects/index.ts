@@ -1,11 +1,18 @@
 import type { CollectionConfig } from "payload";
 import { slugField } from "@/fields/slug";
 import { icons } from 'lucide-react'
+import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 
 
 export const Projects: CollectionConfig<'projects'> = {
     slug: 'projects',
     admin: { useAsTitle: 'title' },
+    access: {
+        create: superAdminOrTenantAdminAccess,
+        delete: superAdminOrTenantAdminAccess,
+        read: () => true,
+        update: superAdminOrTenantAdminAccess,
+    },
     fields: [
         {
             type: 'text',
