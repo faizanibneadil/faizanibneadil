@@ -13,6 +13,7 @@ import { Notes } from '@/collections/Notes'
 import { Blogs } from '@/collections/Blogs'
 import { Pages } from '@/collections/Pages'
 import { Projects } from "@/collections/Projects"
+import { Tenants } from '@/collections/Tenants'
 
 import { Hero } from '@/blocks/Hero'
 import { Contact } from '@/blocks/Contact'
@@ -48,31 +49,7 @@ export default buildConfig({
         Blogs,
         Pages,
         Projects,
-        {
-            slug: 'tenants',
-            admin: {
-                useAsTitle: 'name'
-            },
-            fields: [
-                // remember, you own these fields
-                // these are merely suggestions/examples
-                {
-                    name: 'name',
-                    type: 'text',
-                    required: true,
-                },
-                {
-                    name: 'slug',
-                    type: 'text',
-                    required: true,
-                },
-                {
-                    name: 'domain',
-                    type: 'text',
-                    required: true,
-                }
-            ],
-        }
+        Tenants
     ],
     blocks: [Hero, Contact, Education, Project, Skills, Experiances, About],
     globals: [Menu, Socials],
@@ -124,12 +101,6 @@ d3NrMpQ6S5FyRXcFUBlOdj76qfKcjVOhTsp1z9mwqiE4s/DMxA==
     onInit: async (payload) => {
         payload.logger.info('App is initialized ...')
         payload.logger.info('Finding home page in pages collection...')
-        const isHomePageAvailable = await payload.find({ collection: 'pages', where: { slug: { equals: 'home' } } })
-        if (Boolean(isHomePageAvailable.docs.length)) {
-            payload.logger.info('Home page is already exist in your pages collection')
-        } else {
-            await payload.create({ collection: 'pages', data: { slug: 'home', title: 'Home' } })
-        }
     },
     plugins: [
         // payloadCloudPlugin(),

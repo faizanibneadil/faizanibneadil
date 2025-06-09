@@ -2,10 +2,17 @@ import { slugField } from "@/fields/slug";
 import type { CollectionConfig } from "payload";
 import { revalidateDelete, revalidatePage } from "./hooks/revalidatePage";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
+import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
     admin: { useAsTitle: 'title' },
+    access: {
+        create: superAdminOrTenantAdminAccess,
+        delete: superAdminOrTenantAdminAccess,
+        read: () => true,
+        update: superAdminOrTenantAdminAccess,
+    },
     fields: [
         {
             type: 'text',
