@@ -45,16 +45,16 @@ const _collections: Record<TCollections, TCollectionReactNode> = {
     }
 }
 
-export default async function Collection(props: { params: Promise<{ slug: TCollections }> }) {
-    const { params } = props || {}
-    const slug = (await params).slug
-    const collectionProps = await queryCollectionBySlug({ slug })
+export default async function Collection(props: { params: Promise<{ slug: TCollections, domain: string }> }) {
+    const { params, } = props || {}
+    const { slug, domain } = (await params)
+    const collectionProps = await queryCollectionBySlug({ slug, domain })
     const Collection = _collections[slug]
     return slug && slug in _collections ? <Collection {...collectionProps} /> : null
 }
 
-const queryCollectionBySlug = React.cache(async ({ slug }: { slug: TCollections }) => {
+const queryCollectionBySlug = React.cache(async ({ slug, domain }: { slug: TCollections, domain: string }) => {
     const payload = await getPayloadConfig()
-    const result = await payload.find({ collection: slug, pagination: true })
+    const result = await payload.find({ collection: slug, pagination: true, where: { 'tenant.slug': { equals: domain } } })
     return result || null
 })
