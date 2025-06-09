@@ -4,13 +4,13 @@ import { CollectionSlug } from "payload";
 import { cache } from "react";
 
 type Props = {
-  params: Promise<{ slug: CollectionSlug }>
+  params: Promise<{ slug: CollectionSlug, domain: string }>
 }
 
 export default async function Page({ params }: Props) {
-  const { slug = 'home' } = (await params)
-  const page = await queryPageBySlug({ slug })
-  if (!page) return null
+  const { slug = 'home', domain } = (await params)
+  const page = await queryPageBySlug({ slug, domain })
+  if (!page || !domain) return null
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10">
       <BlocksRenderrer blocks={page.layout} />
@@ -19,7 +19,7 @@ export default async function Page({ params }: Props) {
 }
 
 
-const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryPageBySlug = cache(async ({ slug, domain }: { slug: string, domain: string }) => {
 
   const payload = await getPayloadConfig()
 
@@ -28,9 +28,10 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     limit: 1,
     pagination: false,
     where: {
-      slug: {
-        equals: slug,
-      },
+      and: [
+        { slug: { equals: slug } },
+        { 'tenant.slug': { equals: domain } }
+      ],
     },
   })
 
