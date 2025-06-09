@@ -27,6 +27,8 @@ import { Socials } from '@/globals/Socials'
 
 import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
 import { Config } from './payload-types'
+import { isSuperAdmin } from './access/isSuperAdmin'
+import { getUserTenantIDs } from './utilities/getUserTenantIDs'
 
 
 const filename = fileURLToPath(import.meta.url)
@@ -142,7 +144,24 @@ d3NrMpQ6S5FyRXcFUBlOdj76qfKcjVOhTsp1z9mwqiE4s/DMxA==
             },
         }),
         multiTenantPlugin<Config>({
-            collections: {}
-        })
+            collections: {
+                pages: {},
+            },
+            tenantField: {
+                access: {
+                    read: () => true,
+                    update: ({ req }) => {
+                        if (isSuperAdmin(req.user)) {
+                            return true
+                        }
+                        return getUserTenantIDs(req.user).length > 0
+                    },
+                },
+            },
+            tenantsArrayField: {
+                includeDefaultField: false,
+            },
+            userHasAccessToAllTenants: (user) => isSuperAdmin(user),
+        }),
     ],
 })
