@@ -7741,8 +7741,18 @@ export interface User {
 export interface Tenant {
   id: number;
   name: string;
+  /**
+   * Used for domain-based tenant handling
+   */
+  domain?: string | null;
+  /**
+   * Used for url paths, example: /tenant-slug/page-slug
+   */
   slug: string;
-  domain: string;
+  /**
+   * If checked, logging in is not required to read. Useful for building public pages.
+   */
+  allowPublicRead?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -9569,8 +9579,9 @@ export interface ProjectsSelect<T extends boolean = true> {
  */
 export interface TenantsSelect<T extends boolean = true> {
   name?: T;
-  slug?: T;
   domain?: T;
+  slug?: T;
+  allowPublicRead?: T;
   updatedAt?: T;
   createdAt?: T;
 }
