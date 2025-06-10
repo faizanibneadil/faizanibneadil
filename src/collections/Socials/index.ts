@@ -1,11 +1,14 @@
 import { iconField } from "@/fields/icon";
-import type { GlobalConfig } from "payload";
-import { revalidateSocials } from "./hooks/revalidateSocials";
+import type { CollectionConfig, GlobalConfig } from "payload";
+import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 
-export const Socials: GlobalConfig<'socials'> = {
+export const Socials: CollectionConfig<'socials'> = {
     slug: 'socials',
-    hooks: {
-        afterChange: [revalidateSocials],
+    access: {
+        create: superAdminOrTenantAdminAccess,
+        delete: superAdminOrTenantAdminAccess,
+        read: () => true,
+        update: superAdminOrTenantAdminAccess,
     },
     fields: [
         {

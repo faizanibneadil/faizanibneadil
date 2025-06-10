@@ -23,8 +23,8 @@ import { Skills } from '@/blocks/Skill'
 import { Experiances } from '@/blocks/Experiances'
 import { About } from '@/blocks/About'
 
-import { Menu } from '@/globals/Menu'
-import { Socials } from '@/globals/Socials'
+import { Menu } from '@/collections/Menu'
+import { Socials } from '@/collections/Socials'
 
 import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
 import { Config } from './payload-types'
@@ -49,10 +49,12 @@ export default buildConfig({
         Blogs,
         Pages,
         Projects,
-        Tenants
+        Tenants,
+        Menu,
+        Socials
     ],
     blocks: [Hero, Contact, Education, Project, Skills, Experiances, About],
-    globals: [Menu, Socials],
+    globals: [],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',
     typescript: {
@@ -117,6 +119,8 @@ d3NrMpQ6S5FyRXcFUBlOdj76qfKcjVOhTsp1z9mwqiE4s/DMxA==
         multiTenantPlugin<Config>({
             collections: {
                 pages: {},
+                menu: { isGlobal: true },
+                socials: { isGlobal: true }
             },
             tenantField: {
                 access: {

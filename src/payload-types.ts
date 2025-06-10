@@ -7502,6 +7502,8 @@ export interface Config {
     pages: Page;
     projects: Project1;
     tenants: Tenant;
+    menu: Menu;
+    socials: Social;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -7516,6 +7518,8 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     tenants: TenantsSelect<false> | TenantsSelect<true>;
+    menu: MenuSelect<false> | MenuSelect<true>;
+    socials: SocialsSelect<false> | SocialsSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -7524,14 +7528,8 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {
-    menu: Menu;
-    socials: Social;
-  };
-  globalsSelect: {
-    menu: MenuSelect<false> | MenuSelect<true>;
-    socials: SocialsSelect<false> | SocialsSelect<true>;
-  };
+  globals: {};
+  globalsSelect: {};
   locale: null;
   user: User & {
     collection: 'users';
@@ -9310,6 +9308,46 @@ export interface Project1 {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu".
+ */
+export interface Menu {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  menu?:
+    | {
+        /**
+         * If it is checked then this will be a collection of docs.
+         */
+        asCollection?: boolean | null;
+        icon?: TIconProps;
+        label: string;
+        page?: (number | null) | Page;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "socials".
+ */
+export interface Social {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  socialsLinks?:
+    | {
+        title: string;
+        link: string;
+        icon?: TIconProps;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
@@ -9434,6 +9472,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tenants';
         value: number | Tenant;
+      } | null)
+    | ({
+        relationTo: 'menu';
+        value: number | Menu;
+      } | null)
+    | ({
+        relationTo: 'socials';
+        value: number | Social;
       } | null)
     | ({
         relationTo: 'payload-jobs';
@@ -9587,6 +9633,41 @@ export interface TenantsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu_select".
+ */
+export interface MenuSelect<T extends boolean = true> {
+  tenant?: T;
+  menu?:
+    | T
+    | {
+        asCollection?: T;
+        icon?: T;
+        label?: T;
+        page?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "socials_select".
+ */
+export interface SocialsSelect<T extends boolean = true> {
+  tenant?: T;
+  socialsLinks?:
+    | T
+    | {
+        title?: T;
+        link?: T;
+        icon?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs_select".
  */
 export interface PayloadJobsSelect<T extends boolean = true> {
@@ -9647,79 +9728,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "menu".
- */
-export interface Menu {
-  id: number;
-  menu?:
-    | {
-        /**
-         * If it is checked then this will be a collection of docs.
-         */
-        asCollection?: boolean | null;
-        icon?: TIconProps;
-        label: string;
-        page?: (number | null) | Page;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "socials".
- */
-export interface Social {
-  id: number;
-  socialsLinks?:
-    | {
-        title: string;
-        link: string;
-        icon?: TIconProps;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "menu_select".
- */
-export interface MenuSelect<T extends boolean = true> {
-  menu?:
-    | T
-    | {
-        asCollection?: T;
-        icon?: T;
-        label?: T;
-        page?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "socials_select".
- */
-export interface SocialsSelect<T extends boolean = true> {
-  socialsLinks?:
-    | T
-    | {
-        title?: T;
-        link?: T;
-        icon?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
