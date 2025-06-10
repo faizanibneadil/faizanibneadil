@@ -1,11 +1,14 @@
-import type { GlobalConfig } from "payload";
-import { revalidateMenu } from "./hooks/revalidateMenu";
+import type { CollectionConfig, GlobalConfig } from "payload";
 import { iconField } from "@/fields/icon";
+import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 
-export const Menu: GlobalConfig<'menu'> = {
+export const Menu: CollectionConfig<'menu'> = {
     slug: 'menu',
-    hooks: {
-        afterChange: [revalidateMenu],
+     access: {
+        create: superAdminOrTenantAdminAccess,
+        delete: superAdminOrTenantAdminAccess,
+        read: () => true,
+        update: superAdminOrTenantAdminAccess,
     },
     fields: [
         {

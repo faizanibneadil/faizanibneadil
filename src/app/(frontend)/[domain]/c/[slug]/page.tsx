@@ -2,7 +2,7 @@ import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import type { CollectionSlug, DataFromCollectionSlug, PaginatedDocs } from "payload";
 import React from "react";
 
-type TExcludeCollectionSlug = "users" | "media" | "pages" | "tenants" | "payload-jobs" | "payload-locked-documents" | "payload-preferences" | "payload-migrations"
+type TExcludeCollectionSlug = "users" | "media" | "pages" | "menu" | "socials" | "tenants" | "payload-jobs" | "payload-locked-documents" | "payload-preferences" | "payload-migrations"
 type TCollections = Exclude<CollectionSlug, TExcludeCollectionSlug>
 type TCollectionReactNode = React.FC<PaginatedDocs<DataFromCollectionSlug<TCollections>>>
 
