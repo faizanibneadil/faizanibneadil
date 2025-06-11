@@ -67,11 +67,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light">
           <TooltipProvider delayDuration={0}>
             {children}
-            <ErrorBoundary fallback={null}>
-              <React.Suspense fallback='loading...'>
-                <Navbar />
-              </React.Suspense>
-            </ErrorBoundary>
+            
           </TooltipProvider>
         </ThemeProvider>
       </body>
