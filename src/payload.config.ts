@@ -63,6 +63,11 @@ export default buildConfig({
     // database-adapter-config-start
     db: postgresAdapter({
         pool: {
+            connectionTimeoutMillis: 1000,
+            max: 20,
+            log: (...messages) => {
+                console.log({ PG_LOGS: messages })
+            },
             user: process.env.PG_USER,
             password: process.env.PG_PASSWORD,
             database: process.env.PG_DATABASE,
