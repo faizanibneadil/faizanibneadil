@@ -7580,6 +7580,7 @@ export interface IHeroProps {
  */
 export interface Media {
   id: number;
+  tenant?: (number | null) | Tenant;
   alt: string;
   _key?: string | null;
   updatedAt: string;
@@ -7593,6 +7594,28 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants".
+ */
+export interface Tenant {
+  id: number;
+  name: string;
+  /**
+   * Used for domain-based tenant handling
+   */
+  domain?: string | null;
+  /**
+   * Used for url paths, example: /tenant-slug/page-slug
+   */
+  slug: string;
+  /**
+   * If checked, logging in is not required to read. Useful for building public pages.
+   */
+  allowPublicRead?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7734,32 +7757,11 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tenants".
- */
-export interface Tenant {
-  id: number;
-  name: string;
-  /**
-   * Used for domain-based tenant handling
-   */
-  domain?: string | null;
-  /**
-   * Used for url paths, example: /tenant-slug/page-slug
-   */
-  slug: string;
-  /**
-   * If checked, logging in is not required to read. Useful for building public pages.
-   */
-  allowPublicRead?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "notes".
  */
 export interface Note {
   id: number;
+  tenant?: (number | null) | Tenant;
   title: string;
   content?: {
     root: {
@@ -7785,6 +7787,7 @@ export interface Note {
  */
 export interface Blog {
   id: number;
+  tenant?: (number | null) | Tenant;
   title: string;
   content?: {
     root: {
@@ -7826,6 +7829,7 @@ export interface Page {
  */
 export interface Project1 {
   id: number;
+  tenant?: (number | null) | Tenant;
   title: string;
   icon?:
     | (
@@ -9556,6 +9560,7 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  tenant?: T;
   alt?: T;
   _key?: T;
   updatedAt?: T;
@@ -9575,6 +9580,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "notes_select".
  */
 export interface NotesSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   content?: T;
   updatedAt?: T;
@@ -9585,6 +9591,7 @@ export interface NotesSelect<T extends boolean = true> {
  * via the `definition` "blogs_select".
  */
 export interface BlogsSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   content?: T;
   updatedAt?: T;
@@ -9610,6 +9617,7 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "projects_select".
  */
 export interface ProjectsSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   icon?: T;
   publishedAt?: T;
