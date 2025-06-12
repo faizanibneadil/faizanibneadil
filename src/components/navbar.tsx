@@ -34,7 +34,7 @@ export default async function Navbar({ domain }: { domain: string }) {
               ? `/${domain}/p/${item?.page?.slug}`
               : '/'
           return (
-            <DockIcon>
+            <DockIcon key={item?.id}>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link href={href} className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
@@ -53,7 +53,7 @@ export default async function Navbar({ domain }: { domain: string }) {
         <Separator orientation="vertical" className="h-full" />
         {socials?.docs?.at(0)?.socialsLinks?.map(item => {
           return (
-            <DockIcon>
+            <DockIcon key={item?.id}>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link href={item?.link} target="_blank" className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
