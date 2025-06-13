@@ -7,6 +7,9 @@ import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin"
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
     admin: { useAsTitle: 'title' },
+    custom: {
+        collection: 'pages'
+    },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
@@ -33,7 +36,20 @@ export const Pages: CollectionConfig<'pages'> = {
                 position: 'sidebar',
             },
         },
-        ...slugField()
+        ...slugField(),
+        {
+            type: 'text',
+            name: 'type',
+            admin: { disabled: true },
+            hooks: {
+                afterRead: [
+                    async function getCollectionSlug({ collection }){
+                        console.log(collection?.slug)
+                        return collection?.slug
+                    }
+                ]
+            }
+        }
     ],
     hooks: {
         afterChange: [revalidatePage],

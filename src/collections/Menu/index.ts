@@ -45,7 +45,7 @@ export const Menu: CollectionConfig<'menu'> = {
                             type: 'relationship',
                             relationTo: 'pages',
                             name: 'page',
-                            label: 'Page'
+                            label: 'Page',
                         }
                     ]
                 }
