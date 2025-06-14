@@ -1,5 +1,6 @@
 import type { CollectionConfig, GlobalConfig } from "payload";
 import { iconField } from "@/fields/icon";
+
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 
 export const Menu: CollectionConfig<'menu'> = {
@@ -50,6 +51,6 @@ export const Menu: CollectionConfig<'menu'> = {
                     ]
                 }
             ]
-        }
+        },
     ]
 }

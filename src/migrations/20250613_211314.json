@@ -1,5 +1,5 @@
 {
-  "id": "f303c727-eb6b-41f1-9ad8-3bf46475cf08",
+  "id": "d1c6d516-ea93-4297-81f8-414ba5dd2121",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -296,6 +296,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "type": {
+          "name": "type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3) with time zone",
@@ -444,6 +450,12 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
         },
         "_key": {
           "name": "_key",
@@ -631,6 +643,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "type": {
+          "name": "type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3) with time zone",
@@ -739,6 +757,12 @@
         "content": {
           "name": "content",
           "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -1841,6 +1865,12 @@
           "primaryKey": false,
           "notNull": false,
           "default": true
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -3040,6 +3070,12 @@
           "notNull": false,
           "default": true
         },
+        "version_type": {
+          "name": "version_type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "version_updated_at": {
           "name": "version_updated_at",
           "type": "timestamp(3) with time zone",
@@ -3321,6 +3357,12 @@
           "notNull": false,
           "default": true
         },
+        "type": {
+          "name": "type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3) with time zone",
@@ -3495,6 +3537,12 @@
           "primaryKey": false,
           "notNull": false,
           "default": true
+        },
+        "version_type": {
+          "name": "version_type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
         },
         "version_updated_at": {
           "name": "version_updated_at",
@@ -3764,6 +3812,12 @@
           "notNull": false,
           "default": false
         },
+        "type": {
+          "name": "type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3) with time zone",
@@ -3994,6 +4048,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "type": {
+          "name": "type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3) with time zone",
@@ -4185,6 +4245,12 @@
         "tenant_id": {
           "name": "tenant_id",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },

@@ -35,6 +35,6 @@ export const Socials: CollectionConfig<'socials'> = {
                     ]
                 }
             ]
-        }
+        },
     ]
 }

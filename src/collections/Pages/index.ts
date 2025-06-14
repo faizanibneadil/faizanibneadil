@@ -23,11 +23,46 @@ export const Pages: CollectionConfig<'pages'> = {
             label: 'Title'
         },
         {
+            type: 'checkbox',
+            name: 'designMode',
+            label: 'Design Mode',
+            defaultValue: true,
+            admin: {
+                description: 'If this checked you can show your collection',
+                position: 'sidebar',
+            }
+        },
+        {
+            type: 'group',
+            name: 'config',
+            admin: {
+                condition: (data, siblings, ctx) => !data?.designMode
+            },
+            fields: [
+                {
+                    type: 'select',
+                    name: 'col',
+                    options: [{label:'test',value:'test'}],
+                    admin: {
+                        components: {
+                            Field: {
+                                path: '@/collections/Pages/components/collectionConfig.client.tsx',
+                                exportName: 'CollectionConfig'
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
             type: 'blocks',
             name: 'layout',
             label: 'Design You\'r Page',
             blocks: [],
-            blockReferences: ['contact', 'education', 'hero', 'skills', 'experiances', 'about']
+            blockReferences: ['contact', 'education', 'hero', 'skills', 'experiances', 'about'],
+            admin: {
+                condition: (data, siblings, ctx) => data?.designMode
+            }
         },
         {
             name: 'publishedAt',
@@ -37,19 +72,6 @@ export const Pages: CollectionConfig<'pages'> = {
             },
         },
         ...slugField(),
-        {
-            type: 'text',
-            name: 'type',
-            admin: { disabled: true },
-            hooks: {
-                afterRead: [
-                    async function getCollectionSlug({ collection }){
-                        console.log(collection?.slug)
-                        return collection?.slug
-                    }
-                ]
-            }
-        }
     ],
     hooks: {
         afterChange: [revalidatePage],
