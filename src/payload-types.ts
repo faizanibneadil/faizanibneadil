@@ -7582,7 +7582,6 @@ export interface Media {
   id: number;
   tenant?: (number | null) | Tenant;
   alt: string;
-  type?: string | null;
   _key?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -7615,7 +7614,6 @@ export interface Tenant {
    * If checked, logging in is not required to read. Useful for building public pages.
    */
   allowPublicRead?: boolean | null;
-  type?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -7746,7 +7744,6 @@ export interface User {
         id?: string | null;
       }[]
     | null;
-  type?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -7781,7 +7778,6 @@ export interface Note {
     };
     [k: string]: unknown;
   } | null;
-  type?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -7808,7 +7804,6 @@ export interface Blog {
     };
     [k: string]: unknown;
   } | null;
-  type?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -7820,11 +7815,17 @@ export interface Page {
   id: number;
   tenant?: (number | null) | Tenant;
   title?: string | null;
+  /**
+   * If this checked you can show your collection
+   */
+  mode?: ('layout' | 'collection') | null;
+  configurations?: {
+    slug?: ('projects' | 'notes' | 'blogs') | null;
+  };
   layout?: (IContactProps | TEducationProps | IHeroProps | ISkillsProps | IExperiancesProps | IAboutProps)[] | null;
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
-  type?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -9312,7 +9313,6 @@ export interface Project1 {
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
-  type?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -9326,17 +9326,12 @@ export interface Menu {
   tenant?: (number | null) | Tenant;
   menu?:
     | {
-        /**
-         * If it is checked then this will be a collection of docs.
-         */
-        asCollection?: boolean | null;
         icon?: TIconProps;
         label: string;
         page?: (number | null) | Page;
         id?: string | null;
       }[]
     | null;
-  type?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -9355,7 +9350,6 @@ export interface Social {
         id?: string | null;
       }[]
     | null;
-  type?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -9554,7 +9548,6 @@ export interface UsersSelect<T extends boolean = true> {
         roles?: T;
         id?: T;
       };
-  type?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -9572,7 +9565,6 @@ export interface UsersSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   tenant?: T;
   alt?: T;
-  type?: T;
   _key?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -9594,7 +9586,6 @@ export interface NotesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
   content?: T;
-  type?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -9606,7 +9597,6 @@ export interface BlogsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
   content?: T;
-  type?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -9617,11 +9607,16 @@ export interface BlogsSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  mode?: T;
+  configurations?:
+    | T
+    | {
+        slug?: T;
+      };
   layout?: T | {};
   publishedAt?: T;
   slug?: T;
   slugLock?: T;
-  type?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -9637,7 +9632,6 @@ export interface ProjectsSelect<T extends boolean = true> {
   publishedAt?: T;
   slug?: T;
   slugLock?: T;
-  type?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -9651,7 +9645,6 @@ export interface TenantsSelect<T extends boolean = true> {
   domain?: T;
   slug?: T;
   allowPublicRead?: T;
-  type?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -9664,13 +9657,11 @@ export interface MenuSelect<T extends boolean = true> {
   menu?:
     | T
     | {
-        asCollection?: T;
         icon?: T;
         label?: T;
         page?: T;
         id?: T;
       };
-  type?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -9688,7 +9679,6 @@ export interface SocialsSelect<T extends boolean = true> {
         icon?: T;
         id?: T;
       };
-  type?: T;
   updatedAt?: T;
   createdAt?: T;
 }

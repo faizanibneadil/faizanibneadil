@@ -23,10 +23,14 @@ export const Pages: CollectionConfig<'pages'> = {
             label: 'Title'
         },
         {
-            type: 'checkbox',
-            name: 'designMode',
-            label: 'Design Mode',
-            defaultValue: true,
+            type: 'select',
+            name: 'mode',
+            label: 'Page Mode',
+            defaultValue: 'layout',
+            options: [
+                { label: 'Layout', value: 'layout' },
+                { label: 'Collection', value: 'collection' }
+            ],
             admin: {
                 description: 'If this checked you can show your collection',
                 position: 'sidebar',
@@ -34,23 +38,25 @@ export const Pages: CollectionConfig<'pages'> = {
         },
         {
             type: 'group',
-            name: 'config',
+            name: 'configurations',
+            label: 'Configurations',
             admin: {
-                condition: (data, siblings, ctx) => !data?.designMode
+                condition: (blocks, siblings_blocks, ctx) => {
+                    if (blocks?.mode === 'collection') {
+                        return true
+                    }
+                    return false
+                }
             },
             fields: [
                 {
                     type: 'select',
-                    name: 'col',
-                    options: [{label:'test',value:'test'}],
-                    admin: {
-                        components: {
-                            Field: {
-                                path: '@/collections/Pages/components/collectionConfig.client.tsx',
-                                exportName: 'CollectionConfig'
-                            }
-                        }
-                    }
+                    name: 'slug',
+                    options: [
+                        { label: 'Projects', value: 'projects' },
+                        { label: 'Notes', value: 'notes' },
+                        { label: 'Blogs', value: 'blogs' }
+                    ],
                 }
             ]
         },
@@ -61,7 +67,12 @@ export const Pages: CollectionConfig<'pages'> = {
             blocks: [],
             blockReferences: ['contact', 'education', 'hero', 'skills', 'experiances', 'about'],
             admin: {
-                condition: (data, siblings, ctx) => data?.designMode
+                condition: (blocks, siblings_blocks, ctx) => {
+                    if (blocks?.mode === 'layout') {
+                        return true
+                    }
+                    return false
+                }
             }
         },
         {
