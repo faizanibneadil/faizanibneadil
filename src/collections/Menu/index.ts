@@ -1,5 +1,6 @@
 import type { CollectionConfig, GlobalConfig } from "payload";
 import { iconField } from "@/fields/icon";
+
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 
 export const Menu: CollectionConfig<'menu'> = {
@@ -20,21 +21,7 @@ export const Menu: CollectionConfig<'menu'> = {
                 {
                     type: 'row',
                     fields: [
-                        {
-                            type: 'checkbox',
-                            label: 'As Collection',
-                            name: 'asCollection',
-                            defaultValue: false,
-                            admin: {
-                                description: 'If it is checked then this will be a collection of docs.'
-                            }
-                        },
-                        iconField
-                    ]
-                },
-                {
-                    type: 'row',
-                    fields: [
+                        iconField,
                         {
                             type: 'text',
                             name: 'label',
@@ -45,11 +32,11 @@ export const Menu: CollectionConfig<'menu'> = {
                             type: 'relationship',
                             relationTo: 'pages',
                             name: 'page',
-                            label: 'Page'
+                            label: 'Page',
                         }
                     ]
                 }
             ]
-        }
+        },
     ]
 }

@@ -1,4 +1,5 @@
 import { BlocksRenderrer } from "@/blocks";
+import { CollectionRenderer } from "@/collections";
 import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import { CollectionSlug } from "payload";
 import { cache } from "react";
@@ -13,7 +14,12 @@ export default async function Page({ params }: Props) {
   if (!page || !domain) return null
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10">
-      <BlocksRenderrer blocks={page.layout} />
+      {page?.mode === 'layout' && (
+        <BlocksRenderrer blocks={page.layout} />
+      )}
+      {page?.mode === 'collection' && (
+        <CollectionRenderer params={params as any} />
+      )}
     </main>
   )
 }

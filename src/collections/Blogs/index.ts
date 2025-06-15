@@ -2,6 +2,7 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 
+
 export const Blogs: CollectionConfig<'blogs'> = {
     slug: 'blogs',
     admin: {
@@ -25,6 +26,6 @@ export const Blogs: CollectionConfig<'blogs'> = {
             name: 'content',
             label: false,
             editor: lexicalEditor()
-        }
+        },
     ]
 }

@@ -4,6 +4,7 @@ import { icons } from 'lucide-react'
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 
 
+
 export const Projects: CollectionConfig<'projects'> = {
     slug: 'projects',
     admin: { useAsTitle: 'title' },
@@ -33,7 +34,7 @@ export const Projects: CollectionConfig<'projects'> = {
                 position: 'sidebar',
             },
         },
-        ...slugField()
+        ...slugField(),
     ],
     // hooks: {
     //     afterChange: [revalidatePage],

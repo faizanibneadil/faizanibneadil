@@ -7815,6 +7815,13 @@ export interface Page {
   id: number;
   tenant?: (number | null) | Tenant;
   title?: string | null;
+  /**
+   * If this checked you can show your collection
+   */
+  mode?: ('layout' | 'collection') | null;
+  configurations?: {
+    slug?: ('projects' | 'notes' | 'blogs') | null;
+  };
   layout?: (IContactProps | TEducationProps | IHeroProps | ISkillsProps | IExperiancesProps | IAboutProps)[] | null;
   publishedAt?: string | null;
   slug?: string | null;
@@ -9319,10 +9326,6 @@ export interface Menu {
   tenant?: (number | null) | Tenant;
   menu?:
     | {
-        /**
-         * If it is checked then this will be a collection of docs.
-         */
-        asCollection?: boolean | null;
         icon?: TIconProps;
         label: string;
         page?: (number | null) | Page;
@@ -9604,6 +9607,12 @@ export interface BlogsSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  mode?: T;
+  configurations?:
+    | T
+    | {
+        slug?: T;
+      };
   layout?: T | {};
   publishedAt?: T;
   slug?: T;
@@ -9648,7 +9657,6 @@ export interface MenuSelect<T extends boolean = true> {
   menu?:
     | T
     | {
-        asCollection?: T;
         icon?: T;
         label?: T;
         page?: T;

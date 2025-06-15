@@ -1,5 +1,6 @@
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { CollectionConfig } from "payload";
+
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 
 export const Notes: CollectionConfig<'notes'> = {
@@ -25,6 +26,6 @@ export const Notes: CollectionConfig<'notes'> = {
             editor: lexicalEditor(),
             name: 'content',
             label: 'Note Content'
-        }
+        },
     ]
 }
