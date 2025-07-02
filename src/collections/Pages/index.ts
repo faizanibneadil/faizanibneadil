@@ -46,7 +46,7 @@ export const Pages: CollectionConfig<'pages'> = {
                         return true
                     }
                     return false
-                }
+                },
             },
             fields: [
                 {
@@ -67,6 +67,7 @@ export const Pages: CollectionConfig<'pages'> = {
             blocks: [],
             blockReferences: ['contact', 'education', 'hero', 'skills', 'experiances', 'about'],
             admin: {
+                initCollapsed:true,
                 condition: (blocks, siblings_blocks, ctx) => {
                     if (blocks?.mode === 'layout') {
                         return true

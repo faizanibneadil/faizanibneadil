@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { ISkillsProps } from "@/payload-types";
 
 const BLUR_FADE_DELAY = 0.04;
-export function Skills(props:ISkillsProps) {
-    const { skills } = props || {}
+export function Skills(props: ISkillsProps) {
+    const { userSkills } = props || {}
     return (
         <section id="skills">
             <div className="flex min-h-0 flex-col gap-y-3">
@@ -12,9 +12,9 @@ export function Skills(props:ISkillsProps) {
                     <h2 className="text-xl font-bold">Skills</h2>
                 </BlurFade>
                 <div className="flex flex-wrap gap-1">
-                    {skills?.map((skill, id) => (
+                    {userSkills?.map((skill,id) => typeof skill === 'number' ? null : (
                         <BlurFade key={skill.id} delay={BLUR_FADE_DELAY * 10 + id * 0.05}>
-                            <Badge key={skill.id}>{skill.skill}</Badge>
+                            <Badge key={skill.id}>{skill.title}</Badge>
                         </BlurFade>
                     ))}
                 </div>

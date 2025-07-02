@@ -14,6 +14,9 @@ import { Blogs } from '@/collections/Blogs'
 import { Pages } from '@/collections/Pages'
 import { Projects } from "@/collections/Projects"
 import { Tenants } from '@/collections/Tenants'
+import { skills as SkillsCollection } from "@/collections/Skills"
+import {hackathons} from "@/collections/Hackathons"
+import {researches} from "@/collections/Researches"
 
 import { Hero } from '@/blocks/Hero'
 import { Contact } from '@/blocks/Contact'
@@ -51,7 +54,10 @@ export default buildConfig({
         Projects,
         Tenants,
         Menu,
-        Socials
+        Socials,
+        SkillsCollection,
+        hackathons,
+        researches
     ],
     blocks: [Hero, Contact, Education, Project, Skills, Experiances, About],
     globals: [],

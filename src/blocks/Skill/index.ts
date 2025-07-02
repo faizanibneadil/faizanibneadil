@@ -5,14 +5,12 @@ export const Skills: Block = {
     interfaceName: 'ISkillsProps',
     fields: [
         {
-            type: 'array',
-            name: 'skills',
-            fields: [
-                {
-                    type: 'text',
-                    name: 'skill'
-                }
-            ]
-        }
+            type:'relationship',
+            relationTo:'skills',
+            name:'userSkills',
+            hasMany:true,
+            minRows: 50
+        },
+        
     ]
 }

@@ -72,6 +72,34 @@ export const Users: CollectionConfig<'users'> = {
         position: 'sidebar',
       },
     },
+    {
+      type: 'select',
+      name: 'field',
+      label: 'Field',
+      saveToJWT:true,
+      options: [
+        { label: "Information Technology (IT)", value: "information_technology" },
+        { label: "Healthcare & Medicine", value: "healthcare_medicine" },
+        { label: "Engineering", value: "engineering" },
+        { label: "Finance & Accounting", value: "finance_accounting" },
+        { label: "Sales & Marketing", value: "sales_marketing" },
+        { label: "Education & Teaching", value: "education_teaching" },
+        { label: "Business Management & Administration", value: "business_management" },
+        { label: "Law & Legal Services", value: "law_legal_services" },
+        { label: "Media & Communications", value: "media_communications" },
+        { label: "Design & Creative Arts", value: "design_creative_arts" },
+        { label: "Skilled Trades", value: "skilled_trades" },
+        { label: "Hospitality & Tourism", value: "hospitality_tourism" },
+        { label: "Logistics & Supply Chain", value: "logistics_supply_chain" },
+        { label: "Construction & Real Estate", value: "construction_real_estate" },
+        { label: "Customer Service & Support", value: "customer_service" },
+        { label: "Data Science & Analytics", value: "data_science_analytics" },
+        { label: "Human Resources (HR)", value: "human_resources" },
+        { label: "Pharmaceutical & Biotechnology", value: "pharmaceutical_biotech" },
+        { label: "Banking & Investment", value: "banking_investment" },
+        { label: "Government & Public Sector", value: "government_public_sector" }
+      ]
+    }
   ],
   // The following hook sets a cookie based on the domain a user logs in from.
   // It checks the domain and matches it to a tenant in the system, then sets

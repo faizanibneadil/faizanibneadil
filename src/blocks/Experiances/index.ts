@@ -39,7 +39,10 @@ export const Experiances: Block = {
                     name: 'description',
                     label: 'Description'
                 }
-            ]
+            ],
+            admin:{
+                initCollapsed:true
+            }
         }
     ]
 }
