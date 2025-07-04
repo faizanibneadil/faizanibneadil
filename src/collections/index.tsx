@@ -8,7 +8,7 @@ type TCollections = Exclude<TConfigurations['slug'], null | undefined>
 type TCollectionReactNode = React.FC<PaginatedDocs<DataFromCollectionSlug<TCollections>>>
 
 const _Collections: Record<TCollections, TCollectionReactNode> = {
-    blogs: (props: PaginatedDocs<DataFromCollectionSlug<'pages'>>) => {
+    blogs: (props: PaginatedDocs<DataFromCollectionSlug<'blogs'>>) => {
         const { docs } = props || {}
         const blogs = docs.map(doc => {
             return (
@@ -20,7 +20,7 @@ const _Collections: Record<TCollections, TCollectionReactNode> = {
         })
         return <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{blogs}</div>
     },
-    notes: (props: PaginatedDocs<DataFromCollectionSlug<'pages'>>) => {
+    notes: (props: PaginatedDocs<DataFromCollectionSlug<'notes'>>) => {
         const { docs } = props || {}
         const notes = docs.map(doc => {
             return (
@@ -32,7 +32,7 @@ const _Collections: Record<TCollections, TCollectionReactNode> = {
         })
         return <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{notes}</div>
     },
-    projects: (props: PaginatedDocs<DataFromCollectionSlug<'pages'>>) => {
+    projects: (props: PaginatedDocs<DataFromCollectionSlug<'projects'>>) => {
         const { docs } = props || {}
         const projects = docs.map(doc => {
             return (

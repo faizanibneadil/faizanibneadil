@@ -1,18 +1,16 @@
 import type { Block } from "payload";
 
-export const Skills: Block = {
-    slug: 'skills',
-    interfaceName: 'ISkillsProps',
+export const Skill: Block = {
+    slug: 'skill',
+    interfaceName: 'ISkillProps',
     fields: [
         {
-            type: 'array',
-            name: 'skills',
-            fields: [
-                {
-                    type: 'text',
-                    name: 'skill'
-                }
-            ]
-        }
+            type:'relationship',
+            relationTo:'skills',
+            name:'userSkills',
+            hasMany:true,
+            minRows: 50
+        },
+        
     ]
 }

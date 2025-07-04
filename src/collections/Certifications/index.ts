@@ -1,27 +1,16 @@
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { resume_fields } from "@/constants";
 import type { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 
-
-export const Blogs: CollectionConfig<'blogs'> = {
-    slug: 'blogs',
-    admin: {
-        useAsTitle: 'title',
-    },
+export const Certifications: CollectionConfig<'certifications'> = {
+    slug: 'certifications',
+    admin: {useAsTitle: 'title'},
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
         read: () => true,
         update: superAdminOrTenantAdminAccess,
     },
-    fields: [
-        TitleField(),
-        {
-            type: 'richText',
-            name: 'content',
-            label: false,
-            editor: lexicalEditor()
-        },
-    ]
+    fields: [TitleField()]
 }

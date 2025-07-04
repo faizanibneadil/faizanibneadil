@@ -39,7 +39,10 @@ export const Education: Block = {
                     name: 'description',
                     label: 'Description'
                 }
-            ]
+            ],
+            admin:{
+                initCollapsed:true
+            }
         }
     ]
 }

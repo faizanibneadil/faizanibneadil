@@ -1,8 +1,8 @@
 import { Block } from "payload";
 
-export const Experiances: Block = {
-    slug: 'experiances',
-    interfaceName: 'IExperiancesProps',
+export const Experiance: Block = {
+    slug: 'experiance',
+    interfaceName: 'IExperianceProps',
     fields: [
         {
             type: 'array',
@@ -39,7 +39,10 @@ export const Experiances: Block = {
                     name: 'description',
                     label: 'Description'
                 }
-            ]
+            ],
+            admin:{
+                initCollapsed:true
+            }
         }
     ]
 }

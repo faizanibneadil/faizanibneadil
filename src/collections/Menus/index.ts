@@ -3,8 +3,8 @@ import { iconField } from "@/fields/icon";
 
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 
-export const Menu: CollectionConfig<'menu'> = {
-    slug: 'menu',
+export const Menus: CollectionConfig<'menus'> = {
+    slug: 'menus',
      access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,

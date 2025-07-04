@@ -1,0 +1,1 @@
+export { resume_fields } from './tenants-fields'

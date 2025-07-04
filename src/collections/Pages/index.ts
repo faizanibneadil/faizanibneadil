@@ -3,6 +3,7 @@ import type { CollectionConfig } from "payload";
 import { revalidateDelete, revalidatePage } from "./hooks/revalidatePage";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { TitleField } from "@/fields/title";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
@@ -17,11 +18,7 @@ export const Pages: CollectionConfig<'pages'> = {
         update: superAdminOrTenantAdminAccess,
     },
     fields: [
-        {
-            type: 'text',
-            name: 'title',
-            label: 'Title'
-        },
+        TitleField(),
         {
             type: 'select',
             name: 'mode',
@@ -46,7 +43,7 @@ export const Pages: CollectionConfig<'pages'> = {
                         return true
                     }
                     return false
-                }
+                },
             },
             fields: [
                 {
@@ -65,8 +62,9 @@ export const Pages: CollectionConfig<'pages'> = {
             name: 'layout',
             label: 'Design You\'r Page',
             blocks: [],
-            blockReferences: ['contact', 'education', 'hero', 'skills', 'experiances', 'about'],
+            blockReferences: ['contact', 'education', 'hero', 'skill', 'experiance', 'about'],
             admin: {
+                initCollapsed:true,
                 condition: (blocks, siblings_blocks, ctx) => {
                     if (blocks?.mode === 'layout') {
                         return true

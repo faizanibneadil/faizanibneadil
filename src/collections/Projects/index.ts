@@ -1,9 +1,7 @@
-import type { CollectionConfig } from "payload";
 import { slugField } from "@/fields/slug";
-import { icons } from 'lucide-react'
+import type { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
-
-
+import { TitleField } from "@/fields/title";
 
 export const Projects: CollectionConfig<'projects'> = {
     slug: 'projects',
@@ -15,24 +13,20 @@ export const Projects: CollectionConfig<'projects'> = {
         update: superAdminOrTenantAdminAccess,
     },
     fields: [
-        {
-            type: 'text',
-            name: 'title',
-            label: 'Title',
-            required: true
-        },
-        {
-            type: 'select',
-            name: 'icon',
-            label: 'Icon',
-            options: Object.keys(icons).map(icon => ({ label: icon, value: icon }))
-        },
+        TitleField(),
         {
             name: 'publishedAt',
             type: 'date',
             admin: {
                 position: 'sidebar',
             },
+        },
+        {
+            type: 'join',
+            name: 'Skills',
+            collection: 'skills',
+            on:'projects',
+            hasMany:true
         },
         ...slugField(),
     ],

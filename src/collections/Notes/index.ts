@@ -2,6 +2,7 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { CollectionConfig } from "payload";
 
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { TitleField } from "@/fields/title";
 
 export const Notes: CollectionConfig<'notes'> = {
     slug: 'notes',
@@ -15,12 +16,7 @@ export const Notes: CollectionConfig<'notes'> = {
         update: superAdminOrTenantAdminAccess,
     },
     fields: [
-        {
-            type: 'text',
-            label: 'Title',
-            name: 'title',
-            required: true
-        },
+        TitleField(),
         {
             type: 'richText',
             editor: lexicalEditor(),

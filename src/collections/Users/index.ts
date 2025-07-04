@@ -8,6 +8,8 @@ import { ensureUniqueUsername } from './hooks/ensureUniqueUsername'
 import { isSuperAdmin } from '@/access/isSuperAdmin'
 import { setCookieBasedOnDomain } from './hooks/setCookieBasedOnDomain'
 import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
+import { resume_fields } from '@/constants'
+import { capitalize } from '@/utilities/capitalize'
 
 const defaultTenantArrayField = tenantsArrayField({
   tenantsArrayFieldName: 'tenants',
@@ -48,6 +50,7 @@ export const Users: CollectionConfig<'users'> = {
       saveToJWT: true,
       name: 'roles',
       type: 'select',
+      interfaceName: 'TUserRole',
       defaultValue: ['user'],
       hasMany: true,
       options: ['super-admin', 'user'],
@@ -71,7 +74,19 @@ export const Users: CollectionConfig<'users'> = {
         ...(defaultTenantArrayField?.admin || {}),
         position: 'sidebar',
       },
+      interfaceName: 'TUserTenants'
     },
+    {
+      type: 'select',
+      name: 'field',
+      label: 'Field',
+      saveToJWT: true,
+      interfaceName: 'TUserField',
+      options: Object.entries(resume_fields).map(([lable, value]) => ({
+        label: capitalize(lable),
+        value
+      }))
+    }
   ],
   // The following hook sets a cookie based on the domain a user logs in from.
   // It checks the domain and matches it to a tenant in the system, then sets
