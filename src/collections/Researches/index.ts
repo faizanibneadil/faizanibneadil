@@ -1,15 +1,17 @@
 import { CollectionConfig } from "payload";
+import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { TitleField } from "@/fields/title";
 
-export const researches: CollectionConfig<'researches'> = {
+export const Researches: CollectionConfig<'researches'> = {
     slug: 'researches',
     admin: {
         useAsTitle: 'title',
-        hidden: ({ user }) => user?.field !== 'education_teaching'
     },
-    fields: [{
-        type: 'text',
-        name: 'title',
-        label: 'Title',
-        required: true
-    }]
+    access: {
+        create: superAdminOrTenantAdminAccess,
+        delete: superAdminOrTenantAdminAccess,
+        read: () => true,
+        update: superAdminOrTenantAdminAccess,
+    },
+    fields: [TitleField()]
 }

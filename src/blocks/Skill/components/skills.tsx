@@ -1,9 +1,9 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { Badge } from "@/components/ui/badge";
-import { ISkillsProps } from "@/payload-types";
+import { ISkillProps } from "@/payload-types";
 
 const BLUR_FADE_DELAY = 0.04;
-export function Skills(props: ISkillsProps) {
+export function Skill(props: ISkillProps) {
     const { userSkills } = props || {}
     return (
         <section id="skills">

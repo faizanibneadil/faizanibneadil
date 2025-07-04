@@ -8,6 +8,29 @@
 
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TUserRole".
+ */
+export type TUserRole = ('super-admin' | 'user')[] | null;
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TUserTenants".
+ */
+export type TUserTenants =
+  | {
+      tenant: number | Tenant;
+      roles: ('tenant-admin' | 'tenant-viewer')[];
+      id?: string | null;
+    }[]
+  | null;
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TUserField".
+ */
+export type TUserField =
+  | ('information_technology' | 'healthcare' | 'engineering' | 'finance' | 'marketing' | 'education' | 'management')
+  | null;
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TIconProps".
  */
 export type TIconProps =
@@ -7490,8 +7513,8 @@ export interface Config {
     contact: IContactProps;
     education: TEducationProps;
     project: Project;
-    skills: ISkillsProps;
-    experiances: IExperiancesProps;
+    skill: ISkillProps;
+    experiance: IExperianceProps;
     about: IAboutProps;
   };
   collections: {
@@ -7502,11 +7525,16 @@ export interface Config {
     pages: Page;
     projects: Project1;
     tenants: Tenant;
-    menu: Menu;
+    menus: Menu;
     socials: Social;
     skills: Skill;
     hackathons: Hackathon;
     researches: Research;
+    achievements: Achievement;
+    certifications: Certification;
+    languages: Language;
+    publications: Publication;
+    licenses: License;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -7525,11 +7553,16 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     tenants: TenantsSelect<false> | TenantsSelect<true>;
-    menu: MenuSelect<false> | MenuSelect<true>;
+    menus: MenusSelect<false> | MenusSelect<true>;
     socials: SocialsSelect<false> | SocialsSelect<true>;
     skills: SkillsSelect<false> | SkillsSelect<true>;
     hackathons: HackathonsSelect<false> | HackathonsSelect<true>;
     researches: ResearchesSelect<false> | ResearchesSelect<true>;
+    achievements: AchievementsSelect<false> | AchievementsSelect<true>;
+    certifications: CertificationsSelect<false> | CertificationsSelect<true>;
+    languages: LanguagesSelect<false> | LanguagesSelect<true>;
+    publications: PublicationsSelect<false> | PublicationsSelect<true>;
+    licenses: LicensesSelect<false> | LicensesSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -7682,13 +7715,13 @@ export interface Project {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ISkillsProps".
+ * via the `definition` "ISkillProps".
  */
-export interface ISkillsProps {
+export interface ISkillProps {
   userSkills?: (number | Skill)[] | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'skills';
+  blockType: 'skill';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7696,7 +7729,8 @@ export interface ISkillsProps {
  */
 export interface Skill {
   id: number;
-  title?: string | null;
+  tenant?: (number | null) | Tenant;
+  title: string;
   publishedAt?: string | null;
   projects?: (number | Project1)[] | null;
   slug?: string | null;
@@ -7726,9 +7760,9 @@ export interface Project1 {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IExperiancesProps".
+ * via the `definition` "IExperianceProps".
  */
-export interface IExperiancesProps {
+export interface IExperianceProps {
   experiances?:
     | {
         title: string;
@@ -7742,7 +7776,7 @@ export interface IExperiancesProps {
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'experiances';
+  blockType: 'experiance';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7774,39 +7808,10 @@ export interface IAboutProps {
  */
 export interface User {
   id: number;
-  roles?: ('super-admin' | 'user')[] | null;
+  roles?: TUserRole;
   username?: string | null;
-  tenants?:
-    | {
-        tenant: number | Tenant;
-        roles: ('tenant-admin' | 'tenant-viewer')[];
-        id?: string | null;
-      }[]
-    | null;
-  field?:
-    | (
-        | 'information_technology'
-        | 'healthcare_medicine'
-        | 'engineering'
-        | 'finance_accounting'
-        | 'sales_marketing'
-        | 'education_teaching'
-        | 'business_management'
-        | 'law_legal_services'
-        | 'media_communications'
-        | 'design_creative_arts'
-        | 'skilled_trades'
-        | 'hospitality_tourism'
-        | 'logistics_supply_chain'
-        | 'construction_real_estate'
-        | 'customer_service'
-        | 'data_science_analytics'
-        | 'human_resources'
-        | 'pharmaceutical_biotech'
-        | 'banking_investment'
-        | 'government_public_sector'
-      )
-    | null;
+  tenants?: TUserTenants;
+  field?: TUserField;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -7816,13 +7821,6 @@ export interface User {
   hash?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
   password?: string | null;
 }
 /**
@@ -7884,7 +7882,7 @@ export interface Blog {
 export interface Page {
   id: number;
   tenant?: (number | null) | Tenant;
-  title?: string | null;
+  title: string;
   /**
    * If this checked you can show your collection
    */
@@ -7892,7 +7890,7 @@ export interface Page {
   configurations?: {
     slug?: ('projects' | 'notes' | 'blogs') | null;
   };
-  layout?: (IContactProps | TEducationProps | IHeroProps | ISkillsProps | IExperiancesProps | IAboutProps)[] | null;
+  layout?: (IContactProps | TEducationProps | IHeroProps | ISkillProps | IExperianceProps | IAboutProps)[] | null;
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -7902,7 +7900,7 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "menu".
+ * via the `definition` "menus".
  */
 export interface Menu {
   id: number;
@@ -7942,6 +7940,7 @@ export interface Social {
  */
 export interface Hackathon {
   id: number;
+  tenant?: (number | null) | Tenant;
   title: string;
   updatedAt: string;
   createdAt: string;
@@ -7952,6 +7951,62 @@ export interface Hackathon {
  */
 export interface Research {
   id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements".
+ */
+export interface Achievement {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "certifications".
+ */
+export interface Certification {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "languages".
+ */
+export interface Language {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "publications".
+ */
+export interface Publication {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "licenses".
+ */
+export interface License {
+  id: number;
+  tenant?: (number | null) | Tenant;
   title: string;
   updatedAt: string;
   createdAt: string;
@@ -8084,7 +8139,7 @@ export interface PayloadLockedDocument {
         value: number | Tenant;
       } | null)
     | ({
-        relationTo: 'menu';
+        relationTo: 'menus';
         value: number | Menu;
       } | null)
     | ({
@@ -8102,6 +8157,26 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'researches';
         value: number | Research;
+      } | null)
+    | ({
+        relationTo: 'achievements';
+        value: number | Achievement;
+      } | null)
+    | ({
+        relationTo: 'certifications';
+        value: number | Certification;
+      } | null)
+    | ({
+        relationTo: 'languages';
+        value: number | Language;
+      } | null)
+    | ({
+        relationTo: 'publications';
+        value: number | Publication;
+      } | null)
+    | ({
+        relationTo: 'licenses';
+        value: number | License;
       } | null)
     | ({
         relationTo: 'payload-jobs';
@@ -8156,13 +8231,7 @@ export interface PayloadMigration {
 export interface UsersSelect<T extends boolean = true> {
   roles?: T;
   username?: T;
-  tenants?:
-    | T
-    | {
-        tenant?: T;
-        roles?: T;
-        id?: T;
-      };
+  tenants?: T | TUserTenantsSelect<T>;
   field?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -8173,13 +8242,15 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TUserTenants_select".
+ */
+export interface TUserTenantsSelect<T extends boolean = true> {
+  tenant?: T;
+  roles?: T;
+  id?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8273,9 +8344,9 @@ export interface TenantsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "menu_select".
+ * via the `definition` "menus_select".
  */
-export interface MenuSelect<T extends boolean = true> {
+export interface MenusSelect<T extends boolean = true> {
   tenant?: T;
   menu?:
     | T
@@ -8310,6 +8381,7 @@ export interface SocialsSelect<T extends boolean = true> {
  * via the `definition` "skills_select".
  */
 export interface SkillsSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   publishedAt?: T;
   projects?: T;
@@ -8323,6 +8395,7 @@ export interface SkillsSelect<T extends boolean = true> {
  * via the `definition` "hackathons_select".
  */
 export interface HackathonsSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -8332,6 +8405,57 @@ export interface HackathonsSelect<T extends boolean = true> {
  * via the `definition` "researches_select".
  */
 export interface ResearchesSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements_select".
+ */
+export interface AchievementsSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "certifications_select".
+ */
+export interface CertificationsSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "languages_select".
+ */
+export interface LanguagesSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "publications_select".
+ */
+export interface PublicationsSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "licenses_select".
+ */
+export interface LicensesSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   updatedAt?: T;
   createdAt?: T;

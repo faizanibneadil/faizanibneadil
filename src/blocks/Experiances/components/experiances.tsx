@@ -1,9 +1,9 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { ResumeCard } from "@/components/resume-card";
-import { IExperiancesProps } from "@/payload-types";
+import { IExperianceProps } from "@/payload-types";
 
 const BLUR_FADE_DELAY = 0.04;
-export function Experiances(props:IExperiancesProps) {
+export function Experiance(props:IExperianceProps) {
     const { experiances } = props || {}
     return (
         <section id="work">

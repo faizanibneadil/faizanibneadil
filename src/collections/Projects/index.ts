@@ -1,6 +1,7 @@
 import { slugField } from "@/fields/slug";
 import type { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { TitleField } from "@/fields/title";
 
 export const Projects: CollectionConfig<'projects'> = {
     slug: 'projects',
@@ -12,12 +13,7 @@ export const Projects: CollectionConfig<'projects'> = {
         update: superAdminOrTenantAdminAccess,
     },
     fields: [
-        {
-            type: 'text',
-            name: 'title',
-            label: 'Title',
-            required: true
-        },
+        TitleField(),
         {
             name: 'publishedAt',
             type: 'date',
