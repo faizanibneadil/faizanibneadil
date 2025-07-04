@@ -17,7 +17,7 @@ import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 
 export default async function Navbar({ domain }: { domain: string }) {
   const payload = await getPayloadConfig()
-  const menu = await payload.find({ collection: 'menu', limit: 1, where: { 'tenant.slug': { equals: domain } } })
+  const menu = await payload.find({ collection: 'menus', limit: 1, where: { 'tenant.slug': { equals: domain } } })
   const socials = await payload.find({ collection: 'socials', limit: 1, where: { 'tenant.slug': { equals: domain } } })
 
   return (
