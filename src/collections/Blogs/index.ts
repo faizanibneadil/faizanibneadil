@@ -23,5 +23,25 @@ export const Blogs: CollectionConfig<'blogs'> = {
             label: false,
             editor: lexicalEditor()
         },
-    ]
+        {
+            type: 'relationship',
+            name: 'featured_image',
+            label: 'Featured Image',
+            relationTo: 'media',
+            hasMany: false,
+            admin: {
+                appearance: 'drawer',
+                position:'sidebar'
+            }
+        },
+    ],
+    versions: {
+        drafts: {
+            autosave: {
+                interval: 100,
+            },
+            schedulePublish: true,
+        },
+        maxPerDoc: 50,
+    },
 }

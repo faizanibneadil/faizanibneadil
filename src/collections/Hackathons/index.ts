@@ -15,5 +15,14 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
         read: () => true,
         update: superAdminOrTenantAdminAccess,
     },
-    fields: [TitleField()]
+    fields: [TitleField()],
+    versions: {
+        drafts: {
+            autosave: {
+                interval: 100,
+            },
+            schedulePublish: true,
+        },
+        maxPerDoc: 50,
+    },
 }

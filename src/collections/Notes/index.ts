@@ -23,5 +23,14 @@ export const Notes: CollectionConfig<'notes'> = {
             name: 'content',
             label: 'Note Content'
         },
-    ]
+    ],
+    versions: {
+        drafts: {
+            autosave: {
+                interval: 100,
+            },
+            schedulePublish: true,
+        },
+        maxPerDoc: 50,
+    },
 }

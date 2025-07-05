@@ -7653,12 +7653,9 @@ export interface Tenant {
    * Used for url paths, example: /tenant-slug/page-slug
    */
   slug: string;
-  /**
-   * If checked, logging in is not required to read. Useful for building public pages.
-   */
-  allowPublicRead?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7732,11 +7729,15 @@ export interface Skill {
   tenant?: (number | null) | Tenant;
   title: string;
   publishedAt?: string | null;
+  /**
+   * Select those project in whitch you used this skill.
+   */
   projects?: (number | Project1)[] | null;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7747,11 +7748,29 @@ export interface Project1 {
   tenant?: (number | null) | Tenant;
   title: string;
   publishedAt?: string | null;
+  /**
+   * Provide list of skills. You used to build this project
+   */
   Skills?: {
     docs?: (number | Skill)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
+  /**
+   * Provide credential for testing.
+   */
+  credential?: {
+    credential_email?: string | null;
+    credential_password?: string | null;
+    /**
+     * If you handled your authentication with username then provide otherwize leave it.
+     */
+    credential_username?: string | null;
+  };
+  /**
+   * Provide project thumbnail.
+   */
+  thumbnail?: (number | null) | Media;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -7855,6 +7874,7 @@ export interface Note {
   } | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7879,8 +7899,10 @@ export interface Blog {
     };
     [k: string]: unknown;
   } | null;
+  featured_image?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7922,6 +7944,7 @@ export interface Menu {
     | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7940,6 +7963,7 @@ export interface Social {
     | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7951,6 +7975,7 @@ export interface Hackathon {
   title: string;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7962,6 +7987,7 @@ export interface Research {
   title: string;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7973,6 +7999,7 @@ export interface Achievement {
   title: string;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7984,6 +8011,7 @@ export interface Certification {
   title: string;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7995,6 +8023,7 @@ export interface Language {
   title: string;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8006,6 +8035,7 @@ export interface Publication {
   title: string;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8017,6 +8047,7 @@ export interface License {
   title: string;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8296,6 +8327,7 @@ export interface NotesSelect<T extends boolean = true> {
   content?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8305,8 +8337,10 @@ export interface BlogsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
   content?: T;
+  featured_image?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8338,6 +8372,14 @@ export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
   publishedAt?: T;
   Skills?: T;
+  credential?:
+    | T
+    | {
+        credential_email?: T;
+        credential_password?: T;
+        credential_username?: T;
+      };
+  thumbnail?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -8352,9 +8394,9 @@ export interface TenantsSelect<T extends boolean = true> {
   name?: T;
   domain?: T;
   slug?: T;
-  allowPublicRead?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8372,6 +8414,7 @@ export interface MenusSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8389,6 +8432,7 @@ export interface SocialsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8403,6 +8447,7 @@ export interface SkillsSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8413,6 +8458,7 @@ export interface HackathonsSelect<T extends boolean = true> {
   title?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8423,6 +8469,7 @@ export interface ResearchesSelect<T extends boolean = true> {
   title?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8433,6 +8480,7 @@ export interface AchievementsSelect<T extends boolean = true> {
   title?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8443,6 +8491,7 @@ export interface CertificationsSelect<T extends boolean = true> {
   title?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8453,6 +8502,7 @@ export interface LanguagesSelect<T extends boolean = true> {
   title?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8463,6 +8513,7 @@ export interface PublicationsSelect<T extends boolean = true> {
   title?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8473,6 +8524,7 @@ export interface LicensesSelect<T extends boolean = true> {
   title?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8547,12 +8599,64 @@ export interface TaskSchedulePublish {
     locale?: string | null;
     doc?:
       | ({
+          relationTo: 'notes';
+          value: number | Note;
+        } | null)
+      | ({
+          relationTo: 'blogs';
+          value: number | Blog;
+        } | null)
+      | ({
           relationTo: 'pages';
           value: number | Page;
         } | null)
       | ({
           relationTo: 'projects';
           value: number | Project1;
+        } | null)
+      | ({
+          relationTo: 'tenants';
+          value: number | Tenant;
+        } | null)
+      | ({
+          relationTo: 'menus';
+          value: number | Menu;
+        } | null)
+      | ({
+          relationTo: 'socials';
+          value: number | Social;
+        } | null)
+      | ({
+          relationTo: 'skills';
+          value: number | Skill;
+        } | null)
+      | ({
+          relationTo: 'hackathons';
+          value: number | Hackathon;
+        } | null)
+      | ({
+          relationTo: 'researches';
+          value: number | Research;
+        } | null)
+      | ({
+          relationTo: 'achievements';
+          value: number | Achievement;
+        } | null)
+      | ({
+          relationTo: 'certifications';
+          value: number | Certification;
+        } | null)
+      | ({
+          relationTo: 'languages';
+          value: number | Language;
+        } | null)
+      | ({
+          relationTo: 'publications';
+          value: number | Publication;
+        } | null)
+      | ({
+          relationTo: 'licenses';
+          value: number | License;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

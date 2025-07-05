@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { isSuperAdmin, isSuperAdminAccess } from '@/access/isSuperAdmin'
+import { isSuperAdminAccess } from '@/access/isSuperAdmin'
 import { updateAndDeleteAccess } from './access/updateAndDelete'
 
 export const Tenants: CollectionConfig = {
@@ -35,17 +35,15 @@ export const Tenants: CollectionConfig = {
       },
       index: true,
       required: true,
-    },
-    {
-      name: 'allowPublicRead',
-      type: 'checkbox',
-      admin: {
-        description:
-          'If checked, logging in is not required to read. Useful for building public pages.',
-        position: 'sidebar',
-      },
-      defaultValue: false,
-      index: true,
-    },
+    }
   ],
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100,
+      },
+      schedulePublish: true,
+    },
+    maxPerDoc: 50,
+  },
 }
