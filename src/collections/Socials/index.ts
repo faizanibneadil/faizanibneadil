@@ -15,6 +15,7 @@ export const Socials: CollectionConfig<'socials'> = {
             type: 'array',
             name: 'socialsLinks',
             labels: { plural: 'Socials Links', singular: 'Social Link' },
+            maxRows: 4,
             fields: [
                 {
                     type: 'row',
@@ -36,5 +37,14 @@ export const Socials: CollectionConfig<'socials'> = {
                 }
             ]
         },
-    ]
+    ],
+    versions: {
+        drafts: {
+            autosave: {
+                interval: 100,
+            },
+            schedulePublish: true,
+        },
+        maxPerDoc: 50,
+    },
 }

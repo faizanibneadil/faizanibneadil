@@ -19,6 +19,19 @@ export const Skills: CollectionConfig<'skills'> = {
             type: 'relationship',
             name: 'projects',
             relationTo: 'projects',
-            hasMany: true
-        }, ...slugField()]
+            hasMany: true,
+            admin: {
+                description: 'Select those project in whitch you used this skill.',
+                appearance: 'drawer'
+            }
+        }, ...slugField()],
+        versions: {
+        drafts: {
+            autosave: {
+                interval: 100,
+            },
+            schedulePublish: true,
+        },
+        maxPerDoc: 50,
+    },
 }

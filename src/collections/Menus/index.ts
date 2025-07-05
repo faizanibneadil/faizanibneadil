@@ -38,5 +38,14 @@ export const Menus: CollectionConfig<'menus'> = {
                 }
             ]
         },
-    ]
+    ],
+    versions: {
+        drafts: {
+            autosave: {
+                interval: 100,
+            },
+            schedulePublish: true,
+        },
+        maxPerDoc: 50,
+    },
 }

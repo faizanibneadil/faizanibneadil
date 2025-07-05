@@ -25,8 +25,41 @@ export const Projects: CollectionConfig<'projects'> = {
             type: 'join',
             name: 'Skills',
             collection: 'skills',
-            on:'projects',
-            hasMany:true
+            on: 'projects',
+            hasMany: true,
+            admin: {
+                description: 'Provide list of skills. You used to build this project'
+            }
+        },
+        {
+            type: 'group',
+            name: 'credential',
+            label: 'Credential',
+            admin: { description: 'Provide credential for testing.' },
+            fields: [
+                { type: 'email', name: 'credential_email', label: 'Email' },
+                { type: 'text', name: 'credential_password', label: 'Password' },
+                {
+                    type: 'text',
+                    name: 'credential_username',
+                    label: 'Username',
+                    admin: {
+                        description: 'If you handled your authentication with username then provide otherwize leave it.'
+                    }
+                }
+            ]
+        },
+        {
+            type: 'relationship',
+            name: 'thumbnail',
+            label: 'Thumbnail',
+            relationTo: 'media',
+            hasMany: false,
+            admin: {
+                description: 'Provide project thumbnail.',
+                appearance: 'drawer',
+                position:'sidebar'
+            }
         },
         ...slugField(),
     ],

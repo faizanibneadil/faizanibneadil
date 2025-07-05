@@ -9,7 +9,7 @@ export const Skill: Block = {
             relationTo:'skills',
             name:'userSkills',
             hasMany:true,
-            minRows: 50
+            maxRows: 50,
         },
         
     ]
