@@ -7,8 +7,8 @@ export const Licenses: CollectionConfig<'licenses'> = {
     slug: 'licenses',
     admin: {
         useAsTitle: 'title',
-        hidden(args) {
-            return args.user.field !== resume_fields.healthcare
+        hidden({user}) {
+            return user ? user?.field !== resume_fields.healthcare : false
         },
     },
     access: {
