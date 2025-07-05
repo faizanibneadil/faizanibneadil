@@ -7,7 +7,7 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
     slug: 'hackathons',
     admin: {
         useAsTitle: 'title',
-        hidden: ({ user }) => user?.field !== resume_fields.information_technology
+        hidden: ({ user }) => user ? user?.field !== resume_fields.information_technology : false
     },
     access: {
         create: superAdminOrTenantAdminAccess,
