@@ -24,6 +24,7 @@ import { Publications } from "@/collections/Publications"
 import { Licenses } from "@/collections/Licenses"
 import { Menus } from '@/collections/Menus'
 import { Socials } from '@/collections/Socials'
+import { Educations } from '@/collections/Educations'
 
 import { Hero } from '@/blocks/Hero'
 import { Contact } from '@/blocks/Contact'
@@ -57,6 +58,7 @@ export default buildConfig({
         Notes,
         Blogs,
         Pages,
+        Educations,
         Projects,
         Tenants,
         Menus,
@@ -117,6 +119,7 @@ export default buildConfig({
                 media: {},
                 notes: {},
                 projects: {},
+                educations: {},
                 achievements: {},
                 certifications: {},
                 hackathons: {},

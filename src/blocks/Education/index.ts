@@ -5,43 +5,13 @@ export const Education: Block = {
     interfaceName: 'TEducationProps',
     fields: [
         {
-            type: 'array',
+            type: 'relationship',
+            relationTo: 'educations',
             name: 'educations',
-            fields: [
-                {
-                    type: 'text',
-                    label: 'Title',
-                    name: 'title',
-                    required: true
-                },
-                {
-                    type: 'text',
-                    label: 'Academy',
-                    name: 'academy',
-                },
-                {
-                    type: 'text',
-                    label: 'Degree',
-                    name: 'degree',
-                },
-                {
-                    type: 'date',
-                    name: 'start',
-                    label: 'Start'
-                },
-                {
-                    type: 'date',
-                    name: 'end',
-                    label: 'End'
-                },
-                {
-                    type: 'textarea',
-                    name: 'description',
-                    label: 'Description'
-                }
-            ],
-            admin:{
-                initCollapsed:true
+            label: 'Educations',
+            hasMany: true,
+            admin: {
+                appearance: 'drawer',
             }
         }
     ]
