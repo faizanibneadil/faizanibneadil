@@ -7524,6 +7524,7 @@ export interface Config {
     notes: Note;
     blogs: Blog;
     pages: Page;
+    educations: Education;
     projects: Project1;
     tenants: Tenant;
     menus: Menu;
@@ -7552,6 +7553,7 @@ export interface Config {
     notes: NotesSelect<false> | NotesSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    educations: EducationsSelect<false> | EducationsSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     tenants: TenantsSelect<false> | TenantsSelect<true>;
     menus: MenusSelect<false> | MenusSelect<true>;
@@ -7687,20 +7689,46 @@ export interface IContactProps {
  * via the `definition` "TEducationProps".
  */
 export interface TEducationProps {
-  educations?:
-    | {
-        title: string;
-        academy?: string | null;
-        degree?: string | null;
-        start?: string | null;
-        end?: string | null;
-        description?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  educations?: (number | Education)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'education';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "educations".
+ */
+export interface Education {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  qualification?: {
+    academy?: string | null;
+    degree?: string | null;
+  };
+  dates?: {
+    to?: string | null;
+    from?: string | null;
+  };
+  image: number | Media;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8230,6 +8258,10 @@ export interface PayloadLockedDocument {
         value: number | Page;
       } | null)
     | ({
+        relationTo: 'educations';
+        value: number | Education;
+      } | null)
+    | ({
         relationTo: 'projects';
         value: number | Project1;
       } | null)
@@ -8420,6 +8452,31 @@ export interface PagesSelect<T extends boolean = true> {
   publishedAt?: T;
   slug?: T;
   slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "educations_select".
+ */
+export interface EducationsSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  description?: T;
+  qualification?:
+    | T
+    | {
+        academy?: T;
+        degree?: T;
+      };
+  dates?:
+    | T
+    | {
+        to?: T;
+        from?: T;
+      };
+  image?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -8687,6 +8744,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'pages';
           value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'educations';
+          value: number | Education;
         } | null)
       | ({
           relationTo: 'projects';

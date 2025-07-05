@@ -11,19 +11,21 @@ export function Education(props:TEducationProps) {
                 <BlurFade delay={BLUR_FADE_DELAY * 7}>
                     <h2 className="text-xl font-bold">Education</h2>
                 </BlurFade>
-                {educations?.map((education, id) => (
-                    <BlurFade key={education.academy} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
+                {educations?.map((education, id) => {
+                    return typeof education === 'number' ? null : (
+                    <BlurFade key={education?.qualification?.academy} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
                         <ResumeCard
-                            key={education.academy}
+                            key={education?.qualification?.academy}
                             href='/'
-                            logoUrl={''}
-                            altText={education.academy as string}
-                            title={education.academy as string}
-                            subtitle={education.degree as string}
-                            period={`${education.start} - ${education.end}`}
+                            logoUrl={education?.image && typeof education?.image === 'object' && education?.image?.url ? education?.image?.url : ''}
+                            altText={education?.qualification?.academy as string}
+                            title={education?.qualification?.academy as string}
+                            subtitle={education?.qualification?.degree as string}
+                            period={`${education?.dates?.to} - ${education?.dates?.from}`}
                         />
                     </BlurFade>
-                ))}
+                )
+                })}
             </div>
         </section>
     )
