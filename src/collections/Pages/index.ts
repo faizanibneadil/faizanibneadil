@@ -62,9 +62,18 @@ export const Pages: CollectionConfig<'pages'> = {
             name: 'layout',
             label: 'Design You\'r Page',
             blocks: [],
-            blockReferences: ['contact', 'education', 'hero', 'skill', 'experiance', 'about'],
+            maxRows: 50,
+            blockReferences: [
+                'contact',
+                'education',
+                'hero',
+                'skill',
+                'experiance',
+                'about',
+                'hackathon'
+            ],
             admin: {
-                initCollapsed:true,
+                initCollapsed: true,
                 condition: (blocks, siblings_blocks, ctx) => {
                     if (blocks?.mode === 'layout') {
                         return true

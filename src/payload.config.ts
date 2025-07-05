@@ -32,11 +32,13 @@ import { Project } from '@/blocks/Project'
 import { Skill } from '@/blocks/Skill'
 import { Experiance } from '@/blocks/Experiances'
 import { About } from '@/blocks/About'
+import { Hackathon } from '@/blocks/Hackathon'
 
 import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
 import { Config } from './payload-types'
 import { isSuperAdmin } from './access/isSuperAdmin'
 import { getUserTenantIDs } from './utilities/getUserTenantIDs'
+
 
 
 const filename = fileURLToPath(import.meta.url)
@@ -68,7 +70,16 @@ export default buildConfig({
         Publications,
         Licenses,
     ],
-    blocks: [Hero, Contact, Education, Project, Skill, Experiance, About],
+    blocks: [
+        Hero, 
+        Contact, 
+        Education, 
+        Project, 
+        Skill, 
+        Experiance, 
+        About,
+        Hackathon
+    ],
     globals: [],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',

@@ -1,5 +1,4 @@
 import { Page } from "@/payload-types";
-import dynamic from "next/dynamic";
 import { Fragment } from "react";
 import { Hero } from "./Hero/components/hero";
 import { About } from "./About/components/about";
@@ -7,6 +6,7 @@ import { Experiance } from "./Experiances/components/experiances";
 import { Education } from "./Education/components/educations";
 import { Skill } from "./Skill/components/skills";
 import { Contact } from "./Contact/components/contact";
+import { Hackathon } from "./Hackathon/components/hackathon";
 
 const _blocks = {
     hero: Hero,
@@ -14,7 +14,8 @@ const _blocks = {
     education: Education,
     skill: Skill,
     experiance: Experiance,
-    about: About
+    about: About,
+    hackathon: Hackathon
 }
 
 export function BlocksRenderrer(props: { blocks: Page['layout'][][0] }) {

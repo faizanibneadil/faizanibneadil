@@ -8,29 +8,6 @@
 
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TUserRole".
- */
-export type TUserRole = ('super-admin' | 'user')[] | null;
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TUserTenants".
- */
-export type TUserTenants =
-  | {
-      tenant: number | Tenant;
-      roles: ('tenant-admin' | 'tenant-viewer')[];
-      id?: string | null;
-    }[]
-  | null;
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TUserField".
- */
-export type TUserField =
-  | ('information_technology' | 'healthcare' | 'engineering' | 'finance' | 'marketing' | 'education' | 'management')
-  | null;
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TIconProps".
  */
 export type TIconProps =
@@ -7450,6 +7427,29 @@ export type TIconProps =
     )
   | null;
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TUserRole".
+ */
+export type TUserRole = ('super-admin' | 'user')[] | null;
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TUserTenants".
+ */
+export type TUserTenants =
+  | {
+      tenant: number | Tenant;
+      roles: ('tenant-admin' | 'tenant-viewer')[];
+      id?: string | null;
+    }[]
+  | null;
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TUserField".
+ */
+export type TUserField =
+  | ('information_technology' | 'healthcare' | 'engineering' | 'finance' | 'marketing' | 'education' | 'management')
+  | null;
+/**
  * Supported timezones in IANA format.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7516,6 +7516,7 @@ export interface Config {
     skill: ISkillProps;
     experiance: IExperianceProps;
     about: IAboutProps;
+    hackathon: IHackathonProps;
   };
   collections: {
     users: User;
@@ -7823,6 +7824,76 @@ export interface IAboutProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IHackathonProps".
+ */
+export interface IHackathonProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  hackathons?: (number | Hackathon)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hackathon';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hackathons".
+ */
+export interface Hackathon {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Write description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  dates: {
+    to: string;
+    from: string;
+  };
+  location?: string | null;
+  links?:
+    | {
+        icon?: TIconProps;
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -7919,7 +7990,9 @@ export interface Page {
   configurations?: {
     slug?: ('projects' | 'notes' | 'blogs') | null;
   };
-  layout?: (IContactProps | TEducationProps | IHeroProps | ISkillProps | IExperianceProps | IAboutProps)[] | null;
+  layout?:
+    | (IContactProps | TEducationProps | IHeroProps | ISkillProps | IExperianceProps | IAboutProps | IHackathonProps)[]
+    | null;
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -7961,18 +8034,6 @@ export interface Social {
         id?: string | null;
       }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "hackathons".
- */
-export interface Hackathon {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -8456,6 +8517,23 @@ export interface SkillsSelect<T extends boolean = true> {
 export interface HackathonsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  description?: T;
+  dates?:
+    | T
+    | {
+        to?: T;
+        from?: T;
+      };
+  location?: T;
+  links?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        link?: T;
+        id?: T;
+      };
+  image?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
