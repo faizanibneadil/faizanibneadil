@@ -7542,11 +7542,7 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {
-    projects: {
-      Skills: 'skills';
-    };
-  };
+  collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -7784,11 +7780,7 @@ export interface Project {
   /**
    * Provide list of skills. You used to build this project
    */
-  Skills?: {
-    docs?: (number | Skill)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
+  Skills?: (number | Skill)[] | null;
   dates?: {
     to?: string | null;
     from?: string | null;

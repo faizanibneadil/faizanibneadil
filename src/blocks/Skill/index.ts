@@ -10,7 +10,9 @@ export const Skill: Block = {
             name:'userSkills',
             hasMany:true,
             maxRows: 50,
+            admin:{
+                appearance: 'drawer'
+            }
         },
-        
     ]
 }
