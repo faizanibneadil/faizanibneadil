@@ -64,14 +64,19 @@ export const Pages: CollectionConfig<'pages'> = {
             blocks: [],
             maxRows: 50,
             blockReferences: [
+                'about',
+                'achievement',
+                'certification',
                 'contact',
                 'education',
-                'hero',
-                'skill',
                 'experiance',
-                'about',
                 'hackathon',
-                'project'
+                'hero',
+                'license',
+                'project',
+                'publication',
+                'skill',
+                'research',
             ],
             admin: {
                 initCollapsed: true,

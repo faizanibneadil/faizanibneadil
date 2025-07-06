@@ -4,9 +4,9 @@ import { ISkillProps } from "@/payload-types";
 
 const BLUR_FADE_DELAY = 0.04;
 export function Skill(props: ISkillProps) {
-    const { userSkills } = props || {}
+    const { userSkills,blockName,blockType } = props || {}
     return (
-        <section id="skills">
+        <section id="skills" aria-label={blockName || blockType}>
             <div className="flex min-h-0 flex-col gap-y-3">
                 <BlurFade delay={BLUR_FADE_DELAY * 9}>
                     <h2 className="text-xl font-bold">Skills</h2>

@@ -6,9 +6,9 @@ import { ProjectCard } from "@/components/project-card";
 
 const BLUR_FADE_DELAY = 0.04;
 export function Project(props: IProjectProps) {
-    const { heading, description, projects } = props || {}
+    const { heading, description, projects,blockName,blockType } = props || {}
     return (
-        <section id="projects">
+        <section id="projects" aria-label={blockName || blockType}>
             <div className="space-y-12 w-full py-12">
                 <BlurFade delay={BLUR_FADE_DELAY * 11}>
                     <div className="flex flex-col items-center justify-center space-y-4 text-center">

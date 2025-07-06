@@ -8,6 +8,11 @@ import { Skill } from "./Skill/components/skills";
 import { Contact } from "./Contact/components/contact";
 import { Hackathon } from "./Hackathon/components/hackathon";
 import { Project } from "./Project/components/project";
+import { Research } from "./Research/components/research";
+import { Publication } from "./Publication/components/publication";
+import { License } from "./Licenses/components/license";
+import { Certification } from "./Certification/components/certification";
+import { Achievement } from "./Achievement/components/achievement";
 
 const _blocks = {
     hero: Hero,
@@ -17,7 +22,12 @@ const _blocks = {
     experiance: Experiance,
     about: About,
     hackathon: Hackathon,
-    project:Project
+    project: Project,
+    research: Research,
+    publication: Publication,
+    license: License,
+    certification: Certification,
+    achievement: Achievement
 }
 
 export function BlocksRenderrer(props: { blocks: Page['layout'][][0] }) {

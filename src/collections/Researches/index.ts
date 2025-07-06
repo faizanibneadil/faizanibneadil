@@ -1,6 +1,8 @@
 import { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
+import { iconField } from "@/fields/icon";
+import { lexicalEditor } from "@payloadcms/richtext-lexical";
 
 export const Researches: CollectionConfig<'researches'> = {
     slug: 'researches',
@@ -13,7 +15,88 @@ export const Researches: CollectionConfig<'researches'> = {
         read: () => true,
         update: superAdminOrTenantAdminAccess,
     },
-    fields: [TitleField()],
+    fields: [
+        TitleField(),
+        {
+            type: 'richText',
+            name: 'description',
+            label: false,
+            editor: lexicalEditor(),
+            admin: {
+                description: 'Write description.'
+            }
+        },
+        {
+            type: 'group',
+            name: 'dates',
+            label: 'Dates',
+            fields: [
+                {
+                    type: 'row',
+                    fields: [
+                        {
+                            type: 'date',
+                            name: 'to',
+                            label: 'TO',
+                            required: true
+                        },
+                        {
+                            type: 'date',
+                            name: 'from',
+                            label: 'FROM',
+                            required: true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            type: 'text',
+            name: 'location',
+            label: 'Location'
+        },
+        {
+            type: 'array',
+            name: 'links',
+            labels: { singular: 'Link', plural: 'Links' },
+            admin: {
+                initCollapsed: true
+            },
+            fields: [
+                {
+                    type: 'row',
+                    fields: [
+                        iconField,
+                        {
+                            type: 'text',
+                            label: 'Lable',
+                            name: 'label',
+                            required: true
+                        },
+                        {
+                            type: 'text',
+                            name: 'link',
+                            label: 'Link',
+                            required: true
+                        }
+                    ]
+                }
+            ],
+            maxRows: 5
+        },
+        {
+            type: 'relationship',
+            relationTo: 'media',
+            name: 'image',
+            label: 'Avatar',
+            required: true,
+            hasMany: false,
+            admin: {
+                appearance: 'drawer',
+                position: 'sidebar'
+            }
+        }
+    ],
     versions: {
         drafts: {
             autosave: {
