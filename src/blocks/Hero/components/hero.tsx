@@ -3,6 +3,7 @@ import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DATA } from "@/data/resume";
 import { IHeroProps } from "@/payload-types";
+import { getClientSideURL } from "@/utilities/getURL";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -30,7 +31,7 @@ export function Hero(props: IHeroProps) {
                         <Avatar className="size-28 border">
                             <AvatarImage
                                 alt={nameOnResume as string}
-                                src={profile && typeof profile === 'object' && profile?.url ? profile?.url : ''}
+                                src={profile && typeof profile === 'object' && profile?.url ? `${getClientSideURL()}/${profile?.url}` : ''}
                                 className="object-cover object-top aspect-auto"
                             />
                             <AvatarFallback>{DATA.initials}</AvatarFallback>

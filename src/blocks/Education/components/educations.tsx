@@ -1,6 +1,7 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { ResumeCard } from "@/components/resume-card";
 import { TEducationProps } from "@/payload-types";
+import { getClientSideURL } from "@/utilities/getURL";
 
 const BLUR_FADE_DELAY = 0.04;
 export function Education(props:TEducationProps) {
@@ -17,7 +18,7 @@ export function Education(props:TEducationProps) {
                         <ResumeCard
                             key={education?.qualification?.academy}
                             href='/'
-                            logoUrl={education?.image && typeof education?.image === 'object' && education?.image?.url ? education?.image?.url : ''}
+                            logoUrl={education?.image && typeof education?.image === 'object' && education?.image?.url ? `${getClientSideURL()}/${education?.image?.url}` : ''}
                             altText={education?.qualification?.academy as string}
                             title={education?.qualification?.academy as string}
                             subtitle={education?.qualification?.degree as string}

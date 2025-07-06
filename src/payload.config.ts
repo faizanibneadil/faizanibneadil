@@ -1,6 +1,6 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -39,6 +39,7 @@ import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
 import { Config } from './payload-types'
 import { isSuperAdmin } from './access/isSuperAdmin'
 import { getUserTenantIDs } from './utilities/getUserTenantIDs'
+import { getServerSideURL } from './utilities/getURL'
 
 
 
@@ -52,6 +53,7 @@ export default buildConfig({
             baseDir: path.resolve(dirname),
         },
     },
+    cors: [getServerSideURL()].filter(Boolean),
     collections: [
         Users,
         Media,
@@ -73,17 +75,21 @@ export default buildConfig({
         Licenses,
     ],
     blocks: [
-        Hero, 
-        Contact, 
-        Education, 
-        Project, 
-        Skill, 
-        Experiance, 
+        Hero,
+        Contact,
+        Education,
+        Project,
+        Skill,
+        Experiance,
         About,
         Hackathon
     ],
     globals: [],
-    editor: lexicalEditor(),
+    editor: lexicalEditor({
+        features({ defaultFeatures, rootFeatures }) {
+            return [...defaultFeatures, ...rootFeatures, FixedToolbarFeature()]
+        },
+    }),
     secret: process.env.PAYLOAD_SECRET || '',
     typescript: {
         outputFile: path.resolve(dirname, 'payload-types.ts'),
