@@ -7611,6 +7611,7 @@ export interface UserAuthOperations {
  */
 export interface IHeroProps {
   nameOnResume?: string | null;
+  headline?: string | null;
   profile?: (number | null) | Media;
   id?: string | null;
   blockName?: string | null;

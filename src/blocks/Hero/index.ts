@@ -10,6 +10,11 @@ export const Hero: Block = {
             label: 'Name On Resume'
         },
         {
+            type: 'text',
+            name: 'headline',
+            label: 'Headline',
+        },
+        {
             type: 'relationship',
             relationTo: 'media',
             name: 'profile',
