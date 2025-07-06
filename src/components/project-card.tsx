@@ -14,6 +14,8 @@ import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { IconRenderrer } from "./ui/icon-renderrer";
 import { Dates } from "./dates";
+import { getPayloadConfig } from "@/utilities/getPayloadConfig";
+import React from "react";
 
 type Props = Exclude<Exclude<IProjectProps['projects'], null | undefined>[0], number>
 
@@ -64,15 +66,15 @@ export function ProjectCard({
         </div>
       </CardHeader>
       <CardContent className="mt-auto flex flex-col px-2">
-        {Skills?.docs && Skills.docs.length > 0 && (
+        {Skills?.docs && Skills?.docs?.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1">
             {Skills?.docs?.map((skill) => {
-              return typeof skill === 'number' ? null : (
-                <Badge
-                  className="px-1 py-0 text-[10px]"
-                  variant="secondary"
-                  key={skill?.id}
-                >
+              return typeof skill === 'number' ? (
+                <React.Suspense key={`skill-${skill}`} fallback={<Badge variant="secondary" className="w-6" />}>
+                  <Skill id={skill} />
+                </React.Suspense>
+              ) : (
+                <Badge className="px-1 py-0 text-[10px]" variant="secondary" key={skill?.id}>
                   {skill?.title}
                 </Badge>
               )
@@ -99,3 +101,19 @@ export function ProjectCard({
     </Card>
   );
 }
+
+
+async function Skill(props: { id: number }) {
+  const skill = await getSkillById({ id: props.id })
+  return (
+    <Badge className="px-1 py-0 text-[10px]" variant="secondary">
+      {skill?.title}
+    </Badge>
+  )
+}
+
+const getSkillById = React.cache(async ({ id }: { id: number }) => {
+  const payload = await getPayloadConfig()
+  const skill = await payload.findByID({ collection: 'skills', id, select: { title: true } })
+  return skill
+})
