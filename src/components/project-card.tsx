@@ -50,6 +50,8 @@ export function ProjectCard({
             src={thumbnail && typeof thumbnail === 'object' && thumbnail?.url ? thumbnail?.url : ''}
             alt={title}
             className="h-40 w-full overflow-hidden object-cover object-top"
+            fetchPriority="high" 
+            loading="eager"
           />
         )}
       </Link>
