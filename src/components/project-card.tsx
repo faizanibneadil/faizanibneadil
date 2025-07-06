@@ -45,7 +45,7 @@ export function ProjectCard({
         )} */}
         {thumbnail && (
           <Image
-            src={thumbnail && typeof thumbnail === 'object' && thumbnail?.url ? `${getClientSideURL()}/${thumbnail?.url}` : ''}
+            src={thumbnail && typeof thumbnail === 'object' && thumbnail?.url ? thumbnail?.url : ''}
             alt={title}
             className="h-40 w-full overflow-hidden object-cover object-top"
           />
