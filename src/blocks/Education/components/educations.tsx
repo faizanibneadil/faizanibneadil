@@ -8,7 +8,7 @@ const BLUR_FADE_DELAY = 0.04;
 export function Education(props: TEducationProps) {
     const { educations,blockType,blockName } = props || {}
     return (
-        <section id="education" aria-label={blockName || blockType}>
+        <section id="education" aria-label={blockName ?? blockType}>
             <div className="flex min-h-0 flex-col gap-y-3">
                 <BlurFade delay={BLUR_FADE_DELAY * 7}>
                     <h2 className="text-xl font-bold">Education</h2>

@@ -9,7 +9,7 @@ export function Hackathon(props: IHackathonProps) {
     const { hackathons, heading, description,blockName,blockType } = props || {}
     console.log(hackathons?.at(0))
     return (
-        <section id="hackathons" aria-label={blockName || blockType}>
+        <section id="hackathons" aria-label={blockName ?? blockType}>
             <div className="space-y-12 w-full py-12">
                 <BlurFade delay={BLUR_FADE_DELAY * 13}>
                     <div className="flex flex-col items-center justify-center space-y-4 text-center">
