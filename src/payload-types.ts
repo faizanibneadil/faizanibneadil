@@ -7517,6 +7517,11 @@ export interface Config {
     experiance: IExperianceProps;
     about: IAboutProps;
     hackathon: IHackathonProps;
+    research: IResearchProps;
+    publication: IPublicationProps;
+    license: ILicenseProps;
+    certification: ICertificationProps;
+    achievement: IAchievementProps;
   };
   collections: {
     users: User;
@@ -7960,6 +7965,356 @@ export interface Hackathon {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IResearchProps".
+ */
+export interface IResearchProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  researches?: (number | Research)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'research';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "researches".
+ */
+export interface Research {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Write description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  dates: {
+    to: string;
+    from: string;
+  };
+  location?: string | null;
+  links?:
+    | {
+        icon?: TIconProps;
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IPublicationProps".
+ */
+export interface IPublicationProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  publications?: (number | Publication)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'publication';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "publications".
+ */
+export interface Publication {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Write description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  dates: {
+    to: string;
+    from: string;
+  };
+  location?: string | null;
+  links?:
+    | {
+        icon?: TIconProps;
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ILicenseProps".
+ */
+export interface ILicenseProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  licenses?: (number | License)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'license';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "licenses".
+ */
+export interface License {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Write description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  dates: {
+    to: string;
+    from: string;
+  };
+  location?: string | null;
+  links?:
+    | {
+        icon?: TIconProps;
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ICertificationProps".
+ */
+export interface ICertificationProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  certifications?: (number | Certification)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'certification';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "certifications".
+ */
+export interface Certification {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Write description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  dates: {
+    to: string;
+    from: string;
+  };
+  location?: string | null;
+  links?:
+    | {
+        icon?: TIconProps;
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IAchievementProps".
+ */
+export interface IAchievementProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  achievements?: (number | Achievement)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'achievement';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements".
+ */
+export interface Achievement {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Write description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  dates: {
+    to: string;
+    from: string;
+  };
+  location?: string | null;
+  links?:
+    | {
+        icon?: TIconProps;
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -8058,14 +8413,19 @@ export interface Page {
   };
   layout?:
     | (
+        | IAboutProps
+        | IAchievementProps
+        | ICertificationProps
         | IContactProps
         | TEducationProps
-        | IHeroProps
-        | ISkillProps
         | IExperianceProps
-        | IAboutProps
         | IHackathonProps
+        | IHeroProps
+        | ILicenseProps
         | IProjectProps
+        | IPublicationProps
+        | ISkillProps
+        | IResearchProps
       )[]
     | null;
   publishedAt?: string | null;
@@ -8115,69 +8475,9 @@ export interface Social {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "researches".
- */
-export interface Research {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "achievements".
- */
-export interface Achievement {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "certifications".
- */
-export interface Certification {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "languages".
  */
 export interface Language {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "publications".
- */
-export interface Publication {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "licenses".
- */
-export interface License {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
@@ -8665,6 +8965,23 @@ export interface HackathonsSelect<T extends boolean = true> {
 export interface ResearchesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  description?: T;
+  dates?:
+    | T
+    | {
+        to?: T;
+        from?: T;
+      };
+  location?: T;
+  links?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        link?: T;
+        id?: T;
+      };
+  image?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -8676,6 +8993,23 @@ export interface ResearchesSelect<T extends boolean = true> {
 export interface AchievementsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  description?: T;
+  dates?:
+    | T
+    | {
+        to?: T;
+        from?: T;
+      };
+  location?: T;
+  links?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        link?: T;
+        id?: T;
+      };
+  image?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -8687,6 +9021,23 @@ export interface AchievementsSelect<T extends boolean = true> {
 export interface CertificationsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  description?: T;
+  dates?:
+    | T
+    | {
+        to?: T;
+        from?: T;
+      };
+  location?: T;
+  links?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        link?: T;
+        id?: T;
+      };
+  image?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -8709,6 +9060,23 @@ export interface LanguagesSelect<T extends boolean = true> {
 export interface PublicationsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  description?: T;
+  dates?:
+    | T
+    | {
+        to?: T;
+        from?: T;
+      };
+  location?: T;
+  links?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        link?: T;
+        id?: T;
+      };
+  image?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -8720,6 +9088,23 @@ export interface PublicationsSelect<T extends boolean = true> {
 export interface LicensesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  description?: T;
+  dates?:
+    | T
+    | {
+        to?: T;
+        from?: T;
+      };
+  location?: T;
+  links?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        link?: T;
+        id?: T;
+      };
+  image?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

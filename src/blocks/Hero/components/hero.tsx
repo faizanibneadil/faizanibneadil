@@ -8,10 +8,10 @@ import { getClientSideURL } from "@/utilities/getURL";
 const BLUR_FADE_DELAY = 0.04;
 
 export function Hero(props: IHeroProps) {
-    const { nameOnResume, profile,headline } = props || {}
+    const { nameOnResume, profile,headline,blockName,blockType } = props || {}
 
     return (
-        <section id="hero">
+        <section id="hero" aria-label={blockName || blockType}>
             <div className="mx-auto w-full max-w-2xl space-y-8">
                 <div className="gap-2 flex justify-between">
                     <div className="flex-col flex flex-1 space-y-1.5">

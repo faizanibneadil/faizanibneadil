@@ -7,9 +7,9 @@ import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical
 
 const BLUR_FADE_DELAY = 0.04;
 export function Contact(props: IContactProps) {
-    const { content } = props || {}
+    const { content, blockType,blockName } = props || {}
     return (
-        <section id="contact">
+        <section id="contact" aria-label={blockName || blockType}>
             <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
                 <BlurFade delay={BLUR_FADE_DELAY * 16}>
                     <div className="space-y-3">

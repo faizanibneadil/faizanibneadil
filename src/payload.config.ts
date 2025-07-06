@@ -34,6 +34,11 @@ import { Skill } from '@/blocks/Skill'
 import { Experiance } from '@/blocks/Experiances'
 import { About } from '@/blocks/About'
 import { Hackathon } from '@/blocks/Hackathon'
+import { Research } from '@/blocks/Research'
+import { Publication } from '@/blocks/Publication'
+import { License } from '@/blocks/Licenses'
+import { Certification } from '@/blocks/Certification'
+import { Achievement } from '@/blocks/Achievement'
 
 import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
 import { Config } from './payload-types'
@@ -82,7 +87,12 @@ export default buildConfig({
         Skill,
         Experiance,
         About,
-        Hackathon
+        Hackathon,
+        Research,
+        Publication,
+        License,
+        Certification,
+        Achievement
     ],
     globals: [],
     editor: lexicalEditor({

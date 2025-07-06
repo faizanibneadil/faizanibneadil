@@ -10,9 +10,9 @@ const BLUR_FADE_DELAY = 0.04;
 
 
 export async function About(props: IAboutProps) {
-    const { content } = props || {}
+    const { content, blockType, blockName } = props || {}
     return (
-        <section id="about">
+        <section id="about" aria-label={blockName || blockType}>
             <BlurFade delay={BLUR_FADE_DELAY * 3}>
                 <h2 className="text-xl font-bold">About</h2>
             </BlurFade>
