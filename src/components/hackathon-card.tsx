@@ -45,7 +45,7 @@ export function HackathonCard({
             <Link href={link.link} key={idx}>
               <Badge key={idx} title={link.label} className="flex gap-2">
                 {link?.icon && (
-                  <IconRenderrer icon={link.icon} className='size-2' />
+                  <IconRenderrer icon={link.icon} className='size-3' />
                 )}
                 {link.label}
               </Badge>
