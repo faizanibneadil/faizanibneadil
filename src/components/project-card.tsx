@@ -89,7 +89,7 @@ export function ProjectCard({
               <Link href={link?.link} key={idx} target="_blank">
                 <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
                   {link?.icon && (
-                    <IconRenderrer icon={link?.icon} className='size-2' />
+                    <IconRenderrer icon={link?.icon} className='size-3' />
                   )}
                   {link?.label}
                 </Badge>
