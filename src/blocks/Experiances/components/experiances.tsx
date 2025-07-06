@@ -21,7 +21,7 @@ export function Experiance(props:IExperianceProps) {
                             subtitle={work.title}
                             href={'/'}
                             // badges={work.badges}
-                            period={`${work.start} - ${work.end ?? "Present"}`}
+                            dates={{ to: work.start, from: work.end }}
                             description={work.description as string}
                         />
                     </BlurFade>

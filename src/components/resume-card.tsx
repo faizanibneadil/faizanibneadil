@@ -8,6 +8,7 @@ import { motion } from "motion/react";
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { Dates, DatesProps } from "./dates";
 
 interface ResumeCardProps {
   logoUrl: string;
@@ -16,7 +17,7 @@ interface ResumeCardProps {
   subtitle?: string;
   href?: string;
   badges?: readonly string[];
-  period: string;
+  dates: DatesProps;
   description?: string;
 }
 export const ResumeCard = ({
@@ -26,7 +27,7 @@ export const ResumeCard = ({
   subtitle,
   href,
   badges,
-  period,
+  dates,
   description,
 }: ResumeCardProps) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
@@ -81,7 +82,7 @@ export const ResumeCard = ({
                 />
               </h3>
               <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right">
-                {period}
+                <Dates to={dates?.to} from={dates?.from} />
               </div>
             </div>
             {subtitle && <div className="font-sans text-xs">{subtitle}</div>}

@@ -1,11 +1,11 @@
 import React from 'react';
 
-type Props = {
+export type DatesProps = {
     from?: string | null | undefined;
     to?: string | null | undefined;
 };
 
-export function Dates({ from, to }: Props) {
+export function Dates({ from, to }: DatesProps) {
     const formatDate = (dateString: string | null | undefined) => {
         if (!dateString) return null;
 
