@@ -8,7 +8,7 @@ const BLUR_FADE_DELAY = 0.04;
 export function Research(props: IResearchProps) {
     const { researches, heading, description,blockName,blockType } = props || {}
     return (
-        <section id="researches" aria-label={blockName || blockType}>
+        <section id="researches" aria-label={blockName ?? blockType}>
             <div className="space-y-12 w-full py-12">
                 <BlurFade delay={BLUR_FADE_DELAY * 13}>
                     <div className="flex flex-col items-center justify-center space-y-4 text-center">
