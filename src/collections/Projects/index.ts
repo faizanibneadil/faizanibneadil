@@ -2,6 +2,8 @@ import { slugField } from "@/fields/slug";
 import type { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
+import { iconField } from "@/fields/icon";
+import { lexicalEditor } from "@payloadcms/richtext-lexical";
 
 export const Projects: CollectionConfig<'projects'> = {
     slug: 'projects',
@@ -14,6 +16,17 @@ export const Projects: CollectionConfig<'projects'> = {
     },
     fields: [
         TitleField(),
+        {
+            type: 'richText',
+            name: 'description',
+            editor: lexicalEditor(),
+            label: 'Description'
+        },
+        {
+            type: 'text',
+            name: 'visitURL',
+            label: 'Visit URL',
+        },
         {
             name: 'publishedAt',
             type: 'date',
@@ -30,6 +43,28 @@ export const Projects: CollectionConfig<'projects'> = {
             admin: {
                 description: 'Provide list of skills. You used to build this project'
             }
+        },
+        {
+            type: 'group',
+            name: 'dates',
+            label: 'Dates',
+            fields: [
+                {
+                    type: 'row',
+                    fields: [
+                        {
+                            type: 'date',
+                            name: 'to',
+                            label: 'TO'
+                        },
+                        {
+                            type: 'date',
+                            name: 'from',
+                            label: 'FROM'
+                        }
+                    ]
+                }
+            ]
         },
         {
             type: 'group',
@@ -50,6 +85,35 @@ export const Projects: CollectionConfig<'projects'> = {
             ]
         },
         {
+            type: 'array',
+            name: 'links',
+            labels: { singular: 'Link', plural: 'Links' },
+            admin: {
+                initCollapsed: true
+            },
+            fields: [
+                {
+                    type: 'row',
+                    fields: [
+                        iconField,
+                        {
+                            type: 'text',
+                            label: 'Lable',
+                            name: 'label',
+                            required: true
+                        },
+                        {
+                            type: 'text',
+                            name: 'link',
+                            label: 'Link',
+                            required: true
+                        }
+                    ]
+                }
+            ],
+            maxRows: 5
+        },
+        {
             type: 'relationship',
             name: 'thumbnail',
             label: 'Thumbnail',
@@ -58,7 +122,7 @@ export const Projects: CollectionConfig<'projects'> = {
             admin: {
                 description: 'Provide project thumbnail.',
                 appearance: 'drawer',
-                position:'sidebar'
+                position: 'sidebar'
             }
         },
         ...slugField(),

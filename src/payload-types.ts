@@ -7512,7 +7512,7 @@ export interface Config {
     hero: IHeroProps;
     contact: IContactProps;
     education: TEducationProps;
-    project: Project;
+    project: IProjectProps;
     skill: ISkillProps;
     experiance: IExperianceProps;
     about: IAboutProps;
@@ -7525,7 +7525,7 @@ export interface Config {
     blogs: Blog;
     pages: Page;
     educations: Education;
-    projects: Project1;
+    projects: Project;
     tenants: Tenant;
     menus: Menu;
     socials: Social;
@@ -7732,22 +7732,95 @@ export interface Education {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "project".
+ * via the `definition` "IProjectProps".
  */
-export interface Project {
+export interface IProjectProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  projects?: (number | Project)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'project';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ISkillProps".
+ * via the `definition` "projects".
  */
-export interface ISkillProps {
-  userSkills?: (number | Skill)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'skill';
+export interface Project {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  visitURL?: string | null;
+  publishedAt?: string | null;
+  /**
+   * Provide list of skills. You used to build this project
+   */
+  Skills?: {
+    docs?: (number | Skill)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  dates?: {
+    to?: string | null;
+    from?: string | null;
+  };
+  /**
+   * Provide credential for testing.
+   */
+  credential?: {
+    credential_email?: string | null;
+    credential_password?: string | null;
+    /**
+     * If you handled your authentication with username then provide otherwize leave it.
+     */
+    credential_username?: string | null;
+  };
+  links?:
+    | {
+        icon?: TIconProps;
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Provide project thumbnail.
+   */
+  thumbnail?: (number | null) | Media;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -7761,7 +7834,7 @@ export interface Skill {
   /**
    * Select those project in whitch you used this skill.
    */
-  projects?: (number | Project1)[] | null;
+  projects?: (number | Project)[] | null;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -7770,41 +7843,13 @@ export interface Skill {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "projects".
+ * via the `definition` "ISkillProps".
  */
-export interface Project1 {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  publishedAt?: string | null;
-  /**
-   * Provide list of skills. You used to build this project
-   */
-  Skills?: {
-    docs?: (number | Skill)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  /**
-   * Provide credential for testing.
-   */
-  credential?: {
-    credential_email?: string | null;
-    credential_password?: string | null;
-    /**
-     * If you handled your authentication with username then provide otherwize leave it.
-     */
-    credential_username?: string | null;
-  };
-  /**
-   * Provide project thumbnail.
-   */
-  thumbnail?: (number | null) | Media;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
+export interface ISkillProps {
+  userSkills?: (number | Skill)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'skill';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8263,7 +8308,7 @@ export interface PayloadLockedDocument {
       } | null)
     | ({
         relationTo: 'projects';
-        value: number | Project1;
+        value: number | Project;
       } | null)
     | ({
         relationTo: 'tenants';
@@ -8488,14 +8533,30 @@ export interface EducationsSelect<T extends boolean = true> {
 export interface ProjectsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  description?: T;
+  visitURL?: T;
   publishedAt?: T;
   Skills?: T;
+  dates?:
+    | T
+    | {
+        to?: T;
+        from?: T;
+      };
   credential?:
     | T
     | {
         credential_email?: T;
         credential_password?: T;
         credential_username?: T;
+      };
+  links?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        link?: T;
+        id?: T;
       };
   thumbnail?: T;
   slug?: T;
@@ -8751,7 +8812,7 @@ export interface TaskSchedulePublish {
         } | null)
       | ({
           relationTo: 'projects';
-          value: number | Project1;
+          value: number | Project;
         } | null)
       | ({
           relationTo: 'tenants';

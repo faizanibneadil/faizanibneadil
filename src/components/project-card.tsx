@@ -6,51 +6,34 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { IProjectProps } from "@/payload-types";
+import { getClientSideURL } from "@/utilities/getURL";
 import Image from "next/image";
 import Link from "next/link";
-import Markdown from "react-markdown";
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import { RichText } from '@payloadcms/richtext-lexical/react'
+import { IconRenderrer } from "./ui/icon-renderrer";
+import { Dates } from "./dates";
 
-interface Props {
-  title: string;
-  href?: string;
-  description: string;
-  dates: string;
-  tags: readonly string[];
-  link?: string;
-  image?: string;
-  video?: string;
-  links?: readonly {
-    icon: React.ReactNode;
-    type: string;
-    href: string;
-  }[];
-  className?: string;
-}
+type Props = Exclude<Exclude<IProjectProps['projects'], null | undefined>[0], number>
 
 export function ProjectCard({
   title,
-  href,
-  description,
-  dates,
-  tags,
-  link,
-  image,
-  video,
+  Skills,
+  credential,
   links,
-  className,
+  dates,
+  thumbnail,
+  visitURL,
+  description
 }: Props) {
   return (
-    <Card
-      className={
-        "flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full"
-      }
-    >
+    <Card className="flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full">
       <Link
-        href={href || "#"}
-        className={cn("block cursor-pointer", className)}
+        href={visitURL || "#"}
+        className="block cursor-pointer"
       >
-        {video && (
+        {/* {video && (
           <video
             src={video}
             autoPlay
@@ -59,10 +42,10 @@ export function ProjectCard({
             playsInline
             className="pointer-events-none mx-auto h-40 w-full object-cover object-top" // needed because random black line at bottom of video
           />
-        )}
-        {image && (
+        )} */}
+        {thumbnail && (
           <Image
-            src={image}
+            src={thumbnail && typeof thumbnail === 'object' && thumbnail?.url ? `${getClientSideURL()}/${thumbnail?.url}` : ''}
             alt={title}
             className="h-40 w-full overflow-hidden object-cover object-top"
           />
@@ -71,27 +54,29 @@ export function ProjectCard({
       <CardHeader className="px-2">
         <div className="space-y-1">
           <CardTitle className="mt-1 text-base">{title}</CardTitle>
-          <time className="font-sans text-xs">{dates}</time>
+          <Dates to={dates?.to} from={dates?.from} />
           <div className="hidden font-sans text-xs underline print:visible">
-            {link?.replace("https://", "").replace("www.", "").replace("/", "")}
+            {visitURL?.replace("https://", "").replace("www.", "").replace("/", "")}
           </div>
-          <Markdown className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
-            {description}
-          </Markdown>
+          <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
+            <RichText data={description as SerializedEditorState} />
+          </div>
         </div>
       </CardHeader>
       <CardContent className="mt-auto flex flex-col px-2">
-        {tags && tags.length > 0 && (
+        {Skills?.docs && Skills.docs.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1">
-            {tags?.map((tag) => (
-              <Badge
-                className="px-1 py-0 text-[10px]"
-                variant="secondary"
-                key={tag}
-              >
-                {tag}
-              </Badge>
-            ))}
+            {Skills?.docs?.map((skill) => {
+              return typeof skill === 'number' ? null : (
+                <Badge
+                  className="px-1 py-0 text-[10px]"
+                  variant="secondary"
+                  key={skill?.id}
+                >
+                  {skill?.title}
+                </Badge>
+              )
+            })}
           </div>
         )}
       </CardContent>
@@ -99,10 +84,12 @@ export function ProjectCard({
         {links && links.length > 0 && (
           <div className="flex flex-row flex-wrap items-start gap-1">
             {links?.map((link, idx) => (
-              <Link href={link?.href} key={idx} target="_blank">
+              <Link href={link?.link} key={idx} target="_blank">
                 <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
-                  {link.icon}
-                  {link.type}
+                  {link?.icon && (
+                    <IconRenderrer icon={link?.icon} className='size-2' />
+                  )}
+                  {link?.label}
                 </Badge>
               </Link>
             ))}
