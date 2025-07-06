@@ -8,7 +8,7 @@ import { getClientSideURL } from "@/utilities/getURL";
 const BLUR_FADE_DELAY = 0.04;
 
 export function Hero(props: IHeroProps) {
-    const { nameOnResume, profile } = props || {}
+    const { nameOnResume, profile,headline } = props || {}
 
     return (
         <section id="hero">
@@ -24,7 +24,7 @@ export function Hero(props: IHeroProps) {
                         <BlurFadeText
                             className="max-w-[600px] md:text-xl"
                             delay={BLUR_FADE_DELAY}
-                            text={DATA.description}
+                            text={headline as string}
                         />
                     </div>
                     <BlurFade delay={BLUR_FADE_DELAY}>
