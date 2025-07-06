@@ -7,7 +7,6 @@ import { HackathonCard } from "@/components/hackathon-card";
 const BLUR_FADE_DELAY = 0.04;
 export function Hackathon(props: IHackathonProps) {
     const { hackathons, heading, description,blockName,blockType } = props || {}
-    console.log(hackathons?.at(0))
     return (
         <section id="hackathons" aria-label={blockName ?? blockType}>
             <div className="space-y-12 w-full py-12">

@@ -17,7 +17,7 @@ interface BlurFadeTextProps {
   animateByCharacter?: boolean;
 }
 const BlurFadeText = ({
-  text,
+  text = '',
   className,
   variant,
   characterDelay = 0.03,
