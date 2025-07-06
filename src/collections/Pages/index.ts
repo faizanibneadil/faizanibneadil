@@ -70,7 +70,8 @@ export const Pages: CollectionConfig<'pages'> = {
                 'skill',
                 'experiance',
                 'about',
-                'hackathon'
+                'hackathon',
+                'project'
             ],
             admin: {
                 initCollapsed: true,

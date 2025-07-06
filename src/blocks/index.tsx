@@ -7,6 +7,7 @@ import { Education } from "./Education/components/educations";
 import { Skill } from "./Skill/components/skills";
 import { Contact } from "./Contact/components/contact";
 import { Hackathon } from "./Hackathon/components/hackathon";
+import { Project } from "./Project/components/project";
 
 const _blocks = {
     hero: Hero,
@@ -15,7 +16,8 @@ const _blocks = {
     skill: Skill,
     experiance: Experiance,
     about: About,
-    hackathon: Hackathon
+    hackathon: Hackathon,
+    project:Project
 }
 
 export function BlocksRenderrer(props: { blocks: Page['layout'][][0] }) {
