@@ -8064,7 +8064,16 @@ export interface Page {
     slug?: ('projects' | 'notes' | 'blogs') | null;
   };
   layout?:
-    | (IContactProps | TEducationProps | IHeroProps | ISkillProps | IExperianceProps | IAboutProps | IHackathonProps)[]
+    | (
+        | IContactProps
+        | TEducationProps
+        | IHeroProps
+        | ISkillProps
+        | IExperianceProps
+        | IAboutProps
+        | IHackathonProps
+        | IProjectProps
+      )[]
     | null;
   publishedAt?: string | null;
   slug?: string | null;
