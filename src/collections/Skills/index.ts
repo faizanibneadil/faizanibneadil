@@ -24,7 +24,9 @@ export const Skills: CollectionConfig<'skills'> = {
                 description: 'Select those project in whitch you used this skill.',
                 appearance: 'drawer'
             }
-        }, ...slugField()],
+        }, 
+        ...slugField()
+    ],
         versions: {
         drafts: {
             autosave: {

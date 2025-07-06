@@ -35,13 +35,13 @@ export const Projects: CollectionConfig<'projects'> = {
             },
         },
         {
-            type: 'join',
+            type: 'relationship',
             name: 'Skills',
-            collection: 'skills',
-            on: 'projects',
+            relationTo:'skills',
             hasMany: true,
             admin: {
-                description: 'Provide list of skills. You used to build this project'
+                description: 'Provide list of skills. You used to build this project',
+                appearance: 'drawer'
             }
         },
         {

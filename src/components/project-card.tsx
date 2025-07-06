@@ -66,9 +66,8 @@ export function ProjectCard({
         </div>
       </CardHeader>
       <CardContent className="mt-auto flex flex-col px-2">
-        {Skills?.docs && Skills?.docs?.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1">
-            {Skills?.docs?.map((skill) => {
+            {Skills?.map((skill) => {
               return typeof skill === 'number' ? (
                 <React.Suspense key={`skill-${skill}`} fallback={<Badge variant="secondary" className="w-6" />}>
                   <Skill id={skill} />
@@ -80,7 +79,6 @@ export function ProjectCard({
               )
             })}
           </div>
-        )}
       </CardContent>
       <CardFooter className="px-2 pb-2">
         {links && links.length > 0 && (
