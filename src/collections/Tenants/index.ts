@@ -36,14 +36,5 @@ export const Tenants: CollectionConfig = {
       index: true,
       required: true,
     }
-  ],
-  versions: {
-    drafts: {
-      autosave: {
-        interval: 100,
-      },
-      schedulePublish: true,
-    },
-    maxPerDoc: 50,
-  },
+  ]
 }

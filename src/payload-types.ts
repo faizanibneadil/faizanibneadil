@@ -7660,7 +7660,6 @@ export interface Tenant {
   slug: string;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -8877,7 +8876,6 @@ export interface TenantsSelect<T extends boolean = true> {
   slug?: T;
   updatedAt?: T;
   createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -9200,10 +9198,6 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'projects';
           value: number | Project;
-        } | null)
-      | ({
-          relationTo: 'tenants';
-          value: number | Tenant;
         } | null)
       | ({
           relationTo: 'menus';
