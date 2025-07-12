@@ -98,7 +98,7 @@ export const Publications: CollectionConfig<'publications'> = {
     versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },

@@ -135,7 +135,7 @@ export const Projects: CollectionConfig<'projects'> = {
     versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },

@@ -102,7 +102,7 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
     versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },

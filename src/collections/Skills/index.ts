@@ -30,7 +30,7 @@ export const Skills: CollectionConfig<'skills'> = {
         versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },
