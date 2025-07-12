@@ -98,7 +98,7 @@ export const Achievements: CollectionConfig<'achievements'> = {
     versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },

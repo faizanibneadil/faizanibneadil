@@ -104,7 +104,7 @@ export const Licenses: CollectionConfig<'licenses'> = {
     versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },
