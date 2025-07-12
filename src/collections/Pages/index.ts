@@ -4,10 +4,26 @@ import { revalidateDelete, revalidatePage } from "./hooks/revalidatePage";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
+import { headers as getHeaders } from "next/headers";
+import { getServerSideURL } from "@/utilities/getURL";
+import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
-    admin: { useAsTitle: 'title' },
+    admin: {
+        useAsTitle: 'title',
+        livePreview: {
+            url: async ({ data ,req}) => {
+                const headers = await getHeaders()
+                const cok = getTenantFromCookie(headers,'number')
+                console.log({cok})
+                const user = await req.payload.auth({headers})
+                console.log({user: user?.user?.tenants})
+                const isHomePage = data.slug === 'home'
+                return `${getServerSideURL()}/faizanadil-fs/p/${data?.slug}`
+            },
+        }
+    },
     custom: {
         collection: 'pages'
     },
@@ -105,7 +121,7 @@ export const Pages: CollectionConfig<'pages'> = {
     versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },
