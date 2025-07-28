@@ -25,6 +25,7 @@ import { Licenses } from "@/collections/Licenses"
 import { Menus } from '@/collections/Menus'
 import { Socials } from '@/collections/Socials'
 import { Educations } from '@/collections/Educations'
+import { Icons } from '@/collections/Icons'
 
 import { Hero } from '@/blocks/Hero'
 import { Contact } from '@/blocks/Contact'
@@ -48,6 +49,7 @@ import { getServerSideURL } from './utilities/getURL'
 
 
 
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -61,6 +63,7 @@ export default buildConfig({
     cors: [getServerSideURL()].filter(Boolean),
     collections: [
         Users,
+        Icons,
         Media,
         Notes,
         Blogs,

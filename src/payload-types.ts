@@ -7525,6 +7525,7 @@ export interface Config {
   };
   collections: {
     users: User;
+    icons: Icon;
     media: Media;
     notes: Note;
     blogs: Blog;
@@ -7550,6 +7551,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
+    icons: IconsSelect<false> | IconsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     notes: NotesSelect<false> | NotesSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
@@ -8342,6 +8344,17 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "icons".
+ */
+export interface Icon {
+  id: number;
+  iconCode: string;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "notes".
  */
 export interface Note {
@@ -8406,7 +8419,7 @@ export interface Page {
   /**
    * If this checked you can show your collection
    */
-  mode?: ('layout' | 'collection') | null;
+  mode: 'layout' | 'collection';
   configurations?: {
     slug?: ('projects' | 'notes' | 'blogs') | null;
   };
@@ -8443,7 +8456,7 @@ export interface Menu {
   tenant?: (number | null) | Tenant;
   menu?:
     | {
-        icon?: TIconProps;
+        icon: number | Icon;
         label: string;
         page?: (number | null) | Page;
         id?: string | null;
@@ -8586,6 +8599,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'icons';
+        value: number | Icon;
       } | null)
     | ({
         relationTo: 'media';
@@ -8735,6 +8752,16 @@ export interface TUserTenantsSelect<T extends boolean = true> {
   tenant?: T;
   roles?: T;
   id?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "icons_select".
+ */
+export interface IconsSelect<T extends boolean = true> {
+  iconCode?: T;
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
