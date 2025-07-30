@@ -147,7 +147,7 @@ export default buildConfig({
                 publications: {},
                 researches: {},
                 skills: {},
-                icons: { useTenantAccess: false },
+                icons: { },
                 menus: { isGlobal: true },
                 socials: { isGlobal: true }
             },
