@@ -14,6 +14,12 @@ export const Icons: CollectionConfig<'icons'> = {
         //     }
         // }
     },
+    access: {
+        create: () => false,
+        delete: () => false,
+        read: () => true,
+        update: () => false,
+    },
     fields: [
         TitleField(),
         {
@@ -41,8 +47,9 @@ export const Icons: CollectionConfig<'icons'> = {
                     name: 'iconCode',
                     label: 'Icon code',
                     admin: {
-                        condition: (field, siblings) => {
-                            return siblings?.iconSpecs?.type === 'html'
+                        condition: (blocks, siblings) => {
+                            console.log({ blocks })
+                            return blocks?.iconSpecs?.type === 'html'
                         }
                     }
                 },
@@ -51,8 +58,9 @@ export const Icons: CollectionConfig<'icons'> = {
                     name: 'svg',
                     relationTo: 'media',
                     admin: {
-                        condition: (field, siblings) => {
-                            return siblings?.iconSpecs?.type === 'svg'
+                        condition: (blocks, siblings) => {
+                            console.log({ blocks })
+                            return blocks?.iconSpecs?.type === 'svg'
                         }
                     }
                 }

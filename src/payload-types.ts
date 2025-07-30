@@ -426,6 +426,7 @@ export interface Skill {
  */
 export interface Icon {
   id: number;
+  tenant?: (number | null) | Tenant;
   title: string;
   iconSpecs: {
     type: 'svg' | 'html';
@@ -1344,6 +1345,7 @@ export interface TUserTenantsSelect<T extends boolean = true> {
  * via the `definition` "icons_select".
  */
 export interface IconsSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   iconSpecs?:
     | T
