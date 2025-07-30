@@ -1,6 +1,7 @@
 import type { CollectionConfig } from "payload";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
+import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 
 export const Icons: CollectionConfig<'icons'> = {
     slug: 'icons',
@@ -15,10 +16,10 @@ export const Icons: CollectionConfig<'icons'> = {
         // }
     },
     access: {
-        create: () => false,
-        delete: () => false,
+        create: superAdminOrTenantAdminAccess,
+        delete: superAdminOrTenantAdminAccess,
         read: () => true,
-        update: () => false,
+        update: superAdminOrTenantAdminAccess,
     },
     fields: [
         TitleField(),
