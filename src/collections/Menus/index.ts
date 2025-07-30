@@ -1,5 +1,4 @@
 import type { CollectionConfig, GlobalConfig } from "payload";
-import { iconField } from "@/fields/icon";
 
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 

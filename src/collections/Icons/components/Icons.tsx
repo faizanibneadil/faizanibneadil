@@ -1,6 +1,7 @@
 import type { ListViewServerProps } from "payload"
 import { Button } from "@payloadcms/ui"
 import Link from "next/link"
+import { Icon } from "@/payload-types"
 const baseClass = 'list-create-new-doc'
 export const listHeaderClass = 'list-header'
 export function Icons(props: ListViewServerProps) {
@@ -28,7 +29,7 @@ export function Icons(props: ListViewServerProps) {
                 </Button>
             </div>
             <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-12">
-                {data?.docs?.map((item) => (
+                {data?.docs?.map((item: any) => (
                     <div
                         key={`${item?.id}-${item?.name}`}
                         className="flex items-center justify-center text-center no-underline relative aspect-square p-2"

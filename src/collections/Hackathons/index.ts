@@ -3,7 +3,6 @@ import { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import { iconField } from "@/fields/icon";
 
 export const Hackathons: CollectionConfig<'hackathons'> = {
     slug: 'hackathons',
@@ -68,7 +67,17 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
                 {
                     type: 'row',
                     fields: [
-                        iconField,
+                        {
+                            type:'relationship',
+                            relationTo: 'icons',
+                            name: 'icon',
+                            label: 'Icon',
+                            required: true,
+                            hasMany: false,
+                            admin:{
+                                appearance: 'drawer',
+                            }
+                        },
                         {
                             type: 'text',
                             label: 'Lable',
