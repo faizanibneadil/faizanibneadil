@@ -1,9 +1,11 @@
 import type { CollectionConfig } from 'payload'
 
 import { superAdminOrTenantAdminAccess } from './access/superAdminOrTenantAdmin'
+import { NavigationGroups } from '@/constants'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  admin:{ group: NavigationGroups.media},
   access: {
     create: superAdminOrTenantAdminAccess,
     delete: superAdminOrTenantAdminAccess,

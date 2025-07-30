@@ -2,11 +2,13 @@ import { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { NavigationGroups } from "@/constants";
 
 export const Researches: CollectionConfig<'researches'> = {
     slug: 'researches',
     admin: {
         useAsTitle: 'title',
+        group: NavigationGroups.resume_portfolio_stuff
     },
     access: {
         create: superAdminOrTenantAdminAccess,

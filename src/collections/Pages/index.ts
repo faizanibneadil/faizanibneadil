@@ -4,12 +4,13 @@ import { revalidateDelete, revalidatePage } from "./hooks/revalidatePage";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
+import { NavigationGroups } from "@/constants";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
-    admin: { useAsTitle: 'title' },
+    admin: { useAsTitle: 'title', group: NavigationGroups.resume_portfolio_stuff },
     custom: {
-        collection: 'pages'
+        collection: 'pages',
     },
     access: {
         create: superAdminOrTenantAdminAccess,
