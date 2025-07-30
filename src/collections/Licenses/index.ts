@@ -1,4 +1,4 @@
-import { resume_fields } from "@/constants";
+import { NavigationGroups, resume_fields } from "@/constants";
 import type { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
@@ -8,6 +8,7 @@ export const Licenses: CollectionConfig<'licenses'> = {
     slug: 'licenses',
     admin: {
         useAsTitle: 'title',
+        group:NavigationGroups.resume_portfolio_stuff,
         hidden({ user }) {
             return user ? user?.field !== resume_fields.healthcare : false
         },

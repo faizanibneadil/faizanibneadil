@@ -8,7 +8,7 @@ import { ensureUniqueUsername } from './hooks/ensureUniqueUsername'
 import { isSuperAdmin } from '@/access/isSuperAdmin'
 import { setCookieBasedOnDomain } from './hooks/setCookieBasedOnDomain'
 import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
-import { resume_fields } from '@/constants'
+import { NavigationGroups, resume_fields } from '@/constants'
 import { capitalize } from '@/utilities/capitalize'
 
 const defaultTenantArrayField = tenantsArrayField({
@@ -39,6 +39,7 @@ export const Users: CollectionConfig<'users'> = {
   },
   admin: {
     useAsTitle: 'email',
+    group:NavigationGroups.user_managemant
   },
   auth: true,
   endpoints: [externalUsersLogin],

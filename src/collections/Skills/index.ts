@@ -1,3 +1,4 @@
+import { NavigationGroups } from "@/constants";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import type { CollectionConfig } from "payload";
@@ -5,7 +6,8 @@ import type { CollectionConfig } from "payload";
 export const Skills: CollectionConfig<'skills'> = {
     slug: 'skills',
     admin: {
-        useAsTitle: 'title'
+        useAsTitle: 'title',
+        group: NavigationGroups.resume_portfolio_stuff
     },
     fields: [
         TitleField(),

@@ -1,8 +1,10 @@
 import type { CollectionConfig, GlobalConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { NavigationGroups } from "@/constants";
 
 export const Socials: CollectionConfig<'socials'> = {
     slug: 'socials',
+    admin:{ group: NavigationGroups.navigations_routing},
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,

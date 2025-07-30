@@ -3,10 +3,11 @@ import type { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { NavigationGroups } from "@/constants";
 
 export const Projects: CollectionConfig<'projects'> = {
     slug: 'projects',
-    admin: { useAsTitle: 'title' },
+    admin: { useAsTitle: 'title', group:NavigationGroups.resume_portfolio_stuff },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
