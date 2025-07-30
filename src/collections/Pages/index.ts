@@ -24,6 +24,7 @@ export const Pages: CollectionConfig<'pages'> = {
             name: 'mode',
             label: 'Page Mode',
             defaultValue: 'layout',
+            required: true,
             options: [
                 { label: 'Layout', value: 'layout' },
                 { label: 'Collection', value: 'collection' }
@@ -54,7 +55,12 @@ export const Pages: CollectionConfig<'pages'> = {
                         { label: 'Notes', value: 'notes' },
                         { label: 'Blogs', value: 'blogs' }
                     ],
-                }
+                    admin:{
+                        components:{
+                            Field: '@/collections/Pages/components/collection-slug-field.tsx#CollectionSlugField'
+                        }
+                    }
+                },
             ]
         },
         {

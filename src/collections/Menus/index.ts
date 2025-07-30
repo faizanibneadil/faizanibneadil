@@ -1,5 +1,4 @@
 import type { CollectionConfig, GlobalConfig } from "payload";
-import { iconField } from "@/fields/icon";
 
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 
@@ -21,7 +20,17 @@ export const Menus: CollectionConfig<'menus'> = {
                 {
                     type: 'row',
                     fields: [
-                        iconField,
+                        {
+                            type:'relationship',
+                            relationTo: 'icons',
+                            name: 'icon',
+                            label: 'Icon',
+                            required: true,
+                            hasMany: false,
+                            admin:{
+                                appearance: 'drawer',
+                            }
+                        },
                         {
                             type: 'text',
                             name: 'label',

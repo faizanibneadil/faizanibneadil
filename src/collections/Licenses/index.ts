@@ -2,7 +2,6 @@ import { resume_fields } from "@/constants";
 import type { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
-import { iconField } from "@/fields/icon";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 
 export const Licenses: CollectionConfig<'licenses'> = {
@@ -70,7 +69,17 @@ export const Licenses: CollectionConfig<'licenses'> = {
                 {
                     type: 'row',
                     fields: [
-                        iconField,
+                        {
+                            type:'relationship',
+                            relationTo: 'icons',
+                            name: 'icon',
+                            label: 'Icon',
+                            required: true,
+                            hasMany: false,
+                            admin:{
+                                appearance: 'drawer',
+                            }
+                        },
                         {
                             type: 'text',
                             label: 'Lable',

@@ -1,4 +1,3 @@
-import { iconField } from "@/fields/icon";
 import type { CollectionConfig, GlobalConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 
@@ -32,7 +31,17 @@ export const Socials: CollectionConfig<'socials'> = {
                             label: 'Link',
                             required: true
                         },
-                        iconField
+                        {
+                            type:'relationship',
+                            relationTo: 'icons',
+                            name: 'icon',
+                            label: 'Icon',
+                            required: true,
+                            hasMany: false,
+                            admin:{
+                                appearance: 'drawer',
+                            }
+                        }
                     ]
                 }
             ]
