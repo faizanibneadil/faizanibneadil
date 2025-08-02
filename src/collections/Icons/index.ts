@@ -10,12 +10,12 @@ export const Icons: CollectionConfig<'icons'> = {
         useAsTitle: 'title',
         hidden: ({ user }) => !isSuperAdmin(user)
     },
-    // access: {
-    //     create: superAdminOrTenantAdminAccess,
-    //     delete: superAdminOrTenantAdminAccess,
-    //     read: () => true,
-    //     update: superAdminOrTenantAdminAccess,
-    // },
+    access: {
+        create: ({ req }) => isSuperAdmin(req.user),
+        delete: ({ req }) => isSuperAdmin(req.user),
+        read: () => true,
+        update: ({ req }) => isSuperAdmin(req.user),
+    },
     fields: [
         TitleField(),
         {
@@ -43,10 +43,7 @@ export const Icons: CollectionConfig<'icons'> = {
                     name: 'iconCode',
                     label: 'Icon code',
                     admin: {
-                        condition: (blocks, siblings) => {
-                            console.log({ blocks })
-                            return blocks?.iconSpecs?.type === 'html'
-                        }
+                        condition: (fields, siblings) => fields?.iconSpecs?.type === 'html'
                     }
                 },
                 {
@@ -54,10 +51,7 @@ export const Icons: CollectionConfig<'icons'> = {
                     name: 'svg',
                     relationTo: 'media',
                     admin: {
-                        condition: (blocks, siblings) => {
-                            console.log({ blocks })
-                            return blocks?.iconSpecs?.type === 'svg'
-                        }
+                        condition: (blocks, siblings) => blocks?.iconSpecs?.type === 'svg'
                     }
                 }
             ]

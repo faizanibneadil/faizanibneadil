@@ -73,6 +73,8 @@ export const Publications: CollectionConfig<'publications'> = {
                             hasMany: false,
                             admin:{
                                 appearance: 'drawer',
+                                allowCreate: false,
+                                allowEdit: false,
                             }
                         },
                         {

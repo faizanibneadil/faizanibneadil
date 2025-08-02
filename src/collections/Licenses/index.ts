@@ -79,6 +79,8 @@ export const Licenses: CollectionConfig<'licenses'> = {
                             hasMany: false,
                             admin:{
                                 appearance: 'drawer',
+                                allowCreate: false,
+                                allowEdit: false,
                             }
                         },
                         {
