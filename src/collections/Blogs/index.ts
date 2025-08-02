@@ -9,7 +9,7 @@ export const Blogs: CollectionConfig<'blogs'> = {
     slug: 'blogs',
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.blogging
+        group: NavigationGroups.portfolio
     },
     access: {
         create: superAdminOrTenantAdminAccess,

@@ -5,7 +5,7 @@ import { NavigationGroups } from "@/constants";
 
 export const Menus: CollectionConfig<'menus'> = {
     slug: 'menus',
-    admin:{ group:NavigationGroups.navigate},
+    admin:{ group:NavigationGroups.portfolio},
      access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
