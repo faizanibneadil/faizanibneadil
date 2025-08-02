@@ -9,9 +9,6 @@ import { NavigationGroups } from "@/constants";
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
     admin: { useAsTitle: 'title', group: NavigationGroups.portfolio },
-    custom: {
-        collection: 'pages',
-    },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
@@ -21,27 +18,33 @@ export const Pages: CollectionConfig<'pages'> = {
     fields: [
         TitleField(),
         {
-            type: 'select',
-            name: 'mode',
+            type: 'group',
+            name: 'pageMode',
             label: 'Page Mode',
-            defaultValue: 'layout',
-            required: true,
-            options: [
-                { label: 'Layout', value: 'layout' },
-                { label: 'Collection', value: 'collection' }
-            ],
             admin: {
-                description: 'If this checked you can show your collection',
-                position: 'sidebar',
-            }
+                description: 'If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change Page Mode into collection.',
+            },
+            fields: [
+                {
+                    type: 'radio',
+                    name: 'mode',
+                    label: 'Mode',
+                    defaultValue: 'layout',
+                    required: true,
+                    options: [
+                        { label: 'Layout', value: 'layout' },
+                        { label: 'Collection', value: 'collection' }
+                    ],
+                }
+            ]
         },
         {
             type: 'group',
             name: 'configurations',
             label: 'Configurations',
             admin: {
-                condition: (blocks, siblings_blocks, ctx) => {
-                    if (blocks?.mode === 'collection') {
+                condition: (fields, siblings_blocks, ctx) => {
+                    if (fields?.pageMode?.mode === 'collection') {
                         return true
                     }
                     return false
@@ -49,16 +52,11 @@ export const Pages: CollectionConfig<'pages'> = {
             },
             fields: [
                 {
-                    type: 'select',
+                    type: 'text',
                     name: 'slug',
-                    options: [
-                        { label: 'Projects', value: 'projects' },
-                        { label: 'Notes', value: 'notes' },
-                        { label: 'Blogs', value: 'blogs' }
-                    ],
-                    admin:{
-                        components:{
-                            Field: '@/collections/Pages/components/collection-slug-field.tsx#CollectionSlugField'
+                    admin: {
+                        components: {
+                            Field: '@/collections/Pages/components/collections.tsx#Collections'
                         }
                     }
                 },
@@ -87,8 +85,8 @@ export const Pages: CollectionConfig<'pages'> = {
             ],
             admin: {
                 initCollapsed: true,
-                condition: (blocks, siblings_blocks, ctx) => {
-                    if (blocks?.mode === 'layout') {
+                condition: (fields, siblings_blocks, ctx) => {
+                    if (fields?.pageMode?.mode === 'layout') {
                         return true
                     }
                     return false

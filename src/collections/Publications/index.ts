@@ -3,6 +3,7 @@ import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin"
 import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { NavigationGroups } from "@/constants";
+import { IconField } from "@/fields/icon";
 
 export const Publications: CollectionConfig<'publications'> = {
     slug: 'publications',
@@ -64,19 +65,7 @@ export const Publications: CollectionConfig<'publications'> = {
                 {
                     type: 'row',
                     fields: [
-                        {
-                            type:'relationship',
-                            relationTo: 'icons',
-                            name: 'icon',
-                            label: 'Icon',
-                            required: true,
-                            hasMany: false,
-                            admin:{
-                                appearance: 'drawer',
-                                allowCreate: false,
-                                allowEdit: false,
-                            }
-                        },
+                        IconField(),
                         {
                             type: 'text',
                             label: 'Lable',
