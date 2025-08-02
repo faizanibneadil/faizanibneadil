@@ -77,6 +77,8 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
                             hasMany: false,
                             admin:{
                                 appearance: 'drawer',
+                                allowCreate: false,
+                                allowEdit: false,
                             }
                         },
                         {

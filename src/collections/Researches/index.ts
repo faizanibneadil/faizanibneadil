@@ -76,6 +76,8 @@ export const Researches: CollectionConfig<'researches'> = {
                             hasMany: false,
                             admin:{
                                 appearance: 'drawer',
+                                allowCreate: false,
+                                allowEdit: false,
                             }
                         },
                         {

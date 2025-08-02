@@ -42,6 +42,8 @@ export const Socials: CollectionConfig<'socials'> = {
                             hasMany: false,
                             admin:{
                                 appearance: 'drawer',
+                                allowCreate: false,
+                                allowEdit: false,
                             }
                         }
                     ]

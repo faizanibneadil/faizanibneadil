@@ -31,6 +31,8 @@ export const Menus: CollectionConfig<'menus'> = {
                             hasMany: false,
                             admin:{
                                 appearance: 'drawer',
+                                allowCreate: false,
+                                allowEdit: false,
                             }
                         },
                         {

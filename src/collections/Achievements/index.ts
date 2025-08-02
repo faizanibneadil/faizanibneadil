@@ -76,6 +76,8 @@ export const Achievements: CollectionConfig<'achievements'> = {
                             hasMany: false,
                             admin:{
                                 appearance: 'drawer',
+                                allowCreate: false,
+                                allowEdit: false,
                             },
                         },
                         {

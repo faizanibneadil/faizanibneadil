@@ -104,6 +104,8 @@ export const Projects: CollectionConfig<'projects'> = {
                             hasMany: false,
                             admin:{
                                 appearance: 'drawer',
+                                allowCreate: false,
+                                allowEdit: false,
                             }
                         },
                         {
