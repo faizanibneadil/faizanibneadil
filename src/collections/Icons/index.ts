@@ -8,7 +8,7 @@ export const Icons: CollectionConfig<'icons'> = {
     slug: 'icons',
     admin: {
         useAsTitle: 'title',
-        hidden: ({ user }) => isSuperAdmin(user)
+        hidden: ({ user }) => !isSuperAdmin(user)
     },
     // access: {
     //     create: superAdminOrTenantAdminAccess,

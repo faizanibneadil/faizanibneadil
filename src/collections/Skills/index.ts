@@ -7,7 +7,7 @@ export const Skills: CollectionConfig<'skills'> = {
     slug: 'skills',
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.navigate
+        group: NavigationGroups.resume
     },
     fields: [
         TitleField(),

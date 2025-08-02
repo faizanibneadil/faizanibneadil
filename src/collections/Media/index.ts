@@ -5,7 +5,7 @@ import { NavigationGroups } from '@/constants'
 
 export const Media: CollectionConfig = {
   slug: 'media',
-  admin:{ group: NavigationGroups.media},
+  admin:{ group: NavigationGroups.portfolio},
   access: {
     create: superAdminOrTenantAdminAccess,
     delete: superAdminOrTenantAdminAccess,
