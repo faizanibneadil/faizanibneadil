@@ -19,7 +19,6 @@ import { Hackathons } from "@/collections/Hackathons"
 import { Researches } from "@/collections/Researches"
 import { Achievements } from "@/collections/Achievements"
 import { Certifications } from "@/collections/Certifications"
-import { Languages } from "@/collections/Languages"
 import { Publications } from "@/collections/Publications"
 import { Licenses } from "@/collections/Licenses"
 import { Menus } from '@/collections/Menus'
@@ -47,9 +46,6 @@ import { isSuperAdmin } from './access/isSuperAdmin'
 import { getUserTenantIDs } from './utilities/getUserTenantIDs'
 import { getServerSideURL } from './utilities/getURL'
 
-
-
-
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -59,6 +55,12 @@ export default buildConfig({
         importMap: {
             baseDir: path.resolve(dirname),
         },
+        components: {
+            graphics: {
+                Logo: '@/components/branding.tsx#Branding',
+                Icon: '@/components/branding.tsx#Branding'
+            }
+        }
     },
     cors: [getServerSideURL()].filter(Boolean),
     collections: [
@@ -78,7 +80,6 @@ export default buildConfig({
         Researches,
         Achievements,
         Certifications,
-        Languages,
         Publications,
         Licenses,
     ],
@@ -142,12 +143,11 @@ export default buildConfig({
                 achievements: {},
                 certifications: {},
                 hackathons: {},
-                languages: {},
                 licenses: {},
                 publications: {},
                 researches: {},
                 skills: {},
-                icons: { },
+                // icons: { },
                 menus: { isGlobal: true },
                 socials: { isGlobal: true }
             },

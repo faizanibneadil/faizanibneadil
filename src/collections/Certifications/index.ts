@@ -8,7 +8,7 @@ export const Certifications: CollectionConfig<'certifications'> = {
     slug: 'certifications',
     admin: { 
         useAsTitle: 'title',
-        group:NavigationGroups.resume_portfolio_stuff
+        group:NavigationGroups.portfolio
     },
     access: {
         create: superAdminOrTenantAdminAccess,

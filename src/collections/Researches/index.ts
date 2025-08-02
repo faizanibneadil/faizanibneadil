@@ -8,7 +8,7 @@ export const Researches: CollectionConfig<'researches'> = {
     slug: 'researches',
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.resume_portfolio_stuff
+        group: NavigationGroups.portfolio
     },
     access: {
         create: superAdminOrTenantAdminAccess,

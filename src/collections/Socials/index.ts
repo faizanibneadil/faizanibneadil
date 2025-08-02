@@ -4,7 +4,7 @@ import { NavigationGroups } from "@/constants";
 
 export const Socials: CollectionConfig<'socials'> = {
     slug: 'socials',
-    admin:{ group: NavigationGroups.navigations_routing},
+    admin:{ group: NavigationGroups.navigate},
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,

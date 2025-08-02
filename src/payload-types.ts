@@ -120,7 +120,6 @@ export interface Config {
     researches: Research;
     achievements: Achievement;
     certifications: Certification;
-    languages: Language;
     publications: Publication;
     licenses: License;
     'payload-jobs': PayloadJob;
@@ -146,7 +145,6 @@ export interface Config {
     researches: ResearchesSelect<false> | ResearchesSelect<true>;
     achievements: AchievementsSelect<false> | AchievementsSelect<true>;
     certifications: CertificationsSelect<false> | CertificationsSelect<true>;
-    languages: LanguagesSelect<false> | LanguagesSelect<true>;
     publications: PublicationsSelect<false> | PublicationsSelect<true>;
     licenses: LicensesSelect<false> | LicensesSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
@@ -426,7 +424,6 @@ export interface Skill {
  */
 export interface Icon {
   id: number;
-  tenant?: (number | null) | Tenant;
   title: string;
   iconSpecs: {
     type: 'svg' | 'html';
@@ -1074,18 +1071,6 @@ export interface Social {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "languages".
- */
-export interface Language {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
@@ -1248,10 +1233,6 @@ export interface PayloadLockedDocument {
         value: number | Certification;
       } | null)
     | ({
-        relationTo: 'languages';
-        value: number | Language;
-      } | null)
-    | ({
         relationTo: 'publications';
         value: number | Publication;
       } | null)
@@ -1345,7 +1326,6 @@ export interface TUserTenantsSelect<T extends boolean = true> {
  * via the `definition` "icons_select".
  */
 export interface IconsSelect<T extends boolean = true> {
-  tenant?: T;
   title?: T;
   iconSpecs?:
     | T
@@ -1665,17 +1645,6 @@ export interface CertificationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "languages_select".
- */
-export interface LanguagesSelect<T extends boolean = true> {
-  tenant?: T;
-  title?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "publications_select".
  */
 export interface PublicationsSelect<T extends boolean = true> {
@@ -1849,10 +1818,6 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'certifications';
           value: number | Certification;
-        } | null)
-      | ({
-          relationTo: 'languages';
-          value: number | Language;
         } | null)
       | ({
           relationTo: 'publications';

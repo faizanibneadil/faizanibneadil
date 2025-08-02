@@ -7,7 +7,7 @@ import { NavigationGroups } from "@/constants";
 
 export const Projects: CollectionConfig<'projects'> = {
     slug: 'projects',
-    admin: { useAsTitle: 'title', group:NavigationGroups.resume_portfolio_stuff },
+    admin: { useAsTitle: 'title', group:NavigationGroups.portfolio },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,

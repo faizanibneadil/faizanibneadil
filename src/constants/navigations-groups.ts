@@ -1,7 +1,8 @@
 export const NavigationGroups = {
-    user_managemant: 'User Managemant',
-    navigations_routing: 'Navigation/Routing',
-    resume_portfolio_stuff:'Resume/Portfolio Stuff',
-    bloging: 'Bloging',
+    management: 'User Management',
+    navigate: 'Navigate',
+    resume:'Resume',
+    portfolio: 'Portfolio',
+    blogging: 'Blogging',
     media: 'Media'
 }

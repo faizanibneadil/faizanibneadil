@@ -8,7 +8,7 @@ import { NavigationGroups } from "@/constants";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
-    admin: { useAsTitle: 'title', group: NavigationGroups.resume_portfolio_stuff },
+    admin: { useAsTitle: 'title', group: NavigationGroups.portfolio },
     custom: {
         collection: 'pages',
     },
