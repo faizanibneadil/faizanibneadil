@@ -3,11 +3,13 @@ import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 // import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 import { isSuperAdmin } from "@/access/isSuperAdmin"
+import { NavigationGroups } from "@/constants";
 
 export const Icons: CollectionConfig<'icons'> = {
     slug: 'icons',
     admin: {
         useAsTitle: 'title',
+        group: NavigationGroups.super_admin_only,
         hidden: ({ user }) => !isSuperAdmin(user)
     },
     access: {

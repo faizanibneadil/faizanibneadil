@@ -1001,11 +1001,13 @@ export interface Page {
   tenant?: (number | null) | Tenant;
   title: string;
   /**
-   * If this checked you can show your collection
+   * If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change Page Mode into collection.
    */
-  mode: 'layout' | 'collection';
+  pageMode: {
+    mode: 'layout' | 'collection';
+  };
   configurations?: {
-    slug?: ('projects' | 'notes' | 'blogs') | null;
+    slug?: string | null;
   };
   layout?:
     | (
@@ -1391,7 +1393,11 @@ export interface BlogsSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  mode?: T;
+  pageMode?:
+    | T
+    | {
+        mode?: T;
+      };
   configurations?:
     | T
     | {

@@ -3,6 +3,7 @@ import type { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { IconField } from "@/fields/icon";
 
 export const Certifications: CollectionConfig<'certifications'> = {
     slug: 'certifications',
@@ -67,19 +68,7 @@ export const Certifications: CollectionConfig<'certifications'> = {
                 {
                     type: 'row',
                     fields: [
-                        {
-                            type:'relationship',
-                            relationTo: 'icons',
-                            name: 'icon',
-                            label: 'Icon',
-                            required: true,
-                            hasMany: false,
-                            admin:{
-                                appearance: 'drawer',
-                                allowCreate: false,
-                                allowEdit: false,
-                            }
-                        },
+                        IconField(),
                         {
                             type: 'text',
                             label: 'Lable',
