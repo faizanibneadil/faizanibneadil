@@ -39,7 +39,7 @@ export const Users: CollectionConfig<'users'> = {
   },
   admin: {
     useAsTitle: 'email',
-    group:NavigationGroups.user_managemant
+    group:NavigationGroups.management
   },
   auth: true,
   endpoints: [externalUsersLogin],

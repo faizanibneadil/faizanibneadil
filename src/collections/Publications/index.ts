@@ -6,7 +6,7 @@ import { NavigationGroups } from "@/constants";
 
 export const Publications: CollectionConfig<'publications'> = {
     slug: 'publications',
-    admin: { useAsTitle: 'title', group:NavigationGroups.resume_portfolio_stuff },
+    admin: { useAsTitle: 'title', group:NavigationGroups.portfolio },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,

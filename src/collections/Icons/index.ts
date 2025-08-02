@@ -1,26 +1,21 @@
 import type { CollectionConfig } from "payload";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
-import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+// import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { isSuperAdmin } from "@/access/isSuperAdmin"
 
 export const Icons: CollectionConfig<'icons'> = {
     slug: 'icons',
     admin: {
         useAsTitle: 'title',
-        // components: {
-        //     views: {
-        //         list: {
-        //             Component: '@/collections/Icons/components/Icons.tsx#Icons'
-        //         }
-        //     }
-        // }
+        hidden: ({ user }) => isSuperAdmin(user)
     },
-    access: {
-        create: superAdminOrTenantAdminAccess,
-        delete: superAdminOrTenantAdminAccess,
-        read: () => true,
-        update: superAdminOrTenantAdminAccess,
-    },
+    // access: {
+    //     create: superAdminOrTenantAdminAccess,
+    //     delete: superAdminOrTenantAdminAccess,
+    //     read: () => true,
+    //     update: superAdminOrTenantAdminAccess,
+    // },
     fields: [
         TitleField(),
         {

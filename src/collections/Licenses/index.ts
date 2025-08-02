@@ -8,7 +8,7 @@ export const Licenses: CollectionConfig<'licenses'> = {
     slug: 'licenses',
     admin: {
         useAsTitle: 'title',
-        group:NavigationGroups.resume_portfolio_stuff,
+        group:NavigationGroups.portfolio,
         hidden({ user }) {
             return user ? user?.field !== resume_fields.healthcare : false
         },
