@@ -3,12 +3,12 @@ import type { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import { NavigationGroups } from "@/constants";
+import { NavigationGroups, resume_fields } from "@/constants";
 import { IconField } from "@/fields/icon";
 
 export const Projects: CollectionConfig<'projects'> = {
     slug: 'projects',
-    admin: { useAsTitle: 'title', group:NavigationGroups.portfolio },
+    admin: { useAsTitle: 'title', group: NavigationGroups.portfolio },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
@@ -38,7 +38,7 @@ export const Projects: CollectionConfig<'projects'> = {
         {
             type: 'relationship',
             name: 'Skills',
-            relationTo:'skills',
+            relationTo: 'skills',
             hasMany: true,
             admin: {
                 description: 'Provide list of skills. You used to build this project',
@@ -71,7 +71,12 @@ export const Projects: CollectionConfig<'projects'> = {
             type: 'group',
             name: 'credential',
             label: 'Credential',
-            admin: { description: 'Provide credential for testing.' },
+            admin: {
+                description: 'Provide credential for testing.',
+                condition: (field, siblings, ctx) => {
+                    return ctx?.user?.field === resume_fields.information_technology
+                }
+            },
             fields: [
                 { type: 'email', name: 'credential_email', label: 'Email' },
                 { type: 'text', name: 'credential_password', label: 'Password' },
