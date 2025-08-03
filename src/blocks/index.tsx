@@ -30,7 +30,7 @@ const _blocks = {
     achievement: Achievement
 }
 
-export function BlocksRenderrer(props: { blocks: Page['layout'][][0] }) {
+export function BlocksRenderer(props: { blocks: Page['layout'][][0] }) {
     const { blocks = [] } = props || {}
 
     const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0

@@ -1,3 +1,4 @@
+import { Page } from "@/payload-types"
 import { getPayloadConfig } from "@/utilities/getPayloadConfig"
 import dynamic from "next/dynamic"
 import { CollectionSlug, DataFromCollectionSlug, PaginatedDocs } from "payload"
@@ -43,13 +44,17 @@ const _Collections: TCollectionComponents = {
     }), { ssr: true })
 }
 
-export async function CollectionRenderer(props: { params: Promise<{ slug: CollectionSlug, domain: string }> }) {
-    const { params } = props || {}
+export async function CollectionRenderer(props: { params: Promise<{ slug: CollectionSlug, domain: string }>, configurations: Page['configurations'] }) {
+    const { params, configurations } = props || {}
     const { slug, domain } = (await params)
-    const collectionProps = await queryCollectionBySlug({ slug, domain })
-    const Collection = _Collections[slug]
+    
+    const collectionToRenderProps = await queryCollectionBySlug({ 
+        slug: configurations && configurations?.slug === slug ? slug : configurations?.slug as CollectionSlug, 
+        domain 
+    })
+    const CollectionToRender = _Collections[slug]
     // @ts-expect-error
-    return slug && slug in _Collections ? <Collection {...collectionProps} /> : null
+    return slug && slug in _Collections ? <CollectionToRender {...collectionToRenderProps} /> : null
 }
 
 const queryCollectionBySlug = React.cache(async ({ slug, domain }: { slug: CollectionSlug, domain: string }) => {
