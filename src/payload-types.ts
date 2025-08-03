@@ -392,7 +392,7 @@ export interface Project {
   /**
    * Provide project thumbnail.
    */
-  thumbnail?: (number | null) | Media;
+  thumbnail: number | Media;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;

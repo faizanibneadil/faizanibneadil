@@ -3,11 +3,14 @@ import { getPayloadConfig } from "@/utilities/getPayloadConfig"
 import { CollectionConfig, CollectionSlug, DataFromCollectionSlug, PaginatedDocs } from "payload"
 import React from "react"
 
-type TConfigurations = "notes" | "blogs" | "educations" | "projects" | "skills" | "hackathons" | "researches" | "achievements" | "certifications" | "publications" | "licenses"
-// type TCollections = Exclude<TConfigurations['slug'], null | undefined>
-type TCollectionReactNode = React.FC<PaginatedDocs<DataFromCollectionSlug<TConfigurations>>>
+// type TConfigurations = "notes" | "blogs" | "educations" | "projects" | "skills" | "hackathons" | "researches" | "achievements" | "certifications" | "publications" | "licenses"
 
-const _Collections: Record<TConfigurations, TCollectionReactNode> = {
+// Create a mapped type that properly associates each collection with its specific props
+type TCollectionComponents = {
+    [K in CollectionSlug]?: React.FC<PaginatedDocs<DataFromCollectionSlug<K>>>
+}
+
+const _Collections: TCollectionComponents = {
     blogs: (props: PaginatedDocs<DataFromCollectionSlug<'blogs'>>) => {
         const { docs } = props || {}
         const blogs = docs.map(doc => {
@@ -54,16 +57,21 @@ const _Collections: Record<TConfigurations, TCollectionReactNode> = {
     skills: () => null
 }
 
-export async function CollectionRenderer(props: { params: Promise<{ slug: TConfigurations, domain: string }> }) {
-    const { params, } = props || {}
+export async function CollectionRenderer(props: { params: Promise<{ slug: CollectionSlug, domain: string }> }) {
+    const { params } = props || {}
     const { slug, domain } = (await params)
     const collectionProps = await queryCollectionBySlug({ slug, domain })
     const Collection = _Collections[slug]
+    // @ts-expect-error
     return slug && slug in _Collections ? <Collection {...collectionProps} /> : null
 }
 
-const queryCollectionBySlug = React.cache(async ({ slug, domain }: { slug: TConfigurations, domain: string }) => {
+const queryCollectionBySlug = React.cache(async ({ slug, domain }: { slug: CollectionSlug, domain: string }) => {
     const payload = await getPayloadConfig()
-    const result = await payload.find({ collection: slug, pagination: true, where: { 'tenant.slug': { equals: domain } } })
+    const result = await payload.find({ 
+        collection: slug, 
+        pagination: true, 
+        where: { 'tenant.slug': { equals: domain } } 
+    })
     return result || null
 })

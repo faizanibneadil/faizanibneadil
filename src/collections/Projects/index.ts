@@ -119,6 +119,7 @@ export const Projects: CollectionConfig<'projects'> = {
             name: 'thumbnail',
             label: 'Thumbnail',
             relationTo: 'media',
+            required: true,
             hasMany: false,
             admin: {
                 description: 'Provide project thumbnail.',
