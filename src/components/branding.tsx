@@ -1,5 +1,5 @@
 import Image from "next/image";
 
 export function Branding(){
-    return <img src='/logo.png' alt="Open Shelf Logo" width='100%' />
+    return <img src='/skillshelf-full.svg' alt="Open Shelf Logo" width='100%' />
 }
