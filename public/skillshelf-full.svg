@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Creator: CorelDRAW 2019 (64-Bit) -->
-<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="5.68542in" height="1.52533in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-viewBox="0 0 10829.99 2905.55"
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="8.38617in" height="2.53722in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 8386.17 2537.22"
  xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
  <defs>
-  <font id="FontID1" horiz-adv-x="640" font-variant="normal" style="fill-rule:nonzero" font-weight="400">
+  <font id="FontID1" horiz-adv-x="640" font-variant="normal" style="fill-rule:nonzero" font-style="normal" font-weight="400">
 	<font-face 
 		font-family="Pristina">
 		<font-face-src>
@@ -20,7 +20,7 @@ viewBox="0 0 10829.99 2905.55"
    <glyph unicode="h" horiz-adv-x="418" d="M410.668 757.499c4.16618,-3.33185 6.33326,-6.83166 6.33326,-10.6674 0,-5.83211 -3.66778,-8.83077 -11.1686,-8.83077 -3.33185,0 -6.83166,0.999554 -10.3315,2.83345 -15.0016,7.49803 -26.1674,11.1658 -33.6682,11.1658 -19.9993,0 -42.1658,-19.8341 -66.4992,-59.4996 -86.0002,-140.001 -149.834,-323.167 -191.168,-549.501 53.0011,102.001 113.833,183.499 182.167,244.5 14.6684,12.9997 25.333,19.5009 32.1675,19.5009 1.99911,0 10.1663,-4.49937 24.5015,-13.6661 17.3311,-7.1676 26.999,-11.667 29.3313,-13.6661 8.50034,-7.50078 12.6665,-20.5005 12.6665,-39.1671 0,-5.16849 -0.333185,-10.8354 -0.999554,-17.1686 -5.49892,-57.9989 -21.9984,-128.166 -49.4986,-210.666 9.99829,13.6661 25.9994,33.6682 47.8326,60.0008 5.33371,5.49892 9.66786,8.33237 13.3329,8.33237 3.49982,0 5.33371,-2.16708 5.33371,-6.33326 0,-4.83255 -2.16708,-10.4994 -6.33326,-16.6647 -18.9998,-27.3349 -44.1676,-67.5016 -75.5007,-120.335 -2.50026,-5.16574 -8.83352,-18.8318 -18.9998,-41.001 -4.33415,-10.4994 -10.1663,-15.6652 -17.667,-15.6652 -8.50034,0 -20.6657,5.66689 -36.6668,17.1659 -6.49848,4.49937 -7.666,11.667 -3.49982,21.5 56.1678,140.835 86.0002,246 89.1668,315.501 0.999554,19.8341 -1.83389,29.8324 -8.33237,29.8324 -4.16618,0 -13.1677,-5.49892 -26.8338,-16.6675 -24.9999,-20.1646 -55.8346,-55.9998 -92.3334,-107.497 -48.3338,-67.6668 -85.667,-136.834 -112,-207.502 -7.1676,-20.1646 -13.834,-30.3336 -19.9993,-30.3336 -5.50168,0 -16.5023,6.6692 -32.8338,20.0021 -8.16715,6.83166 -10.8326,18.1654 -8.33512,34.1666 37.8344,206.5 87.0025,383 147.667,529.499 45.002,108.833 85.5018,180.168 121.667,213.668 9.16671,8.50034 18.1682,12.6665 26.8338,12.6665 9.16671,0 20.8337,-5.16849 34.8329,-15.5 16.1663,-13.3329 32.5006,-26.6685 48.835,-40.0014z"/>
    <glyph unicode="l" horiz-adv-x="190" d="M410.668 757.499c4.16618,-3.33185 6.33326,-6.66645 6.33326,-10.1663 0,-6.16529 -3.66778,-9.33192 -11.1686,-9.33192 -3.33185,0 -6.66645,0.999554 -10.3315,2.83345 -15.0016,7.49803 -26.1674,11.1658 -33.6682,11.1658 -20.5005,0 -43.0001,-19.8341 -67.4988,-59.4996 -88.5004,-144.167 -151.5,-330.335 -189.001,-558.668 -0.999554,-6.33326 -2.66548,-14.5004 -4.83255,-24.9999 7.49803,7.83397 18.4986,20.5005 33.167,37.9996 8.50034,10.1663 14.6656,15.1668 18.6666,15.1668 8.50034,0 8.99874,-5.00052 1.83114,-15.1668 -31.1652,-44.498 -51.9988,-90.998 -61.9999,-139.833 -3.66503,-12.0002 -8.1644,-18.0002 -13.6661,-18.0002 -2.66548,0 -6.16529,1.50071 -10.3315,4.33415 -16.6675,11.1658 -26.1674,17.667 -28.3345,19.5009 -6.50123,6.49848 -9.83308,14.9988 -9.83308,25.4983 0,5.16849 0.831585,11.5018 2.50026,18.9998 37.6664,207.166 86.4986,383.666 145.998,529.334 45.002,110 85.1686,181.167 120.668,213.668 9.83308,9.16671 19.6662,13.4981 29.334,13.1649 8.83352,-0.333185 20.3325,-5.83211 34.3318,-16.4995 15.8332,-12.9997 31.8343,-26.1674 47.8354,-39.5003z"/>
   </font>
-  <font id="FontID0" horiz-adv-x="752" font-variant="normal" style="fill-rule:nonzero" font-weight="800">
+  <font id="FontID0" horiz-adv-x="752" font-variant="normal" style="fill-rule:nonzero" font-style="normal" font-weight="800">
 	<font-face 
 		font-family="Poppins ExtraBold">
 		<font-face-src>
@@ -32,31 +32,41 @@ viewBox="0 0 10829.99 2905.55"
   </font>
   <style type="text/css">
    <![CDATA[
-    @font-face { font-family:"Pristina";font-variant:normal;font-weight:normal;src:url("#FontID1") format(svg)}
-    @font-face { font-family:"Poppins ExtraBold";font-variant:normal;font-weight:800;src:url("#FontID0") format(svg)}
+    @font-face { font-family:"Pristina";font-variant:normal;font-style:normal;font-weight:normal;src:url("#FontID1") format(svg)}
+    @font-face { font-family:"Poppins ExtraBold";font-variant:normal;font-style:normal;font-weight:800;src:url("#FontID0") format(svg)}
+    .fil0 {fill:#FEFEFE}
     .fil2 {fill:#A53692}
-    .fil0 {fill:#201E1E}
-    .fil1 {fill:#201E1E;fill-rule:nonzero}
-    .fnt1 {font-weight:normal;font-size:2723.53px;font-family:'Pristina'}
-    .fnt0 {font-weight:800;font-size:3018.43px;font-family:'Poppins ExtraBold'}
+    .fil1 {fill:#FEFEFE;fill-rule:nonzero}
+    .fnt1 {font-weight:normal;font-size:1429.77px;font-family:'Pristina'}
+    .fnt0 {font-weight:800;font-size:1584.59px;font-family:'Poppins ExtraBold'}
    ]]>
   </style>
  </defs>
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g id="_1778664753856">
-   <text x="-102.62" y="2172.73"  class="fil0 fnt0">S</text>
-   <polygon class="fil1" points="2970.15,2172.73 2508.33,1472.45 2508.33,2172.73 1913.7,2172.73 1913.7,4.54 2508.33,4.54 2508.33,1137.4 2973.17,479.38 3664.39,479.38 3006.37,1327.57 3682.5,2172.73 "/>
-   <polygon class="fil1" points="4998.66,4.54 4998.66,2172.73 4404.02,2172.73 4404.02,4.54 "/>
-   <polygon class="fil1" points="5922.32,4.54 5922.31,2172.73 5327.67,2172.73 5327.68,4.54 "/>
-   <text x="5884.5" y="2216.5"  class="fil0 fnt1">S</text>
-   <text x="7183.18" y="2216.5"  class="fil0 fnt1">h</text>
-   <text x="8321.62" y="2216.5"  class="fil0 fnt1">e</text>
-   <text x="9119.61" y="2216.5"  class="fil0 fnt1">l</text>
-   <text x="9637.08" y="2216.5"  class="fil0 fnt1">f</text>
+  <g id="_1741981922432">
    <g>
-    <polygon class="fil0" points="4268.48,868.4 3968.92,2172.73 3669.36,868.4 3968.92,608.78 "/>
-    <circle class="fil2" cx="3968.92" cy="263.29" r="258.75"/>
+    <text x="2646.87" y="1646.57"  class="fil0 fnt0">S</text>
+    <polygon class="fil1" points="4259.98,1646.57 4017.54,1278.94 4017.54,1646.57 3705.38,1646.57 3705.38,508.33 4017.54,508.33 4017.54,1103.05 4261.57,757.61 4624.44,757.61 4279,1202.88 4633.95,1646.57 "/>
+    <polygon class="fil1" points="5324.89,508.33 5324.89,1646.57 5012.72,1646.57 5012.72,508.33 "/>
+    <polygon class="fil1" points="5809.78,508.33 5809.78,1646.57 5497.61,1646.57 5497.62,508.33 "/>
+    <text x="5789.93" y="1669.54"  class="fil0 fnt1">S</text>
+    <text x="6471.7" y="1669.54"  class="fil0 fnt1">h</text>
+    <text x="7069.35" y="1669.54"  class="fil0 fnt1">e</text>
+    <text x="7488.27" y="1669.54"  class="fil0 fnt1">l</text>
+    <text x="7759.93" y="1669.54"  class="fil0 fnt1">f</text>
+    <g>
+     <polygon class="fil0" points="4941.57,961.83 4784.31,1646.57 4627.05,961.83 4784.31,825.54 "/>
+     <circle class="fil2" cx="4784.31" cy="644.17" r="135.83"/>
+    </g>
+   </g>
+   <g>
+    <polygon class="fil2" points="1341.64,210.59 1098.65,1268.61 855.66,210.59 1098.65,0 "/>
+    <polygon class="fil2" points="2136.42,950.04 1098.65,1268.61 1893.43,529.17 2197.3,634.3 "/>
+    <polygon class="fil2" points="1893.43,2008.06 1098.65,1268.61 2136.42,1587.18 2197.3,1902.91 "/>
+    <polygon class="fil2" points="855.66,2326.63 1098.65,1268.61 1341.64,2326.63 1098.65,2537.22 "/>
+    <polygon class="fil2" points="60.89,1587.19 1098.65,1268.61 303.88,2008.06 0,1902.92 "/>
+    <polygon class="fil2" points="303.87,529.17 1098.65,1268.61 60.89,950.04 -0,634.31 "/>
    </g>
   </g>
  </g>
