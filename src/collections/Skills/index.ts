@@ -8,7 +8,8 @@ export const Skills: CollectionConfig<'skills'> = {
     slug: 'skills',
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.resume
+        group: NavigationGroups.resume,
+        defaultColumns: ['title', 'slug', 'techstack.icon']
     },
     fields: [
         TitleField(),
@@ -23,7 +24,13 @@ export const Skills: CollectionConfig<'skills'> = {
             name: 'techstack',
             label: 'Tech Stack',
             admin: { description: 'If you want to show an icon of the skill instead of skill as name then you have to select an icon from icons collection. REMEMBER: If the icon is available on skill only icon will be display.' },
-            fields: [IconField()]
+            fields: [IconField({
+                admin: {
+                    components: {
+                        Cell: '@/collections/Skills/components/view-icon.tsx#ViewIcon'
+                    }
+                }
+            })]
         }, {
             type: 'relationship',
             name: 'projects',
