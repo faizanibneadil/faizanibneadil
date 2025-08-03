@@ -1,60 +1,46 @@
-import { Page } from "@/payload-types"
 import { getPayloadConfig } from "@/utilities/getPayloadConfig"
-import { CollectionConfig, CollectionSlug, DataFromCollectionSlug, PaginatedDocs } from "payload"
+import dynamic from "next/dynamic"
+import { CollectionSlug, DataFromCollectionSlug, PaginatedDocs } from "payload"
 import React from "react"
 
-// type TConfigurations = "notes" | "blogs" | "educations" | "projects" | "skills" | "hackathons" | "researches" | "achievements" | "certifications" | "publications" | "licenses"
-
-// Create a mapped type that properly associates each collection with its specific props
 type TCollectionComponents = {
-    [K in CollectionSlug]?: React.FC<PaginatedDocs<DataFromCollectionSlug<K>>>
+    [K in CollectionSlug]?: React.ComponentType<PaginatedDocs<DataFromCollectionSlug<K>>>
 }
 
 const _Collections: TCollectionComponents = {
-    blogs: (props: PaginatedDocs<DataFromCollectionSlug<'blogs'>>) => {
-        const { docs } = props || {}
-        const blogs = docs.map(doc => {
-            return (
-                <div key={doc.id} className="flex flex-col gap-4">
-                    <h3>{doc.title}</h3>
-                    <p>Short Descriptin Of The Blog</p>
-                </div>
-            )
-        })
-        return <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{blogs}</div>
-    },
-    notes: (props: PaginatedDocs<DataFromCollectionSlug<'notes'>>) => {
-        const { docs } = props || {}
-        const notes = docs.map(doc => {
-            return (
-                <div key={doc.id} className="flex flex-col gap-4">
-                    <h3>{doc.title}</h3>
-                    <p>Short Descriptin Of The Note</p>
-                </div>
-            )
-        })
-        return <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{notes}</div>
-    },
-    projects: (props: PaginatedDocs<DataFromCollectionSlug<'projects'>>) => {
-        const { docs } = props || {}
-        const projects = docs.map(doc => {
-            return (
-                <div key={doc.id} className="flex flex-col gap-4">
-                    <h3>{doc.title}</h3>
-                    <p>Short Descriptin Of The Project</p>
-                </div>
-            )
-        })
-        return <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{projects}</div>
-    },
-    achievements: () => null,
-    certifications: () => null,
-    educations: () => null,
-    hackathons: () => null,
-    licenses: () => null,
-    publications: () => null,
-    researches: () => null,
-    skills: () => null
+    blogs: dynamic(() => import("@/collections/Blogs/components/collection").then(({ Blogs }) => {
+        return Blogs
+    }), { ssr: true }),
+    notes: dynamic(() => import("@/collections/Notes/components/collection").then(({ Notes }) => {
+        return Notes
+    }), { ssr: true }),
+    projects: dynamic(() => import("@/collections/Projects/components/collection").then(({ Projects }) => {
+        return Projects
+    }), { ssr: true }),
+    achievements: dynamic(() => import("@/collections/Achievements/components/collection").then(({ Achievements }) => {
+        return Achievements
+    }), { ssr: true }),
+    certifications: dynamic(() => import("@/collections/Certifications/components/collection").then(({ Certifications }) => {
+        return Certifications
+    }), { ssr: true }),
+    educations: dynamic(() => import("@/collections/Educations/components/collection").then(({ Educations }) => {
+        return Educations
+    }), { ssr: true }),
+    hackathons: dynamic(() => import("@/collections/Hackathons/components/collection").then(({ Hackathons }) => {
+        return Hackathons
+    }), { ssr: true }),
+    licenses: dynamic(() => import("@/collections/Licenses/components/collection").then(({ Licenses }) => {
+        return Licenses
+    }), { ssr: true }),
+    publications: dynamic(() => import("@/collections/Publications/components/collection").then(({ Publications }) => {
+        return Publications
+    }), { ssr: true }),
+    researches: dynamic(() => import("@/collections/Researches/components/collection").then(({ Researches }) => {
+        return Researches
+    }), { ssr: true }),
+    skills: dynamic(() => import("@/collections/Skills/components/collection").then(({ Skills }) => {
+        return Skills
+    }), { ssr: true })
 }
 
 export async function CollectionRenderer(props: { params: Promise<{ slug: CollectionSlug, domain: string }> }) {
@@ -68,10 +54,10 @@ export async function CollectionRenderer(props: { params: Promise<{ slug: Collec
 
 const queryCollectionBySlug = React.cache(async ({ slug, domain }: { slug: CollectionSlug, domain: string }) => {
     const payload = await getPayloadConfig()
-    const result = await payload.find({ 
-        collection: slug, 
-        pagination: true, 
-        where: { 'tenant.slug': { equals: domain } } 
+    const result = await payload.find({
+        collection: slug,
+        pagination: true,
+        where: { 'tenant.slug': { equals: domain } }
     })
     return result || null
 })
