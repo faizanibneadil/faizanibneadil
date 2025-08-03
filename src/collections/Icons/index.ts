@@ -10,7 +10,8 @@ export const Icons: CollectionConfig<'icons'> = {
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.super_admin_only,
-        hidden: ({ user }) => !isSuperAdmin(user)
+        hidden: ({ user }) => !isSuperAdmin(user),
+        defaultColumns: ['iconSpecs.iconCode','title','iconSpecs.svg','slug'],
     },
     access: {
         create: ({ req }) => isSuperAdmin(req.user),
@@ -23,7 +24,7 @@ export const Icons: CollectionConfig<'icons'> = {
         {
             type: 'group',
             name: 'iconSpecs',
-            label: 'Icon Spesifications',
+            label: 'Icon Specifications',
             fields: [
                 {
                     type: 'row',
@@ -45,7 +46,10 @@ export const Icons: CollectionConfig<'icons'> = {
                     name: 'iconCode',
                     label: 'Icon code',
                     admin: {
-                        condition: (fields, siblings) => fields?.iconSpecs?.type === 'html'
+                        condition: (fields, siblings) => fields?.iconSpecs?.type === 'html',
+                        components:{
+                            Cell: '@/collections/Icons/components/view-icon.tsx#ViewIcon'
+                        }
                     }
                 },
                 {

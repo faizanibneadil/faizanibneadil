@@ -8,10 +8,12 @@ export function IconField(overrides?: Partial<RelationshipField>): RelationshipF
         label: 'Icon',
         required: true,
         hasMany: false,
+        ...(overrides || {}),
         admin: {
             appearance: 'drawer',
             allowCreate: false,
             allowEdit: false,
+            ...(overrides?.admin || {})
         }
-    }
+    } as RelationshipField;
 }
