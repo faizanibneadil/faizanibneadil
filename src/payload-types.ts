@@ -409,6 +409,12 @@ export interface Skill {
   title: string;
   publishedAt?: string | null;
   /**
+   * If you want to show an icon of the skill instead of skill as name then you have to select an icon from icons collection. REMEMBER: If the icon is available on skill only icon will be display.
+   */
+  techstack: {
+    icon: number | Icon;
+  };
+  /**
    * Select those project in whitch you used this skill.
    */
   projects?: (number | Project)[] | null;
@@ -1530,6 +1536,11 @@ export interface SkillsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
   publishedAt?: T;
+  techstack?:
+    | T
+    | {
+        icon?: T;
+      };
   projects?: T;
   slug?: T;
   slugLock?: T;

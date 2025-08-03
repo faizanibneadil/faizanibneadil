@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { IHackathonProps } from "@/payload-types";
-import { IconRenderrer } from "./ui/icon-renderrer";
+import { IconRenderer } from "./ui/icon-renderer";
 import { getClientSideURL } from "@/utilities/getURL";
 import { Dates } from "./dates";
 
@@ -45,7 +45,7 @@ export function HackathonCard({
             <Link href={link.link} key={idx}>
               <Badge key={idx} title={link.label} className="flex gap-2">
                 {link?.icon && (
-                  <IconRenderrer icon={link.icon} className='size-3' />
+                  <IconRenderer icon={link.icon} className='[&>svg]:size-3' />
                 )}
                 {link.label}
               </Badge>

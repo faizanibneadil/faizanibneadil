@@ -7,15 +7,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { IProjectProps } from "@/payload-types";
-import { getClientSideURL } from "@/utilities/getURL";
+import { getPayloadConfig } from "@/utilities/getPayloadConfig";
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
+import { RichText } from '@payloadcms/richtext-lexical/react';
 import Image from "next/image";
 import Link from "next/link";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import { RichText } from '@payloadcms/richtext-lexical/react'
-import { IconRenderrer } from "./ui/icon-renderrer";
-import { Dates } from "./dates";
-import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import React from "react";
+import { Dates } from "./dates";
+import { IconRenderer } from "./ui/icon-renderer";
 
 type Props = Exclude<Exclude<IProjectProps['projects'], null | undefined>[0], number>
 
@@ -50,8 +49,11 @@ export function ProjectCard({
             src={thumbnail && typeof thumbnail === 'object' && thumbnail?.url ? thumbnail?.url : ''}
             alt={title}
             className="h-40 w-full overflow-hidden object-cover object-top"
-            fetchPriority="high" 
+            fetchPriority="high"
             loading="eager"
+            height={40}
+            unoptimized
+            width={200}
           />
         )}
       </Link>
@@ -68,19 +70,25 @@ export function ProjectCard({
         </div>
       </CardHeader>
       <CardContent className="mt-auto flex flex-col px-2">
-          <div className="mt-2 flex flex-wrap gap-1">
-            {Skills?.map((skill) => {
-              return typeof skill === 'number' ? (
+        <div className="mt-2 flex flex-wrap gap-1">
+          {Skills?.map((skill) => {
+            if (typeof skill === 'number') {
+              return (
                 <React.Suspense key={`skill-${skill}`} fallback={<Badge variant="secondary" className="w-6" />}>
                   <Skill id={skill} />
                 </React.Suspense>
-              ) : (
-                <Badge className="px-1 py-0 text-[10px]" variant="secondary" key={skill?.id}>
-                  {skill?.title}
-                </Badge>
               )
-            })}
-          </div>
+            }
+            if (skill?.techstack?.icon) {
+              return <IconRenderer key={skill?.id} icon={skill?.techstack?.icon} className="[&>svg]:size-4" />
+            }
+            return (
+              <Badge className="px-1 py-0 text-[10px]" variant="secondary" key={skill?.id}>
+                {skill?.title}
+              </Badge>
+            )
+          })}
+        </div>
       </CardContent>
       <CardFooter className="px-2 pb-2">
         {links && links.length > 0 && (
@@ -89,7 +97,7 @@ export function ProjectCard({
               <Link href={link?.link} key={idx} target="_blank">
                 <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
                   {link?.icon && (
-                    <IconRenderrer icon={link?.icon} className='size-3' />
+                    <IconRenderer icon={link?.icon} className='[&>svg]:size-3' />
                   )}
                   {link?.label}
                 </Badge>
@@ -105,15 +113,19 @@ export function ProjectCard({
 
 async function Skill(props: { id: number }) {
   const skill = await getSkillById({ id: props.id })
-  return (
+
+  return skill?.techstack?.icon ? (
+    <IconRenderer icon={skill?.techstack?.icon} className="[&>svg]:size-4" />
+  ) : (
     <Badge className="px-1 py-0 text-[10px]" variant="secondary">
       {skill?.title}
     </Badge>
   )
+
 }
 
 const getSkillById = React.cache(async ({ id }: { id: number }) => {
   const payload = await getPayloadConfig()
-  const skill = await payload.findByID({ collection: 'skills', id, select: { title: true } })
+  const skill = await payload.findByID({ collection: 'skills', id })
   return skill
 })
