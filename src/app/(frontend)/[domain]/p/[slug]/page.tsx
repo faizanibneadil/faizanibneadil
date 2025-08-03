@@ -1,12 +1,21 @@
-import { BlocksRenderrer } from "@/blocks";
-import { CollectionRenderer } from "@/collections";
+import dynamic from "next/dynamic";
+const BlocksRenderer = dynamic(() => import("@/blocks").then(({ BlocksRenderer }) => {
+  return BlocksRenderer
+}), { ssr: true })
+const CollectionRenderer = dynamic(() => import("@/collections").then(({ CollectionRenderer }) => {
+  return CollectionRenderer
+}), { ssr: true })
 import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import { CollectionSlug } from "payload";
 import { cache } from "react";
+import type { Page } from "@/payload-types";
 
 type Props = {
   params: Promise<{ slug: CollectionSlug, domain: string }>
 }
+
+const isLayout = (mode: Page['pageMode']['mode']) => mode === 'layout'
+const isCollection = (mode: Page['pageMode']['mode']) => mode === 'collection'
 
 export default async function Page({ params }: Props) {
   const { slug = 'home', domain } = (await params)
@@ -14,11 +23,11 @@ export default async function Page({ params }: Props) {
   if (!page || !domain) return null
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10">
-      {page?.pageMode?.mode === 'layout' && (
-        <BlocksRenderrer blocks={page.layout} />
+      {isLayout(page?.pageMode?.mode) && (
+        <BlocksRenderer blocks={page.layout} />
       )}
-      {page?.pageMode?.mode === 'collection' && (
-        <CollectionRenderer params={params as any} />
+      {isCollection(page?.pageMode?.mode) && (
+        <CollectionRenderer params={params as any} configurations={page?.configurations} />
       )}
     </main>
   )
