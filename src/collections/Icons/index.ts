@@ -8,10 +8,14 @@ import { NavigationGroups } from "@/constants";
 export const Icons: CollectionConfig<'icons'> = {
     slug: 'icons',
     admin: {
+        meta: {
+            title: 'Icons',
+            description: 'Collections of the icons'
+        },
         useAsTitle: 'title',
         group: NavigationGroups.super_admin_only,
         hidden: ({ user }) => !isSuperAdmin(user),
-        defaultColumns: ['iconSpecs.iconCode','title','iconSpecs.svg','slug'],
+        defaultColumns: ['title', 'iconSpecs.iconCode', 'iconSpecs.svg', 'slug'],
     },
     access: {
         create: ({ req }) => isSuperAdmin(req.user),
@@ -47,13 +51,13 @@ export const Icons: CollectionConfig<'icons'> = {
                     label: 'Icon code',
                     admin: {
                         condition: (fields, siblings) => fields?.iconSpecs?.type === 'html',
-                        components:{
+                        components: {
                             Cell: '@/collections/Icons/components/view-icon.tsx#ViewIcon'
                         }
                     }
                 },
                 {
-                    type: 'relationship',
+                    type: 'upload',
                     name: 'svg',
                     relationTo: 'media',
                     admin: {
@@ -63,5 +67,5 @@ export const Icons: CollectionConfig<'icons'> = {
             ]
         },
         ...slugField()
-    ]
+    ],
 }

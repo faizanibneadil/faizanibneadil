@@ -2,6 +2,8 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
+import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -148,6 +150,8 @@ export default buildConfig({
                 researches: {},
                 skills: {},
                 // icons: { },
+                "form-submissions":{},
+                forms:{},
                 menus: { isGlobal: true },
                 socials: { isGlobal: true }
             },
@@ -167,5 +171,20 @@ export default buildConfig({
             },
             userHasAccessToAllTenants: (user) => isSuperAdmin(user),
         }),
+        formBuilderPlugin({
+            fields:{
+                checkbox: true,
+                country:true,
+                date: true,
+                email: true,
+                message: true,
+                number:true,
+                select:true,
+                state:true,
+                text:true,
+                textarea:true
+            },
+            redirectRelationships: ['pages']
+        })
     ],
 })
