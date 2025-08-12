@@ -134,6 +134,21 @@ export default buildConfig({
                 acl: 'public-read',
             },
         }),
+        formBuilderPlugin({
+            fields:{
+                checkbox: true,
+                country:true,
+                date: true,
+                email: true,
+                message: true,
+                number:true,
+                select:true,
+                state:true,
+                text:true,
+                textarea:true
+            },
+            redirectRelationships: ['pages']
+        }),
         multiTenantPlugin<Config>({
             collections: {
                 pages: {},
@@ -171,20 +186,5 @@ export default buildConfig({
             },
             userHasAccessToAllTenants: (user) => isSuperAdmin(user),
         }),
-        formBuilderPlugin({
-            fields:{
-                checkbox: true,
-                country:true,
-                date: true,
-                email: true,
-                message: true,
-                number:true,
-                select:true,
-                state:true,
-                text:true,
-                textarea:true
-            },
-            redirectRelationships: ['pages']
-        })
     ],
 })

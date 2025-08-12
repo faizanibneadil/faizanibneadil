@@ -1087,6 +1087,7 @@ export interface Social {
  */
 export interface Form {
   id: number;
+  tenant?: (number | null) | Tenant;
   title: string;
   fields?:
     | (
@@ -1276,6 +1277,7 @@ export interface Form {
  */
 export interface FormSubmission {
   id: number;
+  tenant?: (number | null) | Tenant;
   form: number | Form;
   submissionData?:
     | {
@@ -1939,6 +1941,7 @@ export interface LicensesSelect<T extends boolean = true> {
  * via the `definition` "forms_select".
  */
 export interface FormsSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   fields?:
     | T
@@ -2085,6 +2088,7 @@ export interface FormsSelect<T extends boolean = true> {
  * via the `definition` "form-submissions_select".
  */
 export interface FormSubmissionsSelect<T extends boolean = true> {
+  tenant?: T;
   form?: T;
   submissionData?:
     | T
