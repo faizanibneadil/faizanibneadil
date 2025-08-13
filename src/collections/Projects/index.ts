@@ -1,6 +1,6 @@
 import { slugField } from "@/fields/slug";
 import type { CollectionConfig } from "payload";
-import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { NavigationGroups, resume_fields } from "@/constants";

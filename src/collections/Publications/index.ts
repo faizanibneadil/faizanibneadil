@@ -1,5 +1,5 @@
 import type { CollectionConfig } from "payload";
-import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { NavigationGroups } from "@/constants";

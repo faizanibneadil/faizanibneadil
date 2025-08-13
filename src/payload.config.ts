@@ -47,6 +47,7 @@ import { Config } from './payload-types'
 import { isSuperAdmin } from './access/isSuperAdmin'
 import { getUserTenantIDs } from './utilities/getUserTenantIDs'
 import { getServerSideURL } from './utilities/getURL'
+import { superAdminOrTenantAdminAccess } from '@/access/superAdminOrTenantAdmin'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -134,6 +135,37 @@ export default buildConfig({
                 acl: 'public-read',
             },
         }),
+        formBuilderPlugin({
+            formOverrides: {
+                access: {
+                    create: superAdminOrTenantAdminAccess,
+                    delete: superAdminOrTenantAdminAccess,
+                    read: () => true,
+                    update: superAdminOrTenantAdminAccess,
+                }
+            },
+            formSubmissionOverrides: {
+                access: {
+                    create: superAdminOrTenantAdminAccess,
+                    delete: superAdminOrTenantAdminAccess,
+                    read: () => true,
+                    update: superAdminOrTenantAdminAccess,
+                }
+            },
+            fields: {
+                checkbox: true,
+                country: true,
+                date: true,
+                email: true,
+                message: true,
+                number: true,
+                select: true,
+                state: true,
+                text: true,
+                textarea: true
+            },
+            redirectRelationships: ['pages']
+        }),
         multiTenantPlugin<Config>({
             collections: {
                 pages: {},
@@ -150,8 +182,8 @@ export default buildConfig({
                 researches: {},
                 skills: {},
                 // icons: { },
-                "form-submissions":{},
-                forms:{},
+                "form-submissions": {},
+                forms: {},
                 menus: { isGlobal: true },
                 socials: { isGlobal: true }
             },
@@ -171,20 +203,5 @@ export default buildConfig({
             },
             userHasAccessToAllTenants: (user) => isSuperAdmin(user),
         }),
-        formBuilderPlugin({
-            fields:{
-                checkbox: true,
-                country:true,
-                date: true,
-                email: true,
-                message: true,
-                number:true,
-                select:true,
-                state:true,
-                text:true,
-                textarea:true
-            },
-            redirectRelationships: ['pages']
-        })
     ],
 })
