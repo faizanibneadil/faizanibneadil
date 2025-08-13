@@ -1,7 +1,7 @@
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { CollectionConfig } from "payload";
 
-import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { NavigationGroups } from "@/constants";
 

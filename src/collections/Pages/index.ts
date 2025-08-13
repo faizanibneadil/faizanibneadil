@@ -2,7 +2,7 @@ import { slugField } from "@/fields/slug";
 import type { CollectionConfig } from "payload";
 import { revalidateDelete, revalidatePage } from "./hooks/revalidatePage";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
-import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { NavigationGroups } from "@/constants";
 

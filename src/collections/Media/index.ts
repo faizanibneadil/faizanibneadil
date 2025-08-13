@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { superAdminOrTenantAdminAccess } from './access/superAdminOrTenantAdmin'
+import { superAdminOrTenantAdminAccess } from '@/access/superAdminOrTenantAdmin'
 import { NavigationGroups } from '@/constants'
 
 export const Media: CollectionConfig = {

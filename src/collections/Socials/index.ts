@@ -1,5 +1,5 @@
 import type { CollectionConfig, GlobalConfig } from "payload";
-import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
 

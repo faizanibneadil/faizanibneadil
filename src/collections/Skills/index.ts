@@ -1,3 +1,4 @@
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { slugField } from "@/fields/slug";
@@ -10,6 +11,12 @@ export const Skills: CollectionConfig<'skills'> = {
         useAsTitle: 'title',
         group: NavigationGroups.resume,
         defaultColumns: ['title', 'slug', 'techstack.icon']
+    },
+    access: {
+        create: superAdminOrTenantAdminAccess,
+        delete: superAdminOrTenantAdminAccess,
+        read: () => true,
+        update: superAdminOrTenantAdminAccess,
     },
     fields: [
         TitleField(),
