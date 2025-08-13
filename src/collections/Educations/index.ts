@@ -6,6 +6,7 @@ import { NavigationGroups } from "@/constants";
 
 export const Educations: CollectionConfig<'educations'> = {
     slug: 'educations',
+    trash:true,
     admin: { useAsTitle: 'title', group: NavigationGroups.resume },
     access: {
         create: superAdminOrTenantAdminAccess,

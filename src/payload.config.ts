@@ -54,6 +54,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
     admin: {
+        suppressHydrationWarning: true,
         meta: {
             applicationName: 'Skill Shelf',
             titleSuffix: '- SkillShelf',
@@ -167,11 +168,21 @@ export default buildConfig({
         }),
         formBuilderPlugin({
             formOverrides: {
+                trash: true,
                 access: {
                     create: superAdminOrTenantAdminAccess,
                     delete: superAdminOrTenantAdminAccess,
                     read: () => true,
                     update: superAdminOrTenantAdminAccess,
+                },
+                versions: {
+                    drafts: {
+                        autosave: {
+                            interval: 30000,
+                        },
+                        schedulePublish: true,
+                    },
+                    maxPerDoc: 50,
                 }
             },
             formSubmissionOverrides: {

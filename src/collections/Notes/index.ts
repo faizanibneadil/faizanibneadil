@@ -7,6 +7,7 @@ import { NavigationGroups } from "@/constants";
 
 export const Notes: CollectionConfig<'notes'> = {
     slug: 'notes',
+    trash:true,
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.portfolio

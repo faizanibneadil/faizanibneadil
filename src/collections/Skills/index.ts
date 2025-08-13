@@ -7,6 +7,7 @@ import type { CollectionConfig } from "payload";
 
 export const Skills: CollectionConfig<'skills'> = {
     slug: 'skills',
+    trash:true,
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.resume,

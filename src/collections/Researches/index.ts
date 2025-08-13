@@ -7,6 +7,7 @@ import { IconField } from "@/fields/icon";
 
 export const Researches: CollectionConfig<'researches'> = {
     slug: 'researches',
+    trash:true,
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.portfolio

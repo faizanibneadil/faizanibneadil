@@ -217,6 +217,7 @@ export interface Media {
   _key?: string | null;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   url?: string | null;
   thumbnailURL?: string | null;
   filename?: string | null;
@@ -244,6 +245,7 @@ export interface Tenant {
   slug: string;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -313,6 +315,7 @@ export interface Education {
   image: number | Media;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -401,6 +404,7 @@ export interface Project {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -426,6 +430,7 @@ export interface Skill {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -444,6 +449,7 @@ export interface Icon {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -567,6 +573,7 @@ export interface Hackathon {
   image: number | Media;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -637,6 +644,7 @@ export interface Research {
   image: number | Media;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -707,6 +715,7 @@ export interface Publication {
   image: number | Media;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -777,6 +786,7 @@ export interface License {
   image: number | Media;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -847,6 +857,7 @@ export interface Certification {
   image: number | Media;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -917,6 +928,7 @@ export interface Achievement {
   image: number | Media;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -931,6 +943,7 @@ export interface User {
   field?: TUserField;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -972,6 +985,7 @@ export interface Note {
   } | null;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -1000,6 +1014,7 @@ export interface Blog {
   featured_image?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -1041,6 +1056,7 @@ export interface Page {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -1270,6 +1286,8 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1525,6 +1543,7 @@ export interface UsersSelect<T extends boolean = true> {
   field?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -1566,6 +1585,7 @@ export interface IconsSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1577,6 +1597,7 @@ export interface MediaSelect<T extends boolean = true> {
   _key?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   url?: T;
   thumbnailURL?: T;
   filename?: T;
@@ -1597,6 +1618,7 @@ export interface NotesSelect<T extends boolean = true> {
   content?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -1610,6 +1632,7 @@ export interface BlogsSelect<T extends boolean = true> {
   featured_image?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -1635,6 +1658,7 @@ export interface PagesSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -1660,6 +1684,7 @@ export interface EducationsSelect<T extends boolean = true> {
   image?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -1699,6 +1724,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -1711,6 +1737,7 @@ export interface TenantsSelect<T extends boolean = true> {
   slug?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1766,6 +1793,7 @@ export interface SkillsSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -1794,6 +1822,7 @@ export interface HackathonsSelect<T extends boolean = true> {
   image?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -1822,6 +1851,7 @@ export interface ResearchesSelect<T extends boolean = true> {
   image?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -1850,6 +1880,7 @@ export interface AchievementsSelect<T extends boolean = true> {
   image?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -1878,6 +1909,7 @@ export interface CertificationsSelect<T extends boolean = true> {
   image?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -1906,6 +1938,7 @@ export interface PublicationsSelect<T extends boolean = true> {
   image?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -1934,6 +1967,7 @@ export interface LicensesSelect<T extends boolean = true> {
   image?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -2082,6 +2116,8 @@ export interface FormsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2227,6 +2263,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'licenses';
           value: number | License;
+        } | null)
+      | ({
+          relationTo: 'forms';
+          value: number | Form;
         } | null);
     global?: string | null;
     user?: (number | null) | User;
