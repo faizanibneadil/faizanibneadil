@@ -31,6 +31,7 @@ const defaultTenantArrayField = tenantsArrayField({
 
 export const Users: CollectionConfig<'users'> = {
   slug: 'users',
+  trash:true,
   access: {
     create: createAccess,
     delete: updateAndDeleteAccess,

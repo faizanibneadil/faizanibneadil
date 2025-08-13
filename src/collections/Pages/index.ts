@@ -8,6 +8,7 @@ import { NavigationGroups } from "@/constants";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
+    trash:true,
     admin: { useAsTitle: 'title', group: NavigationGroups.portfolio },
     access: {
         create: superAdminOrTenantAdminAccess,

@@ -8,6 +8,7 @@ import { IconField } from "@/fields/icon";
 
 export const Projects: CollectionConfig<'projects'> = {
     slug: 'projects',
+    trash:true,
     admin: { useAsTitle: 'title', group: NavigationGroups.portfolio },
     access: {
         create: superAdminOrTenantAdminAccess,

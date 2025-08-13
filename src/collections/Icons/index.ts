@@ -6,6 +6,7 @@ import { NavigationGroups } from "@/constants";
 
 export const Icons: CollectionConfig<'icons'> = {
     slug: 'icons',
+    trash:true,
     admin: {
         meta: {
             title: 'Icons',
