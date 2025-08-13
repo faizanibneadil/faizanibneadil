@@ -54,14 +54,44 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
     admin: {
+        meta: {
+            applicationName: 'Skill Shelf',
+            titleSuffix: '- SkillShelf',
+            icons: [{
+                type: 'image/svg',
+                rel: 'icon',
+                url: '/skillshelf-symble.svg'
+            }],
+            openGraph: {
+                title: 'SkillShelf',
+                description: 'Share you\'r skills with SkillShelf.',
+                images: [{
+                    url: '/skillshelf-full.svg',
+                    height: 600,
+                    width: 800
+                }]
+            }
+        },
         user: Users.slug,
         importMap: {
             baseDir: path.resolve(dirname),
         },
         components: {
             graphics: {
-                Logo: '@/components/branding.tsx#Branding',
-                Icon: '@/components/branding-icon.tsx#BrandingIcon'
+                Logo: {
+                    path: '@/components/branding.tsx',
+                    exportName: 'Branding',
+                    serverProps: {
+                        imageSrc: '/skillshelf-full.svg'
+                    }
+                },
+                Icon: {
+                    path: '@/components/branding.tsx',
+                    exportName: 'Branding',
+                    serverProps: {
+                        imageSrc: '/skillshelf-symble.svg'
+                    }
+                }
             }
         }
     },
