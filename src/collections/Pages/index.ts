@@ -3,11 +3,11 @@ import { NavigationGroups } from "@/constants";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
+import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { getServerSideURL } from "@/utilities/getURL";
 import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
 import { headers as getHeaders } from "next/headers";
 import type { CollectionConfig } from "payload";
-import { revalidateDelete, revalidatePage } from "./hooks/revalidatePage";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
@@ -140,14 +140,14 @@ export const Pages: CollectionConfig<'pages'> = {
         ...slugField(),
     ],
     hooks: {
-        afterChange: [revalidatePage],
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
         beforeChange: [populatePublishedAt],
-        afterDelete: [revalidateDelete],
     },
     versions: {
         drafts: {
             autosave: {
-                interval: 30000,
+                interval: 375,
             },
             schedulePublish: true,
         },

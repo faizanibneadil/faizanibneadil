@@ -1,8 +1,9 @@
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
+import { NavigationGroups } from "@/constants";
+import { TitleField } from "@/fields/title";
+import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
-import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { TitleField } from "@/fields/title";
-import { NavigationGroups } from "@/constants";
 
 
 export const Blogs: CollectionConfig<'blogs'> = {
@@ -34,14 +35,18 @@ export const Blogs: CollectionConfig<'blogs'> = {
             hasMany: false,
             admin: {
                 appearance: 'drawer',
-                position:'sidebar'
+                position: 'sidebar'
             }
         },
     ],
+    hooks: {
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+    },
     versions: {
         drafts: {
             autosave: {
-                interval: 30000,
+                interval: 375,
             },
             schedulePublish: true,
         },

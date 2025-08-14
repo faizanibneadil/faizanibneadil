@@ -4,11 +4,12 @@ import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
+import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 
 export const Achievements: CollectionConfig<'achievements'> = {
     slug: 'achievements',
     trash: true,
-    admin: { 
+    admin: {
         useAsTitle: 'title',
         group: NavigationGroups.portfolio
     },
@@ -100,10 +101,14 @@ export const Achievements: CollectionConfig<'achievements'> = {
             }
         }
     ],
+    hooks: {
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+    },
     versions: {
         drafts: {
             autosave: {
-                interval: 30000,
+                interval: 375,
             },
             schedulePublish: true,
         },

@@ -1,13 +1,14 @@
-import type { CollectionConfig, GlobalConfig } from "payload";
+import type { CollectionConfig } from "payload";
 
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
+import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 
 export const Menus: CollectionConfig<'menus'> = {
     slug: 'menus',
-    admin:{ group:NavigationGroups.portfolio},
-     access: {
+    admin: { group: NavigationGroups.portfolio },
+    access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
         read: () => true,
@@ -41,10 +42,14 @@ export const Menus: CollectionConfig<'menus'> = {
             ]
         },
     ],
+    hooks: {
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+    },
     versions: {
         drafts: {
             autosave: {
-                interval: 30000,
+                interval: 375,
             },
             schedulePublish: true,
         },

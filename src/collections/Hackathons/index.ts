@@ -1,13 +1,14 @@
-import { NavigationGroups, resume_fields } from "@/constants";
-import { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { TitleField } from "@/fields/title";
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { NavigationGroups, resume_fields } from "@/constants";
 import { IconField } from "@/fields/icon";
+import { TitleField } from "@/fields/title";
+import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { CollectionConfig } from "payload";
 
 export const Hackathons: CollectionConfig<'hackathons'> = {
     slug: 'hackathons',
-    trash:true,
+    trash: true,
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.portfolio,
@@ -63,8 +64,8 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
             type: 'array',
             name: 'links',
             labels: { singular: 'Link', plural: 'Links' },
-            admin:{
-                initCollapsed:true
+            admin: {
+                initCollapsed: true
             },
             fields: [
                 {
@@ -95,16 +96,20 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
             label: 'Avatar',
             required: true,
             hasMany: false,
-            admin:{
-                appearance:'drawer',
-                position:'sidebar'
+            admin: {
+                appearance: 'drawer',
+                position: 'sidebar'
             }
         }
     ],
+    hooks: {
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+    },
     versions: {
         drafts: {
             autosave: {
-                interval: 30000,
+                interval: 375,
             },
             schedulePublish: true,
         },

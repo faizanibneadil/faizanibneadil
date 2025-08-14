@@ -2,11 +2,13 @@ import type { CollectionConfig } from 'payload'
 
 import { superAdminOrTenantAdminAccess } from '@/access/superAdminOrTenantAdmin'
 import { NavigationGroups } from '@/constants'
+import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from '@/hooks/RevalidatePage'
 
 export const Media: CollectionConfig = {
   slug: 'media',
-  trash:true,
-  admin:{ group: NavigationGroups.portfolio},
+  trash: true,
+  admin: { group: NavigationGroups.portfolio },
+  upload: true,
   access: {
     create: superAdminOrTenantAdminAccess,
     delete: superAdminOrTenantAdminAccess,
@@ -20,5 +22,8 @@ export const Media: CollectionConfig = {
       required: true,
     },
   ],
-  upload: true,
+  hooks: {
+    afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+    afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+  }
 }

@@ -1,14 +1,15 @@
-import { slugField } from "@/fields/slug";
-import type { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { TitleField } from "@/fields/title";
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { NavigationGroups, resume_fields } from "@/constants";
 import { IconField } from "@/fields/icon";
+import { slugField } from "@/fields/slug";
+import { TitleField } from "@/fields/title";
+import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import type { CollectionConfig } from "payload";
 
 export const Projects: CollectionConfig<'projects'> = {
     slug: 'projects',
-    trash:true,
+    trash: true,
     admin: { useAsTitle: 'title', group: NavigationGroups.portfolio },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -135,15 +136,14 @@ export const Projects: CollectionConfig<'projects'> = {
         },
         ...slugField(),
     ],
-    // hooks: {
-    //     afterChange: [revalidatePage],
-    //     beforeChange: [populatePublishedAt],
-    //     afterDelete: [revalidateDelete],
-    // },
+    hooks: {
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+    },
     versions: {
         drafts: {
             autosave: {
-                interval: 30000,
+                interval: 375,
             },
             schedulePublish: true,
         },

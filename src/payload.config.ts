@@ -107,6 +107,7 @@ export default buildConfig({
         },
     },
     cors: [getServerSideURL()].filter(Boolean),
+    csrf: [getServerSideURL()].filter(Boolean),
     collections: [
         Users,
         Icons,

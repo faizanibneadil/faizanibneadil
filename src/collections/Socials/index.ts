@@ -1,11 +1,15 @@
-import type { CollectionConfig, GlobalConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
+import {
+    RevalidatePageAfterChange,
+    RevalidatePageAfterDelete
+} from "@/hooks/RevalidatePage";
+import type { CollectionConfig } from "payload";
 
 export const Socials: CollectionConfig<'socials'> = {
     slug: 'socials',
-    admin:{ group: NavigationGroups.portfolio},
+    admin: { group: NavigationGroups.portfolio },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
@@ -40,10 +44,14 @@ export const Socials: CollectionConfig<'socials'> = {
             ]
         },
     ],
+    hooks: {
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+    },
     versions: {
         drafts: {
             autosave: {
-                interval: 30000,
+                interval: 375,
             },
             schedulePublish: true,
         },
