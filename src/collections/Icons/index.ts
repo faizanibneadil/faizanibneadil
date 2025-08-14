@@ -1,12 +1,13 @@
-import type { CollectionConfig } from "payload";
+import { isSuperAdmin } from "@/access/isSuperAdmin";
+import { NavigationGroups } from "@/constants";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
-import { isSuperAdmin } from "@/access/isSuperAdmin"
-import { NavigationGroups } from "@/constants";
+import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import type { CollectionConfig } from "payload";
 
 export const Icons: CollectionConfig<'icons'> = {
     slug: 'icons',
-    trash:true,
+    trash: true,
     admin: {
         meta: {
             title: 'Icons',
@@ -68,4 +69,8 @@ export const Icons: CollectionConfig<'icons'> = {
         },
         ...slugField()
     ],
+    hooks: {
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+    }
 }

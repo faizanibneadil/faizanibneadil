@@ -1,17 +1,17 @@
+import { RefreshRouteOnSave } from "@/components/RefreshRouteOnSave";
+import type { Page } from "@/payload-types";
+import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import dynamic from "next/dynamic";
+import { draftMode, headers as getHeaders } from 'next/headers';
+import { notFound } from "next/navigation";
+import { CollectionSlug } from "payload";
+import { cache } from "react";
 const BlocksRenderer = dynamic(() => import("@/blocks").then(({ BlocksRenderer }) => {
   return BlocksRenderer
 }), { ssr: true })
 const CollectionRenderer = dynamic(() => import("@/collections").then(({ CollectionRenderer }) => {
   return CollectionRenderer
 }), { ssr: true })
-import { getPayloadConfig } from "@/utilities/getPayloadConfig";
-import { CollectionSlug } from "payload";
-import { cache } from "react";
-import { draftMode, headers as getHeaders } from 'next/headers'
-import type { Page } from "@/payload-types";
-import { notFound } from "next/navigation";
-import { RefreshRouteOnSave } from "@/components/RefreshRouteOnSave";
 
 type Props = {
   params: Promise<{ slug: CollectionSlug, domain: string }>

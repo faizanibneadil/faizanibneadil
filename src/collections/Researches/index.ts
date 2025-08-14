@@ -1,13 +1,14 @@
-import { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { TitleField } from "@/fields/title";
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
+import { TitleField } from "@/fields/title";
+import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { CollectionConfig } from "payload";
 
 export const Researches: CollectionConfig<'researches'> = {
     slug: 'researches',
-    trash:true,
+    trash: true,
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.portfolio
@@ -100,10 +101,14 @@ export const Researches: CollectionConfig<'researches'> = {
             }
         }
     ],
+    hooks: {
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+    },
     versions: {
         drafts: {
             autosave: {
-                interval: 30000,
+                interval: 375,
             },
             schedulePublish: true,
         },

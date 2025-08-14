@@ -2,12 +2,13 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { CollectionConfig } from "payload";
 
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { TitleField } from "@/fields/title";
 import { NavigationGroups } from "@/constants";
+import { TitleField } from "@/fields/title";
+import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 
 export const Notes: CollectionConfig<'notes'> = {
     slug: 'notes',
-    trash:true,
+    trash: true,
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.portfolio
@@ -27,10 +28,14 @@ export const Notes: CollectionConfig<'notes'> = {
             label: 'Note Content'
         },
     ],
+    hooks: {
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+    },
     versions: {
         drafts: {
             autosave: {
-                interval: 30000,
+                interval: 375,
             },
             schedulePublish: true,
         },

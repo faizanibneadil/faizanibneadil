@@ -1,15 +1,12 @@
-import Navbar from "@/components/navbar";
+import { AdminBar } from "@/components/AdminBar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
-import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
-import "./globals.css";
+import { draftMode } from 'next/headers';
 import React from "react";
-import { ErrorBoundary } from "react-error-boundary";
-import { draftMode } from 'next/headers'
-import { AdminBar } from "@/components/AdminBar";
+import "./globals.css";
 
 
 const fontSans = FontSans({

@@ -3,11 +3,12 @@ import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
+import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import type { CollectionConfig } from "payload";
 
 export const Skills: CollectionConfig<'skills'> = {
     slug: 'skills',
-    trash:true,
+    trash: true,
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.resume,
@@ -51,10 +52,14 @@ export const Skills: CollectionConfig<'skills'> = {
         },
         ...slugField()
     ],
+    hooks: {
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+    },
     versions: {
         drafts: {
             autosave: {
-                interval: 30000,
+                interval: 375,
             },
             schedulePublish: true,
         },
