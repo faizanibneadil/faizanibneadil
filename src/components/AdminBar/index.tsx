@@ -27,6 +27,10 @@ export const AdminBar: React.FC<{
         setShow(user?.id)
     }, [])
 
+    if(!adminBarProps?.preview){
+        return null
+    }
+
     return (
         <div className={cn('z-10 w-full bg-foreground/7.5 border-b-2 py-2 transition-opacity duration-150', {
             'block visible opacity-100': show === true,
@@ -50,7 +54,7 @@ export const AdminBar: React.FC<{
                     logo={<Title />}
                     onAuthChange={onAuthChange}
                     onPreviewExit={() => {
-                        fetch('/next/exit-preview')
+                        fetch('/exit-preview')
                             .then(() => {
                                 router.push('/')
                                 router.refresh()
