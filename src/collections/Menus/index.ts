@@ -1,10 +1,12 @@
 import type { CollectionConfig, GlobalConfig } from "payload";
-import { iconField } from "@/fields/icon";
 
-import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
+import { NavigationGroups } from "@/constants";
+import { IconField } from "@/fields/icon";
 
 export const Menus: CollectionConfig<'menus'> = {
     slug: 'menus',
+    admin:{ group:NavigationGroups.portfolio},
      access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
@@ -21,7 +23,7 @@ export const Menus: CollectionConfig<'menus'> = {
                 {
                     type: 'row',
                     fields: [
-                        iconField,
+                        IconField(),
                         {
                             type: 'text',
                             name: 'label',
@@ -42,7 +44,7 @@ export const Menus: CollectionConfig<'menus'> = {
     versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },

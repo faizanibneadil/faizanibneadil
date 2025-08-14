@@ -2,6 +2,8 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
+import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -19,12 +21,12 @@ import { Hackathons } from "@/collections/Hackathons"
 import { Researches } from "@/collections/Researches"
 import { Achievements } from "@/collections/Achievements"
 import { Certifications } from "@/collections/Certifications"
-import { Languages } from "@/collections/Languages"
 import { Publications } from "@/collections/Publications"
 import { Licenses } from "@/collections/Licenses"
 import { Menus } from '@/collections/Menus'
 import { Socials } from '@/collections/Socials'
 import { Educations } from '@/collections/Educations'
+import { Icons } from '@/collections/Icons'
 
 import { Hero } from '@/blocks/Hero'
 import { Contact } from '@/blocks/Contact'
@@ -45,17 +47,53 @@ import { Config } from './payload-types'
 import { isSuperAdmin } from './access/isSuperAdmin'
 import { getUserTenantIDs } from './utilities/getUserTenantIDs'
 import { getServerSideURL } from './utilities/getURL'
-
-
+import { superAdminOrTenantAdminAccess } from '@/access/superAdminOrTenantAdmin'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
     admin: {
+        suppressHydrationWarning: true,
+        meta: {
+            applicationName: 'Skill Shelf',
+            titleSuffix: '- SkillShelf',
+            icons: [{
+                type: 'image/svg',
+                rel: 'icon',
+                url: '/skillshelf-symble.svg'
+            }],
+            openGraph: {
+                title: 'SkillShelf',
+                description: 'Share you\'r skills with SkillShelf.',
+                images: [{
+                    url: '/skillshelf-full.svg',
+                    height: 600,
+                    width: 800
+                }]
+            }
+        },
         user: Users.slug,
         importMap: {
             baseDir: path.resolve(dirname),
+        },
+        components: {
+            graphics: {
+                Logo: {
+                    path: '@/components/branding.tsx',
+                    exportName: 'Branding',
+                    serverProps: {
+                        imageSrc: '/skillshelf-full.svg'
+                    }
+                },
+                Icon: {
+                    path: '@/components/branding.tsx',
+                    exportName: 'Branding',
+                    serverProps: {
+                        imageSrc: '/skillshelf-symble.svg'
+                    }
+                }
+            }
         },
         livePreview: {
             breakpoints: [
@@ -64,25 +102,14 @@ export default buildConfig({
                     name: 'mobile',
                     width: 375,
                     height: 667,
-                },
-                {
-                    label: 'Tablet',
-                    name: 'tablet',
-                    width: 768,
-                    height: 1024,
-                },
-                {
-                    label: 'Desktop',
-                    name: 'desktop',
-                    width: 1440,
-                    height: 900,
-                },
+                }
             ]
-        }
+        },
     },
     cors: [getServerSideURL()].filter(Boolean),
     collections: [
         Users,
+        Icons,
         Media,
         Notes,
         Blogs,
@@ -97,7 +124,6 @@ export default buildConfig({
         Researches,
         Achievements,
         Certifications,
-        Languages,
         Publications,
         Licenses,
     ],
@@ -123,6 +149,7 @@ export default buildConfig({
         },
     }),
     secret: process.env.PAYLOAD_SECRET || '',
+    serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
     typescript: {
         outputFile: path.resolve(dirname, 'payload-types.ts'),
     },
@@ -150,6 +177,47 @@ export default buildConfig({
                 acl: 'public-read',
             },
         }),
+        formBuilderPlugin({
+            formOverrides: {
+                trash: true,
+                access: {
+                    create: superAdminOrTenantAdminAccess,
+                    delete: superAdminOrTenantAdminAccess,
+                    read: () => true,
+                    update: superAdminOrTenantAdminAccess,
+                },
+                versions: {
+                    drafts: {
+                        autosave: {
+                            interval: 30000,
+                        },
+                        schedulePublish: true,
+                    },
+                    maxPerDoc: 50,
+                }
+            },
+            formSubmissionOverrides: {
+                access: {
+                    create: superAdminOrTenantAdminAccess,
+                    delete: superAdminOrTenantAdminAccess,
+                    read: () => true,
+                    update: superAdminOrTenantAdminAccess,
+                }
+            },
+            fields: {
+                checkbox: true,
+                country: true,
+                date: true,
+                email: true,
+                message: true,
+                number: true,
+                select: true,
+                state: true,
+                text: true,
+                textarea: true
+            },
+            redirectRelationships: ['pages']
+        }),
         multiTenantPlugin<Config>({
             collections: {
                 pages: {},
@@ -161,11 +229,13 @@ export default buildConfig({
                 achievements: {},
                 certifications: {},
                 hackathons: {},
-                languages: {},
                 licenses: {},
                 publications: {},
                 researches: {},
                 skills: {},
+                // icons: { },
+                "form-submissions": {},
+                forms: {},
                 menus: { isGlobal: true },
                 socials: { isGlobal: true }
             },

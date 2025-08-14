@@ -1,14 +1,16 @@
-import { resume_fields } from "@/constants";
+import { NavigationGroups, resume_fields } from "@/constants";
 import type { CollectionConfig } from "payload";
-import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
-import { iconField } from "@/fields/icon";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { IconField } from "@/fields/icon";
 
 export const Licenses: CollectionConfig<'licenses'> = {
     slug: 'licenses',
+    trash:true,
     admin: {
         useAsTitle: 'title',
+        group:NavigationGroups.portfolio,
         hidden({ user }) {
             return user ? user?.field !== resume_fields.healthcare : false
         },
@@ -70,7 +72,7 @@ export const Licenses: CollectionConfig<'licenses'> = {
                 {
                     type: 'row',
                     fields: [
-                        iconField,
+                        IconField(),
                         {
                             type: 'text',
                             label: 'Lable',
@@ -104,7 +106,7 @@ export const Licenses: CollectionConfig<'licenses'> = {
     versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },

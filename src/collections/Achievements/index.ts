@@ -1,12 +1,17 @@
 import type { CollectionConfig } from "payload";
-import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
-import { iconField } from "@/fields/icon";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { NavigationGroups } from "@/constants";
+import { IconField } from "@/fields/icon";
 
 export const Achievements: CollectionConfig<'achievements'> = {
     slug: 'achievements',
-    admin: { useAsTitle: 'title' },
+    trash: true,
+    admin: { 
+        useAsTitle: 'title',
+        group: NavigationGroups.portfolio
+    },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
@@ -64,7 +69,7 @@ export const Achievements: CollectionConfig<'achievements'> = {
                 {
                     type: 'row',
                     fields: [
-                        iconField,
+                        IconField(),
                         {
                             type: 'text',
                             label: 'Lable',
@@ -98,7 +103,7 @@ export const Achievements: CollectionConfig<'achievements'> = {
     versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },

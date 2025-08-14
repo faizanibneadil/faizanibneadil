@@ -8,7 +8,7 @@ import { ensureUniqueUsername } from './hooks/ensureUniqueUsername'
 import { isSuperAdmin } from '@/access/isSuperAdmin'
 import { setCookieBasedOnDomain } from './hooks/setCookieBasedOnDomain'
 import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
-import { resume_fields } from '@/constants'
+import { NavigationGroups, resume_fields } from '@/constants'
 import { capitalize } from '@/utilities/capitalize'
 
 const defaultTenantArrayField = tenantsArrayField({
@@ -31,6 +31,7 @@ const defaultTenantArrayField = tenantsArrayField({
 
 export const Users: CollectionConfig<'users'> = {
   slug: 'users',
+  trash:true,
   access: {
     create: createAccess,
     delete: updateAndDeleteAccess,
@@ -39,6 +40,7 @@ export const Users: CollectionConfig<'users'> = {
   },
   admin: {
     useAsTitle: 'email',
+    group: NavigationGroups.management
   },
   auth: true,
   endpoints: [externalUsersLogin],
@@ -74,7 +76,8 @@ export const Users: CollectionConfig<'users'> = {
         ...(defaultTenantArrayField?.admin || {}),
         position: 'sidebar',
       },
-      interfaceName: 'TUserTenants'
+      interfaceName: 'TUserTenants',
+      saveToJWT:true
     },
     {
       type: 'select',

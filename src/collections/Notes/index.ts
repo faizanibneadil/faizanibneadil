@@ -1,13 +1,16 @@
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { CollectionConfig } from "payload";
 
-import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
+import { NavigationGroups } from "@/constants";
 
 export const Notes: CollectionConfig<'notes'> = {
     slug: 'notes',
+    trash:true,
     admin: {
-        useAsTitle: 'title'
+        useAsTitle: 'title',
+        group: NavigationGroups.portfolio
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -27,7 +30,7 @@ export const Notes: CollectionConfig<'notes'> = {
     versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },

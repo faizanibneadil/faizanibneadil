@@ -1,46 +1,54 @@
-import { BlocksRenderrer } from "@/blocks";
-import { CollectionRenderer } from "@/collections";
+import dynamic from "next/dynamic";
+const BlocksRenderer = dynamic(() => import("@/blocks").then(({ BlocksRenderer }) => {
+  return BlocksRenderer
+}), { ssr: true })
+const CollectionRenderer = dynamic(() => import("@/collections").then(({ CollectionRenderer }) => {
+  return CollectionRenderer
+}), { ssr: true })
 import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import { CollectionSlug } from "payload";
 import { cache } from "react";
 import { draftMode, headers as getHeaders } from 'next/headers'
+import type { Page } from "@/payload-types";
+import { notFound } from "next/navigation";
 import { RefreshRouteOnSave } from "@/components/RefreshRouteOnSave";
 
 type Props = {
   params: Promise<{ slug: CollectionSlug, domain: string }>
 }
 
+const isLayout = (mode: Page['pageMode']['mode']) => mode === 'layout'
+const isCollection = (mode: Page['pageMode']['mode']) => mode === 'collection'
+
 export default async function Page({ params }: Props) {
-  const { slug = 'home', domain } = (await params)
+  const { slug = 'home', domain } = await params
   const page = await queryPageBySlug({ slug, domain })
-  if (!page || !domain) return null
+  if (!page || !domain) return notFound()
   return (
-    <>
+    <main className="flex flex-col min-h-[100dvh] space-y-10">
       <RefreshRouteOnSave />
-      <main className="flex flex-col min-h-[100dvh] space-y-10">
-        {page?.mode === 'layout' && (
-          <BlocksRenderrer blocks={page.layout} />
-        )}
-        {page?.mode === 'collection' && (
-          <CollectionRenderer params={params as any} />
-        )}
-      </main>
-    </>
+      {isLayout(page?.pageMode?.mode) && (
+        <BlocksRenderer blocks={page.layout} />
+      )}
+      {isCollection(page?.pageMode?.mode) && (
+        <CollectionRenderer params={params as any} configurations={page?.configurations} />
+      )}
+    </main>
   )
 }
 
 
 const queryPageBySlug = cache(async ({ slug, domain }: { slug: string, domain: string }) => {
-  const headers = await getHeaders()
   const { isEnabled: isDraftMode } = await draftMode()
+  const headers = await getHeaders()
   const payload = await getPayloadConfig()
-  const { user } = await payload.auth({ headers })
+  const user = await payload.auth({ headers })
   const result = await payload.find({
     collection: 'pages',
     limit: 1,
     pagination: false,
-    overrideAccess: isDraftMode,
-    draft: isDraftMode,
+    overrideAccess: isDraftMode || Boolean(user),
+    draft: isDraftMode || Boolean(user),
     where: {
       and: [
         { slug: { equals: slug } },

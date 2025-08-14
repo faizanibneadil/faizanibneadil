@@ -1,12 +1,14 @@
 import type { CollectionConfig } from "payload";
-import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
-import { iconField } from "@/fields/icon";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { NavigationGroups } from "@/constants";
+import { IconField } from "@/fields/icon";
 
 export const Publications: CollectionConfig<'publications'> = {
     slug: 'publications',
-    admin: { useAsTitle: 'title' },
+    trash:true,
+    admin: { useAsTitle: 'title', group:NavigationGroups.portfolio },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
@@ -64,7 +66,7 @@ export const Publications: CollectionConfig<'publications'> = {
                 {
                     type: 'row',
                     fields: [
-                        iconField,
+                        IconField(),
                         {
                             type: 'text',
                             label: 'Lable',
@@ -98,7 +100,7 @@ export const Publications: CollectionConfig<'publications'> = {
     versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },

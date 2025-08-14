@@ -1,9 +1,11 @@
-import { iconField } from "@/fields/icon";
 import type { CollectionConfig, GlobalConfig } from "payload";
-import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
+import { NavigationGroups } from "@/constants";
+import { IconField } from "@/fields/icon";
 
 export const Socials: CollectionConfig<'socials'> = {
     slug: 'socials',
+    admin:{ group: NavigationGroups.portfolio},
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
@@ -32,7 +34,7 @@ export const Socials: CollectionConfig<'socials'> = {
                             label: 'Link',
                             required: true
                         },
-                        iconField
+                        IconField()
                     ]
                 }
             ]
@@ -41,7 +43,7 @@ export const Socials: CollectionConfig<'socials'> = {
     versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },

@@ -1,19 +1,16 @@
 import { Dock, DockIcon } from "@/components/magicui/dock";
 import { ModeToggle } from "@/components/mode-toggle";
 import { buttonVariants } from "@/components/ui/button";
+import { IconRenderer } from "@/components/ui/icon-renderer";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
-import { Menu, Social } from '@/payload-types';
-import { getCachedGlobal } from '@/utilities/getGlobals';
-import Link from "next/link";
-import { IconRenderrer } from "@/components/ui/icon-renderrer";
 import { getPayloadConfig } from "@/utilities/getPayloadConfig";
+import Link from "next/link";
 
 export default async function Navbar({ domain }: { domain: string }) {
   const payload = await getPayloadConfig()
@@ -32,7 +29,7 @@ export default async function Navbar({ domain }: { domain: string }) {
                 <TooltipTrigger asChild>
                   <Link href={href} className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
                     {item?.icon && (
-                      <IconRenderrer icon={item.icon} className='size-4' />
+                      <IconRenderer icon={item.icon} className='[&>svg]:size-4' />
                     )}
                   </Link>
                 </TooltipTrigger>
@@ -51,7 +48,7 @@ export default async function Navbar({ domain }: { domain: string }) {
                 <TooltipTrigger asChild>
                   <Link href={item?.link} target="_blank" className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
                     {item?.icon && (
-                      <IconRenderrer icon={item.icon} className='size-4' />
+                      <IconRenderer icon={item.icon} className='[&>svg]:size-4' />
                     )}
                   </Link>
                 </TooltipTrigger>

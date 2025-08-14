@@ -1,14 +1,16 @@
-import { resume_fields } from "@/constants";
+import { NavigationGroups, resume_fields } from "@/constants";
 import { CollectionConfig } from "payload";
-import { superAdminOrTenantAdminAccess } from "./access/superAdminOrTenantAdmin";
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import { iconField } from "@/fields/icon";
+import { IconField } from "@/fields/icon";
 
 export const Hackathons: CollectionConfig<'hackathons'> = {
     slug: 'hackathons',
+    trash:true,
     admin: {
         useAsTitle: 'title',
+        group: NavigationGroups.portfolio,
         hidden: ({ user }) => user ? user?.field !== resume_fields.information_technology : false
     },
     access: {
@@ -68,7 +70,7 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
                 {
                     type: 'row',
                     fields: [
-                        iconField,
+                        IconField(),
                         {
                             type: 'text',
                             label: 'Lable',
@@ -102,7 +104,7 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
     versions: {
         drafts: {
             autosave: {
-                interval: 100,
+                interval: 30000,
             },
             schedulePublish: true,
         },

@@ -2,9 +2,11 @@ import type { CollectionConfig } from 'payload'
 
 import { isSuperAdminAccess } from '@/access/isSuperAdmin'
 import { updateAndDeleteAccess } from './access/updateAndDelete'
+import { NavigationGroups } from '@/constants'
 
-export const Tenants: CollectionConfig = {
+export const Tenants: CollectionConfig<'tenants'> = {
   slug: 'tenants',
+  trash:true,
   access: {
     create: isSuperAdminAccess,
     delete: updateAndDeleteAccess,
@@ -13,6 +15,7 @@ export const Tenants: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+    group: NavigationGroups.management
   },
   fields: [
     {

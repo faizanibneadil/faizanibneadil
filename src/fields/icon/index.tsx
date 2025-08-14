@@ -1,21 +1,19 @@
-import { Field } from "payload";
-import { icons as lucideIcons } from "lucide-react"
-import { icons as tablerIcons } from '@tabler/icons-react';
+import { RelationshipField } from "payload";
 
-const lucideIconsOptions = Object.keys(lucideIcons).map(icon => ({
-    label: icon,
-    value: `LUCIDE_${icon}`
-}))
-
-const tablerIconsOptions = Object.keys(tablerIcons).map(icon => ({
-    label: icon,
-    value: `TABLER_${icon}`
-}))
-
-export const iconField: Field = {
-    type: 'select',
-    name: 'icon',
-    label: 'Icon',
-    interfaceName: 'TIconProps',
-    options: [...lucideIconsOptions, ...tablerIconsOptions]
+export function IconField(overrides?: Partial<RelationshipField>): RelationshipField {
+    return {
+        type: 'relationship',
+        relationTo: 'icons',
+        name: 'icon',
+        label: 'Icon',
+        required: true,
+        hasMany: false,
+        ...(overrides || {}),
+        admin: {
+            appearance: 'drawer',
+            allowCreate: false,
+            allowEdit: false,
+            ...(overrides?.admin || {})
+        }
+    } as RelationshipField;
 }
