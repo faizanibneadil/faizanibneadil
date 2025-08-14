@@ -76,7 +76,8 @@ export const Users: CollectionConfig<'users'> = {
         ...(defaultTenantArrayField?.admin || {}),
         position: 'sidebar',
       },
-      interfaceName: 'TUserTenants'
+      interfaceName: 'TUserTenants',
+      saveToJWT:true
     },
     {
       type: 'select',

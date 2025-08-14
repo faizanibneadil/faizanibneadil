@@ -8,6 +8,8 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { draftMode } from 'next/headers'
+import { AdminBar } from "@/components/AdminBar";
 
 
 const fontSans = FontSans({
@@ -51,25 +53,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { isEnabled } = await draftMode()
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6",
-          fontSans.variable
-        )}
-      >
-        <ThemeProvider attribute="class" defaultTheme="light">
-          <TooltipProvider delayDuration={0}>
-            {children}
-            
-          </TooltipProvider>
-        </ThemeProvider>
+      <body className={fontSans.variable}>
+        <AdminBar adminBarProps={{ preview: isEnabled }} />
+        <div className="min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6">
+          <ThemeProvider attribute="class" defaultTheme="light">
+            <TooltipProvider delayDuration={0}>
+              {children}
+            </TooltipProvider>
+          </ThemeProvider>
+        </div>
       </body>
     </html>
   );

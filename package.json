@@ -18,7 +18,9 @@
     "ci:turbopack": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create && payload migrate:status && payload migrate && payload migrate:status && yarn build --turbopack"
   },
   "dependencies": {
+    "@payloadcms/admin-bar": "^3.50.0",
     "@payloadcms/db-postgres": "^3.50.0",
+    "@payloadcms/live-preview-react": "^3.50.0",
     "@payloadcms/next": "^3.50.0",
     "@payloadcms/plugin-form-builder": "^3.50.0",
     "@payloadcms/plugin-multi-tenant": "^3.50.0",

@@ -94,7 +94,17 @@ export default buildConfig({
                     }
                 }
             }
-        }
+        },
+        livePreview: {
+            breakpoints: [
+                {
+                    label: 'Mobile',
+                    name: 'mobile',
+                    width: 375,
+                    height: 667,
+                }
+            ]
+        },
     },
     cors: [getServerSideURL()].filter(Boolean),
     collections: [
@@ -139,6 +149,7 @@ export default buildConfig({
         },
     }),
     secret: process.env.PAYLOAD_SECRET || '',
+    serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
     typescript: {
         outputFile: path.resolve(dirname, 'payload-types.ts'),
     },

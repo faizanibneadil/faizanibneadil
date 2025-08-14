@@ -1,15 +1,51 @@
+import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
+import { NavigationGroups } from "@/constants";
 import { slugField } from "@/fields/slug";
+import { TitleField } from "@/fields/title";
+import { populatePublishedAt } from "@/hooks/populatePublishedAt";
+import { getServerSideURL } from "@/utilities/getURL";
+import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
+import { headers as getHeaders } from "next/headers";
 import type { CollectionConfig } from "payload";
 import { revalidateDelete, revalidatePage } from "./hooks/revalidatePage";
-import { populatePublishedAt } from "@/hooks/populatePublishedAt";
-import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { TitleField } from "@/fields/title";
-import { NavigationGroups } from "@/constants";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
-    trash:true,
-    admin: { useAsTitle: 'title', group: NavigationGroups.portfolio },
+    trash: true,
+    admin: {
+        useAsTitle: 'title',
+        group: NavigationGroups.portfolio,
+        livePreview: {
+            url: async ({ data, req: { payload } }) => {
+                const headers = await getHeaders()
+                const tenant = await payload?.findByID({
+                    collection: 'tenants',
+                    id: getTenantFromCookie(headers, 'number') as number,
+                    select: { domain: true }
+                })
+                return `${getServerSideURL()}/${tenant?.domain}/p/${data?.slug}`
+            }
+        },
+        preview: async (doc, { req: { payload } }) => {
+            const headers = await getHeaders()
+            if (getTenantFromCookie(headers, 'number')) {
+                const tenant = await payload?.findByID({
+                    collection: 'tenants',
+                    id: getTenantFromCookie(headers, 'number') as number,
+                    select: { domain: true }
+                })
+                const encodedParams = new URLSearchParams({
+                    slug: doc?.slug as string,
+                    collection: 'pages',
+                    path: `/${tenant?.domain}/p/${doc?.slug}`,
+                    previewSecret: process.env.PREVIEW_SECRET || '',
+                })
+                return `${getServerSideURL()}/preview?${encodedParams.toString()}`
+            }
+
+            return null
+        },
+    },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
