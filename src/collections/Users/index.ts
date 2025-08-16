@@ -31,7 +31,7 @@ const defaultTenantArrayField = tenantsArrayField({
 
 export const Users: CollectionConfig<'users'> = {
   slug: 'users',
-  trash:true,
+  trash: true,
   access: {
     create: createAccess,
     delete: updateAndDeleteAccess,
@@ -72,12 +72,9 @@ export const Users: CollectionConfig<'users'> = {
     },
     {
       ...defaultTenantArrayField,
-      admin: {
-        ...(defaultTenantArrayField?.admin || {}),
-        position: 'sidebar',
-      },
+      admin: { ...(defaultTenantArrayField?.admin || {}) },
       interfaceName: 'TUserTenants',
-      saveToJWT:true
+      saveToJWT: true
     },
     {
       type: 'select',
@@ -85,8 +82,8 @@ export const Users: CollectionConfig<'users'> = {
       label: 'Field',
       saveToJWT: true,
       interfaceName: 'TUserField',
-      options: Object.entries(resume_fields).map(([lable, value]) => ({
-        label: capitalize(lable),
+      options: Object.entries(resume_fields).map(([label, value]) => ({
+        label: capitalize(label),
         value
       }))
     }

@@ -10,11 +10,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum__notes_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_blogs_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__blogs_v_version_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum_pages_mode" AS ENUM('layout', 'collection');
-  CREATE TYPE "public"."enum_pages_configurations_slug" AS ENUM('projects', 'notes', 'blogs');
+  CREATE TYPE "public"."enum_pages_page_mode_mode" AS ENUM('layout', 'collection');
   CREATE TYPE "public"."enum_pages_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum__pages_v_version_mode" AS ENUM('layout', 'collection');
-  CREATE TYPE "public"."enum__pages_v_version_configurations_slug" AS ENUM('projects', 'notes', 'blogs');
+  CREATE TYPE "public"."enum__pages_v_version_page_mode_mode" AS ENUM('layout', 'collection');
   CREATE TYPE "public"."enum__pages_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_educations_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__educations_v_version_status" AS ENUM('draft', 'published');
@@ -34,12 +32,16 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum__achievements_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_certifications_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__certifications_v_version_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum_languages_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum__languages_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_publications_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__publications_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_licenses_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__licenses_v_version_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum_forms_confirmation_type" AS ENUM('message', 'redirect');
+  CREATE TYPE "public"."enum_forms_redirect_type" AS ENUM('reference', 'custom');
+  CREATE TYPE "public"."enum_forms_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__forms_v_version_confirmation_type" AS ENUM('message', 'redirect');
+  CREATE TYPE "public"."enum__forms_v_version_redirect_type" AS ENUM('reference', 'custom');
+  CREATE TYPE "public"."enum__forms_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_payload_jobs_log_task_slug" AS ENUM('inline', 'schedulePublish');
   CREATE TYPE "public"."enum_payload_jobs_log_state" AS ENUM('failed', 'succeeded');
   CREATE TYPE "public"."enum_payload_jobs_task_slug" AS ENUM('inline', 'schedulePublish');
@@ -78,6 +80,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"field" "enum_users_field",
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"email" varchar NOT NULL,
   	"reset_password_token" varchar,
   	"reset_password_expiration" timestamp(3) with time zone,
@@ -96,7 +99,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"slug" varchar,
   	"slug_lock" boolean DEFAULT true,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone
   );
   
   CREATE TABLE "media" (
@@ -106,6 +110,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_key" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"url" varchar,
   	"thumbnail_u_r_l" varchar,
   	"filename" varchar,
@@ -124,6 +129,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"content" jsonb,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"_status" "enum_notes_status" DEFAULT 'draft'
   );
   
@@ -135,6 +141,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_content" jsonb,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version_deleted_at" timestamp(3) with time zone,
   	"version__status" "enum__notes_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -150,6 +157,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"featured_image_id" integer,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"_status" "enum_blogs_status" DEFAULT 'draft'
   );
   
@@ -162,6 +170,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_featured_image_id" integer,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version_deleted_at" timestamp(3) with time zone,
   	"version__status" "enum__blogs_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -308,13 +317,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"tenant_id" integer,
   	"title" varchar,
-  	"mode" "enum_pages_mode" DEFAULT 'layout',
-  	"configurations_slug" "enum_pages_configurations_slug",
+  	"page_mode_mode" "enum_pages_page_mode_mode" DEFAULT 'layout',
+  	"configurations_slug" varchar,
   	"published_at" timestamp(3) with time zone,
   	"slug" varchar,
   	"slug_lock" boolean DEFAULT true,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"_status" "enum_pages_status" DEFAULT 'draft'
   );
   
@@ -488,13 +498,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"parent_id" integer,
   	"version_tenant_id" integer,
   	"version_title" varchar,
-  	"version_mode" "enum__pages_v_version_mode" DEFAULT 'layout',
-  	"version_configurations_slug" "enum__pages_v_version_configurations_slug",
+  	"version_page_mode_mode" "enum__pages_v_version_page_mode_mode" DEFAULT 'layout',
+  	"version_configurations_slug" varchar,
   	"version_published_at" timestamp(3) with time zone,
   	"version_slug" varchar,
   	"version_slug_lock" boolean DEFAULT true,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version_deleted_at" timestamp(3) with time zone,
   	"version__status" "enum__pages_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -530,6 +541,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"_status" "enum_educations_status" DEFAULT 'draft'
   );
   
@@ -546,6 +558,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_image_id" integer,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version_deleted_at" timestamp(3) with time zone,
   	"version__status" "enum__educations_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -579,6 +592,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"slug_lock" boolean DEFAULT true,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"_status" "enum_projects_status" DEFAULT 'draft'
   );
   
@@ -618,6 +632,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_slug_lock" boolean DEFAULT true,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version_deleted_at" timestamp(3) with time zone,
   	"version__status" "enum__projects_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -639,7 +654,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"domain" varchar,
   	"slug" varchar NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone
   );
   
   CREATE TABLE "menus_menu" (
@@ -727,10 +743,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"tenant_id" integer,
   	"title" varchar,
   	"published_at" timestamp(3) with time zone,
+  	"techstack_icon_id" integer,
   	"slug" varchar,
   	"slug_lock" boolean DEFAULT true,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"_status" "enum_skills_status" DEFAULT 'draft'
   );
   
@@ -748,10 +766,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_tenant_id" integer,
   	"version_title" varchar,
   	"version_published_at" timestamp(3) with time zone,
+  	"version_techstack_icon_id" integer,
   	"version_slug" varchar,
   	"version_slug_lock" boolean DEFAULT true,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version_deleted_at" timestamp(3) with time zone,
   	"version__status" "enum__skills_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -787,6 +807,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"_status" "enum_hackathons_status" DEFAULT 'draft'
   );
   
@@ -812,6 +833,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_image_id" integer,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version_deleted_at" timestamp(3) with time zone,
   	"version__status" "enum__hackathons_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -839,6 +861,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"_status" "enum_researches_status" DEFAULT 'draft'
   );
   
@@ -864,6 +887,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_image_id" integer,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version_deleted_at" timestamp(3) with time zone,
   	"version__status" "enum__researches_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -891,6 +915,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"_status" "enum_achievements_status" DEFAULT 'draft'
   );
   
@@ -916,6 +941,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_image_id" integer,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version_deleted_at" timestamp(3) with time zone,
   	"version__status" "enum__achievements_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -943,6 +969,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"_status" "enum_certifications_status" DEFAULT 'draft'
   );
   
@@ -968,30 +995,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_image_id" integer,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version_deleted_at" timestamp(3) with time zone,
   	"version__status" "enum__certifications_v_version_status" DEFAULT 'draft',
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"latest" boolean,
-  	"autosave" boolean
-  );
-  
-  CREATE TABLE "languages" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"tenant_id" integer,
-  	"title" varchar,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"_status" "enum_languages_status" DEFAULT 'draft'
-  );
-  
-  CREATE TABLE "_languages_v" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"parent_id" integer,
-  	"version_tenant_id" integer,
-  	"version_title" varchar,
-  	"version_updated_at" timestamp(3) with time zone,
-  	"version_created_at" timestamp(3) with time zone,
-  	"version__status" "enum__languages_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"latest" boolean,
@@ -1018,6 +1023,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"_status" "enum_publications_status" DEFAULT 'draft'
   );
   
@@ -1043,6 +1049,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_image_id" integer,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version_deleted_at" timestamp(3) with time zone,
   	"version__status" "enum__publications_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -1070,6 +1077,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
   	"_status" "enum_licenses_status" DEFAULT 'draft'
   );
   
@@ -1095,11 +1103,381 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_image_id" integer,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version_deleted_at" timestamp(3) with time zone,
   	"version__status" "enum__licenses_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"latest" boolean,
   	"autosave" boolean
+  );
+  
+  CREATE TABLE "forms_blocks_checkbox" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"required" boolean,
+  	"default_value" boolean,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "forms_blocks_country" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"required" boolean,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "forms_blocks_email" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"required" boolean,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "forms_blocks_message" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"message" jsonb,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "forms_blocks_number" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"default_value" numeric,
+  	"required" boolean,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "forms_blocks_select_options" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" varchar NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"label" varchar,
+  	"value" varchar
+  );
+  
+  CREATE TABLE "forms_blocks_select" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"default_value" varchar,
+  	"placeholder" varchar,
+  	"required" boolean,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "forms_blocks_state" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"required" boolean,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "forms_blocks_text" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"default_value" varchar,
+  	"required" boolean,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "forms_blocks_textarea" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"default_value" varchar,
+  	"required" boolean,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "forms_blocks_date" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"required" boolean,
+  	"default_value" timestamp(3) with time zone,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "forms_emails" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"email_to" varchar,
+  	"cc" varchar,
+  	"bcc" varchar,
+  	"reply_to" varchar,
+  	"email_from" varchar,
+  	"subject" varchar DEFAULT 'You''ve received a new message.',
+  	"message" jsonb
+  );
+  
+  CREATE TABLE "forms" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"tenant_id" integer,
+  	"title" varchar,
+  	"submit_button_label" varchar,
+  	"confirmation_type" "enum_forms_confirmation_type" DEFAULT 'message',
+  	"confirmation_message" jsonb,
+  	"redirect_type" "enum_forms_redirect_type" DEFAULT 'reference',
+  	"redirect_url" varchar,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"deleted_at" timestamp(3) with time zone,
+  	"_status" "enum_forms_status" DEFAULT 'draft'
+  );
+  
+  CREATE TABLE "forms_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" integer NOT NULL,
+  	"path" varchar NOT NULL,
+  	"pages_id" integer
+  );
+  
+  CREATE TABLE "_forms_v_blocks_checkbox" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"required" boolean,
+  	"default_value" boolean,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "_forms_v_blocks_country" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"required" boolean,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "_forms_v_blocks_email" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"required" boolean,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "_forms_v_blocks_message" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"message" jsonb,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "_forms_v_blocks_number" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"default_value" numeric,
+  	"required" boolean,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "_forms_v_blocks_select_options" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"label" varchar,
+  	"value" varchar,
+  	"_uuid" varchar
+  );
+  
+  CREATE TABLE "_forms_v_blocks_select" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"default_value" varchar,
+  	"placeholder" varchar,
+  	"required" boolean,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "_forms_v_blocks_state" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"required" boolean,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "_forms_v_blocks_text" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"default_value" varchar,
+  	"required" boolean,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "_forms_v_blocks_textarea" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"default_value" varchar,
+  	"required" boolean,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "_forms_v_blocks_date" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"label" varchar,
+  	"width" numeric,
+  	"required" boolean,
+  	"default_value" timestamp(3) with time zone,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE "_forms_v_version_emails" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"email_to" varchar,
+  	"cc" varchar,
+  	"bcc" varchar,
+  	"reply_to" varchar,
+  	"email_from" varchar,
+  	"subject" varchar DEFAULT 'You''ve received a new message.',
+  	"message" jsonb,
+  	"_uuid" varchar
+  );
+  
+  CREATE TABLE "_forms_v" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"parent_id" integer,
+  	"version_tenant_id" integer,
+  	"version_title" varchar,
+  	"version_submit_button_label" varchar,
+  	"version_confirmation_type" "enum__forms_v_version_confirmation_type" DEFAULT 'message',
+  	"version_confirmation_message" jsonb,
+  	"version_redirect_type" "enum__forms_v_version_redirect_type" DEFAULT 'reference',
+  	"version_redirect_url" varchar,
+  	"version_updated_at" timestamp(3) with time zone,
+  	"version_created_at" timestamp(3) with time zone,
+  	"version_deleted_at" timestamp(3) with time zone,
+  	"version__status" "enum__forms_v_version_status" DEFAULT 'draft',
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
+  );
+  
+  CREATE TABLE "_forms_v_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" integer NOT NULL,
+  	"path" varchar NOT NULL,
+  	"pages_id" integer
+  );
+  
+  CREATE TABLE "form_submissions_submission_data" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"field" varchar NOT NULL,
+  	"value" varchar NOT NULL
+  );
+  
+  CREATE TABLE "form_submissions" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"tenant_id" integer,
+  	"form_id" integer NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
   
   CREATE TABLE "payload_jobs_log" (
@@ -1159,9 +1537,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"researches_id" integer,
   	"achievements_id" integer,
   	"certifications_id" integer,
-  	"languages_id" integer,
   	"publications_id" integer,
   	"licenses_id" integer,
+  	"forms_id" integer,
+  	"form_submissions_id" integer,
   	"payload_jobs_id" integer
   );
   
@@ -1292,10 +1671,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "_socials_v" ADD CONSTRAINT "_socials_v_parent_id_socials_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."socials"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "_socials_v" ADD CONSTRAINT "_socials_v_version_tenant_id_tenants_id_fk" FOREIGN KEY ("version_tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "skills" ADD CONSTRAINT "skills_tenant_id_tenants_id_fk" FOREIGN KEY ("tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
+  ALTER TABLE "skills" ADD CONSTRAINT "skills_techstack_icon_id_icons_id_fk" FOREIGN KEY ("techstack_icon_id") REFERENCES "public"."icons"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "skills_rels" ADD CONSTRAINT "skills_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."skills"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "skills_rels" ADD CONSTRAINT "skills_rels_projects_fk" FOREIGN KEY ("projects_id") REFERENCES "public"."projects"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "_skills_v" ADD CONSTRAINT "_skills_v_parent_id_skills_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."skills"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "_skills_v" ADD CONSTRAINT "_skills_v_version_tenant_id_tenants_id_fk" FOREIGN KEY ("version_tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
+  ALTER TABLE "_skills_v" ADD CONSTRAINT "_skills_v_version_techstack_icon_id_icons_id_fk" FOREIGN KEY ("version_techstack_icon_id") REFERENCES "public"."icons"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "_skills_v_rels" ADD CONSTRAINT "_skills_v_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."_skills_v"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "_skills_v_rels" ADD CONSTRAINT "_skills_v_rels_projects_fk" FOREIGN KEY ("projects_id") REFERENCES "public"."projects"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "hackathons_links" ADD CONSTRAINT "hackathons_links_icon_id_icons_id_fk" FOREIGN KEY ("icon_id") REFERENCES "public"."icons"("id") ON DELETE set null ON UPDATE no action;
@@ -1334,9 +1715,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "_certifications_v" ADD CONSTRAINT "_certifications_v_parent_id_certifications_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."certifications"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "_certifications_v" ADD CONSTRAINT "_certifications_v_version_tenant_id_tenants_id_fk" FOREIGN KEY ("version_tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "_certifications_v" ADD CONSTRAINT "_certifications_v_version_image_id_media_id_fk" FOREIGN KEY ("version_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "languages" ADD CONSTRAINT "languages_tenant_id_tenants_id_fk" FOREIGN KEY ("tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "_languages_v" ADD CONSTRAINT "_languages_v_parent_id_languages_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."languages"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "_languages_v" ADD CONSTRAINT "_languages_v_version_tenant_id_tenants_id_fk" FOREIGN KEY ("version_tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "publications_links" ADD CONSTRAINT "publications_links_icon_id_icons_id_fk" FOREIGN KEY ("icon_id") REFERENCES "public"."icons"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "publications_links" ADD CONSTRAINT "publications_links_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."publications"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "publications" ADD CONSTRAINT "publications_tenant_id_tenants_id_fk" FOREIGN KEY ("tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
@@ -1355,6 +1733,40 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "_licenses_v" ADD CONSTRAINT "_licenses_v_parent_id_licenses_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."licenses"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "_licenses_v" ADD CONSTRAINT "_licenses_v_version_tenant_id_tenants_id_fk" FOREIGN KEY ("version_tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "_licenses_v" ADD CONSTRAINT "_licenses_v_version_image_id_media_id_fk" FOREIGN KEY ("version_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
+  ALTER TABLE "forms_blocks_checkbox" ADD CONSTRAINT "forms_blocks_checkbox_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "forms_blocks_country" ADD CONSTRAINT "forms_blocks_country_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "forms_blocks_email" ADD CONSTRAINT "forms_blocks_email_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "forms_blocks_message" ADD CONSTRAINT "forms_blocks_message_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "forms_blocks_number" ADD CONSTRAINT "forms_blocks_number_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "forms_blocks_select_options" ADD CONSTRAINT "forms_blocks_select_options_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms_blocks_select"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "forms_blocks_select" ADD CONSTRAINT "forms_blocks_select_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "forms_blocks_state" ADD CONSTRAINT "forms_blocks_state_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "forms_blocks_text" ADD CONSTRAINT "forms_blocks_text_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "forms_blocks_textarea" ADD CONSTRAINT "forms_blocks_textarea_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "forms_blocks_date" ADD CONSTRAINT "forms_blocks_date_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "forms_emails" ADD CONSTRAINT "forms_emails_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "forms" ADD CONSTRAINT "forms_tenant_id_tenants_id_fk" FOREIGN KEY ("tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
+  ALTER TABLE "forms_rels" ADD CONSTRAINT "forms_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "forms_rels" ADD CONSTRAINT "forms_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v_blocks_checkbox" ADD CONSTRAINT "_forms_v_blocks_checkbox_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_forms_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v_blocks_country" ADD CONSTRAINT "_forms_v_blocks_country_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_forms_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v_blocks_email" ADD CONSTRAINT "_forms_v_blocks_email_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_forms_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v_blocks_message" ADD CONSTRAINT "_forms_v_blocks_message_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_forms_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v_blocks_number" ADD CONSTRAINT "_forms_v_blocks_number_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_forms_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v_blocks_select_options" ADD CONSTRAINT "_forms_v_blocks_select_options_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_forms_v_blocks_select"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v_blocks_select" ADD CONSTRAINT "_forms_v_blocks_select_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_forms_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v_blocks_state" ADD CONSTRAINT "_forms_v_blocks_state_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_forms_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v_blocks_text" ADD CONSTRAINT "_forms_v_blocks_text_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_forms_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v_blocks_textarea" ADD CONSTRAINT "_forms_v_blocks_textarea_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_forms_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v_blocks_date" ADD CONSTRAINT "_forms_v_blocks_date_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_forms_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v_version_emails" ADD CONSTRAINT "_forms_v_version_emails_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_forms_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v" ADD CONSTRAINT "_forms_v_parent_id_forms_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
+  ALTER TABLE "_forms_v" ADD CONSTRAINT "_forms_v_version_tenant_id_tenants_id_fk" FOREIGN KEY ("version_tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
+  ALTER TABLE "_forms_v_rels" ADD CONSTRAINT "_forms_v_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."_forms_v"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "_forms_v_rels" ADD CONSTRAINT "_forms_v_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "form_submissions_submission_data" ADD CONSTRAINT "form_submissions_submission_data_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."form_submissions"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "form_submissions" ADD CONSTRAINT "form_submissions_tenant_id_tenants_id_fk" FOREIGN KEY ("tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
+  ALTER TABLE "form_submissions" ADD CONSTRAINT "form_submissions_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "payload_jobs_log" ADD CONSTRAINT "payload_jobs_log_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."payload_jobs"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_locked_documents"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
@@ -1373,9 +1785,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_researches_fk" FOREIGN KEY ("researches_id") REFERENCES "public"."researches"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_achievements_fk" FOREIGN KEY ("achievements_id") REFERENCES "public"."achievements"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_certifications_fk" FOREIGN KEY ("certifications_id") REFERENCES "public"."certifications"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_languages_fk" FOREIGN KEY ("languages_id") REFERENCES "public"."languages"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_publications_fk" FOREIGN KEY ("publications_id") REFERENCES "public"."publications"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_licenses_fk" FOREIGN KEY ("licenses_id") REFERENCES "public"."licenses"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_forms_fk" FOREIGN KEY ("forms_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_form_submissions_fk" FOREIGN KEY ("form_submissions_id") REFERENCES "public"."form_submissions"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_payload_jobs_fk" FOREIGN KEY ("payload_jobs_id") REFERENCES "public"."payload_jobs"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_preferences"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
@@ -1391,23 +1804,28 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "users_username_idx" ON "users" USING btree ("username");
   CREATE INDEX "users_updated_at_idx" ON "users" USING btree ("updated_at");
   CREATE INDEX "users_created_at_idx" ON "users" USING btree ("created_at");
+  CREATE INDEX "users_deleted_at_idx" ON "users" USING btree ("deleted_at");
   CREATE UNIQUE INDEX "users_email_idx" ON "users" USING btree ("email");
   CREATE INDEX "icons_icon_specs_icon_specs_svg_idx" ON "icons" USING btree ("icon_specs_svg_id");
   CREATE INDEX "icons_slug_idx" ON "icons" USING btree ("slug");
   CREATE INDEX "icons_updated_at_idx" ON "icons" USING btree ("updated_at");
   CREATE INDEX "icons_created_at_idx" ON "icons" USING btree ("created_at");
+  CREATE INDEX "icons_deleted_at_idx" ON "icons" USING btree ("deleted_at");
   CREATE INDEX "media_tenant_idx" ON "media" USING btree ("tenant_id");
   CREATE INDEX "media_updated_at_idx" ON "media" USING btree ("updated_at");
   CREATE INDEX "media_created_at_idx" ON "media" USING btree ("created_at");
+  CREATE INDEX "media_deleted_at_idx" ON "media" USING btree ("deleted_at");
   CREATE UNIQUE INDEX "media_filename_idx" ON "media" USING btree ("filename");
   CREATE INDEX "notes_tenant_idx" ON "notes" USING btree ("tenant_id");
   CREATE INDEX "notes_updated_at_idx" ON "notes" USING btree ("updated_at");
   CREATE INDEX "notes_created_at_idx" ON "notes" USING btree ("created_at");
+  CREATE INDEX "notes_deleted_at_idx" ON "notes" USING btree ("deleted_at");
   CREATE INDEX "notes__status_idx" ON "notes" USING btree ("_status");
   CREATE INDEX "_notes_v_parent_idx" ON "_notes_v" USING btree ("parent_id");
   CREATE INDEX "_notes_v_version_version_tenant_idx" ON "_notes_v" USING btree ("version_tenant_id");
   CREATE INDEX "_notes_v_version_version_updated_at_idx" ON "_notes_v" USING btree ("version_updated_at");
   CREATE INDEX "_notes_v_version_version_created_at_idx" ON "_notes_v" USING btree ("version_created_at");
+  CREATE INDEX "_notes_v_version_version_deleted_at_idx" ON "_notes_v" USING btree ("version_deleted_at");
   CREATE INDEX "_notes_v_version_version__status_idx" ON "_notes_v" USING btree ("version__status");
   CREATE INDEX "_notes_v_created_at_idx" ON "_notes_v" USING btree ("created_at");
   CREATE INDEX "_notes_v_updated_at_idx" ON "_notes_v" USING btree ("updated_at");
@@ -1417,12 +1835,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "blogs_featured_image_idx" ON "blogs" USING btree ("featured_image_id");
   CREATE INDEX "blogs_updated_at_idx" ON "blogs" USING btree ("updated_at");
   CREATE INDEX "blogs_created_at_idx" ON "blogs" USING btree ("created_at");
+  CREATE INDEX "blogs_deleted_at_idx" ON "blogs" USING btree ("deleted_at");
   CREATE INDEX "blogs__status_idx" ON "blogs" USING btree ("_status");
   CREATE INDEX "_blogs_v_parent_idx" ON "_blogs_v" USING btree ("parent_id");
   CREATE INDEX "_blogs_v_version_version_tenant_idx" ON "_blogs_v" USING btree ("version_tenant_id");
   CREATE INDEX "_blogs_v_version_version_featured_image_idx" ON "_blogs_v" USING btree ("version_featured_image_id");
   CREATE INDEX "_blogs_v_version_version_updated_at_idx" ON "_blogs_v" USING btree ("version_updated_at");
   CREATE INDEX "_blogs_v_version_version_created_at_idx" ON "_blogs_v" USING btree ("version_created_at");
+  CREATE INDEX "_blogs_v_version_version_deleted_at_idx" ON "_blogs_v" USING btree ("version_deleted_at");
   CREATE INDEX "_blogs_v_version_version__status_idx" ON "_blogs_v" USING btree ("version__status");
   CREATE INDEX "_blogs_v_created_at_idx" ON "_blogs_v" USING btree ("created_at");
   CREATE INDEX "_blogs_v_updated_at_idx" ON "_blogs_v" USING btree ("updated_at");
@@ -1474,6 +1894,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "pages_slug_idx" ON "pages" USING btree ("slug");
   CREATE INDEX "pages_updated_at_idx" ON "pages" USING btree ("updated_at");
   CREATE INDEX "pages_created_at_idx" ON "pages" USING btree ("created_at");
+  CREATE INDEX "pages_deleted_at_idx" ON "pages" USING btree ("deleted_at");
   CREATE INDEX "pages__status_idx" ON "pages" USING btree ("_status");
   CREATE INDEX "pages_rels_order_idx" ON "pages_rels" USING btree ("order");
   CREATE INDEX "pages_rels_parent_idx" ON "pages_rels" USING btree ("parent_id");
@@ -1534,6 +1955,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_pages_v_version_version_slug_idx" ON "_pages_v" USING btree ("version_slug");
   CREATE INDEX "_pages_v_version_version_updated_at_idx" ON "_pages_v" USING btree ("version_updated_at");
   CREATE INDEX "_pages_v_version_version_created_at_idx" ON "_pages_v" USING btree ("version_created_at");
+  CREATE INDEX "_pages_v_version_version_deleted_at_idx" ON "_pages_v" USING btree ("version_deleted_at");
   CREATE INDEX "_pages_v_version_version__status_idx" ON "_pages_v" USING btree ("version__status");
   CREATE INDEX "_pages_v_created_at_idx" ON "_pages_v" USING btree ("created_at");
   CREATE INDEX "_pages_v_updated_at_idx" ON "_pages_v" USING btree ("updated_at");
@@ -1555,12 +1977,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "educations_image_idx" ON "educations" USING btree ("image_id");
   CREATE INDEX "educations_updated_at_idx" ON "educations" USING btree ("updated_at");
   CREATE INDEX "educations_created_at_idx" ON "educations" USING btree ("created_at");
+  CREATE INDEX "educations_deleted_at_idx" ON "educations" USING btree ("deleted_at");
   CREATE INDEX "educations__status_idx" ON "educations" USING btree ("_status");
   CREATE INDEX "_educations_v_parent_idx" ON "_educations_v" USING btree ("parent_id");
   CREATE INDEX "_educations_v_version_version_tenant_idx" ON "_educations_v" USING btree ("version_tenant_id");
   CREATE INDEX "_educations_v_version_version_image_idx" ON "_educations_v" USING btree ("version_image_id");
   CREATE INDEX "_educations_v_version_version_updated_at_idx" ON "_educations_v" USING btree ("version_updated_at");
   CREATE INDEX "_educations_v_version_version_created_at_idx" ON "_educations_v" USING btree ("version_created_at");
+  CREATE INDEX "_educations_v_version_version_deleted_at_idx" ON "_educations_v" USING btree ("version_deleted_at");
   CREATE INDEX "_educations_v_version_version__status_idx" ON "_educations_v" USING btree ("version__status");
   CREATE INDEX "_educations_v_created_at_idx" ON "_educations_v" USING btree ("created_at");
   CREATE INDEX "_educations_v_updated_at_idx" ON "_educations_v" USING btree ("updated_at");
@@ -1574,6 +1998,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "projects_slug_idx" ON "projects" USING btree ("slug");
   CREATE INDEX "projects_updated_at_idx" ON "projects" USING btree ("updated_at");
   CREATE INDEX "projects_created_at_idx" ON "projects" USING btree ("created_at");
+  CREATE INDEX "projects_deleted_at_idx" ON "projects" USING btree ("deleted_at");
   CREATE INDEX "projects__status_idx" ON "projects" USING btree ("_status");
   CREATE INDEX "projects_rels_order_idx" ON "projects_rels" USING btree ("order");
   CREATE INDEX "projects_rels_parent_idx" ON "projects_rels" USING btree ("parent_id");
@@ -1588,6 +2013,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_projects_v_version_version_slug_idx" ON "_projects_v" USING btree ("version_slug");
   CREATE INDEX "_projects_v_version_version_updated_at_idx" ON "_projects_v" USING btree ("version_updated_at");
   CREATE INDEX "_projects_v_version_version_created_at_idx" ON "_projects_v" USING btree ("version_created_at");
+  CREATE INDEX "_projects_v_version_version_deleted_at_idx" ON "_projects_v" USING btree ("version_deleted_at");
   CREATE INDEX "_projects_v_version_version__status_idx" ON "_projects_v" USING btree ("version__status");
   CREATE INDEX "_projects_v_created_at_idx" ON "_projects_v" USING btree ("created_at");
   CREATE INDEX "_projects_v_updated_at_idx" ON "_projects_v" USING btree ("updated_at");
@@ -1600,6 +2026,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "tenants_slug_idx" ON "tenants" USING btree ("slug");
   CREATE INDEX "tenants_updated_at_idx" ON "tenants" USING btree ("updated_at");
   CREATE INDEX "tenants_created_at_idx" ON "tenants" USING btree ("created_at");
+  CREATE INDEX "tenants_deleted_at_idx" ON "tenants" USING btree ("deleted_at");
   CREATE INDEX "menus_menu_order_idx" ON "menus_menu" USING btree ("_order");
   CREATE INDEX "menus_menu_parent_id_idx" ON "menus_menu" USING btree ("_parent_id");
   CREATE INDEX "menus_menu_icon_idx" ON "menus_menu" USING btree ("icon_id");
@@ -1641,9 +2068,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_socials_v_latest_idx" ON "_socials_v" USING btree ("latest");
   CREATE INDEX "_socials_v_autosave_idx" ON "_socials_v" USING btree ("autosave");
   CREATE INDEX "skills_tenant_idx" ON "skills" USING btree ("tenant_id");
+  CREATE INDEX "skills_techstack_techstack_icon_idx" ON "skills" USING btree ("techstack_icon_id");
   CREATE INDEX "skills_slug_idx" ON "skills" USING btree ("slug");
   CREATE INDEX "skills_updated_at_idx" ON "skills" USING btree ("updated_at");
   CREATE INDEX "skills_created_at_idx" ON "skills" USING btree ("created_at");
+  CREATE INDEX "skills_deleted_at_idx" ON "skills" USING btree ("deleted_at");
   CREATE INDEX "skills__status_idx" ON "skills" USING btree ("_status");
   CREATE INDEX "skills_rels_order_idx" ON "skills_rels" USING btree ("order");
   CREATE INDEX "skills_rels_parent_idx" ON "skills_rels" USING btree ("parent_id");
@@ -1651,9 +2080,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "skills_rels_projects_id_idx" ON "skills_rels" USING btree ("projects_id");
   CREATE INDEX "_skills_v_parent_idx" ON "_skills_v" USING btree ("parent_id");
   CREATE INDEX "_skills_v_version_version_tenant_idx" ON "_skills_v" USING btree ("version_tenant_id");
+  CREATE INDEX "_skills_v_version_techstack_version_techstack_icon_idx" ON "_skills_v" USING btree ("version_techstack_icon_id");
   CREATE INDEX "_skills_v_version_version_slug_idx" ON "_skills_v" USING btree ("version_slug");
   CREATE INDEX "_skills_v_version_version_updated_at_idx" ON "_skills_v" USING btree ("version_updated_at");
   CREATE INDEX "_skills_v_version_version_created_at_idx" ON "_skills_v" USING btree ("version_created_at");
+  CREATE INDEX "_skills_v_version_version_deleted_at_idx" ON "_skills_v" USING btree ("version_deleted_at");
   CREATE INDEX "_skills_v_version_version__status_idx" ON "_skills_v" USING btree ("version__status");
   CREATE INDEX "_skills_v_created_at_idx" ON "_skills_v" USING btree ("created_at");
   CREATE INDEX "_skills_v_updated_at_idx" ON "_skills_v" USING btree ("updated_at");
@@ -1670,6 +2101,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "hackathons_image_idx" ON "hackathons" USING btree ("image_id");
   CREATE INDEX "hackathons_updated_at_idx" ON "hackathons" USING btree ("updated_at");
   CREATE INDEX "hackathons_created_at_idx" ON "hackathons" USING btree ("created_at");
+  CREATE INDEX "hackathons_deleted_at_idx" ON "hackathons" USING btree ("deleted_at");
   CREATE INDEX "hackathons__status_idx" ON "hackathons" USING btree ("_status");
   CREATE INDEX "_hackathons_v_version_links_order_idx" ON "_hackathons_v_version_links" USING btree ("_order");
   CREATE INDEX "_hackathons_v_version_links_parent_id_idx" ON "_hackathons_v_version_links" USING btree ("_parent_id");
@@ -1679,6 +2111,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_hackathons_v_version_version_image_idx" ON "_hackathons_v" USING btree ("version_image_id");
   CREATE INDEX "_hackathons_v_version_version_updated_at_idx" ON "_hackathons_v" USING btree ("version_updated_at");
   CREATE INDEX "_hackathons_v_version_version_created_at_idx" ON "_hackathons_v" USING btree ("version_created_at");
+  CREATE INDEX "_hackathons_v_version_version_deleted_at_idx" ON "_hackathons_v" USING btree ("version_deleted_at");
   CREATE INDEX "_hackathons_v_version_version__status_idx" ON "_hackathons_v" USING btree ("version__status");
   CREATE INDEX "_hackathons_v_created_at_idx" ON "_hackathons_v" USING btree ("created_at");
   CREATE INDEX "_hackathons_v_updated_at_idx" ON "_hackathons_v" USING btree ("updated_at");
@@ -1691,6 +2124,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "researches_image_idx" ON "researches" USING btree ("image_id");
   CREATE INDEX "researches_updated_at_idx" ON "researches" USING btree ("updated_at");
   CREATE INDEX "researches_created_at_idx" ON "researches" USING btree ("created_at");
+  CREATE INDEX "researches_deleted_at_idx" ON "researches" USING btree ("deleted_at");
   CREATE INDEX "researches__status_idx" ON "researches" USING btree ("_status");
   CREATE INDEX "_researches_v_version_links_order_idx" ON "_researches_v_version_links" USING btree ("_order");
   CREATE INDEX "_researches_v_version_links_parent_id_idx" ON "_researches_v_version_links" USING btree ("_parent_id");
@@ -1700,6 +2134,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_researches_v_version_version_image_idx" ON "_researches_v" USING btree ("version_image_id");
   CREATE INDEX "_researches_v_version_version_updated_at_idx" ON "_researches_v" USING btree ("version_updated_at");
   CREATE INDEX "_researches_v_version_version_created_at_idx" ON "_researches_v" USING btree ("version_created_at");
+  CREATE INDEX "_researches_v_version_version_deleted_at_idx" ON "_researches_v" USING btree ("version_deleted_at");
   CREATE INDEX "_researches_v_version_version__status_idx" ON "_researches_v" USING btree ("version__status");
   CREATE INDEX "_researches_v_created_at_idx" ON "_researches_v" USING btree ("created_at");
   CREATE INDEX "_researches_v_updated_at_idx" ON "_researches_v" USING btree ("updated_at");
@@ -1712,6 +2147,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "achievements_image_idx" ON "achievements" USING btree ("image_id");
   CREATE INDEX "achievements_updated_at_idx" ON "achievements" USING btree ("updated_at");
   CREATE INDEX "achievements_created_at_idx" ON "achievements" USING btree ("created_at");
+  CREATE INDEX "achievements_deleted_at_idx" ON "achievements" USING btree ("deleted_at");
   CREATE INDEX "achievements__status_idx" ON "achievements" USING btree ("_status");
   CREATE INDEX "_achievements_v_version_links_order_idx" ON "_achievements_v_version_links" USING btree ("_order");
   CREATE INDEX "_achievements_v_version_links_parent_id_idx" ON "_achievements_v_version_links" USING btree ("_parent_id");
@@ -1721,6 +2157,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_achievements_v_version_version_image_idx" ON "_achievements_v" USING btree ("version_image_id");
   CREATE INDEX "_achievements_v_version_version_updated_at_idx" ON "_achievements_v" USING btree ("version_updated_at");
   CREATE INDEX "_achievements_v_version_version_created_at_idx" ON "_achievements_v" USING btree ("version_created_at");
+  CREATE INDEX "_achievements_v_version_version_deleted_at_idx" ON "_achievements_v" USING btree ("version_deleted_at");
   CREATE INDEX "_achievements_v_version_version__status_idx" ON "_achievements_v" USING btree ("version__status");
   CREATE INDEX "_achievements_v_created_at_idx" ON "_achievements_v" USING btree ("created_at");
   CREATE INDEX "_achievements_v_updated_at_idx" ON "_achievements_v" USING btree ("updated_at");
@@ -1733,6 +2170,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "certifications_image_idx" ON "certifications" USING btree ("image_id");
   CREATE INDEX "certifications_updated_at_idx" ON "certifications" USING btree ("updated_at");
   CREATE INDEX "certifications_created_at_idx" ON "certifications" USING btree ("created_at");
+  CREATE INDEX "certifications_deleted_at_idx" ON "certifications" USING btree ("deleted_at");
   CREATE INDEX "certifications__status_idx" ON "certifications" USING btree ("_status");
   CREATE INDEX "_certifications_v_version_links_order_idx" ON "_certifications_v_version_links" USING btree ("_order");
   CREATE INDEX "_certifications_v_version_links_parent_id_idx" ON "_certifications_v_version_links" USING btree ("_parent_id");
@@ -1742,24 +2180,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_certifications_v_version_version_image_idx" ON "_certifications_v" USING btree ("version_image_id");
   CREATE INDEX "_certifications_v_version_version_updated_at_idx" ON "_certifications_v" USING btree ("version_updated_at");
   CREATE INDEX "_certifications_v_version_version_created_at_idx" ON "_certifications_v" USING btree ("version_created_at");
+  CREATE INDEX "_certifications_v_version_version_deleted_at_idx" ON "_certifications_v" USING btree ("version_deleted_at");
   CREATE INDEX "_certifications_v_version_version__status_idx" ON "_certifications_v" USING btree ("version__status");
   CREATE INDEX "_certifications_v_created_at_idx" ON "_certifications_v" USING btree ("created_at");
   CREATE INDEX "_certifications_v_updated_at_idx" ON "_certifications_v" USING btree ("updated_at");
   CREATE INDEX "_certifications_v_latest_idx" ON "_certifications_v" USING btree ("latest");
   CREATE INDEX "_certifications_v_autosave_idx" ON "_certifications_v" USING btree ("autosave");
-  CREATE INDEX "languages_tenant_idx" ON "languages" USING btree ("tenant_id");
-  CREATE INDEX "languages_updated_at_idx" ON "languages" USING btree ("updated_at");
-  CREATE INDEX "languages_created_at_idx" ON "languages" USING btree ("created_at");
-  CREATE INDEX "languages__status_idx" ON "languages" USING btree ("_status");
-  CREATE INDEX "_languages_v_parent_idx" ON "_languages_v" USING btree ("parent_id");
-  CREATE INDEX "_languages_v_version_version_tenant_idx" ON "_languages_v" USING btree ("version_tenant_id");
-  CREATE INDEX "_languages_v_version_version_updated_at_idx" ON "_languages_v" USING btree ("version_updated_at");
-  CREATE INDEX "_languages_v_version_version_created_at_idx" ON "_languages_v" USING btree ("version_created_at");
-  CREATE INDEX "_languages_v_version_version__status_idx" ON "_languages_v" USING btree ("version__status");
-  CREATE INDEX "_languages_v_created_at_idx" ON "_languages_v" USING btree ("created_at");
-  CREATE INDEX "_languages_v_updated_at_idx" ON "_languages_v" USING btree ("updated_at");
-  CREATE INDEX "_languages_v_latest_idx" ON "_languages_v" USING btree ("latest");
-  CREATE INDEX "_languages_v_autosave_idx" ON "_languages_v" USING btree ("autosave");
   CREATE INDEX "publications_links_order_idx" ON "publications_links" USING btree ("_order");
   CREATE INDEX "publications_links_parent_id_idx" ON "publications_links" USING btree ("_parent_id");
   CREATE INDEX "publications_links_icon_idx" ON "publications_links" USING btree ("icon_id");
@@ -1767,6 +2193,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "publications_image_idx" ON "publications" USING btree ("image_id");
   CREATE INDEX "publications_updated_at_idx" ON "publications" USING btree ("updated_at");
   CREATE INDEX "publications_created_at_idx" ON "publications" USING btree ("created_at");
+  CREATE INDEX "publications_deleted_at_idx" ON "publications" USING btree ("deleted_at");
   CREATE INDEX "publications__status_idx" ON "publications" USING btree ("_status");
   CREATE INDEX "_publications_v_version_links_order_idx" ON "_publications_v_version_links" USING btree ("_order");
   CREATE INDEX "_publications_v_version_links_parent_id_idx" ON "_publications_v_version_links" USING btree ("_parent_id");
@@ -1776,6 +2203,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_publications_v_version_version_image_idx" ON "_publications_v" USING btree ("version_image_id");
   CREATE INDEX "_publications_v_version_version_updated_at_idx" ON "_publications_v" USING btree ("version_updated_at");
   CREATE INDEX "_publications_v_version_version_created_at_idx" ON "_publications_v" USING btree ("version_created_at");
+  CREATE INDEX "_publications_v_version_version_deleted_at_idx" ON "_publications_v" USING btree ("version_deleted_at");
   CREATE INDEX "_publications_v_version_version__status_idx" ON "_publications_v" USING btree ("version__status");
   CREATE INDEX "_publications_v_created_at_idx" ON "_publications_v" USING btree ("created_at");
   CREATE INDEX "_publications_v_updated_at_idx" ON "_publications_v" USING btree ("updated_at");
@@ -1788,6 +2216,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "licenses_image_idx" ON "licenses" USING btree ("image_id");
   CREATE INDEX "licenses_updated_at_idx" ON "licenses" USING btree ("updated_at");
   CREATE INDEX "licenses_created_at_idx" ON "licenses" USING btree ("created_at");
+  CREATE INDEX "licenses_deleted_at_idx" ON "licenses" USING btree ("deleted_at");
   CREATE INDEX "licenses__status_idx" ON "licenses" USING btree ("_status");
   CREATE INDEX "_licenses_v_version_links_order_idx" ON "_licenses_v_version_links" USING btree ("_order");
   CREATE INDEX "_licenses_v_version_links_parent_id_idx" ON "_licenses_v_version_links" USING btree ("_parent_id");
@@ -1797,11 +2226,109 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_licenses_v_version_version_image_idx" ON "_licenses_v" USING btree ("version_image_id");
   CREATE INDEX "_licenses_v_version_version_updated_at_idx" ON "_licenses_v" USING btree ("version_updated_at");
   CREATE INDEX "_licenses_v_version_version_created_at_idx" ON "_licenses_v" USING btree ("version_created_at");
+  CREATE INDEX "_licenses_v_version_version_deleted_at_idx" ON "_licenses_v" USING btree ("version_deleted_at");
   CREATE INDEX "_licenses_v_version_version__status_idx" ON "_licenses_v" USING btree ("version__status");
   CREATE INDEX "_licenses_v_created_at_idx" ON "_licenses_v" USING btree ("created_at");
   CREATE INDEX "_licenses_v_updated_at_idx" ON "_licenses_v" USING btree ("updated_at");
   CREATE INDEX "_licenses_v_latest_idx" ON "_licenses_v" USING btree ("latest");
   CREATE INDEX "_licenses_v_autosave_idx" ON "_licenses_v" USING btree ("autosave");
+  CREATE INDEX "forms_blocks_checkbox_order_idx" ON "forms_blocks_checkbox" USING btree ("_order");
+  CREATE INDEX "forms_blocks_checkbox_parent_id_idx" ON "forms_blocks_checkbox" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_checkbox_path_idx" ON "forms_blocks_checkbox" USING btree ("_path");
+  CREATE INDEX "forms_blocks_country_order_idx" ON "forms_blocks_country" USING btree ("_order");
+  CREATE INDEX "forms_blocks_country_parent_id_idx" ON "forms_blocks_country" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_country_path_idx" ON "forms_blocks_country" USING btree ("_path");
+  CREATE INDEX "forms_blocks_email_order_idx" ON "forms_blocks_email" USING btree ("_order");
+  CREATE INDEX "forms_blocks_email_parent_id_idx" ON "forms_blocks_email" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_email_path_idx" ON "forms_blocks_email" USING btree ("_path");
+  CREATE INDEX "forms_blocks_message_order_idx" ON "forms_blocks_message" USING btree ("_order");
+  CREATE INDEX "forms_blocks_message_parent_id_idx" ON "forms_blocks_message" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_message_path_idx" ON "forms_blocks_message" USING btree ("_path");
+  CREATE INDEX "forms_blocks_number_order_idx" ON "forms_blocks_number" USING btree ("_order");
+  CREATE INDEX "forms_blocks_number_parent_id_idx" ON "forms_blocks_number" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_number_path_idx" ON "forms_blocks_number" USING btree ("_path");
+  CREATE INDEX "forms_blocks_select_options_order_idx" ON "forms_blocks_select_options" USING btree ("_order");
+  CREATE INDEX "forms_blocks_select_options_parent_id_idx" ON "forms_blocks_select_options" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_select_order_idx" ON "forms_blocks_select" USING btree ("_order");
+  CREATE INDEX "forms_blocks_select_parent_id_idx" ON "forms_blocks_select" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_select_path_idx" ON "forms_blocks_select" USING btree ("_path");
+  CREATE INDEX "forms_blocks_state_order_idx" ON "forms_blocks_state" USING btree ("_order");
+  CREATE INDEX "forms_blocks_state_parent_id_idx" ON "forms_blocks_state" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_state_path_idx" ON "forms_blocks_state" USING btree ("_path");
+  CREATE INDEX "forms_blocks_text_order_idx" ON "forms_blocks_text" USING btree ("_order");
+  CREATE INDEX "forms_blocks_text_parent_id_idx" ON "forms_blocks_text" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_text_path_idx" ON "forms_blocks_text" USING btree ("_path");
+  CREATE INDEX "forms_blocks_textarea_order_idx" ON "forms_blocks_textarea" USING btree ("_order");
+  CREATE INDEX "forms_blocks_textarea_parent_id_idx" ON "forms_blocks_textarea" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_textarea_path_idx" ON "forms_blocks_textarea" USING btree ("_path");
+  CREATE INDEX "forms_blocks_date_order_idx" ON "forms_blocks_date" USING btree ("_order");
+  CREATE INDEX "forms_blocks_date_parent_id_idx" ON "forms_blocks_date" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_date_path_idx" ON "forms_blocks_date" USING btree ("_path");
+  CREATE INDEX "forms_emails_order_idx" ON "forms_emails" USING btree ("_order");
+  CREATE INDEX "forms_emails_parent_id_idx" ON "forms_emails" USING btree ("_parent_id");
+  CREATE INDEX "forms_tenant_idx" ON "forms" USING btree ("tenant_id");
+  CREATE INDEX "forms_updated_at_idx" ON "forms" USING btree ("updated_at");
+  CREATE INDEX "forms_created_at_idx" ON "forms" USING btree ("created_at");
+  CREATE INDEX "forms_deleted_at_idx" ON "forms" USING btree ("deleted_at");
+  CREATE INDEX "forms__status_idx" ON "forms" USING btree ("_status");
+  CREATE INDEX "forms_rels_order_idx" ON "forms_rels" USING btree ("order");
+  CREATE INDEX "forms_rels_parent_idx" ON "forms_rels" USING btree ("parent_id");
+  CREATE INDEX "forms_rels_path_idx" ON "forms_rels" USING btree ("path");
+  CREATE INDEX "forms_rels_pages_id_idx" ON "forms_rels" USING btree ("pages_id");
+  CREATE INDEX "_forms_v_blocks_checkbox_order_idx" ON "_forms_v_blocks_checkbox" USING btree ("_order");
+  CREATE INDEX "_forms_v_blocks_checkbox_parent_id_idx" ON "_forms_v_blocks_checkbox" USING btree ("_parent_id");
+  CREATE INDEX "_forms_v_blocks_checkbox_path_idx" ON "_forms_v_blocks_checkbox" USING btree ("_path");
+  CREATE INDEX "_forms_v_blocks_country_order_idx" ON "_forms_v_blocks_country" USING btree ("_order");
+  CREATE INDEX "_forms_v_blocks_country_parent_id_idx" ON "_forms_v_blocks_country" USING btree ("_parent_id");
+  CREATE INDEX "_forms_v_blocks_country_path_idx" ON "_forms_v_blocks_country" USING btree ("_path");
+  CREATE INDEX "_forms_v_blocks_email_order_idx" ON "_forms_v_blocks_email" USING btree ("_order");
+  CREATE INDEX "_forms_v_blocks_email_parent_id_idx" ON "_forms_v_blocks_email" USING btree ("_parent_id");
+  CREATE INDEX "_forms_v_blocks_email_path_idx" ON "_forms_v_blocks_email" USING btree ("_path");
+  CREATE INDEX "_forms_v_blocks_message_order_idx" ON "_forms_v_blocks_message" USING btree ("_order");
+  CREATE INDEX "_forms_v_blocks_message_parent_id_idx" ON "_forms_v_blocks_message" USING btree ("_parent_id");
+  CREATE INDEX "_forms_v_blocks_message_path_idx" ON "_forms_v_blocks_message" USING btree ("_path");
+  CREATE INDEX "_forms_v_blocks_number_order_idx" ON "_forms_v_blocks_number" USING btree ("_order");
+  CREATE INDEX "_forms_v_blocks_number_parent_id_idx" ON "_forms_v_blocks_number" USING btree ("_parent_id");
+  CREATE INDEX "_forms_v_blocks_number_path_idx" ON "_forms_v_blocks_number" USING btree ("_path");
+  CREATE INDEX "_forms_v_blocks_select_options_order_idx" ON "_forms_v_blocks_select_options" USING btree ("_order");
+  CREATE INDEX "_forms_v_blocks_select_options_parent_id_idx" ON "_forms_v_blocks_select_options" USING btree ("_parent_id");
+  CREATE INDEX "_forms_v_blocks_select_order_idx" ON "_forms_v_blocks_select" USING btree ("_order");
+  CREATE INDEX "_forms_v_blocks_select_parent_id_idx" ON "_forms_v_blocks_select" USING btree ("_parent_id");
+  CREATE INDEX "_forms_v_blocks_select_path_idx" ON "_forms_v_blocks_select" USING btree ("_path");
+  CREATE INDEX "_forms_v_blocks_state_order_idx" ON "_forms_v_blocks_state" USING btree ("_order");
+  CREATE INDEX "_forms_v_blocks_state_parent_id_idx" ON "_forms_v_blocks_state" USING btree ("_parent_id");
+  CREATE INDEX "_forms_v_blocks_state_path_idx" ON "_forms_v_blocks_state" USING btree ("_path");
+  CREATE INDEX "_forms_v_blocks_text_order_idx" ON "_forms_v_blocks_text" USING btree ("_order");
+  CREATE INDEX "_forms_v_blocks_text_parent_id_idx" ON "_forms_v_blocks_text" USING btree ("_parent_id");
+  CREATE INDEX "_forms_v_blocks_text_path_idx" ON "_forms_v_blocks_text" USING btree ("_path");
+  CREATE INDEX "_forms_v_blocks_textarea_order_idx" ON "_forms_v_blocks_textarea" USING btree ("_order");
+  CREATE INDEX "_forms_v_blocks_textarea_parent_id_idx" ON "_forms_v_blocks_textarea" USING btree ("_parent_id");
+  CREATE INDEX "_forms_v_blocks_textarea_path_idx" ON "_forms_v_blocks_textarea" USING btree ("_path");
+  CREATE INDEX "_forms_v_blocks_date_order_idx" ON "_forms_v_blocks_date" USING btree ("_order");
+  CREATE INDEX "_forms_v_blocks_date_parent_id_idx" ON "_forms_v_blocks_date" USING btree ("_parent_id");
+  CREATE INDEX "_forms_v_blocks_date_path_idx" ON "_forms_v_blocks_date" USING btree ("_path");
+  CREATE INDEX "_forms_v_version_emails_order_idx" ON "_forms_v_version_emails" USING btree ("_order");
+  CREATE INDEX "_forms_v_version_emails_parent_id_idx" ON "_forms_v_version_emails" USING btree ("_parent_id");
+  CREATE INDEX "_forms_v_parent_idx" ON "_forms_v" USING btree ("parent_id");
+  CREATE INDEX "_forms_v_version_version_tenant_idx" ON "_forms_v" USING btree ("version_tenant_id");
+  CREATE INDEX "_forms_v_version_version_updated_at_idx" ON "_forms_v" USING btree ("version_updated_at");
+  CREATE INDEX "_forms_v_version_version_created_at_idx" ON "_forms_v" USING btree ("version_created_at");
+  CREATE INDEX "_forms_v_version_version_deleted_at_idx" ON "_forms_v" USING btree ("version_deleted_at");
+  CREATE INDEX "_forms_v_version_version__status_idx" ON "_forms_v" USING btree ("version__status");
+  CREATE INDEX "_forms_v_created_at_idx" ON "_forms_v" USING btree ("created_at");
+  CREATE INDEX "_forms_v_updated_at_idx" ON "_forms_v" USING btree ("updated_at");
+  CREATE INDEX "_forms_v_latest_idx" ON "_forms_v" USING btree ("latest");
+  CREATE INDEX "_forms_v_autosave_idx" ON "_forms_v" USING btree ("autosave");
+  CREATE INDEX "_forms_v_rels_order_idx" ON "_forms_v_rels" USING btree ("order");
+  CREATE INDEX "_forms_v_rels_parent_idx" ON "_forms_v_rels" USING btree ("parent_id");
+  CREATE INDEX "_forms_v_rels_path_idx" ON "_forms_v_rels" USING btree ("path");
+  CREATE INDEX "_forms_v_rels_pages_id_idx" ON "_forms_v_rels" USING btree ("pages_id");
+  CREATE INDEX "form_submissions_submission_data_order_idx" ON "form_submissions_submission_data" USING btree ("_order");
+  CREATE INDEX "form_submissions_submission_data_parent_id_idx" ON "form_submissions_submission_data" USING btree ("_parent_id");
+  CREATE INDEX "form_submissions_tenant_idx" ON "form_submissions" USING btree ("tenant_id");
+  CREATE INDEX "form_submissions_form_idx" ON "form_submissions" USING btree ("form_id");
+  CREATE INDEX "form_submissions_updated_at_idx" ON "form_submissions" USING btree ("updated_at");
+  CREATE INDEX "form_submissions_created_at_idx" ON "form_submissions" USING btree ("created_at");
   CREATE INDEX "payload_jobs_log_order_idx" ON "payload_jobs_log" USING btree ("_order");
   CREATE INDEX "payload_jobs_log_parent_id_idx" ON "payload_jobs_log" USING btree ("_parent_id");
   CREATE INDEX "payload_jobs_completed_at_idx" ON "payload_jobs" USING btree ("completed_at");
@@ -1835,9 +2362,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "payload_locked_documents_rels_researches_id_idx" ON "payload_locked_documents_rels" USING btree ("researches_id");
   CREATE INDEX "payload_locked_documents_rels_achievements_id_idx" ON "payload_locked_documents_rels" USING btree ("achievements_id");
   CREATE INDEX "payload_locked_documents_rels_certifications_id_idx" ON "payload_locked_documents_rels" USING btree ("certifications_id");
-  CREATE INDEX "payload_locked_documents_rels_languages_id_idx" ON "payload_locked_documents_rels" USING btree ("languages_id");
   CREATE INDEX "payload_locked_documents_rels_publications_id_idx" ON "payload_locked_documents_rels" USING btree ("publications_id");
   CREATE INDEX "payload_locked_documents_rels_licenses_id_idx" ON "payload_locked_documents_rels" USING btree ("licenses_id");
+  CREATE INDEX "payload_locked_documents_rels_forms_id_idx" ON "payload_locked_documents_rels" USING btree ("forms_id");
+  CREATE INDEX "payload_locked_documents_rels_form_submissions_id_idx" ON "payload_locked_documents_rels" USING btree ("form_submissions_id");
   CREATE INDEX "payload_locked_documents_rels_payload_jobs_id_idx" ON "payload_locked_documents_rels" USING btree ("payload_jobs_id");
   CREATE INDEX "payload_preferences_key_idx" ON "payload_preferences" USING btree ("key");
   CREATE INDEX "payload_preferences_updated_at_idx" ON "payload_preferences" USING btree ("updated_at");
@@ -1932,8 +2460,6 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "certifications" CASCADE;
   DROP TABLE "_certifications_v_version_links" CASCADE;
   DROP TABLE "_certifications_v" CASCADE;
-  DROP TABLE "languages" CASCADE;
-  DROP TABLE "_languages_v" CASCADE;
   DROP TABLE "publications_links" CASCADE;
   DROP TABLE "publications" CASCADE;
   DROP TABLE "_publications_v_version_links" CASCADE;
@@ -1942,6 +2468,36 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "licenses" CASCADE;
   DROP TABLE "_licenses_v_version_links" CASCADE;
   DROP TABLE "_licenses_v" CASCADE;
+  DROP TABLE "forms_blocks_checkbox" CASCADE;
+  DROP TABLE "forms_blocks_country" CASCADE;
+  DROP TABLE "forms_blocks_email" CASCADE;
+  DROP TABLE "forms_blocks_message" CASCADE;
+  DROP TABLE "forms_blocks_number" CASCADE;
+  DROP TABLE "forms_blocks_select_options" CASCADE;
+  DROP TABLE "forms_blocks_select" CASCADE;
+  DROP TABLE "forms_blocks_state" CASCADE;
+  DROP TABLE "forms_blocks_text" CASCADE;
+  DROP TABLE "forms_blocks_textarea" CASCADE;
+  DROP TABLE "forms_blocks_date" CASCADE;
+  DROP TABLE "forms_emails" CASCADE;
+  DROP TABLE "forms" CASCADE;
+  DROP TABLE "forms_rels" CASCADE;
+  DROP TABLE "_forms_v_blocks_checkbox" CASCADE;
+  DROP TABLE "_forms_v_blocks_country" CASCADE;
+  DROP TABLE "_forms_v_blocks_email" CASCADE;
+  DROP TABLE "_forms_v_blocks_message" CASCADE;
+  DROP TABLE "_forms_v_blocks_number" CASCADE;
+  DROP TABLE "_forms_v_blocks_select_options" CASCADE;
+  DROP TABLE "_forms_v_blocks_select" CASCADE;
+  DROP TABLE "_forms_v_blocks_state" CASCADE;
+  DROP TABLE "_forms_v_blocks_text" CASCADE;
+  DROP TABLE "_forms_v_blocks_textarea" CASCADE;
+  DROP TABLE "_forms_v_blocks_date" CASCADE;
+  DROP TABLE "_forms_v_version_emails" CASCADE;
+  DROP TABLE "_forms_v" CASCADE;
+  DROP TABLE "_forms_v_rels" CASCADE;
+  DROP TABLE "form_submissions_submission_data" CASCADE;
+  DROP TABLE "form_submissions" CASCADE;
   DROP TABLE "payload_jobs_log" CASCADE;
   DROP TABLE "payload_jobs" CASCADE;
   DROP TABLE "payload_locked_documents" CASCADE;
@@ -1957,11 +2513,9 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum__notes_v_version_status";
   DROP TYPE "public"."enum_blogs_status";
   DROP TYPE "public"."enum__blogs_v_version_status";
-  DROP TYPE "public"."enum_pages_mode";
-  DROP TYPE "public"."enum_pages_configurations_slug";
+  DROP TYPE "public"."enum_pages_page_mode_mode";
   DROP TYPE "public"."enum_pages_status";
-  DROP TYPE "public"."enum__pages_v_version_mode";
-  DROP TYPE "public"."enum__pages_v_version_configurations_slug";
+  DROP TYPE "public"."enum__pages_v_version_page_mode_mode";
   DROP TYPE "public"."enum__pages_v_version_status";
   DROP TYPE "public"."enum_educations_status";
   DROP TYPE "public"."enum__educations_v_version_status";
@@ -1981,12 +2535,16 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum__achievements_v_version_status";
   DROP TYPE "public"."enum_certifications_status";
   DROP TYPE "public"."enum__certifications_v_version_status";
-  DROP TYPE "public"."enum_languages_status";
-  DROP TYPE "public"."enum__languages_v_version_status";
   DROP TYPE "public"."enum_publications_status";
   DROP TYPE "public"."enum__publications_v_version_status";
   DROP TYPE "public"."enum_licenses_status";
   DROP TYPE "public"."enum__licenses_v_version_status";
+  DROP TYPE "public"."enum_forms_confirmation_type";
+  DROP TYPE "public"."enum_forms_redirect_type";
+  DROP TYPE "public"."enum_forms_status";
+  DROP TYPE "public"."enum__forms_v_version_confirmation_type";
+  DROP TYPE "public"."enum__forms_v_version_redirect_type";
+  DROP TYPE "public"."enum__forms_v_version_status";
   DROP TYPE "public"."enum_payload_jobs_log_task_slug";
   DROP TYPE "public"."enum_payload_jobs_log_state";
   DROP TYPE "public"."enum_payload_jobs_task_slug";`)
