@@ -51,6 +51,7 @@ export const Icons: CollectionConfig<'icons'> = {
                     name: 'iconCode',
                     label: 'Icon code',
                     admin: {
+                        language: 'html',
                         condition: (fields, siblings) => fields?.iconSpecs?.type === 'html',
                         components: {
                             Cell: '@/collections/Icons/components/view-icon.tsx#ViewIcon'

@@ -1801,7 +1801,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "users_tenants_tenant_idx" ON "users_tenants" USING btree ("tenant_id");
   CREATE INDEX "users_sessions_order_idx" ON "users_sessions" USING btree ("_order");
   CREATE INDEX "users_sessions_parent_id_idx" ON "users_sessions" USING btree ("_parent_id");
-  CREATE INDEX "users_username_idx" ON "users" USING btree ("username");
+  CREATE UNIQUE INDEX "users_username_idx" ON "users" USING btree ("username");
+  CREATE INDEX "users_field_idx" ON "users" USING btree ("field");
   CREATE INDEX "users_updated_at_idx" ON "users" USING btree ("updated_at");
   CREATE INDEX "users_created_at_idx" ON "users" USING btree ("created_at");
   CREATE INDEX "users_deleted_at_idx" ON "users" USING btree ("deleted_at");
@@ -2023,7 +2024,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_projects_v_rels_parent_idx" ON "_projects_v_rels" USING btree ("parent_id");
   CREATE INDEX "_projects_v_rels_path_idx" ON "_projects_v_rels" USING btree ("path");
   CREATE INDEX "_projects_v_rels_skills_id_idx" ON "_projects_v_rels" USING btree ("skills_id");
-  CREATE INDEX "tenants_slug_idx" ON "tenants" USING btree ("slug");
+  CREATE UNIQUE INDEX "tenants_domain_idx" ON "tenants" USING btree ("domain");
+  CREATE UNIQUE INDEX "tenants_slug_idx" ON "tenants" USING btree ("slug");
   CREATE INDEX "tenants_updated_at_idx" ON "tenants" USING btree ("updated_at");
   CREATE INDEX "tenants_created_at_idx" ON "tenants" USING btree ("created_at");
   CREATE INDEX "tenants_deleted_at_idx" ON "tenants" USING btree ("deleted_at");

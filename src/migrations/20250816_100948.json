@@ -1,5 +1,5 @@
 {
-  "id": "a8f145e7-e6d5-45b7-8d7a-bdc76dae4b2c",
+  "id": "71035675-cae4-439d-9677-e95ea56860a2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -461,6 +461,21 @@
           "columns": [
             {
               "expression": "username",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "users_field_idx": {
+          "name": "users_field_idx",
+          "columns": [
+            {
+              "expression": "field",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -8162,6 +8177,21 @@
         }
       },
       "indexes": {
+        "tenants_domain_idx": {
+          "name": "tenants_domain_idx",
+          "columns": [
+            {
+              "expression": "domain",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "tenants_slug_idx": {
           "name": "tenants_slug_idx",
           "columns": [
@@ -8172,7 +8202,7 @@
               "nulls": "last"
             }
           ],
-          "isUnique": false,
+          "isUnique": true,
           "concurrently": false,
           "method": "btree",
           "with": {}
