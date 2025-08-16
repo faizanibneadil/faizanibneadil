@@ -29,6 +29,8 @@ export const Tenants: CollectionConfig<'tenants'> = {
       admin: {
         description: 'Used for domain-based tenant handling',
       },
+      index:true,
+      unique:true
     },
     {
       name: 'slug',
@@ -38,6 +40,7 @@ export const Tenants: CollectionConfig<'tenants'> = {
       },
       index: true,
       required: true,
+      unique:true
     }
   ]
 }
