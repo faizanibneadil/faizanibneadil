@@ -1,5 +1,6 @@
 import { Page } from '@/payload-types'
 import { AppCollectionAfterChangeHook, AppCollectionAfterDeleteHook } from '@/types'
+import { generateRoute } from '@/utilities/generateRoute'
 import { getTenantFromCookie } from '@payloadcms/plugin-multi-tenant/utilities'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { BasePayload } from 'payload'
@@ -23,27 +24,24 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page> = ({ 
         collection,
     }) => {
         const domain = await getDomain({ headers, payload })
-        const RootRoute = `/${domain}`
+        const { RootRoute, Route } = generateRoute({
+            domain,
+            slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
+        })
         if (!context.disableRevalidate) {
             if (doc?._status === 'published') {
-                const CollectionRoute = collection?.slug === 'pages'
-                    ? `${domain}/p/${doc?.slug}`
-                    : `${domain}/p/${collection?.slug}`
                 invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
                 invalidateRootRoute && revalidatePath(RootRoute)
-                payload.logger.info(`Revalidating page at [PATH]:${CollectionRoute}`)
-                revalidatePath(CollectionRoute)
+                payload.logger.info(`Revalidating page at [PATH]:${Route}`)
+                revalidatePath(Route)
                 revalidateTag('pages-sitemap')
             }
             // If the page was previously published, we need to revalidate the old path
             if (previousDoc?._status === 'published' && doc._status !== 'published') {
-                const CollectionRoute = collection?.slug === 'pages'
-                    ? `${domain}/p/${previousDoc?.slug}`
-                    : `${domain}/p/${collection?.slug}`
                 invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
                 invalidateRootRoute && revalidatePath(RootRoute)
-                payload.logger.info(`Revalidating page at [PATH]:${CollectionRoute}`)
-                revalidatePath(CollectionRoute)
+                payload.logger.info(`Revalidating page at [PATH]:${Route}`)
+                revalidatePath(Route)
                 revalidateTag('pages-sitemap')
             }
         }
@@ -86,15 +84,15 @@ export const RevalidatePageAfterDelete: AppCollectionAfterDeleteHook = ({ invali
         collection
     }) => {
         const domain = await getDomain({ headers, payload })
-        const RootRoute = `/${domain}`
+        const { RootRoute, Route } = generateRoute({
+            domain,
+            slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
+        })
         if (!context.disableRevalidate) {
-            const CollectionRoute = collection?.slug === 'pages'
-                ? `${domain}/p/${doc?.slug}`
-                : `${domain}/p/${collection?.slug}`
             invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
             invalidateRootRoute && revalidatePath(RootRoute)
-            payload.logger.info(`Revalidating page at [PATH]:${CollectionRoute}`)
-            revalidatePath(CollectionRoute)
+            payload.logger.info(`Revalidating page at [PATH]:${Route}`)
+            revalidatePath(Route)
             revalidateTag('pages-sitemap')
         }
 

@@ -13,13 +13,13 @@ export async function IconRenderer(props: { icon: number | Icon, className: stri
     }
 
 
-    return <div className={className} dangerouslySetInnerHTML={{ __html: icon.iconSpecs.iconCode as string }} />
+    return <div className={className} dangerouslySetInnerHTML={{ __html: (icon?.iconSpecs?.iconCode as string) || '<div>No Icon</div>' }} />
 }
 
 async function FetchIconBeforeRender(props: { id: number, className: string }) {
     const { id, className } = props || {}
     const fetchIcon = await getIconById({ id })
-    return <div className={className} dangerouslySetInnerHTML={{ __html: fetchIcon?.iconSpecs?.iconCode as string }} />
+    return <div className={className} dangerouslySetInnerHTML={{ __html: (fetchIcon?.iconSpecs?.iconCode as string) || '<div>No Icon</div>' }} />
 }
 
 
