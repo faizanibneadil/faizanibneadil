@@ -8,7 +8,15 @@ export const Media: CollectionConfig = {
   slug: 'media',
   trash: true,
   admin: { group: NavigationGroups.portfolio },
-  upload: true,
+  upload: {
+    formatOptions:{
+      format: 'webp',
+      options: {
+        compression: 'webp',
+      },
+    },
+    mimeTypes: ['image/*'],
+  },
   access: {
     create: superAdminOrTenantAdminAccess,
     delete: superAdminOrTenantAdminAccess,
