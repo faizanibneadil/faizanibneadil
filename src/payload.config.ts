@@ -1,6 +1,6 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
+import { FixedToolbarFeature, lexicalEditor, InlineToolbarFeature } from '@payloadcms/richtext-lexical'
 import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 
@@ -53,6 +53,11 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+    upload: {
+        limits: {
+            fileSize: 2000
+        }
+    },
     admin: {
         suppressHydrationWarning: true,
         meta: {
@@ -67,7 +72,7 @@ export default buildConfig({
                 title: 'SkillShelf',
                 description: 'Share you\'r skills with SkillShelf.',
                 images: [{
-                    url: '/skillshelf-full.svg',
+                    url: `${getServerSideURL()}/skillshelf-full.svg`,
                     height: 600,
                     width: 800
                 }]
@@ -146,7 +151,7 @@ export default buildConfig({
     globals: [],
     editor: lexicalEditor({
         features({ defaultFeatures, rootFeatures }) {
-            return [...defaultFeatures, ...rootFeatures, FixedToolbarFeature()]
+            return [...defaultFeatures, ...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
         },
     }),
     secret: process.env.PAYLOAD_SECRET || '',

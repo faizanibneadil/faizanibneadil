@@ -69,11 +69,20 @@ export const Users: CollectionConfig<'users'> = {
         // beforeValidate: [ensureUniqueUsername],
       },
       index: true,
-      unique:true
+      unique: true
     },
     {
       ...defaultTenantArrayField,
-      admin: { ...(defaultTenantArrayField?.admin || {}) },
+      admin: {
+        ...(defaultTenantArrayField?.admin || {}),
+        condition: (...conditions) => {
+          const [_, __, ctx] = conditions
+          if (isSuperAdmin(ctx.user)) {
+            return false
+          }
+          return defaultTenantArrayField?.admin?.condition?.(...conditions) ?? true
+        }
+      },
       interfaceName: 'TUserTenants',
       saveToJWT: true
     },
@@ -82,12 +91,20 @@ export const Users: CollectionConfig<'users'> = {
       name: 'field',
       label: 'Field',
       saveToJWT: true,
-      index:true,
+      index: true,
       interfaceName: 'TUserField',
       options: Object.entries(resume_fields).map(([label, value]) => ({
         label: capitalize(label),
         value
-      }))
+      })),
+      admin: {
+        condition: (fields, siblings, ctx) => {
+          if (isSuperAdmin(ctx.user)) {
+            return false
+          }
+          return true
+        }
+      }
     }
   ],
   // The following hook sets a cookie based on the domain a user logs in from.
