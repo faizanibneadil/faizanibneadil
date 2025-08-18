@@ -4,7 +4,7 @@ import { createAccess } from './access/create'
 import { readAccess } from './access/read'
 import { updateAndDeleteAccess } from './access/updateAndDelete'
 import { externalUsersLogin } from './endpoints/externalUsersLogin'
-// import { ensureUniqueUsername } from './hooks/ensureUniqueUsername'
+import { ensureUniqueUsername } from './hooks/ensureUniqueUsername'
 import { isSuperAdmin } from '@/access/isSuperAdmin'
 import { setCookieBasedOnDomain } from './hooks/setCookieBasedOnDomain'
 import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
@@ -66,10 +66,10 @@ export const Users: CollectionConfig<'users'> = {
       name: 'username',
       type: 'text',
       hooks: {
-        // beforeValidate: [ensureUniqueUsername],
+        beforeValidate: [ensureUniqueUsername],
       },
       index: true,
-      unique: true
+      // unique: true
     },
     {
       ...defaultTenantArrayField,
