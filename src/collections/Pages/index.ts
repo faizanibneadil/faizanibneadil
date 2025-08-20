@@ -2,7 +2,7 @@ import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin"
 import { NavigationGroups } from "@/constants";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
-import { PopulatePublishedAt } from "@/hooks/PopulatePublishedAt";
+import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { getServerSideURL } from "@/utilities/getURL";
 import { VersionConfig } from "@/utilities/version-config";
@@ -143,7 +143,7 @@ export const Pages: CollectionConfig<'pages'> = {
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
-        beforeChange: [PopulatePublishedAt],
+        beforeChange: [populatePublishedAt],
     },
     versions: VersionConfig(),
 }
