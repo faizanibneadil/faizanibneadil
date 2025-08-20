@@ -53,7 +53,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-    hooks:{
+    hooks: {
         afterError: [console.log]
     },
     // upload: {
@@ -114,8 +114,8 @@ export default buildConfig({
             ]
         },
     },
-    cors: [getServerSideURL()].filter(Boolean),
-    csrf: [getServerSideURL()].filter(Boolean),
+    cors: [process.env.NEXT_PUBLIC_SERVER_URL || ''].filter(Boolean),
+    csrf: [process.env.NEXT_PUBLIC_SERVER_URL || ''].filter(Boolean),
     collections: [
         Users,
         Icons,
