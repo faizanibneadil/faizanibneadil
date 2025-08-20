@@ -3,7 +3,7 @@ import { NavigationGroups, resume_fields } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
-import { PopulatePublishedAt } from "@/hooks/PopulatePublishedAt";
+import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
@@ -141,7 +141,7 @@ export const Projects: CollectionConfig<'projects'> = {
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
-        beforeChange: [PopulatePublishedAt],
+        beforeChange: [populatePublishedAt],
     },
     versions: VersionConfig(),
 }
