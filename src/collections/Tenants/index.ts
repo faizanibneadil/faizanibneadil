@@ -42,5 +42,8 @@ export const Tenants: CollectionConfig<'tenants'> = {
       required: true,
       // unique:true
     }
-  ]
+  ],
+  hooks:{
+    afterError: [console.log]
+  }
 }

@@ -56,11 +56,11 @@ export default buildConfig({
     hooks:{
         afterError: [console.log]
     },
-    upload: {
-        limits: {
-            fileSize: 2000
-        }
-    },
+    // upload: {
+    //     limits: {
+    //         fileSize: 2000
+    //     }
+    // },
     admin: {
         suppressHydrationWarning: true,
         meta: {

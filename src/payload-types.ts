@@ -419,8 +419,8 @@ export interface Skill {
   /**
    * If you want to show an icon of the skill instead of skill as name then you have to select an icon from icons collection. REMEMBER: If the icon is available on skill only icon will be display.
    */
-  techstack: {
-    icon: number | Icon;
+  techstack?: {
+    icon?: (number | null) | Icon;
   };
   /**
    * Select those project in whitch you used this skill.

@@ -11,9 +11,6 @@ export const Media: CollectionConfig = {
   upload: {
     formatOptions:{
       format: 'webp',
-      options: {
-        compression: 'webp',
-      },
     },
     mimeTypes: ['image/*'],
   },

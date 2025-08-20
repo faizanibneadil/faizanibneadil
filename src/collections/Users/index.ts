@@ -75,12 +75,12 @@ export const Users: CollectionConfig<'users'> = {
       ...defaultTenantArrayField,
       admin: {
         ...(defaultTenantArrayField?.admin || {}),
-        condition: (...conditions) => {
-          const [_, __, ctx] = conditions
-          if (isSuperAdmin(ctx.user)) {
-            return false
+        initCollapsed:true,
+        condition: (fields,siblings,ctx) => {
+          if(fields?.roles?.includes('user')){
+            return true
           }
-          return defaultTenantArrayField?.admin?.condition?.(...conditions) ?? true
+          return false
         }
       },
       interfaceName: 'TUserTenants',
@@ -113,5 +113,6 @@ export const Users: CollectionConfig<'users'> = {
 
   hooks: {
     afterLogin: [setCookieBasedOnDomain],
+    afterError: [console.log]
   },
 }
