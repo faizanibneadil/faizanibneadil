@@ -2,9 +2,10 @@ import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin"
 import { NavigationGroups } from "@/constants";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
-import { populatePublishedAt } from "@/hooks/populatePublishedAt";
+import { PopulatePublishedAt } from "@/hooks/PopulatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { getServerSideURL } from "@/utilities/getURL";
+import { VersionConfig } from "@/utilities/version-config";
 import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
 import { headers as getHeaders } from "next/headers";
 import type { CollectionConfig } from "payload";
@@ -57,7 +58,7 @@ export const Pages: CollectionConfig<'pages'> = {
         {
             type: 'group',
             name: 'pageMode',
-            label: 'Page Mode',
+            // label: 'Page Mode',
             admin: {
                 description: 'If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change Page Mode into collection.',
             },
@@ -142,15 +143,7 @@ export const Pages: CollectionConfig<'pages'> = {
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
-        beforeChange: [populatePublishedAt],
+        beforeChange: [PopulatePublishedAt],
     },
-    versions: {
-        drafts: {
-            autosave: {
-                interval: 375,
-            },
-            schedulePublish: true,
-        },
-        maxPerDoc: 50,
-    },
+    versions: VersionConfig(),
 }

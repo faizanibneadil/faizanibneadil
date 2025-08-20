@@ -5,6 +5,7 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { VersionConfig } from "@/utilities/version-config";
 
 export const Achievements: CollectionConfig<'achievements'> = {
     slug: 'achievements',
@@ -105,13 +106,5 @@ export const Achievements: CollectionConfig<'achievements'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    versions: {
-        drafts: {
-            autosave: {
-                interval: 375,
-            },
-            schedulePublish: true,
-        },
-        maxPerDoc: 50,
-    },
+    versions: VersionConfig(),
 }

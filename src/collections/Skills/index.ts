@@ -3,7 +3,9 @@ import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
+import { PopulatePublishedAt } from "@/hooks/PopulatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { VersionConfig } from "@/utilities/version-config";
 import type { CollectionConfig } from "payload";
 
 export const Skills: CollectionConfig<'skills'> = {
@@ -34,6 +36,7 @@ export const Skills: CollectionConfig<'skills'> = {
             label: 'Tech Stack',
             admin: { description: 'If you want to show an icon of the skill instead of skill as name then you have to select an icon from icons collection. REMEMBER: If the icon is available on skill only icon will be display.' },
             fields: [IconField({
+                required:false,
                 admin: {
                     components: {
                         Cell: '@/collections/Skills/components/view-icon.tsx#ViewIcon'
@@ -54,15 +57,8 @@ export const Skills: CollectionConfig<'skills'> = {
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
-        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
+        beforeChange: [PopulatePublishedAt],
     },
-    versions: {
-        drafts: {
-            autosave: {
-                interval: 375,
-            },
-            schedulePublish: true,
-        },
-        maxPerDoc: 50,
-    },
+    versions: VersionConfig(),
 }

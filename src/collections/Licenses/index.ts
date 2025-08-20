@@ -3,6 +3,7 @@ import { NavigationGroups, resume_fields } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
 
@@ -108,13 +109,5 @@ export const Licenses: CollectionConfig<'licenses'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    versions: {
-        drafts: {
-            autosave: {
-                interval: 375,
-            },
-            schedulePublish: true,
-        },
-        maxPerDoc: 50,
-    },
+    versions: VersionConfig(),
 }

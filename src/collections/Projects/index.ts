@@ -3,7 +3,9 @@ import { NavigationGroups, resume_fields } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
+import { PopulatePublishedAt } from "@/hooks/PopulatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
 
@@ -138,15 +140,8 @@ export const Projects: CollectionConfig<'projects'> = {
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
-        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
+        beforeChange: [PopulatePublishedAt],
     },
-    versions: {
-        drafts: {
-            autosave: {
-                interval: 375,
-            },
-            schedulePublish: true,
-        },
-        maxPerDoc: 50,
-    },
+    versions: VersionConfig(),
 }
