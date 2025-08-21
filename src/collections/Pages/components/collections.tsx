@@ -15,7 +15,9 @@ const excludeCollection = [
     "payload-jobs",
     "payload-locked-documents",
     "payload-preferences",
-    "payload-migrations"
+    "payload-migrations",
+    "forms",
+    "form-submissions"
 ]
 
 export function Collections(props: TextFieldClientProps) {
