@@ -58,15 +58,13 @@ export default async function RootLayout({
   const { isEnabled } = await draftMode()
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={fontSans.variable}>
+      <body className={fontSans.variable} vaul-drawer-wrapper="">
         <AdminBar adminBarProps={{ preview: isEnabled }} />
-        <div className="min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6">
           <ThemeProvider attribute="class" defaultTheme="light">
             <TooltipProvider delayDuration={0}>
               {children}
             </TooltipProvider>
           </ThemeProvider>
-        </div>
       </body>
     </html>
   );

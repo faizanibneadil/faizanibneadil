@@ -8,8 +8,7 @@ import { ensureUniqueUsername } from './hooks/ensureUniqueUsername'
 import { isSuperAdmin } from '@/access/isSuperAdmin'
 import { setCookieBasedOnDomain } from './hooks/setCookieBasedOnDomain'
 import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
-import { NavigationGroups, resume_fields } from '@/constants'
-import { capitalize } from '@/utilities/capitalize'
+import { NavigationGroups } from '@/constants'
 
 const defaultTenantArrayField = tenantsArrayField({
   tenantsArrayFieldName: 'tenants',
@@ -75,9 +74,9 @@ export const Users: CollectionConfig<'users'> = {
       ...defaultTenantArrayField,
       admin: {
         ...(defaultTenantArrayField?.admin || {}),
-        initCollapsed:true,
-        condition: (fields,siblings,ctx) => {
-          if(fields?.roles?.includes('user')){
+        initCollapsed: true,
+        condition: (fields, siblings, ctx) => {
+          if (fields?.roles?.includes('user')) {
             return true
           }
           return false
@@ -87,21 +86,20 @@ export const Users: CollectionConfig<'users'> = {
       saveToJWT: true
     },
     {
-      type: 'select',
-      name: 'field',
-      label: 'Field',
+      type: 'relationship',
+      relationTo: 'categories',
+      hasMany: false,
       saveToJWT: true,
-      index: true,
-      interfaceName: 'TUserField',
-      options: Object.entries(resume_fields).map(([label, value]) => ({
-        label: capitalize(label),
-        value
-      })),
+      name: 'category',
       admin: {
+        allowCreate:false,
+        allowEdit:false,
+        isSortable:false,
         condition: (fields, siblings, ctx) => {
-          if (isSuperAdmin(ctx.user)) {
-            return false
-          }
+          console.log(ctx)
+          // if (isSuperAdmin(ctx.user)) {
+          //   return false
+          // }
           return true
         }
       }

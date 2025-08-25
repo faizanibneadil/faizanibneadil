@@ -1,5 +1,5 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { NavigationGroups, resume_fields } from "@/constants";
+import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
@@ -14,7 +14,7 @@ export const Licenses: CollectionConfig<'licenses'> = {
         useAsTitle: 'title',
         group: NavigationGroups.portfolio,
         hidden({ user }) {
-            return user ? user?.field !== resume_fields.healthcare : false
+            return user ? user?.category?.slug === 'healthcare' : false
         },
     },
     access: {

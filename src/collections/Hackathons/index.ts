@@ -1,5 +1,5 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { NavigationGroups, resume_fields } from "@/constants";
+import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
@@ -13,7 +13,7 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.portfolio,
-        hidden: ({ user }) => user ? user?.field !== resume_fields.information_technology : false
+        hidden: ({ user }) => user ? user?.category?.slug === 'information_technology' : false
     },
     access: {
         create: superAdminOrTenantAdminAccess,

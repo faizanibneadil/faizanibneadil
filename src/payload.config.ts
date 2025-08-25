@@ -27,6 +27,7 @@ import { Menus } from '@/collections/Menus'
 import { Socials } from '@/collections/Socials'
 import { Educations } from '@/collections/Educations'
 import { Icons } from '@/collections/Icons'
+import { Categories } from '@/collections/Categories'
 
 import { Hero } from '@/blocks/Hero'
 import { Contact } from '@/blocks/Contact'
@@ -90,15 +91,29 @@ export default buildConfig({
                 Logo: {
                     path: '@/components/branding.tsx',
                     exportName: 'Branding',
-                    serverProps: {
-                        imageSrc: '/skillshelf-full.svg'
+                    clientProps: {
+                        alt: "Open Shelf Logo",
+                        className: 'w-full h-40',
+                        fill: true,
+                        src: '/skillshelf-full.svg',
+                        priority: true,
+                        fetchPriority: 'high',
+                        loading: 'eager',
+                        unoptimized: true
                     }
                 },
                 Icon: {
                     path: '@/components/branding.tsx',
                     exportName: 'Branding',
-                    serverProps: {
-                        imageSrc: '/skillshelf-symble.svg'
+                    clientProps: {
+                        alt: "Open Shelf Logo",
+                        className: 'size-6',
+                        fill: true,
+                        src: '/skillshelf-symble.svg',
+                        priority: true,
+                        fetchPriority: 'high',
+                        loading: 'eager',
+                        unoptimized: true
                     }
                 }
             }
@@ -114,8 +129,8 @@ export default buildConfig({
             ]
         },
     },
-    cors: [process.env.NEXT_PUBLIC_SERVER_URL || ''].filter(Boolean),
-    csrf: [process.env.NEXT_PUBLIC_SERVER_URL || ''].filter(Boolean),
+    cors: [process.env.NEXT_PUBLIC_SERVER_URL!].filter(Boolean),
+    csrf: [process.env.NEXT_PUBLIC_SERVER_URL!].filter(Boolean),
     collections: [
         Users,
         Icons,
@@ -135,6 +150,7 @@ export default buildConfig({
         Certifications,
         Publications,
         Licenses,
+        Categories
     ],
     blocks: [
         Hero,

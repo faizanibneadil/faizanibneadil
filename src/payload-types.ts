@@ -23,13 +23,6 @@ export type TUserTenants =
     }[]
   | null;
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TUserField".
- */
-export type TUserField =
-  | ('information_technology' | 'healthcare' | 'engineering' | 'finance' | 'marketing' | 'education' | 'management')
-  | null;
-/**
  * Supported timezones in IANA format.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -122,6 +115,7 @@ export interface Config {
     certifications: Certification;
     publications: Publication;
     licenses: License;
+    categories: Category;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-jobs': PayloadJob;
@@ -149,6 +143,7 @@ export interface Config {
     certifications: CertificationsSelect<false> | CertificationsSelect<true>;
     publications: PublicationsSelect<false> | PublicationsSelect<true>;
     licenses: LicensesSelect<false> | LicensesSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
@@ -940,7 +935,7 @@ export interface User {
   roles?: TUserRole;
   username?: string | null;
   tenants?: TUserTenants;
-  field?: TUserField;
+  category?: (number | null) | Category;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -959,6 +954,38 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  /**
+   * Write description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1479,6 +1506,10 @@ export interface PayloadLockedDocument {
         value: number | License;
       } | null)
     | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
         relationTo: 'forms';
         value: number | Form;
       } | null)
@@ -1540,7 +1571,7 @@ export interface UsersSelect<T extends boolean = true> {
   roles?: T;
   username?: T;
   tenants?: T | TUserTenantsSelect<T>;
-  field?: T;
+  category?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -1972,6 +2003,20 @@ export interface LicensesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "forms_select".
  */
 export interface FormsSelect<T extends boolean = true> {
@@ -2263,6 +2308,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'licenses';
           value: number | License;
+        } | null)
+      | ({
+          relationTo: 'categories';
+          value: number | Category;
         } | null)
       | ({
           relationTo: 'forms';
