@@ -58,7 +58,7 @@ export const Pages: CollectionConfig<'pages'> = {
         {
             type: 'group',
             name: 'pageMode',
-            // label: 'Page Mode',
+            label: 'Page Mode',
             admin: {
                 description: 'If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change Page Mode into collection.',
             },

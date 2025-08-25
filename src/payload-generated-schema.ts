@@ -60,25 +60,17 @@ export const enum__blogs_v_version_status = pgEnum(
   "enum__blogs_v_version_status",
   ["draft", "published"],
 );
-export const enum_pages_mode = pgEnum("enum_pages_mode", [
+export const enum_pages_page_mode_mode = pgEnum("enum_pages_page_mode_mode", [
   "layout",
   "collection",
 ]);
-export const enum_pages_configurations_slug = pgEnum(
-  "enum_pages_configurations_slug",
-  ["projects", "notes", "blogs"],
-);
 export const enum_pages_status = pgEnum("enum_pages_status", [
   "draft",
   "published",
 ]);
-export const enum__pages_v_version_mode = pgEnum("enum__pages_v_version_mode", [
-  "layout",
-  "collection",
-]);
-export const enum__pages_v_version_configurations_slug = pgEnum(
-  "enum__pages_v_version_configurations_slug",
-  ["projects", "notes", "blogs"],
+export const enum__pages_v_version_page_mode_mode = pgEnum(
+  "enum__pages_v_version_page_mode_mode",
+  ["layout", "collection"],
 );
 export const enum__pages_v_version_status = pgEnum(
   "enum__pages_v_version_status",
@@ -172,6 +164,30 @@ export const enum__licenses_v_version_status = pgEnum(
   "enum__licenses_v_version_status",
   ["draft", "published"],
 );
+export const enum_forms_confirmation_type = pgEnum(
+  "enum_forms_confirmation_type",
+  ["message", "redirect"],
+);
+export const enum_forms_redirect_type = pgEnum("enum_forms_redirect_type", [
+  "reference",
+  "custom",
+]);
+export const enum_forms_status = pgEnum("enum_forms_status", [
+  "draft",
+  "published",
+]);
+export const enum__forms_v_version_confirmation_type = pgEnum(
+  "enum__forms_v_version_confirmation_type",
+  ["message", "redirect"],
+);
+export const enum__forms_v_version_redirect_type = pgEnum(
+  "enum__forms_v_version_redirect_type",
+  ["reference", "custom"],
+);
+export const enum__forms_v_version_status = pgEnum(
+  "enum__forms_v_version_status",
+  ["draft", "published"],
+);
 export const enum_payload_jobs_log_task_slug = pgEnum(
   "enum_payload_jobs_log_task_slug",
   ["inline", "schedulePublish"],
@@ -229,11 +245,9 @@ export const users_tenants = pgTable(
     _order: integer("_order").notNull(),
     _parentID: integer("_parent_id").notNull(),
     id: varchar("id").primaryKey(),
-    tenant: integer("tenant_id")
-      .notNull()
-      .references(() => tenants.id, {
-        onDelete: "set null",
-      }),
+    tenant: integer("tenant_id").references(() => tenants.id, {
+      onDelete: "set null",
+    }),
   },
   (columns) => ({
     _orderIdx: index("users_tenants_order_idx").on(columns._order),
@@ -297,6 +311,11 @@ export const users = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     email: varchar("email").notNull(),
     resetPasswordToken: varchar("reset_password_token"),
     resetPasswordExpiration: timestamp("reset_password_expiration", {
@@ -315,8 +334,10 @@ export const users = pgTable(
   },
   (columns) => ({
     users_username_idx: index("users_username_idx").on(columns.username),
+    users_field_idx: index("users_field_idx").on(columns.field),
     users_updated_at_idx: index("users_updated_at_idx").on(columns.updatedAt),
     users_created_at_idx: index("users_created_at_idx").on(columns.createdAt),
+    users_deleted_at_idx: index("users_deleted_at_idx").on(columns.deletedAt),
     users_email_idx: uniqueIndex("users_email_idx").on(columns.email),
   }),
 );
@@ -349,6 +370,11 @@ export const icons = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
   },
   (columns) => ({
     icons_icon_specs_icon_specs_svg_idx: index(
@@ -357,6 +383,7 @@ export const icons = pgTable(
     icons_slug_idx: index("icons_slug_idx").on(columns.slug),
     icons_updated_at_idx: index("icons_updated_at_idx").on(columns.updatedAt),
     icons_created_at_idx: index("icons_created_at_idx").on(columns.createdAt),
+    icons_deleted_at_idx: index("icons_deleted_at_idx").on(columns.deletedAt),
   }),
 );
 
@@ -383,6 +410,11 @@ export const media = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     url: varchar("url"),
     thumbnailURL: varchar("thumbnail_u_r_l"),
     filename: varchar("filename"),
@@ -397,6 +429,7 @@ export const media = pgTable(
     media_tenant_idx: index("media_tenant_idx").on(columns.tenant),
     media_updated_at_idx: index("media_updated_at_idx").on(columns.updatedAt),
     media_created_at_idx: index("media_created_at_idx").on(columns.createdAt),
+    media_deleted_at_idx: index("media_deleted_at_idx").on(columns.deletedAt),
     media_filename_idx: uniqueIndex("media_filename_idx").on(columns.filename),
   }),
 );
@@ -424,12 +457,18 @@ export const notes = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     _status: enum_notes_status("_status").default("draft"),
   },
   (columns) => ({
     notes_tenant_idx: index("notes_tenant_idx").on(columns.tenant),
     notes_updated_at_idx: index("notes_updated_at_idx").on(columns.updatedAt),
     notes_created_at_idx: index("notes_created_at_idx").on(columns.createdAt),
+    notes_deleted_at_idx: index("notes_deleted_at_idx").on(columns.deletedAt),
     notes__status_idx: index("notes__status_idx").on(columns._status),
   }),
 );
@@ -452,6 +491,11 @@ export const _notes_v = pgTable(
       precision: 3,
     }),
     version_createdAt: timestamp("version_created_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    version_deletedAt: timestamp("version_deleted_at", {
       mode: "string",
       withTimezone: true,
       precision: 3,
@@ -486,6 +530,9 @@ export const _notes_v = pgTable(
     _notes_v_version_version_created_at_idx: index(
       "_notes_v_version_version_created_at_idx",
     ).on(columns.version_createdAt),
+    _notes_v_version_version_deleted_at_idx: index(
+      "_notes_v_version_version_deleted_at_idx",
+    ).on(columns.version_deletedAt),
     _notes_v_version_version__status_idx: index(
       "_notes_v_version_version__status_idx",
     ).on(columns.version__status),
@@ -526,6 +573,11 @@ export const blogs = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     _status: enum_blogs_status("_status").default("draft"),
   },
   (columns) => ({
@@ -535,6 +587,7 @@ export const blogs = pgTable(
     ),
     blogs_updated_at_idx: index("blogs_updated_at_idx").on(columns.updatedAt),
     blogs_created_at_idx: index("blogs_created_at_idx").on(columns.createdAt),
+    blogs_deleted_at_idx: index("blogs_deleted_at_idx").on(columns.deletedAt),
     blogs__status_idx: index("blogs__status_idx").on(columns._status),
   }),
 );
@@ -563,6 +616,11 @@ export const _blogs_v = pgTable(
       precision: 3,
     }),
     version_createdAt: timestamp("version_created_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    version_deletedAt: timestamp("version_deleted_at", {
       mode: "string",
       withTimezone: true,
       precision: 3,
@@ -600,6 +658,9 @@ export const _blogs_v = pgTable(
     _blogs_v_version_version_created_at_idx: index(
       "_blogs_v_version_version_created_at_idx",
     ).on(columns.version_createdAt),
+    _blogs_v_version_version_deleted_at_idx: index(
+      "_blogs_v_version_version_deleted_at_idx",
+    ).on(columns.version_deletedAt),
     _blogs_v_version_version__status_idx: index(
       "_blogs_v_version_version__status_idx",
     ).on(columns.version__status),
@@ -977,8 +1038,9 @@ export const pages = pgTable(
       onDelete: "set null",
     }),
     title: varchar("title"),
-    mode: enum_pages_mode("mode").default("layout"),
-    configurations_slug: enum_pages_configurations_slug("configurations_slug"),
+    pageMode_mode:
+      enum_pages_page_mode_mode("page_mode_mode").default("layout"),
+    configurations_slug: varchar("configurations_slug"),
     publishedAt: timestamp("published_at", {
       mode: "string",
       withTimezone: true,
@@ -1000,6 +1062,11 @@ export const pages = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     _status: enum_pages_status("_status").default("draft"),
   },
   (columns) => ({
@@ -1007,6 +1074,7 @@ export const pages = pgTable(
     pages_slug_idx: index("pages_slug_idx").on(columns.slug),
     pages_updated_at_idx: index("pages_updated_at_idx").on(columns.updatedAt),
     pages_created_at_idx: index("pages_created_at_idx").on(columns.createdAt),
+    pages_deleted_at_idx: index("pages_deleted_at_idx").on(columns.deletedAt),
     pages__status_idx: index("pages__status_idx").on(columns._status),
   }),
 );
@@ -1498,10 +1566,10 @@ export const _pages_v = pgTable(
       onDelete: "set null",
     }),
     version_title: varchar("version_title"),
-    version_mode: enum__pages_v_version_mode("version_mode").default("layout"),
-    version_configurations_slug: enum__pages_v_version_configurations_slug(
-      "version_configurations_slug",
-    ),
+    version_pageMode_mode: enum__pages_v_version_page_mode_mode(
+      "version_page_mode_mode",
+    ).default("layout"),
+    version_configurations_slug: varchar("version_configurations_slug"),
     version_publishedAt: timestamp("version_published_at", {
       mode: "string",
       withTimezone: true,
@@ -1515,6 +1583,11 @@ export const _pages_v = pgTable(
       precision: 3,
     }),
     version_createdAt: timestamp("version_created_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    version_deletedAt: timestamp("version_deleted_at", {
       mode: "string",
       withTimezone: true,
       precision: 3,
@@ -1552,6 +1625,9 @@ export const _pages_v = pgTable(
     _pages_v_version_version_created_at_idx: index(
       "_pages_v_version_version_created_at_idx",
     ).on(columns.version_createdAt),
+    _pages_v_version_version_deleted_at_idx: index(
+      "_pages_v_version_version_deleted_at_idx",
+    ).on(columns.version_deletedAt),
     _pages_v_version_version__status_idx: index(
       "_pages_v_version_version__status_idx",
     ).on(columns.version__status),
@@ -1705,6 +1781,11 @@ export const educations = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     _status: enum_educations_status("_status").default("draft"),
   },
   (columns) => ({
@@ -1715,6 +1796,9 @@ export const educations = pgTable(
     ),
     educations_created_at_idx: index("educations_created_at_idx").on(
       columns.createdAt,
+    ),
+    educations_deleted_at_idx: index("educations_deleted_at_idx").on(
+      columns.deletedAt,
     ),
     educations__status_idx: index("educations__status_idx").on(columns._status),
   }),
@@ -1757,6 +1841,11 @@ export const _educations_v = pgTable(
       withTimezone: true,
       precision: 3,
     }),
+    version_deletedAt: timestamp("version_deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     version__status:
       enum__educations_v_version_status("version__status").default("draft"),
     createdAt: timestamp("created_at", {
@@ -1792,6 +1881,9 @@ export const _educations_v = pgTable(
     _educations_v_version_version_created_at_idx: index(
       "_educations_v_version_version_created_at_idx",
     ).on(columns.version_createdAt),
+    _educations_v_version_version_deleted_at_idx: index(
+      "_educations_v_version_version_deleted_at_idx",
+    ).on(columns.version_deletedAt),
     _educations_v_version_version__status_idx: index(
       "_educations_v_version_version__status_idx",
     ).on(columns.version__status),
@@ -1881,6 +1973,11 @@ export const projects = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     _status: enum_projects_status("_status").default("draft"),
   },
   (columns) => ({
@@ -1894,6 +1991,9 @@ export const projects = pgTable(
     ),
     projects_created_at_idx: index("projects_created_at_idx").on(
       columns.createdAt,
+    ),
+    projects_deleted_at_idx: index("projects_deleted_at_idx").on(
+      columns.deletedAt,
     ),
     projects__status_idx: index("projects__status_idx").on(columns._status),
   }),
@@ -2012,6 +2112,11 @@ export const _projects_v = pgTable(
       withTimezone: true,
       precision: 3,
     }),
+    version_deletedAt: timestamp("version_deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     version__status:
       enum__projects_v_version_status("version__status").default("draft"),
     createdAt: timestamp("created_at", {
@@ -2048,6 +2153,9 @@ export const _projects_v = pgTable(
     _projects_v_version_version_created_at_idx: index(
       "_projects_v_version_version_created_at_idx",
     ).on(columns.version_createdAt),
+    _projects_v_version_version_deleted_at_idx: index(
+      "_projects_v_version_version_deleted_at_idx",
+    ).on(columns.version_deletedAt),
     _projects_v_version_version__status_idx: index(
       "_projects_v_version_version__status_idx",
     ).on(columns.version__status),
@@ -2114,6 +2222,11 @@ export const tenants = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
   },
   (columns) => ({
     tenants_slug_idx: index("tenants_slug_idx").on(columns.slug),
@@ -2122,6 +2235,9 @@ export const tenants = pgTable(
     ),
     tenants_created_at_idx: index("tenants_created_at_idx").on(
       columns.createdAt,
+    ),
+    tenants_deleted_at_idx: index("tenants_deleted_at_idx").on(
+      columns.deletedAt,
     ),
   }),
 );
@@ -2455,6 +2571,9 @@ export const skills = pgTable(
       withTimezone: true,
       precision: 3,
     }),
+    techstack_icon: integer("techstack_icon_id").references(() => icons.id, {
+      onDelete: "set null",
+    }),
     slug: varchar("slug"),
     slugLock: boolean("slug_lock").default(true),
     updatedAt: timestamp("updated_at", {
@@ -2471,13 +2590,22 @@ export const skills = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     _status: enum_skills_status("_status").default("draft"),
   },
   (columns) => ({
     skills_tenant_idx: index("skills_tenant_idx").on(columns.tenant),
+    skills_techstack_techstack_icon_idx: index(
+      "skills_techstack_techstack_icon_idx",
+    ).on(columns.techstack_icon),
     skills_slug_idx: index("skills_slug_idx").on(columns.slug),
     skills_updated_at_idx: index("skills_updated_at_idx").on(columns.updatedAt),
     skills_created_at_idx: index("skills_created_at_idx").on(columns.createdAt),
+    skills_deleted_at_idx: index("skills_deleted_at_idx").on(columns.deletedAt),
     skills__status_idx: index("skills__status_idx").on(columns._status),
   }),
 );
@@ -2527,6 +2655,12 @@ export const _skills_v = pgTable(
       withTimezone: true,
       precision: 3,
     }),
+    version_techstack_icon: integer("version_techstack_icon_id").references(
+      () => icons.id,
+      {
+        onDelete: "set null",
+      },
+    ),
     version_slug: varchar("version_slug"),
     version_slugLock: boolean("version_slug_lock").default(true),
     version_updatedAt: timestamp("version_updated_at", {
@@ -2535,6 +2669,11 @@ export const _skills_v = pgTable(
       precision: 3,
     }),
     version_createdAt: timestamp("version_created_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    version_deletedAt: timestamp("version_deleted_at", {
       mode: "string",
       withTimezone: true,
       precision: 3,
@@ -2563,6 +2702,9 @@ export const _skills_v = pgTable(
     _skills_v_version_version_tenant_idx: index(
       "_skills_v_version_version_tenant_idx",
     ).on(columns.version_tenant),
+    _skills_v_version_techstack_version_techstack_icon_idx: index(
+      "_skills_v_version_techstack_version_techstack_icon_idx",
+    ).on(columns.version_techstack_icon),
     _skills_v_version_version_slug_idx: index(
       "_skills_v_version_version_slug_idx",
     ).on(columns.version_slug),
@@ -2572,6 +2714,9 @@ export const _skills_v = pgTable(
     _skills_v_version_version_created_at_idx: index(
       "_skills_v_version_version_created_at_idx",
     ).on(columns.version_createdAt),
+    _skills_v_version_version_deleted_at_idx: index(
+      "_skills_v_version_version_deleted_at_idx",
+    ).on(columns.version_deletedAt),
     _skills_v_version_version__status_idx: index(
       "_skills_v_version_version__status_idx",
     ).on(columns.version__status),
@@ -2680,6 +2825,11 @@ export const hackathons = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     _status: enum_hackathons_status("_status").default("draft"),
   },
   (columns) => ({
@@ -2690,6 +2840,9 @@ export const hackathons = pgTable(
     ),
     hackathons_created_at_idx: index("hackathons_created_at_idx").on(
       columns.createdAt,
+    ),
+    hackathons_deleted_at_idx: index("hackathons_deleted_at_idx").on(
+      columns.deletedAt,
     ),
     hackathons__status_idx: index("hackathons__status_idx").on(columns._status),
   }),
@@ -2762,6 +2915,11 @@ export const _hackathons_v = pgTable(
       withTimezone: true,
       precision: 3,
     }),
+    version_deletedAt: timestamp("version_deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     version__status:
       enum__hackathons_v_version_status("version__status").default("draft"),
     createdAt: timestamp("created_at", {
@@ -2797,6 +2955,9 @@ export const _hackathons_v = pgTable(
     _hackathons_v_version_version_created_at_idx: index(
       "_hackathons_v_version_version_created_at_idx",
     ).on(columns.version_createdAt),
+    _hackathons_v_version_version_deleted_at_idx: index(
+      "_hackathons_v_version_version_deleted_at_idx",
+    ).on(columns.version_deletedAt),
     _hackathons_v_version_version__status_idx: index(
       "_hackathons_v_version_version__status_idx",
     ).on(columns.version__status),
@@ -2878,6 +3039,11 @@ export const researches = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     _status: enum_researches_status("_status").default("draft"),
   },
   (columns) => ({
@@ -2888,6 +3054,9 @@ export const researches = pgTable(
     ),
     researches_created_at_idx: index("researches_created_at_idx").on(
       columns.createdAt,
+    ),
+    researches_deleted_at_idx: index("researches_deleted_at_idx").on(
+      columns.deletedAt,
     ),
     researches__status_idx: index("researches__status_idx").on(columns._status),
   }),
@@ -2960,6 +3129,11 @@ export const _researches_v = pgTable(
       withTimezone: true,
       precision: 3,
     }),
+    version_deletedAt: timestamp("version_deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     version__status:
       enum__researches_v_version_status("version__status").default("draft"),
     createdAt: timestamp("created_at", {
@@ -2995,6 +3169,9 @@ export const _researches_v = pgTable(
     _researches_v_version_version_created_at_idx: index(
       "_researches_v_version_version_created_at_idx",
     ).on(columns.version_createdAt),
+    _researches_v_version_version_deleted_at_idx: index(
+      "_researches_v_version_version_deleted_at_idx",
+    ).on(columns.version_deletedAt),
     _researches_v_version_version__status_idx: index(
       "_researches_v_version_version__status_idx",
     ).on(columns.version__status),
@@ -3078,6 +3255,11 @@ export const achievements = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     _status: enum_achievements_status("_status").default("draft"),
   },
   (columns) => ({
@@ -3090,6 +3272,9 @@ export const achievements = pgTable(
     ),
     achievements_created_at_idx: index("achievements_created_at_idx").on(
       columns.createdAt,
+    ),
+    achievements_deleted_at_idx: index("achievements_deleted_at_idx").on(
+      columns.deletedAt,
     ),
     achievements__status_idx: index("achievements__status_idx").on(
       columns._status,
@@ -3164,6 +3349,11 @@ export const _achievements_v = pgTable(
       withTimezone: true,
       precision: 3,
     }),
+    version_deletedAt: timestamp("version_deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     version__status:
       enum__achievements_v_version_status("version__status").default("draft"),
     createdAt: timestamp("created_at", {
@@ -3199,6 +3389,9 @@ export const _achievements_v = pgTable(
     _achievements_v_version_version_created_at_idx: index(
       "_achievements_v_version_version_created_at_idx",
     ).on(columns.version_createdAt),
+    _achievements_v_version_version_deleted_at_idx: index(
+      "_achievements_v_version_version_deleted_at_idx",
+    ).on(columns.version_deletedAt),
     _achievements_v_version_version__status_idx: index(
       "_achievements_v_version_version__status_idx",
     ).on(columns.version__status),
@@ -3282,6 +3475,11 @@ export const certifications = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     _status: enum_certifications_status("_status").default("draft"),
   },
   (columns) => ({
@@ -3296,6 +3494,9 @@ export const certifications = pgTable(
     ),
     certifications_created_at_idx: index("certifications_created_at_idx").on(
       columns.createdAt,
+    ),
+    certifications_deleted_at_idx: index("certifications_deleted_at_idx").on(
+      columns.deletedAt,
     ),
     certifications__status_idx: index("certifications__status_idx").on(
       columns._status,
@@ -3370,6 +3571,11 @@ export const _certifications_v = pgTable(
       withTimezone: true,
       precision: 3,
     }),
+    version_deletedAt: timestamp("version_deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     version__status:
       enum__certifications_v_version_status("version__status").default("draft"),
     createdAt: timestamp("created_at", {
@@ -3405,6 +3611,9 @@ export const _certifications_v = pgTable(
     _certifications_v_version_version_created_at_idx: index(
       "_certifications_v_version_version_created_at_idx",
     ).on(columns.version_createdAt),
+    _certifications_v_version_version_deleted_at_idx: index(
+      "_certifications_v_version_version_deleted_at_idx",
+    ).on(columns.version_deletedAt),
     _certifications_v_version_version__status_idx: index(
       "_certifications_v_version_version__status_idx",
     ).on(columns.version__status),
@@ -3488,6 +3697,11 @@ export const publications = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     _status: enum_publications_status("_status").default("draft"),
   },
   (columns) => ({
@@ -3500,6 +3714,9 @@ export const publications = pgTable(
     ),
     publications_created_at_idx: index("publications_created_at_idx").on(
       columns.createdAt,
+    ),
+    publications_deleted_at_idx: index("publications_deleted_at_idx").on(
+      columns.deletedAt,
     ),
     publications__status_idx: index("publications__status_idx").on(
       columns._status,
@@ -3574,6 +3791,11 @@ export const _publications_v = pgTable(
       withTimezone: true,
       precision: 3,
     }),
+    version_deletedAt: timestamp("version_deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     version__status:
       enum__publications_v_version_status("version__status").default("draft"),
     createdAt: timestamp("created_at", {
@@ -3609,6 +3831,9 @@ export const _publications_v = pgTable(
     _publications_v_version_version_created_at_idx: index(
       "_publications_v_version_version_created_at_idx",
     ).on(columns.version_createdAt),
+    _publications_v_version_version_deleted_at_idx: index(
+      "_publications_v_version_version_deleted_at_idx",
+    ).on(columns.version_deletedAt),
     _publications_v_version_version__status_idx: index(
       "_publications_v_version_version__status_idx",
     ).on(columns.version__status),
@@ -3688,6 +3913,11 @@ export const licenses = pgTable(
     })
       .defaultNow()
       .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     _status: enum_licenses_status("_status").default("draft"),
   },
   (columns) => ({
@@ -3698,6 +3928,9 @@ export const licenses = pgTable(
     ),
     licenses_created_at_idx: index("licenses_created_at_idx").on(
       columns.createdAt,
+    ),
+    licenses_deleted_at_idx: index("licenses_deleted_at_idx").on(
+      columns.deletedAt,
     ),
     licenses__status_idx: index("licenses__status_idx").on(columns._status),
   }),
@@ -3768,6 +4001,11 @@ export const _licenses_v = pgTable(
       withTimezone: true,
       precision: 3,
     }),
+    version_deletedAt: timestamp("version_deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
     version__status:
       enum__licenses_v_version_status("version__status").default("draft"),
     createdAt: timestamp("created_at", {
@@ -3801,6 +4039,9 @@ export const _licenses_v = pgTable(
     _licenses_v_version_version_created_at_idx: index(
       "_licenses_v_version_version_created_at_idx",
     ).on(columns.version_createdAt),
+    _licenses_v_version_version_deleted_at_idx: index(
+      "_licenses_v_version_version_deleted_at_idx",
+    ).on(columns.version_deletedAt),
     _licenses_v_version_version__status_idx: index(
       "_licenses_v_version_version__status_idx",
     ).on(columns.version__status),
@@ -3814,6 +4055,926 @@ export const _licenses_v = pgTable(
     _licenses_v_autosave_idx: index("_licenses_v_autosave_idx").on(
       columns.autosave,
     ),
+  }),
+);
+
+export const forms_blocks_checkbox = pgTable(
+  "forms_blocks_checkbox",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    required: boolean("required"),
+    defaultValue: boolean("default_value"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("forms_blocks_checkbox_order_idx").on(columns._order),
+    _parentIDIdx: index("forms_blocks_checkbox_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("forms_blocks_checkbox_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [forms.id],
+      name: "forms_blocks_checkbox_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const forms_blocks_country = pgTable(
+  "forms_blocks_country",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    required: boolean("required"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("forms_blocks_country_order_idx").on(columns._order),
+    _parentIDIdx: index("forms_blocks_country_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("forms_blocks_country_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [forms.id],
+      name: "forms_blocks_country_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const forms_blocks_email = pgTable(
+  "forms_blocks_email",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    required: boolean("required"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("forms_blocks_email_order_idx").on(columns._order),
+    _parentIDIdx: index("forms_blocks_email_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("forms_blocks_email_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [forms.id],
+      name: "forms_blocks_email_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const forms_blocks_message = pgTable(
+  "forms_blocks_message",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    message: jsonb("message"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("forms_blocks_message_order_idx").on(columns._order),
+    _parentIDIdx: index("forms_blocks_message_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("forms_blocks_message_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [forms.id],
+      name: "forms_blocks_message_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const forms_blocks_number = pgTable(
+  "forms_blocks_number",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    defaultValue: numeric("default_value"),
+    required: boolean("required"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("forms_blocks_number_order_idx").on(columns._order),
+    _parentIDIdx: index("forms_blocks_number_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("forms_blocks_number_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [forms.id],
+      name: "forms_blocks_number_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const forms_blocks_select_options = pgTable(
+  "forms_blocks_select_options",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: varchar("_parent_id").notNull(),
+    id: varchar("id").primaryKey(),
+    label: varchar("label"),
+    value: varchar("value"),
+  },
+  (columns) => ({
+    _orderIdx: index("forms_blocks_select_options_order_idx").on(
+      columns._order,
+    ),
+    _parentIDIdx: index("forms_blocks_select_options_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _parentIDFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [forms_blocks_select.id],
+      name: "forms_blocks_select_options_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const forms_blocks_select = pgTable(
+  "forms_blocks_select",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    defaultValue: varchar("default_value"),
+    placeholder: varchar("placeholder"),
+    required: boolean("required"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("forms_blocks_select_order_idx").on(columns._order),
+    _parentIDIdx: index("forms_blocks_select_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("forms_blocks_select_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [forms.id],
+      name: "forms_blocks_select_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const forms_blocks_state = pgTable(
+  "forms_blocks_state",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    required: boolean("required"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("forms_blocks_state_order_idx").on(columns._order),
+    _parentIDIdx: index("forms_blocks_state_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("forms_blocks_state_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [forms.id],
+      name: "forms_blocks_state_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const forms_blocks_text = pgTable(
+  "forms_blocks_text",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    defaultValue: varchar("default_value"),
+    required: boolean("required"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("forms_blocks_text_order_idx").on(columns._order),
+    _parentIDIdx: index("forms_blocks_text_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("forms_blocks_text_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [forms.id],
+      name: "forms_blocks_text_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const forms_blocks_textarea = pgTable(
+  "forms_blocks_textarea",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    defaultValue: varchar("default_value"),
+    required: boolean("required"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("forms_blocks_textarea_order_idx").on(columns._order),
+    _parentIDIdx: index("forms_blocks_textarea_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("forms_blocks_textarea_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [forms.id],
+      name: "forms_blocks_textarea_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const forms_blocks_date = pgTable(
+  "forms_blocks_date",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: varchar("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    required: boolean("required"),
+    defaultValue: timestamp("default_value", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("forms_blocks_date_order_idx").on(columns._order),
+    _parentIDIdx: index("forms_blocks_date_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("forms_blocks_date_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [forms.id],
+      name: "forms_blocks_date_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const forms_emails = pgTable(
+  "forms_emails",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    id: varchar("id").primaryKey(),
+    emailTo: varchar("email_to"),
+    cc: varchar("cc"),
+    bcc: varchar("bcc"),
+    replyTo: varchar("reply_to"),
+    emailFrom: varchar("email_from"),
+    subject: varchar("subject").default("You've received a new message."),
+    message: jsonb("message"),
+  },
+  (columns) => ({
+    _orderIdx: index("forms_emails_order_idx").on(columns._order),
+    _parentIDIdx: index("forms_emails_parent_id_idx").on(columns._parentID),
+    _parentIDFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [forms.id],
+      name: "forms_emails_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const forms = pgTable(
+  "forms",
+  {
+    id: serial("id").primaryKey(),
+    tenant: integer("tenant_id").references(() => tenants.id, {
+      onDelete: "set null",
+    }),
+    title: varchar("title"),
+    submitButtonLabel: varchar("submit_button_label"),
+    confirmationType:
+      enum_forms_confirmation_type("confirmation_type").default("message"),
+    confirmationMessage: jsonb("confirmation_message"),
+    redirect_type:
+      enum_forms_redirect_type("redirect_type").default("reference"),
+    redirect_url: varchar("redirect_url"),
+    updatedAt: timestamp("updated_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp("created_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .defaultNow()
+      .notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    _status: enum_forms_status("_status").default("draft"),
+  },
+  (columns) => ({
+    forms_tenant_idx: index("forms_tenant_idx").on(columns.tenant),
+    forms_updated_at_idx: index("forms_updated_at_idx").on(columns.updatedAt),
+    forms_created_at_idx: index("forms_created_at_idx").on(columns.createdAt),
+    forms_deleted_at_idx: index("forms_deleted_at_idx").on(columns.deletedAt),
+    forms__status_idx: index("forms__status_idx").on(columns._status),
+  }),
+);
+
+export const forms_rels = pgTable(
+  "forms_rels",
+  {
+    id: serial("id").primaryKey(),
+    order: integer("order"),
+    parent: integer("parent_id").notNull(),
+    path: varchar("path").notNull(),
+    pagesID: integer("pages_id"),
+  },
+  (columns) => ({
+    order: index("forms_rels_order_idx").on(columns.order),
+    parentIdx: index("forms_rels_parent_idx").on(columns.parent),
+    pathIdx: index("forms_rels_path_idx").on(columns.path),
+    forms_rels_pages_id_idx: index("forms_rels_pages_id_idx").on(
+      columns.pagesID,
+    ),
+    parentFk: foreignKey({
+      columns: [columns["parent"]],
+      foreignColumns: [forms.id],
+      name: "forms_rels_parent_fk",
+    }).onDelete("cascade"),
+    pagesIdFk: foreignKey({
+      columns: [columns["pagesID"]],
+      foreignColumns: [pages.id],
+      name: "forms_rels_pages_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const _forms_v_blocks_checkbox = pgTable(
+  "_forms_v_blocks_checkbox",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: serial("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    required: boolean("required"),
+    defaultValue: boolean("default_value"),
+    _uuid: varchar("_uuid"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("_forms_v_blocks_checkbox_order_idx").on(columns._order),
+    _parentIDIdx: index("_forms_v_blocks_checkbox_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("_forms_v_blocks_checkbox_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [_forms_v.id],
+      name: "_forms_v_blocks_checkbox_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const _forms_v_blocks_country = pgTable(
+  "_forms_v_blocks_country",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: serial("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    required: boolean("required"),
+    _uuid: varchar("_uuid"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("_forms_v_blocks_country_order_idx").on(columns._order),
+    _parentIDIdx: index("_forms_v_blocks_country_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("_forms_v_blocks_country_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [_forms_v.id],
+      name: "_forms_v_blocks_country_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const _forms_v_blocks_email = pgTable(
+  "_forms_v_blocks_email",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: serial("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    required: boolean("required"),
+    _uuid: varchar("_uuid"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("_forms_v_blocks_email_order_idx").on(columns._order),
+    _parentIDIdx: index("_forms_v_blocks_email_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("_forms_v_blocks_email_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [_forms_v.id],
+      name: "_forms_v_blocks_email_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const _forms_v_blocks_message = pgTable(
+  "_forms_v_blocks_message",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: serial("id").primaryKey(),
+    message: jsonb("message"),
+    _uuid: varchar("_uuid"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("_forms_v_blocks_message_order_idx").on(columns._order),
+    _parentIDIdx: index("_forms_v_blocks_message_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("_forms_v_blocks_message_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [_forms_v.id],
+      name: "_forms_v_blocks_message_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const _forms_v_blocks_number = pgTable(
+  "_forms_v_blocks_number",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: serial("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    defaultValue: numeric("default_value"),
+    required: boolean("required"),
+    _uuid: varchar("_uuid"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("_forms_v_blocks_number_order_idx").on(columns._order),
+    _parentIDIdx: index("_forms_v_blocks_number_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("_forms_v_blocks_number_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [_forms_v.id],
+      name: "_forms_v_blocks_number_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const _forms_v_blocks_select_options = pgTable(
+  "_forms_v_blocks_select_options",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    id: serial("id").primaryKey(),
+    label: varchar("label"),
+    value: varchar("value"),
+    _uuid: varchar("_uuid"),
+  },
+  (columns) => ({
+    _orderIdx: index("_forms_v_blocks_select_options_order_idx").on(
+      columns._order,
+    ),
+    _parentIDIdx: index("_forms_v_blocks_select_options_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _parentIDFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [_forms_v_blocks_select.id],
+      name: "_forms_v_blocks_select_options_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const _forms_v_blocks_select = pgTable(
+  "_forms_v_blocks_select",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: serial("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    defaultValue: varchar("default_value"),
+    placeholder: varchar("placeholder"),
+    required: boolean("required"),
+    _uuid: varchar("_uuid"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("_forms_v_blocks_select_order_idx").on(columns._order),
+    _parentIDIdx: index("_forms_v_blocks_select_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("_forms_v_blocks_select_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [_forms_v.id],
+      name: "_forms_v_blocks_select_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const _forms_v_blocks_state = pgTable(
+  "_forms_v_blocks_state",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: serial("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    required: boolean("required"),
+    _uuid: varchar("_uuid"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("_forms_v_blocks_state_order_idx").on(columns._order),
+    _parentIDIdx: index("_forms_v_blocks_state_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("_forms_v_blocks_state_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [_forms_v.id],
+      name: "_forms_v_blocks_state_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const _forms_v_blocks_text = pgTable(
+  "_forms_v_blocks_text",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: serial("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    defaultValue: varchar("default_value"),
+    required: boolean("required"),
+    _uuid: varchar("_uuid"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("_forms_v_blocks_text_order_idx").on(columns._order),
+    _parentIDIdx: index("_forms_v_blocks_text_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("_forms_v_blocks_text_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [_forms_v.id],
+      name: "_forms_v_blocks_text_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const _forms_v_blocks_textarea = pgTable(
+  "_forms_v_blocks_textarea",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: serial("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    defaultValue: varchar("default_value"),
+    required: boolean("required"),
+    _uuid: varchar("_uuid"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("_forms_v_blocks_textarea_order_idx").on(columns._order),
+    _parentIDIdx: index("_forms_v_blocks_textarea_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("_forms_v_blocks_textarea_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [_forms_v.id],
+      name: "_forms_v_blocks_textarea_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const _forms_v_blocks_date = pgTable(
+  "_forms_v_blocks_date",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    _path: text("_path").notNull(),
+    id: serial("id").primaryKey(),
+    name: varchar("name"),
+    label: varchar("label"),
+    width: numeric("width"),
+    required: boolean("required"),
+    defaultValue: timestamp("default_value", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    _uuid: varchar("_uuid"),
+    blockName: varchar("block_name"),
+  },
+  (columns) => ({
+    _orderIdx: index("_forms_v_blocks_date_order_idx").on(columns._order),
+    _parentIDIdx: index("_forms_v_blocks_date_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _pathIdx: index("_forms_v_blocks_date_path_idx").on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [_forms_v.id],
+      name: "_forms_v_blocks_date_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const _forms_v_version_emails = pgTable(
+  "_forms_v_version_emails",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    id: serial("id").primaryKey(),
+    emailTo: varchar("email_to"),
+    cc: varchar("cc"),
+    bcc: varchar("bcc"),
+    replyTo: varchar("reply_to"),
+    emailFrom: varchar("email_from"),
+    subject: varchar("subject").default("You've received a new message."),
+    message: jsonb("message"),
+    _uuid: varchar("_uuid"),
+  },
+  (columns) => ({
+    _orderIdx: index("_forms_v_version_emails_order_idx").on(columns._order),
+    _parentIDIdx: index("_forms_v_version_emails_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _parentIDFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [_forms_v.id],
+      name: "_forms_v_version_emails_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const _forms_v = pgTable(
+  "_forms_v",
+  {
+    id: serial("id").primaryKey(),
+    parent: integer("parent_id").references(() => forms.id, {
+      onDelete: "set null",
+    }),
+    version_tenant: integer("version_tenant_id").references(() => tenants.id, {
+      onDelete: "set null",
+    }),
+    version_title: varchar("version_title"),
+    version_submitButtonLabel: varchar("version_submit_button_label"),
+    version_confirmationType: enum__forms_v_version_confirmation_type(
+      "version_confirmation_type",
+    ).default("message"),
+    version_confirmationMessage: jsonb("version_confirmation_message"),
+    version_redirect_type: enum__forms_v_version_redirect_type(
+      "version_redirect_type",
+    ).default("reference"),
+    version_redirect_url: varchar("version_redirect_url"),
+    version_updatedAt: timestamp("version_updated_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    version_createdAt: timestamp("version_created_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    version_deletedAt: timestamp("version_deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    version__status:
+      enum__forms_v_version_status("version__status").default("draft"),
+    createdAt: timestamp("created_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .defaultNow()
+      .notNull(),
+    latest: boolean("latest"),
+    autosave: boolean("autosave"),
+  },
+  (columns) => ({
+    _forms_v_parent_idx: index("_forms_v_parent_idx").on(columns.parent),
+    _forms_v_version_version_tenant_idx: index(
+      "_forms_v_version_version_tenant_idx",
+    ).on(columns.version_tenant),
+    _forms_v_version_version_updated_at_idx: index(
+      "_forms_v_version_version_updated_at_idx",
+    ).on(columns.version_updatedAt),
+    _forms_v_version_version_created_at_idx: index(
+      "_forms_v_version_version_created_at_idx",
+    ).on(columns.version_createdAt),
+    _forms_v_version_version_deleted_at_idx: index(
+      "_forms_v_version_version_deleted_at_idx",
+    ).on(columns.version_deletedAt),
+    _forms_v_version_version__status_idx: index(
+      "_forms_v_version_version__status_idx",
+    ).on(columns.version__status),
+    _forms_v_created_at_idx: index("_forms_v_created_at_idx").on(
+      columns.createdAt,
+    ),
+    _forms_v_updated_at_idx: index("_forms_v_updated_at_idx").on(
+      columns.updatedAt,
+    ),
+    _forms_v_latest_idx: index("_forms_v_latest_idx").on(columns.latest),
+    _forms_v_autosave_idx: index("_forms_v_autosave_idx").on(columns.autosave),
+  }),
+);
+
+export const _forms_v_rels = pgTable(
+  "_forms_v_rels",
+  {
+    id: serial("id").primaryKey(),
+    order: integer("order"),
+    parent: integer("parent_id").notNull(),
+    path: varchar("path").notNull(),
+    pagesID: integer("pages_id"),
+  },
+  (columns) => ({
+    order: index("_forms_v_rels_order_idx").on(columns.order),
+    parentIdx: index("_forms_v_rels_parent_idx").on(columns.parent),
+    pathIdx: index("_forms_v_rels_path_idx").on(columns.path),
+    _forms_v_rels_pages_id_idx: index("_forms_v_rels_pages_id_idx").on(
+      columns.pagesID,
+    ),
+    parentFk: foreignKey({
+      columns: [columns["parent"]],
+      foreignColumns: [_forms_v.id],
+      name: "_forms_v_rels_parent_fk",
+    }).onDelete("cascade"),
+    pagesIdFk: foreignKey({
+      columns: [columns["pagesID"]],
+      foreignColumns: [pages.id],
+      name: "_forms_v_rels_pages_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const form_submissions_submission_data = pgTable(
+  "form_submissions_submission_data",
+  {
+    _order: integer("_order").notNull(),
+    _parentID: integer("_parent_id").notNull(),
+    id: varchar("id").primaryKey(),
+    field: varchar("field").notNull(),
+    value: varchar("value").notNull(),
+  },
+  (columns) => ({
+    _orderIdx: index("form_submissions_submission_data_order_idx").on(
+      columns._order,
+    ),
+    _parentIDIdx: index("form_submissions_submission_data_parent_id_idx").on(
+      columns._parentID,
+    ),
+    _parentIDFk: foreignKey({
+      columns: [columns["_parentID"]],
+      foreignColumns: [form_submissions.id],
+      name: "form_submissions_submission_data_parent_id_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
+export const form_submissions = pgTable(
+  "form_submissions",
+  {
+    id: serial("id").primaryKey(),
+    tenant: integer("tenant_id").references(() => tenants.id, {
+      onDelete: "set null",
+    }),
+    form: integer("form_id")
+      .notNull()
+      .references(() => forms.id, {
+        onDelete: "set null",
+      }),
+    updatedAt: timestamp("updated_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp("created_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .defaultNow()
+      .notNull(),
+  },
+  (columns) => ({
+    form_submissions_tenant_idx: index("form_submissions_tenant_idx").on(
+      columns.tenant,
+    ),
+    form_submissions_form_idx: index("form_submissions_form_idx").on(
+      columns.form,
+    ),
+    form_submissions_updated_at_idx: index(
+      "form_submissions_updated_at_idx",
+    ).on(columns.updatedAt),
+    form_submissions_created_at_idx: index(
+      "form_submissions_created_at_idx",
+    ).on(columns.createdAt),
   }),
 );
 
@@ -3974,6 +5135,8 @@ export const payload_locked_documents_rels = pgTable(
     certificationsID: integer("certifications_id"),
     publicationsID: integer("publications_id"),
     licensesID: integer("licenses_id"),
+    formsID: integer("forms_id"),
+    "form-submissionsID": integer("form_submissions_id"),
     "payload-jobsID": integer("payload_jobs_id"),
   },
   (columns) => ({
@@ -4036,6 +5199,12 @@ export const payload_locked_documents_rels = pgTable(
     payload_locked_documents_rels_licenses_id_idx: index(
       "payload_locked_documents_rels_licenses_id_idx",
     ).on(columns.licensesID),
+    payload_locked_documents_rels_forms_id_idx: index(
+      "payload_locked_documents_rels_forms_id_idx",
+    ).on(columns.formsID),
+    payload_locked_documents_rels_form_submissions_id_idx: index(
+      "payload_locked_documents_rels_form_submissions_id_idx",
+    ).on(columns["form-submissionsID"]),
     payload_locked_documents_rels_payload_jobs_id_idx: index(
       "payload_locked_documents_rels_payload_jobs_id_idx",
     ).on(columns["payload-jobsID"]),
@@ -4133,6 +5302,16 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns["licensesID"]],
       foreignColumns: [licenses.id],
       name: "payload_locked_documents_rels_licenses_fk",
+    }).onDelete("cascade"),
+    formsIdFk: foreignKey({
+      columns: [columns["formsID"]],
+      foreignColumns: [forms.id],
+      name: "payload_locked_documents_rels_forms_fk",
+    }).onDelete("cascade"),
+    "form-submissionsIdFk": foreignKey({
+      columns: [columns["form-submissionsID"]],
+      foreignColumns: [form_submissions.id],
+      name: "payload_locked_documents_rels_form_submissions_fk",
     }).onDelete("cascade"),
     "payload-jobsIdFk": foreignKey({
       columns: [columns["payload-jobsID"]],
@@ -5123,6 +6302,11 @@ export const relations_skills = relations(skills, ({ one, many }) => ({
     references: [tenants.id],
     relationName: "tenant",
   }),
+  techstack_icon: one(icons, {
+    fields: [skills.techstack_icon],
+    references: [icons.id],
+    relationName: "techstack_icon",
+  }),
   _rels: many(skills_rels, {
     relationName: "_rels",
   }),
@@ -5152,6 +6336,11 @@ export const relations__skills_v = relations(_skills_v, ({ one, many }) => ({
     fields: [_skills_v.version_tenant],
     references: [tenants.id],
     relationName: "version_tenant",
+  }),
+  version_techstack_icon: one(icons, {
+    fields: [_skills_v.version_techstack_icon],
+    references: [icons.id],
+    relationName: "version_techstack_icon",
   }),
   _rels: many(_skills_v_rels, {
     relationName: "_rels",
@@ -5574,6 +6763,392 @@ export const relations__licenses_v = relations(
     }),
   }),
 );
+export const relations_forms_blocks_checkbox = relations(
+  forms_blocks_checkbox,
+  ({ one }) => ({
+    _parentID: one(forms, {
+      fields: [forms_blocks_checkbox._parentID],
+      references: [forms.id],
+      relationName: "_blocks_checkbox",
+    }),
+  }),
+);
+export const relations_forms_blocks_country = relations(
+  forms_blocks_country,
+  ({ one }) => ({
+    _parentID: one(forms, {
+      fields: [forms_blocks_country._parentID],
+      references: [forms.id],
+      relationName: "_blocks_country",
+    }),
+  }),
+);
+export const relations_forms_blocks_email = relations(
+  forms_blocks_email,
+  ({ one }) => ({
+    _parentID: one(forms, {
+      fields: [forms_blocks_email._parentID],
+      references: [forms.id],
+      relationName: "_blocks_email",
+    }),
+  }),
+);
+export const relations_forms_blocks_message = relations(
+  forms_blocks_message,
+  ({ one }) => ({
+    _parentID: one(forms, {
+      fields: [forms_blocks_message._parentID],
+      references: [forms.id],
+      relationName: "_blocks_message",
+    }),
+  }),
+);
+export const relations_forms_blocks_number = relations(
+  forms_blocks_number,
+  ({ one }) => ({
+    _parentID: one(forms, {
+      fields: [forms_blocks_number._parentID],
+      references: [forms.id],
+      relationName: "_blocks_number",
+    }),
+  }),
+);
+export const relations_forms_blocks_select_options = relations(
+  forms_blocks_select_options,
+  ({ one }) => ({
+    _parentID: one(forms_blocks_select, {
+      fields: [forms_blocks_select_options._parentID],
+      references: [forms_blocks_select.id],
+      relationName: "options",
+    }),
+  }),
+);
+export const relations_forms_blocks_select = relations(
+  forms_blocks_select,
+  ({ one, many }) => ({
+    _parentID: one(forms, {
+      fields: [forms_blocks_select._parentID],
+      references: [forms.id],
+      relationName: "_blocks_select",
+    }),
+    options: many(forms_blocks_select_options, {
+      relationName: "options",
+    }),
+  }),
+);
+export const relations_forms_blocks_state = relations(
+  forms_blocks_state,
+  ({ one }) => ({
+    _parentID: one(forms, {
+      fields: [forms_blocks_state._parentID],
+      references: [forms.id],
+      relationName: "_blocks_state",
+    }),
+  }),
+);
+export const relations_forms_blocks_text = relations(
+  forms_blocks_text,
+  ({ one }) => ({
+    _parentID: one(forms, {
+      fields: [forms_blocks_text._parentID],
+      references: [forms.id],
+      relationName: "_blocks_text",
+    }),
+  }),
+);
+export const relations_forms_blocks_textarea = relations(
+  forms_blocks_textarea,
+  ({ one }) => ({
+    _parentID: one(forms, {
+      fields: [forms_blocks_textarea._parentID],
+      references: [forms.id],
+      relationName: "_blocks_textarea",
+    }),
+  }),
+);
+export const relations_forms_blocks_date = relations(
+  forms_blocks_date,
+  ({ one }) => ({
+    _parentID: one(forms, {
+      fields: [forms_blocks_date._parentID],
+      references: [forms.id],
+      relationName: "_blocks_date",
+    }),
+  }),
+);
+export const relations_forms_emails = relations(forms_emails, ({ one }) => ({
+  _parentID: one(forms, {
+    fields: [forms_emails._parentID],
+    references: [forms.id],
+    relationName: "emails",
+  }),
+}));
+export const relations_forms_rels = relations(forms_rels, ({ one }) => ({
+  parent: one(forms, {
+    fields: [forms_rels.parent],
+    references: [forms.id],
+    relationName: "_rels",
+  }),
+  pagesID: one(pages, {
+    fields: [forms_rels.pagesID],
+    references: [pages.id],
+    relationName: "pages",
+  }),
+}));
+export const relations_forms = relations(forms, ({ one, many }) => ({
+  tenant: one(tenants, {
+    fields: [forms.tenant],
+    references: [tenants.id],
+    relationName: "tenant",
+  }),
+  _blocks_checkbox: many(forms_blocks_checkbox, {
+    relationName: "_blocks_checkbox",
+  }),
+  _blocks_country: many(forms_blocks_country, {
+    relationName: "_blocks_country",
+  }),
+  _blocks_email: many(forms_blocks_email, {
+    relationName: "_blocks_email",
+  }),
+  _blocks_message: many(forms_blocks_message, {
+    relationName: "_blocks_message",
+  }),
+  _blocks_number: many(forms_blocks_number, {
+    relationName: "_blocks_number",
+  }),
+  _blocks_select: many(forms_blocks_select, {
+    relationName: "_blocks_select",
+  }),
+  _blocks_state: many(forms_blocks_state, {
+    relationName: "_blocks_state",
+  }),
+  _blocks_text: many(forms_blocks_text, {
+    relationName: "_blocks_text",
+  }),
+  _blocks_textarea: many(forms_blocks_textarea, {
+    relationName: "_blocks_textarea",
+  }),
+  _blocks_date: many(forms_blocks_date, {
+    relationName: "_blocks_date",
+  }),
+  emails: many(forms_emails, {
+    relationName: "emails",
+  }),
+  _rels: many(forms_rels, {
+    relationName: "_rels",
+  }),
+}));
+export const relations__forms_v_blocks_checkbox = relations(
+  _forms_v_blocks_checkbox,
+  ({ one }) => ({
+    _parentID: one(_forms_v, {
+      fields: [_forms_v_blocks_checkbox._parentID],
+      references: [_forms_v.id],
+      relationName: "_blocks_checkbox",
+    }),
+  }),
+);
+export const relations__forms_v_blocks_country = relations(
+  _forms_v_blocks_country,
+  ({ one }) => ({
+    _parentID: one(_forms_v, {
+      fields: [_forms_v_blocks_country._parentID],
+      references: [_forms_v.id],
+      relationName: "_blocks_country",
+    }),
+  }),
+);
+export const relations__forms_v_blocks_email = relations(
+  _forms_v_blocks_email,
+  ({ one }) => ({
+    _parentID: one(_forms_v, {
+      fields: [_forms_v_blocks_email._parentID],
+      references: [_forms_v.id],
+      relationName: "_blocks_email",
+    }),
+  }),
+);
+export const relations__forms_v_blocks_message = relations(
+  _forms_v_blocks_message,
+  ({ one }) => ({
+    _parentID: one(_forms_v, {
+      fields: [_forms_v_blocks_message._parentID],
+      references: [_forms_v.id],
+      relationName: "_blocks_message",
+    }),
+  }),
+);
+export const relations__forms_v_blocks_number = relations(
+  _forms_v_blocks_number,
+  ({ one }) => ({
+    _parentID: one(_forms_v, {
+      fields: [_forms_v_blocks_number._parentID],
+      references: [_forms_v.id],
+      relationName: "_blocks_number",
+    }),
+  }),
+);
+export const relations__forms_v_blocks_select_options = relations(
+  _forms_v_blocks_select_options,
+  ({ one }) => ({
+    _parentID: one(_forms_v_blocks_select, {
+      fields: [_forms_v_blocks_select_options._parentID],
+      references: [_forms_v_blocks_select.id],
+      relationName: "options",
+    }),
+  }),
+);
+export const relations__forms_v_blocks_select = relations(
+  _forms_v_blocks_select,
+  ({ one, many }) => ({
+    _parentID: one(_forms_v, {
+      fields: [_forms_v_blocks_select._parentID],
+      references: [_forms_v.id],
+      relationName: "_blocks_select",
+    }),
+    options: many(_forms_v_blocks_select_options, {
+      relationName: "options",
+    }),
+  }),
+);
+export const relations__forms_v_blocks_state = relations(
+  _forms_v_blocks_state,
+  ({ one }) => ({
+    _parentID: one(_forms_v, {
+      fields: [_forms_v_blocks_state._parentID],
+      references: [_forms_v.id],
+      relationName: "_blocks_state",
+    }),
+  }),
+);
+export const relations__forms_v_blocks_text = relations(
+  _forms_v_blocks_text,
+  ({ one }) => ({
+    _parentID: one(_forms_v, {
+      fields: [_forms_v_blocks_text._parentID],
+      references: [_forms_v.id],
+      relationName: "_blocks_text",
+    }),
+  }),
+);
+export const relations__forms_v_blocks_textarea = relations(
+  _forms_v_blocks_textarea,
+  ({ one }) => ({
+    _parentID: one(_forms_v, {
+      fields: [_forms_v_blocks_textarea._parentID],
+      references: [_forms_v.id],
+      relationName: "_blocks_textarea",
+    }),
+  }),
+);
+export const relations__forms_v_blocks_date = relations(
+  _forms_v_blocks_date,
+  ({ one }) => ({
+    _parentID: one(_forms_v, {
+      fields: [_forms_v_blocks_date._parentID],
+      references: [_forms_v.id],
+      relationName: "_blocks_date",
+    }),
+  }),
+);
+export const relations__forms_v_version_emails = relations(
+  _forms_v_version_emails,
+  ({ one }) => ({
+    _parentID: one(_forms_v, {
+      fields: [_forms_v_version_emails._parentID],
+      references: [_forms_v.id],
+      relationName: "version_emails",
+    }),
+  }),
+);
+export const relations__forms_v_rels = relations(_forms_v_rels, ({ one }) => ({
+  parent: one(_forms_v, {
+    fields: [_forms_v_rels.parent],
+    references: [_forms_v.id],
+    relationName: "_rels",
+  }),
+  pagesID: one(pages, {
+    fields: [_forms_v_rels.pagesID],
+    references: [pages.id],
+    relationName: "pages",
+  }),
+}));
+export const relations__forms_v = relations(_forms_v, ({ one, many }) => ({
+  parent: one(forms, {
+    fields: [_forms_v.parent],
+    references: [forms.id],
+    relationName: "parent",
+  }),
+  version_tenant: one(tenants, {
+    fields: [_forms_v.version_tenant],
+    references: [tenants.id],
+    relationName: "version_tenant",
+  }),
+  _blocks_checkbox: many(_forms_v_blocks_checkbox, {
+    relationName: "_blocks_checkbox",
+  }),
+  _blocks_country: many(_forms_v_blocks_country, {
+    relationName: "_blocks_country",
+  }),
+  _blocks_email: many(_forms_v_blocks_email, {
+    relationName: "_blocks_email",
+  }),
+  _blocks_message: many(_forms_v_blocks_message, {
+    relationName: "_blocks_message",
+  }),
+  _blocks_number: many(_forms_v_blocks_number, {
+    relationName: "_blocks_number",
+  }),
+  _blocks_select: many(_forms_v_blocks_select, {
+    relationName: "_blocks_select",
+  }),
+  _blocks_state: many(_forms_v_blocks_state, {
+    relationName: "_blocks_state",
+  }),
+  _blocks_text: many(_forms_v_blocks_text, {
+    relationName: "_blocks_text",
+  }),
+  _blocks_textarea: many(_forms_v_blocks_textarea, {
+    relationName: "_blocks_textarea",
+  }),
+  _blocks_date: many(_forms_v_blocks_date, {
+    relationName: "_blocks_date",
+  }),
+  version_emails: many(_forms_v_version_emails, {
+    relationName: "version_emails",
+  }),
+  _rels: many(_forms_v_rels, {
+    relationName: "_rels",
+  }),
+}));
+export const relations_form_submissions_submission_data = relations(
+  form_submissions_submission_data,
+  ({ one }) => ({
+    _parentID: one(form_submissions, {
+      fields: [form_submissions_submission_data._parentID],
+      references: [form_submissions.id],
+      relationName: "submissionData",
+    }),
+  }),
+);
+export const relations_form_submissions = relations(
+  form_submissions,
+  ({ one, many }) => ({
+    tenant: one(tenants, {
+      fields: [form_submissions.tenant],
+      references: [tenants.id],
+      relationName: "tenant",
+    }),
+    form: one(forms, {
+      fields: [form_submissions.form],
+      references: [forms.id],
+      relationName: "form",
+    }),
+    submissionData: many(form_submissions_submission_data, {
+      relationName: "submissionData",
+    }),
+  }),
+);
 export const relations_payload_jobs_log = relations(
   payload_jobs_log,
   ({ one }) => ({
@@ -5687,6 +7262,16 @@ export const relations_payload_locked_documents_rels = relations(
       references: [licenses.id],
       relationName: "licenses",
     }),
+    formsID: one(forms, {
+      fields: [payload_locked_documents_rels.formsID],
+      references: [forms.id],
+      relationName: "forms",
+    }),
+    "form-submissionsID": one(form_submissions, {
+      fields: [payload_locked_documents_rels["form-submissionsID"]],
+      references: [form_submissions.id],
+      relationName: "form-submissions",
+    }),
     "payload-jobsID": one(payload_jobs, {
       fields: [payload_locked_documents_rels["payload-jobsID"]],
       references: [payload_jobs.id],
@@ -5739,11 +7324,9 @@ type DatabaseSchema = {
   enum__notes_v_version_status: typeof enum__notes_v_version_status;
   enum_blogs_status: typeof enum_blogs_status;
   enum__blogs_v_version_status: typeof enum__blogs_v_version_status;
-  enum_pages_mode: typeof enum_pages_mode;
-  enum_pages_configurations_slug: typeof enum_pages_configurations_slug;
+  enum_pages_page_mode_mode: typeof enum_pages_page_mode_mode;
   enum_pages_status: typeof enum_pages_status;
-  enum__pages_v_version_mode: typeof enum__pages_v_version_mode;
-  enum__pages_v_version_configurations_slug: typeof enum__pages_v_version_configurations_slug;
+  enum__pages_v_version_page_mode_mode: typeof enum__pages_v_version_page_mode_mode;
   enum__pages_v_version_status: typeof enum__pages_v_version_status;
   enum_educations_status: typeof enum_educations_status;
   enum__educations_v_version_status: typeof enum__educations_v_version_status;
@@ -5767,6 +7350,12 @@ type DatabaseSchema = {
   enum__publications_v_version_status: typeof enum__publications_v_version_status;
   enum_licenses_status: typeof enum_licenses_status;
   enum__licenses_v_version_status: typeof enum__licenses_v_version_status;
+  enum_forms_confirmation_type: typeof enum_forms_confirmation_type;
+  enum_forms_redirect_type: typeof enum_forms_redirect_type;
+  enum_forms_status: typeof enum_forms_status;
+  enum__forms_v_version_confirmation_type: typeof enum__forms_v_version_confirmation_type;
+  enum__forms_v_version_redirect_type: typeof enum__forms_v_version_redirect_type;
+  enum__forms_v_version_status: typeof enum__forms_v_version_status;
   enum_payload_jobs_log_task_slug: typeof enum_payload_jobs_log_task_slug;
   enum_payload_jobs_log_state: typeof enum_payload_jobs_log_state;
   enum_payload_jobs_task_slug: typeof enum_payload_jobs_task_slug;
@@ -5858,6 +7447,36 @@ type DatabaseSchema = {
   licenses: typeof licenses;
   _licenses_v_version_links: typeof _licenses_v_version_links;
   _licenses_v: typeof _licenses_v;
+  forms_blocks_checkbox: typeof forms_blocks_checkbox;
+  forms_blocks_country: typeof forms_blocks_country;
+  forms_blocks_email: typeof forms_blocks_email;
+  forms_blocks_message: typeof forms_blocks_message;
+  forms_blocks_number: typeof forms_blocks_number;
+  forms_blocks_select_options: typeof forms_blocks_select_options;
+  forms_blocks_select: typeof forms_blocks_select;
+  forms_blocks_state: typeof forms_blocks_state;
+  forms_blocks_text: typeof forms_blocks_text;
+  forms_blocks_textarea: typeof forms_blocks_textarea;
+  forms_blocks_date: typeof forms_blocks_date;
+  forms_emails: typeof forms_emails;
+  forms: typeof forms;
+  forms_rels: typeof forms_rels;
+  _forms_v_blocks_checkbox: typeof _forms_v_blocks_checkbox;
+  _forms_v_blocks_country: typeof _forms_v_blocks_country;
+  _forms_v_blocks_email: typeof _forms_v_blocks_email;
+  _forms_v_blocks_message: typeof _forms_v_blocks_message;
+  _forms_v_blocks_number: typeof _forms_v_blocks_number;
+  _forms_v_blocks_select_options: typeof _forms_v_blocks_select_options;
+  _forms_v_blocks_select: typeof _forms_v_blocks_select;
+  _forms_v_blocks_state: typeof _forms_v_blocks_state;
+  _forms_v_blocks_text: typeof _forms_v_blocks_text;
+  _forms_v_blocks_textarea: typeof _forms_v_blocks_textarea;
+  _forms_v_blocks_date: typeof _forms_v_blocks_date;
+  _forms_v_version_emails: typeof _forms_v_version_emails;
+  _forms_v: typeof _forms_v;
+  _forms_v_rels: typeof _forms_v_rels;
+  form_submissions_submission_data: typeof form_submissions_submission_data;
+  form_submissions: typeof form_submissions;
   payload_jobs_log: typeof payload_jobs_log;
   payload_jobs: typeof payload_jobs;
   payload_locked_documents: typeof payload_locked_documents;
@@ -5953,6 +7572,36 @@ type DatabaseSchema = {
   relations_licenses: typeof relations_licenses;
   relations__licenses_v_version_links: typeof relations__licenses_v_version_links;
   relations__licenses_v: typeof relations__licenses_v;
+  relations_forms_blocks_checkbox: typeof relations_forms_blocks_checkbox;
+  relations_forms_blocks_country: typeof relations_forms_blocks_country;
+  relations_forms_blocks_email: typeof relations_forms_blocks_email;
+  relations_forms_blocks_message: typeof relations_forms_blocks_message;
+  relations_forms_blocks_number: typeof relations_forms_blocks_number;
+  relations_forms_blocks_select_options: typeof relations_forms_blocks_select_options;
+  relations_forms_blocks_select: typeof relations_forms_blocks_select;
+  relations_forms_blocks_state: typeof relations_forms_blocks_state;
+  relations_forms_blocks_text: typeof relations_forms_blocks_text;
+  relations_forms_blocks_textarea: typeof relations_forms_blocks_textarea;
+  relations_forms_blocks_date: typeof relations_forms_blocks_date;
+  relations_forms_emails: typeof relations_forms_emails;
+  relations_forms_rels: typeof relations_forms_rels;
+  relations_forms: typeof relations_forms;
+  relations__forms_v_blocks_checkbox: typeof relations__forms_v_blocks_checkbox;
+  relations__forms_v_blocks_country: typeof relations__forms_v_blocks_country;
+  relations__forms_v_blocks_email: typeof relations__forms_v_blocks_email;
+  relations__forms_v_blocks_message: typeof relations__forms_v_blocks_message;
+  relations__forms_v_blocks_number: typeof relations__forms_v_blocks_number;
+  relations__forms_v_blocks_select_options: typeof relations__forms_v_blocks_select_options;
+  relations__forms_v_blocks_select: typeof relations__forms_v_blocks_select;
+  relations__forms_v_blocks_state: typeof relations__forms_v_blocks_state;
+  relations__forms_v_blocks_text: typeof relations__forms_v_blocks_text;
+  relations__forms_v_blocks_textarea: typeof relations__forms_v_blocks_textarea;
+  relations__forms_v_blocks_date: typeof relations__forms_v_blocks_date;
+  relations__forms_v_version_emails: typeof relations__forms_v_version_emails;
+  relations__forms_v_rels: typeof relations__forms_v_rels;
+  relations__forms_v: typeof relations__forms_v;
+  relations_form_submissions_submission_data: typeof relations_form_submissions_submission_data;
+  relations_form_submissions: typeof relations_form_submissions;
   relations_payload_jobs_log: typeof relations_payload_jobs_log;
   relations_payload_jobs: typeof relations_payload_jobs;
   relations_payload_locked_documents_rels: typeof relations_payload_locked_documents_rels;

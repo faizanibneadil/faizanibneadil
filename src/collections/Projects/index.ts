@@ -1,5 +1,5 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { NavigationGroups, resume_fields } from "@/constants";
+import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
@@ -78,7 +78,7 @@ export const Projects: CollectionConfig<'projects'> = {
             admin: {
                 description: 'Provide credential for testing.',
                 condition: (field, siblings, ctx) => {
-                    return ctx?.user?.field === resume_fields.information_technology
+                    return (ctx?.user?.category as any)?.slug === 'information_technology'
                 }
             },
             fields: [
