@@ -118,16 +118,16 @@ export default buildConfig({
                 }
             }
         },
-        livePreview: {
-            breakpoints: [
-                {
-                    label: 'Mobile',
-                    name: 'mobile',
-                    width: 375,
-                    height: 667,
-                }
-            ]
-        },
+        // livePreview: {
+        //     breakpoints: [
+        //         {
+        //             label: 'Mobile',
+        //             name: 'mobile',
+        //             width: 375,
+        //             height: 667,
+        //         }
+        //     ]
+        // },
     },
     cors: [process.env.NEXT_PUBLIC_SERVER_URL!].filter(Boolean),
     csrf: [process.env.NEXT_PUBLIC_SERVER_URL!].filter(Boolean),
@@ -211,15 +211,15 @@ export default buildConfig({
                     read: () => true,
                     update: superAdminOrTenantAdminAccess,
                 },
-                versions: {
-                    drafts: {
-                        autosave: {
-                            interval: 375,
-                        },
-                        schedulePublish: true,
-                    },
-                    maxPerDoc: 50,
-                }
+                // versions: {
+                //     drafts: {
+                //         autosave: {
+                //             interval: 375,
+                //         },
+                //         schedulePublish: true,
+                //     },
+                //     maxPerDoc: 50,
+                // }
             },
             formSubmissionOverrides: {
                 access: {
