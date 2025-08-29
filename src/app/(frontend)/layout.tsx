@@ -1,10 +1,10 @@
-import { AdminBar } from "@/components/AdminBar";
+// import { AdminBar } from "@/components/AdminBar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
-import { draftMode } from 'next/headers';
+// import { draftMode } from 'next/headers';
 import React from "react";
 import "./globals.css";
 
@@ -55,11 +55,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { isEnabled } = await draftMode()
+  // const { isEnabled } = await draftMode()
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={fontSans.variable} vaul-drawer-wrapper="">
-        <AdminBar adminBarProps={{ preview: isEnabled }} />
+        {/* <AdminBar adminBarProps={{ preview: isEnabled }} /> */}
           <ThemeProvider attribute="class" defaultTheme="light">
             <TooltipProvider delayDuration={0}>
               {children}

@@ -31,21 +31,11 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
             slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
         })
         if (!context.disableRevalidate) {
-            if (doc?._status === 'published') {
-                invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
-                invalidateRootRoute && revalidatePath(RootRoute)
-                payload.logger.info(`Revalidating page at [PATH]:${Route}`)
-                revalidatePath(Route)
-                revalidateTag('pages-sitemap')
-            }
-            // If the page was previously published, we need to revalidate the old path
-            if (previousDoc?._status === 'published' && doc._status !== 'published') {
-                invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
-                invalidateRootRoute && revalidatePath(RootRoute)
-                payload.logger.info(`Revalidating page at [PATH]:${Route}`)
-                revalidatePath(Route)
-                revalidateTag('pages-sitemap')
-            }
+            invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
+            invalidateRootRoute && revalidatePath(RootRoute)
+            payload.logger.info(`Revalidating page at [PATH]:${Route}`)
+            revalidatePath(Route)
+            revalidateTag('pages-sitemap')
         }
         return doc
     }

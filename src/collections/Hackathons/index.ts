@@ -3,7 +3,7 @@ import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
-import { VersionConfig } from "@/utilities/version-config";
+// import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { CollectionConfig } from "payload";
 
@@ -107,5 +107,5 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    versions: VersionConfig(),
+    // versions: VersionConfig(),
 }

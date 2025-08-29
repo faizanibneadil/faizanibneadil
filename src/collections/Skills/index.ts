@@ -5,7 +5,7 @@ import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
-import { VersionConfig } from "@/utilities/version-config";
+// import { VersionConfig } from "@/utilities/version-config";
 import type { CollectionConfig } from "payload";
 
 export const Skills: CollectionConfig<'skills'> = {
@@ -60,5 +60,5 @@ export const Skills: CollectionConfig<'skills'> = {
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
         beforeChange: [populatePublishedAt],
     },
-    versions: VersionConfig(),
+    // versions: VersionConfig(),
 }

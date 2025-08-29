@@ -5,7 +5,7 @@ import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
-import { VersionConfig } from "@/utilities/version-config";
+// import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
 
@@ -143,5 +143,5 @@ export const Projects: CollectionConfig<'projects'> = {
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
         beforeChange: [populatePublishedAt],
     },
-    versions: VersionConfig(),
+    // versions: VersionConfig(),
 }

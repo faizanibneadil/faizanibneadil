@@ -4,6 +4,21 @@ import * as migration_20250818_083009 from './20250818_083009';
 import * as migration_20250824_141513 from './20250824_141513';
 import * as migration_20250824_142423 from './20250824_142423';
 import * as migration_20250825_062227 from './20250825_062227';
+import * as migration_20250829_170706 from './20250829_170706';
+import * as migration_20250829_171719 from './20250829_171719';
+import * as migration_20250829_171903 from './20250829_171903';
+import * as migration_20250829_172046 from './20250829_172046';
+import * as migration_20250829_172234 from './20250829_172234';
+import * as migration_20250829_172423 from './20250829_172423';
+import * as migration_20250829_172617 from './20250829_172617';
+import * as migration_20250829_172758 from './20250829_172758';
+import * as migration_20250829_172947 from './20250829_172947';
+import * as migration_20250829_173137 from './20250829_173137';
+import * as migration_20250829_175512 from './20250829_175512';
+import * as migration_20250829_175653 from './20250829_175653';
+import * as migration_20250829_175832 from './20250829_175832';
+import * as migration_20250829_180016 from './20250829_180016';
+import * as migration_20250829_180527 from './20250829_180527';
 
 export const migrations = [
   {
@@ -34,6 +49,81 @@ export const migrations = [
   {
     up: migration_20250825_062227.up,
     down: migration_20250825_062227.down,
-    name: '20250825_062227'
+    name: '20250825_062227',
+  },
+  {
+    up: migration_20250829_170706.up,
+    down: migration_20250829_170706.down,
+    name: '20250829_170706',
+  },
+  {
+    up: migration_20250829_171719.up,
+    down: migration_20250829_171719.down,
+    name: '20250829_171719',
+  },
+  {
+    up: migration_20250829_171903.up,
+    down: migration_20250829_171903.down,
+    name: '20250829_171903',
+  },
+  {
+    up: migration_20250829_172046.up,
+    down: migration_20250829_172046.down,
+    name: '20250829_172046',
+  },
+  {
+    up: migration_20250829_172234.up,
+    down: migration_20250829_172234.down,
+    name: '20250829_172234',
+  },
+  {
+    up: migration_20250829_172423.up,
+    down: migration_20250829_172423.down,
+    name: '20250829_172423',
+  },
+  {
+    up: migration_20250829_172617.up,
+    down: migration_20250829_172617.down,
+    name: '20250829_172617',
+  },
+  {
+    up: migration_20250829_172758.up,
+    down: migration_20250829_172758.down,
+    name: '20250829_172758',
+  },
+  {
+    up: migration_20250829_172947.up,
+    down: migration_20250829_172947.down,
+    name: '20250829_172947',
+  },
+  {
+    up: migration_20250829_173137.up,
+    down: migration_20250829_173137.down,
+    name: '20250829_173137',
+  },
+  {
+    up: migration_20250829_175512.up,
+    down: migration_20250829_175512.down,
+    name: '20250829_175512',
+  },
+  {
+    up: migration_20250829_175653.up,
+    down: migration_20250829_175653.down,
+    name: '20250829_175653',
+  },
+  {
+    up: migration_20250829_175832.up,
+    down: migration_20250829_175832.down,
+    name: '20250829_175832',
+  },
+  {
+    up: migration_20250829_180016.up,
+    down: migration_20250829_180016.down,
+    name: '20250829_180016',
+  },
+  {
+    up: migration_20250829_180527.up,
+    down: migration_20250829_180527.down,
+    name: '20250829_180527'
   },
 ];

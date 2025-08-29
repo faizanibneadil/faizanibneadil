@@ -5,7 +5,7 @@ import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { getServerSideURL } from "@/utilities/getURL";
-import { VersionConfig } from "@/utilities/version-config";
+// import { VersionConfig } from "@/utilities/version-config";
 import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
 import { headers as getHeaders } from "next/headers";
 import type { CollectionConfig } from "payload";
@@ -16,36 +16,36 @@ export const Pages: CollectionConfig<'pages'> = {
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.portfolio,
-        livePreview: {
-            url: async ({ data, req: { payload } }) => {
-                const headers = await getHeaders()
-                const tenant = await payload?.findByID({
-                    collection: 'tenants',
-                    id: getTenantFromCookie(headers, 'number') as number,
-                    select: { domain: true }
-                })
-                return `${getServerSideURL()}/${tenant?.domain}/p/${data?.slug}`
-            }
-        },
-        preview: async (doc, { req: { payload } }) => {
-            const headers = await getHeaders()
-            if (getTenantFromCookie(headers, 'number')) {
-                const tenant = await payload?.findByID({
-                    collection: 'tenants',
-                    id: getTenantFromCookie(headers, 'number') as number,
-                    select: { domain: true }
-                })
-                const encodedParams = new URLSearchParams({
-                    slug: doc?.slug as string,
-                    collection: 'pages',
-                    path: `/${tenant?.domain}/p/${doc?.slug}`,
-                    previewSecret: process.env.PREVIEW_SECRET || '',
-                })
-                return `${getServerSideURL()}/preview?${encodedParams.toString()}`
-            }
+        // livePreview: {
+        //     url: async ({ data, req: { payload } }) => {
+        //         const headers = await getHeaders()
+        //         const tenant = await payload?.findByID({
+        //             collection: 'tenants',
+        //             id: getTenantFromCookie(headers, 'number') as number,
+        //             select: { domain: true }
+        //         })
+        //         return `${getServerSideURL()}/${tenant?.domain}/p/${data?.slug}`
+        //     }
+        // },
+        // preview: async (doc, { req: { payload } }) => {
+        //     const headers = await getHeaders()
+        //     if (getTenantFromCookie(headers, 'number')) {
+        //         const tenant = await payload?.findByID({
+        //             collection: 'tenants',
+        //             id: getTenantFromCookie(headers, 'number') as number,
+        //             select: { domain: true }
+        //         })
+        //         const encodedParams = new URLSearchParams({
+        //             slug: doc?.slug as string,
+        //             collection: 'pages',
+        //             path: `/${tenant?.domain}/p/${doc?.slug}`,
+        //             previewSecret: process.env.PREVIEW_SECRET || '',
+        //         })
+        //         return `${getServerSideURL()}/preview?${encodedParams.toString()}`
+        //     }
 
-            return null
-        },
+        //     return null
+        // },
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -145,5 +145,5 @@ export const Pages: CollectionConfig<'pages'> = {
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
         beforeChange: [populatePublishedAt],
     },
-    versions: VersionConfig(),
+    // versions: VersionConfig(),
 }
