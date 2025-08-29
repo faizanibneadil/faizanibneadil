@@ -96,7 +96,7 @@ export const Users: CollectionConfig<'users'> = {
         allowEdit:false,
         isSortable:false,
         condition: (fields, siblings, ctx) => {
-          console.log(ctx)
+          // console.log(ctx)
           // if (isSuperAdmin(ctx.user)) {
           //   return false
           // }

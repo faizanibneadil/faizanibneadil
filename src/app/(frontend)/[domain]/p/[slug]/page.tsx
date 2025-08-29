@@ -1,8 +1,8 @@
-import { RefreshRouteOnSave } from "@/components/RefreshRouteOnSave";
+// import { RefreshRouteOnSave } from "@/components/RefreshRouteOnSave";
 import type { Page } from "@/payload-types";
 import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import dynamic from "next/dynamic";
-import { draftMode, headers as getHeaders } from 'next/headers';
+// import { headers as getHeaders } from 'next/headers';
 import { notFound } from "next/navigation";
 import { CollectionSlug } from "payload";
 import { cache } from "react";
@@ -26,7 +26,7 @@ export default async function Page({ params }: Props) {
   if (!page || !domain) return notFound()
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10">
-      <RefreshRouteOnSave />
+      {/* <RefreshRouteOnSave /> */}
       {isLayout(page?.pageMode?.mode) && (
         <BlocksRenderer blocks={page.layout} />
       )}
@@ -39,16 +39,16 @@ export default async function Page({ params }: Props) {
 
 
 const queryPageBySlug = cache(async ({ slug, domain }: { slug: string, domain: string }) => {
-  const { isEnabled: isDraftMode } = await draftMode()
-  const headers = await getHeaders()
+  // const { isEnabled: isDraftMode } = await draftMode()
+  // const headers = await getHeaders()
   const payload = await getPayloadConfig()
-  const user = await payload.auth({ headers })
+  // const user = await payload.auth({ headers })
   const result = await payload.find({
     collection: 'pages',
     limit: 1,
     pagination: false,
-    overrideAccess: isDraftMode || Boolean(user),
-    draft: isDraftMode || Boolean(user),
+    overrideAccess: false,
+    draft: false,
     where: {
       and: [
         { slug: { equals: slug } },
