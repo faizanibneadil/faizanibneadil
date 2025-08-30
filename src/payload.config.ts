@@ -3,6 +3,8 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 import { FixedToolbarFeature, lexicalEditor, InlineToolbarFeature, RelationshipFeature } from '@payloadcms/richtext-lexical'
 import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+import { seoPlugin } from '@payloadcms/plugin-seo';
+import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
 
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -49,6 +51,8 @@ import { isSuperAdmin } from './access/isSuperAdmin'
 import { getUserTenantIDs } from './utilities/getUserTenantIDs'
 import { getServerSideURL } from './utilities/getURL'
 import { superAdminOrTenantAdminAccess } from '@/access/superAdminOrTenantAdmin'
+import { generateRoute } from './utilities/generateRoute';
+import { generateBlogPostDescWithGemini } from './utilities/generateBlogPostDescWithGemini';
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -172,8 +176,8 @@ export default buildConfig({
         features({ defaultFeatures, rootFeatures }) {
             return [
                 ...defaultFeatures,
-                ...rootFeatures, 
-                FixedToolbarFeature(), 
+                ...rootFeatures,
+                FixedToolbarFeature(),
                 InlineToolbarFeature(),
                 RelationshipFeature({
                     enabledCollections: [
@@ -263,6 +267,59 @@ export default buildConfig({
                 textarea: true
             },
             redirectRelationships: ['pages']
+        }),
+        seoPlugin({
+            collections: [
+                'achievements',
+                'blogs',
+                'categories',
+                'certifications',
+                'educations',
+                'hackathons',
+                'licenses',
+                'notes',
+                'pages',
+                'projects',
+                'publications',
+                'researches',
+            ],
+            uploadsCollection: 'media',
+            generateTitle: ({ doc }) => doc?.title || 'Untitled',
+            generateDescription: async ({ doc, collectionSlug }) => {
+                switch (collectionSlug) {
+                    case 'blogs':
+                        return await generateBlogPostDescWithGemini(doc?.content)
+                    default:
+                        return 'You have to write description manually...'
+                }
+            },
+            generateURL: async ({ doc, collectionSlug, req }) => {
+                if (doc?.tenant) {
+                    const tenant = await req.payload?.findByID({
+                        collection: 'tenants',
+                        id: doc?.tenant as number,
+                        select: { domain: true }
+                    })
+
+                    const { RouteWithDocSlug } = generateRoute({
+                        domain: tenant.domain as string,
+                        slug: collectionSlug,
+                        id: doc?.id,
+                        docSlug: doc?.slug
+                    })
+
+                    return `${getServerSideURL()}/${RouteWithDocSlug}`
+                }
+                return getServerSideURL()
+            },
+            generateImage: ({ doc, collectionSlug }) => {
+                switch (collectionSlug) {
+                    case 'blogs':
+                        return doc?.featured_image
+                    default:
+                        return ''
+                }
+            },
         }),
         multiTenantPlugin<Config>({
             collections: {

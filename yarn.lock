@@ -1290,7 +1290,7 @@
   resolved "https://registry.yarnpkg.com/@payloadcms/live-preview/-/live-preview-3.54.0.tgz#1fcbc304fe5426f0a8bb88bd9a923cf07eab5944"
   integrity sha512-BJjgrbOe/lnt3RNjwtpzv23n1snEKSYhpEupYyhSuImWTQ4FfppgyxYLLdtoGP0kbwhFN1VP2+sZtfbaW42F7w==
 
-"@payloadcms/next@^3.54.0":
+"@payloadcms/next@3.54.0", "@payloadcms/next@^3.54.0":
   version "3.54.0"
   resolved "https://registry.yarnpkg.com/@payloadcms/next/-/next-3.54.0.tgz#4a6976d7db4463f3303477bf3c8bd04db5ca633c"
   integrity sha512-LgOvV4VIRlgyfp9sIBMg5llWfZMnMUmOwDbpq9n7tGAUhSb7MoOFfnEoGyAONHHJhH3/No8vtvpDGRpbFX9UJw==
@@ -1331,6 +1331,27 @@
   version "3.54.0"
   resolved "https://registry.yarnpkg.com/@payloadcms/plugin-multi-tenant/-/plugin-multi-tenant-3.54.0.tgz#102a53864fe1fdd46a2f33ddf6b3636fdd0dc14d"
   integrity sha512-89N0rV3wr43ob6Pf69Zx76A3f2KaJIYrQ8HQeGUpFKlQ4G82nrHo9tNWj2B487mm/URlp5fDkuO1bR9+exDyWQ==
+
+"@payloadcms/plugin-redirects@^3.54.0":
+  version "3.54.0"
+  resolved "https://registry.yarnpkg.com/@payloadcms/plugin-redirects/-/plugin-redirects-3.54.0.tgz#6b24957a9524b1aadf62672f8727c598a55af8e9"
+  integrity sha512-UcUkkqS9GiuOI8rDArR49GWIAgHzXhYyfEHoWfuNnAcPXTcNz8ChS6YGU19rVmVgsYBKA/vL0K/rwLNA/bfJyw==
+
+"@payloadcms/plugin-search@^3.54.0":
+  version "3.54.0"
+  resolved "https://registry.yarnpkg.com/@payloadcms/plugin-search/-/plugin-search-3.54.0.tgz#ca44d9425a29c4f9440deeab9a385d7276935415"
+  integrity sha512-ZM641HtwGBZ/DHlrUFHpLEnQaZsRIJecG8LlOg3Fwpw34KQXOfr0+F7cXdbdiNUt8/IM4UmfKy57DfmdHWswBQ==
+  dependencies:
+    "@payloadcms/next" "3.54.0"
+    "@payloadcms/ui" "3.54.0"
+
+"@payloadcms/plugin-seo@^3.54.0":
+  version "3.54.0"
+  resolved "https://registry.yarnpkg.com/@payloadcms/plugin-seo/-/plugin-seo-3.54.0.tgz#f2574194440ce41d3e8288c4c36e668433a9fdcf"
+  integrity sha512-pDJkktFTlPXqJTq7Upg/FacfvXWL9lLgW0UPlp8Obs+BrKiI8DWW+svj6Eghlu9aY9FNj812sjILkzcFODuQ2A==
+  dependencies:
+    "@payloadcms/translations" "3.54.0"
+    "@payloadcms/ui" "3.54.0"
 
 "@payloadcms/richtext-lexical@^3.54.0":
   version "3.54.0"
