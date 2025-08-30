@@ -15,7 +15,7 @@ export const Hero: Block = {
             label: 'Headline',
         },
         {
-            type: 'relationship',
+            type: 'upload',
             relationTo: 'media',
             name: 'profile',
             label: 'Profile Image'
