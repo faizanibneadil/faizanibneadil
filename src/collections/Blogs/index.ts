@@ -34,11 +34,25 @@ export const Blogs: CollectionConfig<'blogs'> = {
             })
         },
         {
+            type: 'richText',
+            name: 'description',
+            label: false,
+            admin: {
+                description: 'Blog short description.'
+            },
+            editor: lexicalEditor({
+                features({ defaultFeatures, rootFeatures, }) {
+                    return [...defaultFeatures, ...rootFeatures]
+                },
+            })
+        },
+        {
             type: 'upload',
             name: 'featured_image',
             label: 'Featured Image',
             relationTo: 'media',
             hasMany: false,
+            required: true,
             admin: {
                 position: 'sidebar'
             }

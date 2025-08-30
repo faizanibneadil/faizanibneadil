@@ -13,6 +13,6 @@ export default async (pase: unknown, { defaultConfig }: { defaultConfig: NextCon
     poweredByHeader: false,
     turbopack: {
       root: __dirname
-    }
+    },
   }, { devBundleServerPackages: false })
 }
