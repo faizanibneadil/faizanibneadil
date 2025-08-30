@@ -25,7 +25,7 @@ export default async function Page({ params }: Props) {
   const page = await queryPageBySlug({ slug, domain })
   if (!page || !domain) return notFound()
   return (
-    <main className="flex flex-col min-h-[100dvh] space-y-10">
+    <main className="flex flex-col min-h-[100dvh]">
       {/* <RefreshRouteOnSave /> */}
       {isLayout(page?.pageMode?.mode) && (
         <BlocksRenderer blocks={page.layout} />
@@ -47,8 +47,6 @@ const queryPageBySlug = cache(async ({ slug, domain }: { slug: string, domain: s
     collection: 'pages',
     limit: 1,
     pagination: false,
-    overrideAccess: false,
-    draft: false,
     where: {
       and: [
         { slug: { equals: slug } },

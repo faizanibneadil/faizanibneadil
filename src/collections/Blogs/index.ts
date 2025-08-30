@@ -1,5 +1,6 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { NavigationGroups } from "@/constants";
+import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 // import { VersionConfig } from "@/utilities/version-config";
@@ -26,19 +27,23 @@ export const Blogs: CollectionConfig<'blogs'> = {
             type: 'richText',
             name: 'content',
             label: false,
-            editor: lexicalEditor()
+            editor: lexicalEditor({
+                features({ defaultFeatures, rootFeatures, }) {
+                    return [...defaultFeatures, ...rootFeatures]
+                },
+            })
         },
         {
-            type: 'relationship',
+            type: 'upload',
             name: 'featured_image',
             label: 'Featured Image',
             relationTo: 'media',
             hasMany: false,
             admin: {
-                appearance: 'drawer',
                 position: 'sidebar'
             }
         },
+        ...slugField(),
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],

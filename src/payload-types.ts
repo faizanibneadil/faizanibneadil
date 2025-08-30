@@ -915,6 +915,7 @@ export interface Achievement {
  */
 export interface User {
   id: number;
+  profile?: (number | null) | Media;
   roles?: TUserRole;
   username?: string | null;
   tenants?: TUserTenants;
@@ -1020,6 +1021,8 @@ export interface Blog {
     [k: string]: unknown;
   } | null;
   featured_image?: (number | null) | Media;
+  slug?: string | null;
+  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1448,6 +1451,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  profile?: T;
   roles?: T;
   username?: T;
   tenants?: T | TUserTenantsSelect<T>;
@@ -1540,6 +1544,8 @@ export interface BlogsSelect<T extends boolean = true> {
   title?: T;
   content?: T;
   featured_image?: T;
+  slug?: T;
+  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;

@@ -15,6 +15,7 @@ import Link from "next/link";
 import React from "react";
 import { Dates } from "./dates";
 import { IconRenderer } from "./ui/icon-renderer";
+import { getClientSideURL } from "@/utilities/getURL";
 
 type Props = Exclude<Exclude<IProjectProps['projects'], null | undefined>[0], number>
 
@@ -46,7 +47,7 @@ export function ProjectCard({
         )} */}
         {thumbnail && (
           <Image
-            src={thumbnail && typeof thumbnail === 'object' && thumbnail?.url ? thumbnail?.url : ''}
+            src={thumbnail && typeof thumbnail === 'object' && thumbnail?.filename ? `${getClientSideURL()}/api/media/file/${thumbnail?.filename}` : ''}
             alt={title}
             className="h-40 w-full overflow-hidden object-cover object-top"
             fetchPriority="high"

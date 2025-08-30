@@ -1,6 +1,6 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { FixedToolbarFeature, lexicalEditor, InlineToolbarFeature } from '@payloadcms/richtext-lexical'
+import { FixedToolbarFeature, lexicalEditor, InlineToolbarFeature, RelationshipFeature } from '@payloadcms/richtext-lexical'
 import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 
@@ -170,7 +170,28 @@ export default buildConfig({
     globals: [],
     editor: lexicalEditor({
         features({ defaultFeatures, rootFeatures }) {
-            return [...defaultFeatures, ...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
+            return [
+                ...defaultFeatures,
+                ...rootFeatures, 
+                FixedToolbarFeature(), 
+                InlineToolbarFeature(),
+                RelationshipFeature({
+                    enabledCollections: [
+                        'achievements',
+                        'blogs',
+                        'certifications',
+                        'educations',
+                        'socials',
+                        'skills',
+                        'researches',
+                        'publications',
+                        'projects',
+                        'pages',
+                        'notes',
+                        'licenses',
+                    ]
+                })
+            ]
         },
     }),
     secret: process.env.PAYLOAD_SECRET || '',

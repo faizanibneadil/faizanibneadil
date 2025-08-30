@@ -39,11 +39,18 @@ export const Users: CollectionConfig<'users'> = {
   },
   admin: {
     useAsTitle: 'email',
-    group: NavigationGroups.management
+    group: NavigationGroups.management,
   },
   auth: true,
   endpoints: [externalUsersLogin],
   fields: [
+    {
+      type: 'upload',
+      name: 'profile',
+      relationTo: 'media',
+      label: 'Profile Avatar',
+      admin:{ position: 'sidebar'}
+    },
     {
       admin: {
         position: 'sidebar',
