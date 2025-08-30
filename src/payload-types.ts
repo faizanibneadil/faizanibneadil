@@ -1020,7 +1020,25 @@ export interface Blog {
     };
     [k: string]: unknown;
   } | null;
-  featured_image?: (number | null) | Media;
+  /**
+   * Blog short description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  featured_image: number | Media;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -1543,6 +1561,7 @@ export interface BlogsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
   content?: T;
+  description?: T;
   featured_image?: T;
   slug?: T;
   slugLock?: T;

@@ -4,6 +4,8 @@ import { getClientSideURL } from "@/utilities/getURL";
 import Image from "next/image";
 import Link from "next/link";
 import { DataFromCollectionSlug, PaginatedDocs } from "payload"
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
+import { RichText } from "@payloadcms/richtext-lexical/react";
 
 const BLUR_FADE_DELAY = 0.04;
 export function Blogs(props: PaginatedDocs<DataFromCollectionSlug<'blogs'>>) {
@@ -15,10 +17,7 @@ export function Blogs(props: PaginatedDocs<DataFromCollectionSlug<'blogs'>>) {
                 delay={BLUR_FADE_DELAY * 12 + id * 0.05}
             >
                 <Card className="flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full">
-                    <Link
-                        href={"#"}
-                        className="block cursor-pointer"
-                    >
+                    <Link href={"#"} className="block cursor-pointer">
                         {blog?.featured_image && (
                             <Image
                                 src={blog.featured_image && typeof blog.featured_image === 'object' && blog?.featured_image?.filename ? `${getClientSideURL()}/api/media/file/${blog.featured_image?.filename}` : ''}
@@ -33,7 +32,12 @@ export function Blogs(props: PaginatedDocs<DataFromCollectionSlug<'blogs'>>) {
                         )}
                     </Link>
                     <CardHeader className="px-2">
-                        <CardTitle className="mt-1 text-base">{blog.title}</CardTitle>
+                        <div className="space-y-1">
+                            <CardTitle className="mt-1 text-base">{blog.title}</CardTitle>
+                            {blog?.description && (<div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
+                                <RichText data={blog.description as SerializedEditorState} />
+                            </div>)}
+                        </div>
                     </CardHeader>
                     <CardFooter></CardFooter>
                 </Card>
