@@ -69,14 +69,13 @@ export const Educations: CollectionConfig<'educations'> = {
             ]
         },
         {
-            type: 'relationship',
+            type: 'upload',
             relationTo: 'media',
             name: 'image',
             label: 'Avatar',
             required: true,
             hasMany: false,
             admin: {
-                appearance: 'drawer',
                 position: 'sidebar'
             }
         }

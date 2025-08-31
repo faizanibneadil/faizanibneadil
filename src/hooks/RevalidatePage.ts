@@ -7,13 +7,17 @@ import { BasePayload } from 'payload'
 import React from 'react'
 
 const getDomain = React.cache(async ({ payload, headers }: { payload: BasePayload, headers: Headers }) => {
-    const tenant = await payload?.findByID({
-        collection: 'tenants',
-        id: getTenantFromCookie(headers, 'number') as number,
-        select: { domain: true }
-    })
-
-    return tenant?.domain || null
+    try {
+        const tenant = await payload?.findByID({
+            collection: 'tenants',
+            id: getTenantFromCookie(headers, 'number') as number,
+            select: { domain: true }
+        })
+        return tenant?.domain || null
+    } catch (error) {
+        payload.logger.warn(error, 'Something went wrong to fetch domain')
+        return null
+    }
 })
 
 export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
@@ -26,16 +30,18 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
         collection,
     }) => {
         const domain = await getDomain({ headers, payload })
-        const { RootRoute, Route } = generateRoute({
-            domain,
-            slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
-        })
-        if (!context.disableRevalidate) {
-            invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
-            invalidateRootRoute && revalidatePath(RootRoute)
-            payload.logger.info(`Revalidating page at [PATH]:${Route}`)
-            revalidatePath(Route)
-            revalidateTag('pages-sitemap')
+        if (domain) {
+            const { RootRoute, Route } = generateRoute({
+                domain,
+                slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
+            })
+            if (!context.disableRevalidate) {
+                invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
+                invalidateRootRoute && revalidatePath(RootRoute)
+                payload.logger.info(`Revalidating page at [PATH]:${Route}`)
+                revalidatePath(Route)
+                revalidateTag('pages-sitemap')
+            }
         }
         return doc
     }
@@ -50,16 +56,18 @@ export const RevalidatePageAfterDelete: AppCollectionAfterDeleteHook<Page, {
         collection
     }) => {
         const domain = await getDomain({ headers, payload })
-        const { RootRoute, Route } = generateRoute({
-            domain,
-            slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
-        })
-        if (!context.disableRevalidate) {
-            invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
-            invalidateRootRoute && revalidatePath(RootRoute)
-            payload.logger.info(`Revalidating page at [PATH]:${Route}`)
-            revalidatePath(Route)
-            revalidateTag('pages-sitemap')
+        if(domain){
+            const { RootRoute, Route } = generateRoute({
+                domain,
+                slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
+            })
+            if (!context.disableRevalidate) {
+                invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
+                invalidateRootRoute && revalidatePath(RootRoute)
+                payload.logger.info(`Revalidating page at [PATH]:${Route}`)
+                revalidatePath(Route)
+                revalidateTag('pages-sitemap')
+            }
         }
 
         return doc

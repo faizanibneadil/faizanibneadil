@@ -124,7 +124,7 @@ export const Projects: CollectionConfig<'projects'> = {
             maxRows: 5
         },
         {
-            type: 'relationship',
+            type: 'upload',
             name: 'thumbnail',
             label: 'Thumbnail',
             relationTo: 'media',
@@ -132,7 +132,6 @@ export const Projects: CollectionConfig<'projects'> = {
             hasMany: false,
             admin: {
                 description: 'Provide project thumbnail.',
-                appearance: 'drawer',
                 position: 'sidebar'
             }
         },

@@ -70,8 +70,8 @@ export const Icons: CollectionConfig<'icons'> = {
         },
         ...slugField()
     ],
-    // hooks: {
-    //     afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
-    //     afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
-    // }
+    hooks: {
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
+    }
 }

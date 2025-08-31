@@ -90,14 +90,13 @@ export const Achievements: CollectionConfig<'achievements'> = {
             maxRows: 5
         },
         {
-            type: 'relationship',
+            type: 'upload',
             relationTo: 'media',
             name: 'image',
             label: 'Avatar',
             required: true,
             hasMany: false,
             admin: {
-                appearance: 'drawer',
                 position: 'sidebar'
             }
         }

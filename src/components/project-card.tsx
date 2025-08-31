@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { IProjectProps } from "@/payload-types";
 import { getPayloadConfig } from "@/utilities/getPayloadConfig";
+import { getMediaUrl } from "@/utilities/getURL";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 import { RichText } from '@payloadcms/richtext-lexical/react';
 import Image from "next/image";
@@ -15,7 +16,6 @@ import Link from "next/link";
 import React from "react";
 import { Dates } from "./dates";
 import { IconRenderer } from "./ui/icon-renderer";
-import { getClientSideURL } from "@/utilities/getURL";
 
 type Props = Exclude<Exclude<IProjectProps['projects'], null | undefined>[0], number>
 
@@ -47,7 +47,7 @@ export function ProjectCard({
         )} */}
         {thumbnail && (
           <Image
-            src={thumbnail && typeof thumbnail === 'object' && thumbnail?.filename ? `${getClientSideURL()}/api/media/file/${thumbnail?.filename}` : ''}
+            src={getMediaUrl(thumbnail)}
             alt={title}
             className="h-40 w-full overflow-hidden object-cover object-top"
             fetchPriority="high"

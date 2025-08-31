@@ -1,5 +1,6 @@
 // import { RefreshRouteOnSave } from "@/components/RefreshRouteOnSave";
 import type { Page } from "@/payload-types";
+import { PagePropsWithParams } from "@/types";
 import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import dynamic from "next/dynamic";
 // import { headers as getHeaders } from 'next/headers';
@@ -13,16 +14,12 @@ const CollectionRenderer = dynamic(() => import("@/collections").then(({ Collect
   return CollectionRenderer
 }), { ssr: true })
 
-type Props = {
-  params: Promise<{ slug: CollectionSlug, domain: string }>
-}
-
 const isLayout = (mode: Page['pageMode']['mode']) => mode === 'layout'
 const isCollection = (mode: Page['pageMode']['mode']) => mode === 'collection'
 
-export default async function Page({ params }: Props) {
+export default async function Page({ params }: PagePropsWithParams) {
   const { slug = 'home', domain } = await params
-  const page = await queryPageBySlug({ slug, domain })
+  const page = await queryPageBySlug({ slug: slug as CollectionSlug, domain })
   if (!page || !domain) return notFound()
   return (
     <main className="flex flex-col min-h-[100dvh]">
@@ -31,14 +28,14 @@ export default async function Page({ params }: Props) {
         <BlocksRenderer blocks={page.layout} />
       )}
       {isCollection(page?.pageMode?.mode) && (
-        <CollectionRenderer params={params as any} configurations={page?.configurations} />
+        <CollectionRenderer params={params} configurations={page?.configurations} />
       )}
     </main>
   )
 }
 
 
-const queryPageBySlug = cache(async ({ slug, domain }: { slug: string, domain: string }) => {
+const queryPageBySlug = cache(async ({ slug, domain }: Awaited<PagePropsWithParams['params']>) => {
   // const { isEnabled: isDraftMode } = await draftMode()
   // const headers = await getHeaders()
   const payload = await getPayloadConfig()

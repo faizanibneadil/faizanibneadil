@@ -1,11 +1,20 @@
+import { PagePropsWithParams } from "@/types"
+import { generateRoute } from "@/utilities/generateRoute"
+import Link from "next/link"
 import { DataFromCollectionSlug, PaginatedDocs } from "payload"
 
-export function Skills(props: PaginatedDocs<DataFromCollectionSlug<'skills'>>) {
-    const { docs } = props || {}
+type Props = { collection: PaginatedDocs<DataFromCollectionSlug<'skills'>>, params: Awaited<PagePropsWithParams['params']> }
+export function Skills(props: Props) {
+    const { collection: { docs }, params } = props || {}
     const projects = docs.map(doc => {
+        const { RouteWithDocSlug } = generateRoute({
+            domain: params.domain as string,
+            slug: params.slug as string,
+            docSlug: params.id as string
+        })
         return (
             <div key={doc.id} className="flex flex-col gap-4">
-                <h3>{doc.title}</h3>
+                <Link href={{ pathname: RouteWithDocSlug }}><h3>{doc.title}</h3></Link>
                 <p>Short Descriptin Of The Skills</p>
             </div>
         )
