@@ -1,10 +1,12 @@
 import BlurFade from "@/components/magicui/blur-fade"
 import { ProjectCard } from "@/components/project-card"
+import { PagePropsWithParams } from "@/types";
 import { DataFromCollectionSlug, PaginatedDocs } from "payload"
 
+type Props = { collection: PaginatedDocs<DataFromCollectionSlug<'projects'>>, params: Awaited<PagePropsWithParams['params']> }
 const BLUR_FADE_DELAY = 0.04;
-export function Projects(props: PaginatedDocs<DataFromCollectionSlug<'projects'>>) {
-    const { docs } = props || {}
+export function Projects(props: Props) {
+    const { collection: { docs } } = props || {}
     const projects = docs.map((project, id) => {
         return (
             <BlurFade

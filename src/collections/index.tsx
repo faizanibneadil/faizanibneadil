@@ -1,11 +1,12 @@
 import { Page } from "@/payload-types"
+import { PagePropsWithParams } from "@/types"
 import { getPayloadConfig } from "@/utilities/getPayloadConfig"
 import dynamic from "next/dynamic"
 import { CollectionSlug, DataFromCollectionSlug, PaginatedDocs } from "payload"
 import React from "react"
 
 type TCollectionComponents = {
-    [K in CollectionSlug]?: React.ComponentType<PaginatedDocs<DataFromCollectionSlug<K>>>
+    [K in CollectionSlug]?: React.ComponentType<{ collection: PaginatedDocs<DataFromCollectionSlug<K>>, params: Awaited<PagePropsWithParams['params']>  }>
 }
 
 const _Collections: TCollectionComponents = {
@@ -44,23 +45,24 @@ const _Collections: TCollectionComponents = {
     }), { ssr: true })
 }
 
-export async function CollectionRenderer(props: { params: Promise<{ slug: CollectionSlug, domain: string }>, configurations: Page['configurations'] }) {
+export async function CollectionRenderer(props: { params: PagePropsWithParams['params'], configurations: Page['configurations'] }) {
     const { params, configurations } = props || {}
-    const { slug, domain } = (await params)
+    const { slug, domain } = await params
+    const paramsToSend = await params
     
     const collectionToRenderProps = await queryCollectionBySlug({ 
         slug: configurations && configurations?.slug === slug ? slug : configurations?.slug as CollectionSlug, 
         domain 
     })
-    const CollectionToRender = _Collections[slug]
+    const CollectionToRender = _Collections[slug!]
     // @ts-expect-error
-    return slug && slug in _Collections ? <CollectionToRender {...collectionToRenderProps} /> : null
+    return slug && slug in _Collections ? <CollectionToRender collection={collectionToRenderProps} params={paramsToSend} /> : null
 }
 
-const queryCollectionBySlug = React.cache(async ({ slug, domain }: { slug: CollectionSlug, domain: string }) => {
+const queryCollectionBySlug = React.cache(async ({ slug, domain }: Awaited<PagePropsWithParams['params']>) => {
     const payload = await getPayloadConfig()
     const result = await payload.find({
-        collection: slug,
+        collection: slug!,
         pagination: true,
         where: { 'tenant.slug': { equals: domain } }
     })
