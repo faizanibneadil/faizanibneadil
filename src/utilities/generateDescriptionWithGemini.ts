@@ -2,7 +2,7 @@ import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintex
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 
 
-export async function generateBlogPostDescWithGemini(data: SerializedEditorState) {
+export async function generateDescriptionWithGemini(data: SerializedEditorState) {
     const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent'
     let description = ''
 
