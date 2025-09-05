@@ -346,7 +346,7 @@ export interface Project {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  description?: {
+  overview?: {
     root: {
       type: string;
       children: {
@@ -361,7 +361,21 @@ export interface Project {
     };
     [k: string]: unknown;
   } | null;
-  visitURL?: string | null;
+  detailedOverview?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   publishedAt?: string | null;
   /**
    * Provide list of skills. You used to build this project
@@ -1750,8 +1764,8 @@ export interface EducationsSelect<T extends boolean = true> {
 export interface ProjectsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  description?: T;
-  visitURL?: T;
+  overview?: T;
+  detailedOverview?: T;
   publishedAt?: T;
   Skills?: T;
   dates?:

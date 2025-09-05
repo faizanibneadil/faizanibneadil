@@ -23,14 +23,23 @@ export const Projects: CollectionConfig<'projects'> = {
         TitleField(),
         {
             type: 'richText',
-            name: 'description',
-            editor: lexicalEditor(),
-            label: 'Description'
+            name: 'overview',
+            editor: lexicalEditor({
+                features({ defaultFeatures, rootFeatures, }) {
+                    return [...defaultFeatures, ...rootFeatures]
+                },
+            }),
+            label: 'Overview'
         },
         {
-            type: 'text',
-            name: 'visitURL',
-            label: 'Visit URL',
+            type: 'richText',
+            name: 'detailedOverview',
+            editor: lexicalEditor({
+                features({ defaultFeatures, rootFeatures, }) {
+                    return [...defaultFeatures, ...rootFeatures]
+                },
+            }),
+            label: 'Detailed Overview'
         },
         {
             name: 'publishedAt',

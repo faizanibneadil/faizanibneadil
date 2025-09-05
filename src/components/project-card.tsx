@@ -26,16 +26,11 @@ export function ProjectCard({
   links,
   dates,
   thumbnail,
-  visitURL,
-  description
+  overview,
 }: Props) {
   return (
     <Card className="flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full">
-      <Link
-        href={visitURL || "#"}
-        className="block cursor-pointer"
-      >
-        {/* {video && (
+      {/* {video && (
           <video
             src={video}
             autoPlay
@@ -45,28 +40,24 @@ export function ProjectCard({
             className="pointer-events-none mx-auto h-40 w-full object-cover object-top" // needed because random black line at bottom of video
           />
         )} */}
-        {thumbnail && (
-          <Image
-            src={getMediaUrl(thumbnail)}
-            alt={title}
-            className="h-40 w-full overflow-hidden object-cover object-top"
-            fetchPriority="high"
-            loading="eager"
-            height={40}
-            unoptimized
-            width={200}
-          />
-        )}
-      </Link>
+      {thumbnail && (
+        <Image
+          src={getMediaUrl(thumbnail)}
+          alt={title}
+          className="h-40 w-full overflow-hidden object-cover object-top"
+          fetchPriority="high"
+          loading="eager"
+          height={40}
+          unoptimized
+          width={200}
+        />
+      )}
       <CardHeader className="px-2">
         <div className="space-y-1">
           <CardTitle className="mt-1 text-base">{title}</CardTitle>
           <Dates to={dates?.to} from={dates?.from} />
-          <div className="hidden font-sans text-xs underline print:visible">
-            {visitURL?.replace("https://", "").replace("www.", "").replace("/", "")}
-          </div>
           <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
-            <RichText data={description as SerializedEditorState} />
+            <RichText data={overview as SerializedEditorState} />
           </div>
         </div>
       </CardHeader>
