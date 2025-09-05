@@ -52,6 +52,8 @@ import { getServerSideURL } from './utilities/getURL'
 import { superAdminOrTenantAdminAccess } from '@/access/superAdminOrTenantAdmin'
 import { generateRoute } from './utilities/generateRoute';
 import { generateDescriptionWithGemini } from './utilities/generateDescriptionWithGemini';
+import { seoGemini } from './utilities/seo-gemini';
+import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext';
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -284,22 +286,59 @@ export default buildConfig({
                 'researches',
             ],
             uploadsCollection: 'media',
-            generateTitle: ({ doc }) => doc?.title || 'Untitled',
+            generateTitle: async ({ doc, collectionSlug }) => {
+                const fallbackTitle = doc?.title || 'Untitled'
+                switch (collectionSlug) {
+                    case 'achievements':
+                    case 'blogs':
+                    case 'categories':
+                    case 'certifications':
+                    case 'educations':
+                    case 'hackathons':
+                    case 'licenses':
+                    case 'notes':
+                    case 'pages':
+                    case 'projects':
+                    case 'researches':
+                    case 'publications':
+                        return await seoGemini({
+                            collection: collectionSlug!,
+                            entity: 'title',
+                            data: doc?.title
+                        })
+                    default:
+                        return fallbackTitle;
+                }
+
+            },
             generateDescription: async ({ doc, collectionSlug }) => {
                 switch (collectionSlug) {
                     case 'blogs':
                     case 'notes':
-                        return await generateDescriptionWithGemini(doc?.content)
+                        return await seoGemini({
+                            collection: collectionSlug,
+                            entity: 'description',
+                            data: convertLexicalToPlaintext({ data: doc?.content })
+                        })
                     case 'achievements':
                     case 'categories':
                     case 'certifications':
                     case 'educations':
                     case 'hackathons':
                     case 'licenses':
-                    case 'projects':
                     case 'publications':
                     case 'researches':
-                        return await generateDescriptionWithGemini(doc?.description)
+                        return await seoGemini({
+                            collection: collectionSlug,
+                            entity: 'description',
+                            data: convertLexicalToPlaintext({ data: doc?.description })
+                        })
+                    case 'projects':
+                        return await seoGemini({
+                            collection: collectionSlug,
+                            entity: 'description',
+                            data: convertLexicalToPlaintext({ data: doc?.detailedOverview })
+                        })
                     default:
                         return 'You have to write description manually...'
                 }
