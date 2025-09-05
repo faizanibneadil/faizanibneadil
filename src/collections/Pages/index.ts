@@ -16,36 +16,6 @@ export const Pages: CollectionConfig<'pages'> = {
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.portfolio,
-        // livePreview: {
-        //     url: async ({ data, req: { payload } }) => {
-        //         const headers = await getHeaders()
-        //         const tenant = await payload?.findByID({
-        //             collection: 'tenants',
-        //             id: getTenantFromCookie(headers, 'number') as number,
-        //             select: { domain: true }
-        //         })
-        //         return `${getServerSideURL()}/${tenant?.domain}/p/${data?.slug}`
-        //     }
-        // },
-        // preview: async (doc, { req: { payload } }) => {
-        //     const headers = await getHeaders()
-        //     if (getTenantFromCookie(headers, 'number')) {
-        //         const tenant = await payload?.findByID({
-        //             collection: 'tenants',
-        //             id: getTenantFromCookie(headers, 'number') as number,
-        //             select: { domain: true }
-        //         })
-        //         const encodedParams = new URLSearchParams({
-        //             slug: doc?.slug as string,
-        //             collection: 'pages',
-        //             path: `/${tenant?.domain}/p/${doc?.slug}`,
-        //             previewSecret: process.env.PREVIEW_SECRET || '',
-        //         })
-        //         return `${getServerSideURL()}/preview?${encodedParams.toString()}`
-        //     }
-
-        //     return null
-        // },
     },
     access: {
         create: superAdminOrTenantAdminAccess,
