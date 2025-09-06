@@ -115,7 +115,7 @@ export interface Config {
     certifications: Certification;
     publications: Publication;
     licenses: License;
-    categories: Category;
+    industries: Industry;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-locked-documents': PayloadLockedDocument;
@@ -142,7 +142,7 @@ export interface Config {
     certifications: CertificationsSelect<false> | CertificationsSelect<true>;
     publications: PublicationsSelect<false> | PublicationsSelect<true>;
     licenses: LicensesSelect<false> | LicensesSelect<true>;
-    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    industries: IndustriesSelect<false> | IndustriesSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -997,7 +997,7 @@ export interface User {
   roles?: TUserRole;
   username?: string | null;
   tenants?: TUserTenants;
-  category?: (number | null) | Category;
+  Industry?: (number | null) | Industry;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1019,9 +1019,9 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
+ * via the `definition` "industries".
  */
-export interface Category {
+export interface Industry {
   id: number;
   title: string;
   /**
@@ -1044,14 +1044,6 @@ export interface Category {
   } | null;
   slug?: string | null;
   slugLock?: boolean | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1521,8 +1513,8 @@ export interface PayloadLockedDocument {
         value: number | License;
       } | null)
     | ({
-        relationTo: 'categories';
-        value: number | Category;
+        relationTo: 'industries';
+        value: number | Industry;
       } | null)
     | ({
         relationTo: 'forms';
@@ -1583,7 +1575,7 @@ export interface UsersSelect<T extends boolean = true> {
   roles?: T;
   username?: T;
   tenants?: T | TUserTenantsSelect<T>;
-  category?: T;
+  Industry?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -2081,20 +2073,13 @@ export interface LicensesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories_select".
+ * via the `definition` "industries_select".
  */
-export interface CategoriesSelect<T extends boolean = true> {
+export interface IndustriesSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   slug?: T;
   slugLock?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;

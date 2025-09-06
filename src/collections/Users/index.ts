@@ -94,10 +94,10 @@ export const Users: CollectionConfig<'users'> = {
     },
     {
       type: 'relationship',
-      relationTo: 'categories',
+      relationTo: 'industries',
       hasMany: false,
       saveToJWT: true,
-      name: 'category',
+      name: 'Industry',
       admin: {
         allowCreate:false,
         allowEdit:false,

@@ -8,8 +8,8 @@ import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/Re
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
 
-export const Categories: CollectionConfig<'categories'> = {
-    slug: 'categories',
+export const Industries: CollectionConfig<'industries'> = {
+    slug: 'industries',
     trash: true,
     admin: {
         useAsTitle: 'title',

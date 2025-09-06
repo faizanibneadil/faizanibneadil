@@ -3,7 +3,7 @@ import { SignUp } from '@/app/(frontend)/(web)/_components/signup'
 import { Branding } from '@/components/branding'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { Category } from '@/payload-types'
+import { Industry } from '@/payload-types'
 import { Menu, X } from 'lucide-react'
 import { useScroll } from 'motion/react'
 import Link from 'next/link'
@@ -19,7 +19,7 @@ const menuItems = [
 
 export const HeroHeader: React.FC<{
     isAuthenticated: string | undefined,
-    getFields: Promise<PaginatedDocs<Pick<Category, 'id' | 'title' | 'slug'>>>
+    getFields: Promise<PaginatedDocs<Pick<Industry, 'id' | 'title' | 'slug'>>>
 }> = ({ isAuthenticated, getFields }) => {
     const [menuState, setMenuState] = React.useState(false)
     const [scrolled, setScrolled] = React.useState(false)

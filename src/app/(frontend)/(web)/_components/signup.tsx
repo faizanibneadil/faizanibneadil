@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/credenza"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Category } from "@/payload-types"
+import { Industry } from "@/payload-types"
 import { PaginatedDocs } from "payload"
 import React from "react"
 
@@ -30,7 +30,7 @@ import { signup } from "@/actions/signup"
 import { cn } from "@/lib/utils"
 
 export function SignUp({ getFields }: {
-  getFields: Promise<PaginatedDocs<Pick<Category, 'id' | 'title' | 'slug'>>>
+  getFields: Promise<PaginatedDocs<Pick<Industry, 'id' | 'title' | 'slug'>>>
 }) {
   const fields = React.use(getFields)
   const [state, Signup, isPending] = React.useActionState(signup, {
