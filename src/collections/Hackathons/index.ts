@@ -13,7 +13,11 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.portfolio,
-        hidden: ({ user }) => user ? user?.category?.slug === 'information_technology' : false
+        hidden: ({ user }) => user ? (
+            user?.industry?.slug === 'game-development' ||
+            user?.industry?.slug === 'data-scienceanalytics' ||
+            user?.industry?.slug === 'web-and-software-development'
+        ) : false
     },
     access: {
         create: superAdminOrTenantAdminAccess,

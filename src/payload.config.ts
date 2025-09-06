@@ -28,7 +28,7 @@ import { Menus } from '@/collections/Menus'
 import { Socials } from '@/collections/Socials'
 import { Educations } from '@/collections/Educations'
 import { Icons } from '@/collections/Icons'
-import { Categories } from '@/collections/Categories'
+import { Industries } from '@/collections/Industries'
 
 import { Hero } from '@/blocks/Hero'
 import { Contact } from '@/blocks/Contact'
@@ -155,7 +155,7 @@ export default buildConfig({
         Certifications,
         Publications,
         Licenses,
-        Categories
+        Industries
     ],
     blocks: [
         Hero,
@@ -291,7 +291,7 @@ export default buildConfig({
                 switch (collectionSlug) {
                     case 'achievements':
                     case 'blogs':
-                    case 'categories':
+                    case 'industries':
                     case 'certifications':
                     case 'educations':
                     case 'hackathons':
@@ -321,7 +321,7 @@ export default buildConfig({
                             data: convertLexicalToPlaintext({ data: doc?.content })
                         })
                     case 'achievements':
-                    case 'categories':
+                    case 'industries':
                     case 'certifications':
                     case 'educations':
                     case 'hackathons':
