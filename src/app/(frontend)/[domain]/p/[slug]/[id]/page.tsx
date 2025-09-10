@@ -1,33 +1,52 @@
-import { PagePropsWithParams } from "@/types"
+import React from "react"
+import dynamic from "next/dynamic"
+import type { PagePropsWithParams } from "@/types"
 import { getPayloadConfig } from "@/utilities/getPayloadConfig"
 import { CollectionSlug, DataFromCollectionSlug } from "payload"
-import React from "react"
 
 
 type TCollectionComponents = {
     [K in CollectionSlug]?: React.ComponentType<{ entity: DataFromCollectionSlug<K>, params: Awaited<PagePropsWithParams['params']> }>
 }
 
-function RenderView(params: Awaited<PagePropsWithParams['params']>) {
-    return `Render ${params.slug} single view`
-}
-
 const _Collection: TCollectionComponents = {
-    blogs: ({ params, entity }) => RenderView(params),
-    notes: ({ params, entity }) => RenderView(params),
-    projects: ({ params, entity }) => RenderView(params),
-    achievements: ({ params, entity }) => RenderView(params),
-    certifications: ({ params, entity }) => RenderView(params),
-    educations: ({ params, entity }) => RenderView(params),
-    hackathons: ({ params, entity }) => RenderView(params),
-    licenses: ({ params, entity }) => RenderView(params),
-    publications: ({ params, entity }) => RenderView(params),
-    researches: ({ params, entity }) => RenderView(params),
-    skills: ({ params, entity }) => RenderView(params)
+    blogs: dynamic(() => import('@/collections/Blogs/components/entity').then(({ BlogEntity }) => {
+        return BlogEntity
+    })),
+    notes: dynamic(() => import('@/collections/Notes/components/entity').then(({ NoteEntity }) => {
+        return NoteEntity
+    })),
+    projects: dynamic(() => import('@/collections/Projects/components/entity').then(({ ProjectEntity }) => {
+        return ProjectEntity
+    })),
+    achievements: dynamic(() => import('@/collections/Achievements/components/entity').then(({ AchievementEntity }) => {
+        return AchievementEntity
+    })),
+    certifications: dynamic(() => import('@/collections/Certifications/components/entity').then(({ CertificationEntity }) => {
+        return CertificationEntity
+    })),
+    educations: dynamic(() => import('@/collections/Educations/components/entity').then(({ EducationEntity }) => {
+        return EducationEntity
+    })),
+    hackathons: dynamic(() => import('@/collections/Hackathons/components/entity').then(({ HackathonEntity }) => {
+        return HackathonEntity
+    })),
+    licenses: dynamic(() => import('@/collections/Licenses/components/entity').then(({ LicenseEntity }) => {
+        return LicenseEntity
+    })),
+    publications: dynamic(() => import('@/collections/Publications/components/entity').then(({ PublicationEntity }) => {
+        return PublicationEntity
+    })),
+    researches: dynamic(() => import('@/collections/Researches/components/entity').then(({ ResearchEntity }) => {
+        return ResearchEntity
+    })),
+    skills: dynamic(() => import('@/collections/Skills/components/entity').then(({ SkillEntity }) => {
+        return SkillEntity
+    }))
 }
 
 export default async function Page(props: PagePropsWithParams) {
-    const params = (await props.params)
+    const params = await props.params
     const entity = await queryEntityById({ params: props.params })
     const Collection = params?.slug ? _Collection[params.slug!] : () => null
     // @ts-expect-error

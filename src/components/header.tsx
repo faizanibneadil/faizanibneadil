@@ -110,9 +110,8 @@ export const HeroHeader: React.FC<{
                                         </Link>
                                     </Button>
                                 ) : (
-                                    <React.Suspense fallback='Loading ... fields ....'>
-
-                                    <SignUp getFields={getFields} />
+                                    <React.Suspense fallback={null}>
+                                        <SignUp getFields={getFields} />
                                     </React.Suspense>
                                 )}
                             </div>
