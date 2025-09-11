@@ -3,6 +3,7 @@ import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { generatePreview } from "@/utilities/generate-preview";
 // import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { CollectionConfig } from "payload";
@@ -17,7 +18,8 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
             user?.industry?.slug === 'game-development' ||
             user?.industry?.slug === 'data-scienceanalytics' ||
             user?.industry?.slug === 'web-and-software-development'
-        ) : false
+        ) : false,
+        preview: generatePreview({ collection: 'hackathons' })
     },
     access: {
         create: superAdminOrTenantAdminAccess,

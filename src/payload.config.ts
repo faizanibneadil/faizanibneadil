@@ -92,6 +92,7 @@ export default buildConfig({
             baseDir: path.resolve(dirname),
         },
         components: {
+            // actions: ['@/components/portfolio-preview.tsx#PortfolioPreview'],
             graphics: {
                 Logo: {
                     path: '@/components/branding.tsx',

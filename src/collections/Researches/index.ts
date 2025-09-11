@@ -3,6 +3,7 @@ import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { generatePreview } from "@/utilities/generate-preview";
 // import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { CollectionConfig } from "payload";
@@ -12,7 +13,8 @@ export const Researches: CollectionConfig<'researches'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.portfolio
+        group: NavigationGroups.portfolio,
+        preview: generatePreview({ collection: 'researches' })
     },
     access: {
         create: superAdminOrTenantAdminAccess,

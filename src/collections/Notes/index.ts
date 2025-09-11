@@ -5,6 +5,7 @@ import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin"
 import { NavigationGroups } from "@/constants";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { generatePreview } from "@/utilities/generate-preview";
 // import { VersionConfig } from "@/utilities/version-config";
 
 export const Notes: CollectionConfig<'notes'> = {
@@ -12,7 +13,8 @@ export const Notes: CollectionConfig<'notes'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.portfolio
+        group: NavigationGroups.portfolio,
+        preview: generatePreview({ collection: 'notes' })
     },
     access: {
         create: superAdminOrTenantAdminAccess,
