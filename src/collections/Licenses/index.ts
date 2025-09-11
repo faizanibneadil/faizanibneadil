@@ -3,6 +3,7 @@ import { NavigationGroups } from "@/constants";
 import { IconField } from "@/fields/icon";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { generatePreview } from "@/utilities/generate-preview";
 // import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
@@ -16,6 +17,7 @@ export const Licenses: CollectionConfig<'licenses'> = {
         hidden({ user }) {
             return user ? user?.category?.slug === 'healthcare' : false
         },
+        preview: generatePreview({ collection: 'licenses' })
     },
     access: {
         create: superAdminOrTenantAdminAccess,

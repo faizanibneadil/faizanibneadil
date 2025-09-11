@@ -4,6 +4,7 @@ import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { generatePreview } from "@/utilities/generate-preview";
 import { getServerSideURL } from "@/utilities/getURL";
 // import { VersionConfig } from "@/utilities/version-config";
 import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
@@ -16,6 +17,7 @@ export const Pages: CollectionConfig<'pages'> = {
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.portfolio,
+        preview: generatePreview({ collection: 'pages' })
     },
     access: {
         create: superAdminOrTenantAdminAccess,

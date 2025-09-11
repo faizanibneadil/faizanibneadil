@@ -3,8 +3,13 @@ import { NavigationGroups } from "@/constants";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { Blog } from "@/payload-types";
+import { generatePreview } from "@/utilities/generate-preview";
+import { getServerSideURL } from "@/utilities/getURL";
+import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
 // import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { headers as getHeaders } from "next/headers";
 import type { CollectionConfig } from "payload";
 
 
@@ -13,7 +18,8 @@ export const Blogs: CollectionConfig<'blogs'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.portfolio
+        group: NavigationGroups.portfolio,
+        preview: generatePreview({ collection: 'blogs' })
     },
     access: {
         create: superAdminOrTenantAdminAccess,

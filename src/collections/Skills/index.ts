@@ -5,6 +5,7 @@ import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { generatePreview } from "@/utilities/generate-preview";
 // import { VersionConfig } from "@/utilities/version-config";
 import type { CollectionConfig } from "payload";
 
@@ -14,7 +15,8 @@ export const Skills: CollectionConfig<'skills'> = {
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.resume,
-        defaultColumns: ['title', 'slug', 'techstack.icon']
+        defaultColumns: ['title', 'slug', 'techstack.icon'],
+        preview: generatePreview({ collection: 'skills' })
     },
     access: {
         create: superAdminOrTenantAdminAccess,

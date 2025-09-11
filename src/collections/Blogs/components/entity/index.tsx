@@ -6,5 +6,5 @@ type Props = {
 }
 export function BlogEntity(props: Props) {
     const { entity, params } = props
-    return null
+    return 'Display single blog entity...'
 }
