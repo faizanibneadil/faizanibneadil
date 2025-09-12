@@ -51,7 +51,7 @@ import { getUserTenantIDs } from './utilities/getUserTenantIDs'
 import { getServerSideURL } from './utilities/getURL'
 import { superAdminOrTenantAdminAccess } from '@/access/superAdminOrTenantAdmin'
 import { generateRoute } from './utilities/generateRoute';
-import { generateDescriptionWithGemini } from './utilities/generateDescriptionWithGemini';
+// import { generateDescriptionWithGemini } from './utilities/generateDescriptionWithGemini';
 import { seoGemini } from './utilities/seo-gemini';
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext';
 

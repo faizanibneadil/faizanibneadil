@@ -5,10 +5,8 @@ import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
-import { getServerSideURL } from "@/utilities/getURL";
+// import { getServerSideURL } from "@/utilities/getURL";
 // import { VersionConfig } from "@/utilities/version-config";
-import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
-import { headers as getHeaders } from "next/headers";
 import type { CollectionConfig } from "payload";
 
 export const Pages: CollectionConfig<'pages'> = {
@@ -17,7 +15,22 @@ export const Pages: CollectionConfig<'pages'> = {
     admin: {
         useAsTitle: 'title',
         group: NavigationGroups.portfolio,
-        preview: generatePreview({ collection: 'pages' })
+        preview: generatePreview({ collection: 'pages' }),
+        // livePreview: {
+        //     url: async ({ data, req: { payload } }) => {
+        //         try {
+        //             const { domain } = await payload.findByID({
+        //                 collection: 'tenants',
+        //                 id: data?.tenant,
+        //                 select: { domain: true }
+        //             })
+        //             return getServerSideURL() + `/${domain}/p/${data?.pageMode?.mode === 'collection' ? data?.configurations?.slug ?? data?.slug : data?.slug}`
+        //         } catch (error) {
+        //             payload.logger.error(error, 'Something went wrong when fetching tenant for live preview.')
+        //             return getServerSideURL()
+        //         }
+        //     }
+        // }
     },
     access: {
         create: superAdminOrTenantAdminAccess,

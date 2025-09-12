@@ -15,7 +15,7 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "ci": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create --skip-empty && payload migrate:status && payload migrate && payload migrate:status && yarn build",
-    "ci:turbopack": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create && payload migrate:status && payload migrate && payload migrate:status && yarn build --turbopack"
+    "ci:turbopack": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create --skip-empty && payload migrate:status && payload migrate && payload migrate:status && yarn build --turbopack"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

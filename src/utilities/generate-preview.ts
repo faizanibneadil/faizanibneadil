@@ -9,7 +9,9 @@ export const generatePreview: AppGeneratePreview = ({ collection }) => {
         const { RouteWithDocSlug, PageRoute } = generateRoute({
             domain,
             slug: collection,
-            docSlug: (doc?.configurations as { slug: CollectionSlug })?.slug ?? doc?.slug as string
+            docSlug: (doc?.pageMode as { mode: 'collection' | 'layout' })?.mode === 'collection'
+                ? (doc?.configurations as { slug: CollectionSlug })?.slug ?? doc?.slug as string
+                : doc?.slug as string
         })
 
         switch (collection) {
