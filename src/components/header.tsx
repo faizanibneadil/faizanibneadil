@@ -47,7 +47,7 @@ export const HeroHeader: React.FC<{
                                 href="/"
                                 aria-label="home"
                                 className="flex items-center space-x-2">
-                                <Branding src='./skillshelf-full.svg' unoptimized alt='Skill Shelf' fill className='w-40 h-9' />
+                                <Branding darkSrc='./skillshelf-full.svg' lightSrc='./skillshelf-full.svg' unoptimized alt='Skill Shelf' fill className='w-40 h-9' />
                             </Link>
 
                             <button

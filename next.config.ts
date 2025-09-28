@@ -14,5 +14,8 @@ export default async (pase: unknown, { defaultConfig }: { defaultConfig: NextCon
     turbopack: {
       root: __dirname
     },
+    images: {
+      remotePatterns: [{ hostname: 'localhost' }]
+    }
   }, { devBundleServerPackages: false })
 }

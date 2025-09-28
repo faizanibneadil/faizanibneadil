@@ -75,13 +75,13 @@ export default buildConfig({
             icons: [{
                 type: 'image/svg',
                 rel: 'icon',
-                url: '/skillshelf-symble.svg'
+                url: '/graphics/favicon.svg'
             }],
             openGraph: {
                 title: 'SkillShelf',
                 description: 'Share you\'r skills with SkillShelf.',
                 images: [{
-                    url: `${getServerSideURL()}/skillshelf-full.svg`,
+                    url: `${getServerSideURL()}/graphics/favicon.svg`,
                     height: 600,
                     width: 800
                 }]
@@ -101,7 +101,8 @@ export default buildConfig({
                         alt: "Open Shelf Logo",
                         className: 'w-full h-40',
                         fill: true,
-                        src: '/skillshelf-full.svg',
+                        darkSrc: '/graphics/skillshelf-text-light.svg',
+                        lightSrc: '/graphics/skillshelf-text-dark.svg',
                         priority: true,
                         fetchPriority: 'high',
                         loading: 'eager',
@@ -113,9 +114,10 @@ export default buildConfig({
                     exportName: 'Branding',
                     clientProps: {
                         alt: "Open Shelf Logo",
-                        className: 'size-6',
+                        className: 'size-5',
                         fill: true,
-                        src: '/skillshelf-symble.svg',
+                        darkSrc: '/graphics/favicon.svg',
+                        lightSrc: '/graphics/favicon.svg',
                         priority: true,
                         fetchPriority: 'high',
                         loading: 'eager',
@@ -344,24 +346,26 @@ export default buildConfig({
                         return 'You have to write description manually...'
                 }
             },
-            generateURL: async ({ doc, collectionSlug, req }) => {
-                if (doc?.tenant) {
-                    const tenant = await req.payload?.findByID({
+            generateURL: async ({ doc, collectionSlug, req: { payload } }) => {
+                try {
+                    const { domain } = await payload?.findByID({
                         collection: 'tenants',
                         id: doc?.tenant as number,
                         select: { domain: true }
                     })
 
                     const { RouteWithDocSlug } = generateRoute({
-                        domain: tenant.domain as string,
+                        domain: domain as string,
                         slug: collectionSlug,
                         id: doc?.id,
                         docSlug: doc?.slug
                     })
 
-                    return `${getServerSideURL()}/${RouteWithDocSlug}`
+                    return getServerSideURL() + RouteWithDocSlug
+                } catch (error) {
+                    payload.logger.error(error, 'Something went wrong in seo generateURL fn when fetching domain.')
+                    return getServerSideURL()
                 }
-                return getServerSideURL()
             },
             generateImage: ({ doc, collectionSlug }) => {
                 switch (collectionSlug) {
