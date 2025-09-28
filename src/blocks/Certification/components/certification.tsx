@@ -19,9 +19,9 @@ export function Certification(props: ICertificationProps) {
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                                 {heading}
                             </h2>
-                            <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                            <div className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                                 <RichText data={description as SerializedEditorState} />
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </BlurFade>
