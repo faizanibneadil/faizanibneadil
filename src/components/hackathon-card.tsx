@@ -7,6 +7,7 @@ import { IHackathonProps } from "@/payload-types";
 import { IconRenderer } from "./ui/icon-renderer";
 import { getClientSideURL } from "@/utilities/getURL";
 import { Dates } from "./dates";
+import { getIconById } from "@/utilities/getIconById";
 
 type Props = Exclude<Exclude<IHackathonProps['hackathons'], null | undefined>[0], number>
 
@@ -45,7 +46,7 @@ export function HackathonCard({
             <Link href={link.link} key={idx}>
               <Badge key={idx} title={link.label} className="flex gap-2">
                 {link?.icon && (
-                  <IconRenderer icon={link.icon} className='[&>svg]:size-3' />
+                  <IconRenderer icon={typeof link.icon === 'number' ? getIconById({ id: link.icon }) : link.icon} className='[&>svg]:size-3' />
                 )}
                 {link.label}
               </Badge>

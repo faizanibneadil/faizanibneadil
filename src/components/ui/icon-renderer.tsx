@@ -1,30 +1,26 @@
 import type { Icon } from '@/payload-types'
-import { getPayloadConfig } from '@/utilities/getPayloadConfig'
-import React from 'react'
-import { Badge } from './badge'
+// import { getPayloadConfig } from '@/utilities/getPayloadConfig'
+// import React from 'react'
+// import { Badge } from './badge'
 
-export async function IconRenderer(props: { icon: number | Icon, className: string }) {
+export async function IconRenderer(props: { icon: Icon | Promise<Icon>, className: string }) {
     const { icon, className } = props || {}
+    const iconFromProps = icon instanceof Promise ? await icon : icon
 
-    if (typeof icon === 'number') {
-        return <React.Suspense fallback={<Badge variant="secondary" className={className} />}>
-            <FetchIconBeforeRender id={icon} className={className} />
-        </React.Suspense>
-    }
+    // if (typeof icon === 'number') {
+    //     return <React.Suspense fallback={<Badge variant="secondary" className={className} />}>
+    //         <FetchIconBeforeRender id={icon} className={className} />
+    //     </React.Suspense>
+    // }
 
 
-    return <div className={className} dangerouslySetInnerHTML={{ __html: (icon?.iconSpecs?.iconCode as string) || '<div>No Icon</div>' }} />
+    return <div className={className} dangerouslySetInnerHTML={{ __html: (iconFromProps?.iconSpecs?.iconCode as string) || '<div>No Icon</div>' }} />
 }
 
-async function FetchIconBeforeRender(props: { id: number, className: string }) {
-    const { id, className } = props || {}
-    const fetchIcon = await getIconById({ id })
-    return <div className={className} dangerouslySetInnerHTML={{ __html: (fetchIcon?.iconSpecs?.iconCode as string) || '<div>No Icon</div>' }} />
-}
+// async function FetchIconBeforeRender(props: { id: number, className: string }) {
+//     const { id, className } = props || {}
+//     const fetchIcon = await getIconById({ id })
+//     return <div className={className} dangerouslySetInnerHTML={{ __html: (fetchIcon?.iconSpecs?.iconCode as string) || '<div>No Icon</div>' }} />
+// }
 
 
-const getIconById = React.cache(async ({ id }: { id: number }) => {
-    const payload = await getPayloadConfig()
-    const icon = await payload.findByID({ collection: 'icons', id })
-    return icon
-})

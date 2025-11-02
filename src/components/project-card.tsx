@@ -1,3 +1,7 @@
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { RichText } from '@payloadcms/richtext-lexical/react';
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -7,16 +11,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { IProjectProps } from "@/payload-types";
-import { getPayloadConfig } from "@/utilities/getPayloadConfig";
+import { getSkillById } from "@/utilities/getSkillById";
 import { getMediaUrl } from "@/utilities/getURL";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-import { RichText } from '@payloadcms/richtext-lexical/react';
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
 import { Dates } from "./dates";
+import { Skill, SkillSkeleton } from "./render-skill";
 import { IconRenderer } from "./ui/icon-renderer";
-import { Skill } from "./render-skill";
+import { getIconById } from "@/utilities/getIconById";
 
 type Props = Exclude<Exclude<IProjectProps['projects'], null | undefined>[0], number>
 
@@ -64,9 +65,11 @@ export function ProjectCard({
       </CardHeader>
       <CardContent className="mt-auto flex flex-col px-2">
         <div className="mt-2 flex flex-wrap gap-1">
-          {Skills?.map((skill, idx) => {
-            return <Skill id={idx} skill={skill} key={`skill-${idx}`} />
-          })}
+          {Skills?.map((skill, idx) => (
+            <React.Suspense key={`skill-${idx}`} fallback={<SkillSkeleton />}>
+              <Skill id={idx} skill={typeof skill === 'number' ? getSkillById({ id: skill }) : skill} />
+            </React.Suspense>
+          ))}
         </div>
       </CardContent>
       <CardFooter className="px-2 pb-2">
@@ -76,7 +79,9 @@ export function ProjectCard({
               <Link href={link?.link} key={idx} target="_blank">
                 <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
                   {link?.icon && (
-                    <IconRenderer icon={link?.icon} className='[&>svg]:size-3' />
+                    <IconRenderer
+                      icon={typeof link?.icon === 'number' ? getIconById({ id: link?.icon }) : link?.icon}
+                      className='[&>svg]:size-3' />
                   )}
                   {link?.label}
                 </Badge>
