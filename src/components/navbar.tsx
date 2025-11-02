@@ -9,6 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { getIconById } from "@/utilities/getIconById";
 import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import Link from "next/link";
 
@@ -29,7 +30,7 @@ export default async function Navbar({ domain }: { domain: string }) {
                 <TooltipTrigger asChild>
                   <Link href={href} className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
                     {item?.icon && (
-                      <IconRenderer icon={item.icon} className='[&>svg]:size-4' />
+                      <IconRenderer icon={typeof item.icon === 'number' ? getIconById({ id: item.icon}) : item.icon} className='[&>svg]:size-4' />
                     )}
                   </Link>
                 </TooltipTrigger>
@@ -48,7 +49,7 @@ export default async function Navbar({ domain }: { domain: string }) {
                 <TooltipTrigger asChild>
                   <Link href={item?.link} target="_blank" className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
                     {item?.icon && (
-                      <IconRenderer icon={item.icon} className='[&>svg]:size-4' />
+                      <IconRenderer icon={typeof item.icon === 'number' ? getIconById({ id: item.icon}) : item.icon} className='[&>svg]:size-4' />
                     )}
                   </Link>
                 </TooltipTrigger>

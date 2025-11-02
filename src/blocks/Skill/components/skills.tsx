@@ -1,7 +1,8 @@
+import React from "react";
 import BlurFade from "@/components/magicui/blur-fade";
-import { Badge } from "@/components/ui/badge";
+import { Skill as RenderSkill, SkillSkeleton } from "@/components/render-skill";
 import { ISkillProps } from "@/payload-types";
-import { Skill as RenderSkill } from "@/components/render-skill"
+import { getSkillById } from "@/utilities/getSkillById";
 
 const BLUR_FADE_DELAY = 0.04;
 export function Skill(props: ISkillProps) {
@@ -13,9 +14,11 @@ export function Skill(props: ISkillProps) {
                     <h2 className="text-xl font-bold">Skills</h2>
                 </BlurFade>
                 <div className="flex flex-wrap gap-1">
-                    {userSkills?.map((skill, id) => {
-                        return <RenderSkill className="[&>svg]:size-18" key={`skill-${id}`} skill={skill} id={id} />
-                    })}
+                    {userSkills?.map((skill, id) => (
+                        <React.Suspense key={`skill-${id}`} fallback={<SkillSkeleton />}>
+                            <RenderSkill className="[&>svg]:size-18" skill={typeof skill === 'number' ? getSkillById({ id: skill }) : skill} id={id} />
+                        </React.Suspense>
+                    ))}
                 </div>
             </div>
         </section>

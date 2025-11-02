@@ -6,7 +6,7 @@ import { ProjectCard } from "@/components/project-card";
 
 const BLUR_FADE_DELAY = 0.04;
 export function Project(props: IProjectProps) {
-    const { heading, description, projects,blockName,blockType } = props || {}
+    const { heading, description, projects, blockName, blockType } = props || {}
     return (
         <section id="projects" aria-label={blockName ?? blockType}>
             <div className="space-y-12 w-full py-12">
