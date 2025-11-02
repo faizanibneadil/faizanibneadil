@@ -40,7 +40,7 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
                 invalidateRootRoute && revalidatePath(RootRoute)
                 payload.logger.info(`Revalidating page at [PATH]:${Route}`)
                 revalidatePath(Route)
-                revalidateTag('pages-sitemap')
+                revalidateTag('pages-sitemap','max')
             }
         }
         return doc
@@ -66,7 +66,7 @@ export const RevalidatePageAfterDelete: AppCollectionAfterDeleteHook<Page, {
                 invalidateRootRoute && revalidatePath(RootRoute)
                 payload.logger.info(`Revalidating page at [PATH]:${Route}`)
                 revalidatePath(Route)
-                revalidateTag('pages-sitemap')
+                revalidateTag('pages-sitemap','max')
             }
         }
 
