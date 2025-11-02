@@ -1,15 +1,17 @@
+import path from 'path'
+import { buildConfig, inMemoryKVAdapter } from 'payload'
+import { fileURLToPath } from 'url'
+import sharp from 'sharp'
+
+// Plugins
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { FixedToolbarFeature, lexicalEditor, InlineToolbarFeature, RelationshipFeature } from '@payloadcms/richtext-lexical'
 import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { seoPlugin } from '@payloadcms/plugin-seo';
-
-import path from 'path'
-import { buildConfig } from 'payload'
-import { fileURLToPath } from 'url'
-import sharp from 'sharp'
-
+import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
+// Collections
 import { Users } from '@/collections/Users'
 import { Media } from '@/collections/Media'
 import { Notes } from '@/collections/Notes'
@@ -29,7 +31,7 @@ import { Socials } from '@/collections/Socials'
 import { Educations } from '@/collections/Educations'
 import { Icons } from '@/collections/Icons'
 import { Industries } from '@/collections/Industries'
-
+// Blocks
 import { Hero } from '@/blocks/Hero'
 import { Contact } from '@/blocks/Contact'
 import { Education } from '@/blocks/Education'
@@ -44,7 +46,6 @@ import { License } from '@/blocks/Licenses'
 import { Certification } from '@/blocks/Certification'
 import { Achievement } from '@/blocks/Achievement'
 
-import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
 import { Config } from './payload-types'
 import { isSuperAdmin } from './access/isSuperAdmin'
 import { getUserTenantIDs } from './utilities/getUserTenantIDs'
@@ -59,6 +60,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+    kv: inMemoryKVAdapter(),
     hooks: {
         afterError: [console.log]
     },

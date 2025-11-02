@@ -16,6 +16,7 @@ import Link from "next/link";
 import React from "react";
 import { Dates } from "./dates";
 import { IconRenderer } from "./ui/icon-renderer";
+import { Skill } from "./render-skill";
 
 type Props = Exclude<Exclude<IProjectProps['projects'], null | undefined>[0], number>
 
@@ -63,22 +64,8 @@ export function ProjectCard({
       </CardHeader>
       <CardContent className="mt-auto flex flex-col px-2">
         <div className="mt-2 flex flex-wrap gap-1">
-          {Skills?.map((skill) => {
-            if (typeof skill === 'number') {
-              return (
-                <React.Suspense key={`skill-${skill}`} fallback={<Badge variant="secondary" className="w-6" />}>
-                  <Skill id={skill} />
-                </React.Suspense>
-              )
-            }
-            if (skill?.techstack?.icon) {
-              return <IconRenderer key={skill?.id} icon={skill?.techstack?.icon} className="[&>svg]:size-4" />
-            }
-            return (
-              <Badge className="px-1 py-0 text-[10px]" variant="secondary" key={skill?.id}>
-                {skill?.title}
-              </Badge>
-            )
+          {Skills?.map((skill, idx) => {
+            return <Skill id={idx} skill={skill} key={`skill-${idx}`} />
           })}
         </div>
       </CardContent>
@@ -102,22 +89,3 @@ export function ProjectCard({
   );
 }
 
-
-async function Skill(props: { id: number }) {
-  const skill = await getSkillById({ id: props.id })
-
-  return skill?.techstack?.icon ? (
-    <IconRenderer icon={skill?.techstack?.icon} className="[&>svg]:size-4" />
-  ) : (
-    <Badge className="px-1 py-0 text-[10px]" variant="secondary">
-      {skill?.title}
-    </Badge>
-  )
-
-}
-
-const getSkillById = React.cache(async ({ id }: { id: number }) => {
-  const payload = await getPayloadConfig()
-  const skill = await payload.findByID({ collection: 'skills', id })
-  return skill
-})
