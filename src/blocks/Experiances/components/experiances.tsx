@@ -1,10 +1,19 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { ResumeCard } from "@/components/resume-card";
 import { IExperianceProps } from "@/payload-types";
+import { PagePropsWithParams } from "@/types";
 
 const BLUR_FADE_DELAY = 0.04;
-export function Experiance(props:IExperianceProps) {
-    const { experiances,blockName,blockType } = props || {}
+export async function Experiance(props: { blockProps: IExperianceProps, params: PagePropsWithParams['params'] }) {
+    const {
+        blockProps: {
+            experiances,
+            blockName,
+            blockType
+        },
+        params: paramsFromProps
+    } = props || {}
+    const params = await paramsFromProps
     return (
         <section id="work" aria-label={blockName ?? blockType}>
             <div className="flex min-h-0 flex-col gap-y-3">

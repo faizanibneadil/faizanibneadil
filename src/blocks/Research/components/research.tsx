@@ -1,12 +1,23 @@
+import { RichText } from '@payloadcms/richtext-lexical/react';
+import { HackathonCard } from "@/components/hackathon-card";
 import BlurFade from "@/components/magicui/blur-fade";
 import { IResearchProps } from "@/payload-types";
-import { RichText } from '@payloadcms/richtext-lexical/react'
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import { HackathonCard } from "@/components/hackathon-card";
+import { PagePropsWithParams } from "@/types";
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 
 const BLUR_FADE_DELAY = 0.04;
-export function Research(props: IResearchProps) {
-    const { researches, heading, description,blockName,blockType } = props || {}
+export async function Research(props: { blockProps: IResearchProps, params: PagePropsWithParams['params'] }) {
+    const {
+        blockProps: {
+            researches,
+            heading,
+            description,
+            blockName,
+            blockType
+        },
+        params: paramsFromProps
+    } = props || {}
+    const params = await paramsFromProps
     return (
         <section id="researches" aria-label={blockName ?? blockType}>
             <div className="space-y-12 w-full py-12">

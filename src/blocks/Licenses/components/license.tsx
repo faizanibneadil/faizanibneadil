@@ -1,12 +1,23 @@
+import { RichText } from '@payloadcms/richtext-lexical/react'
 import BlurFade from "@/components/magicui/blur-fade";
 import { ILicenseProps } from "@/payload-types";
-import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { HackathonCard } from "@/components/hackathon-card";
+import { PagePropsWithParams } from "@/types";
 
 const BLUR_FADE_DELAY = 0.04;
-export function License(props: ILicenseProps) {
-    const { licenses, heading, description,blockName,blockType } = props || {}
+export async function License(props: { blockProps: ILicenseProps, params: PagePropsWithParams['params'] }) {
+    const {
+        blockProps: {
+            licenses,
+            heading,
+            description,
+            blockName,
+            blockType
+        },
+        params:paramsFromProps
+    } = props || {}
+    const params = await paramsFromProps
     return (
         <section id="researches" aria-label={blockName ?? blockType}>
             <div className="space-y-12 w-full py-12">

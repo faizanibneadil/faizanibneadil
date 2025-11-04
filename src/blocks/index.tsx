@@ -1,37 +1,64 @@
+import React, { Fragment } from "react";
+import dynamic from "next/dynamic";
 import { Page } from "@/payload-types";
-import { Fragment } from "react";
-import { Hero } from "./Hero/components/hero";
-import { About } from "./About/components/about";
-import { Experiance } from "./Experiances/components/experiances";
-import { Education } from "./Education/components/educations";
-import { Skill } from "./Skill/components/skills";
-import { Contact } from "./Contact/components/contact";
-import { Hackathon } from "./Hackathon/components/hackathon";
-import { Project } from "./Project/components/project";
-import { Research } from "./Research/components/research";
-import { Publication } from "./Publication/components/publication";
-import { License } from "./Licenses/components/license";
-import { Certification } from "./Certification/components/certification";
-import { Achievement } from "./Achievement/components/achievement";
+import { PagePropsWithParams } from "@/types";
 
-const _blocks = {
-    hero: Hero,
-    contact: Contact,
-    education: Education,
-    skill: Skill,
-    experiance: Experiance,
-    about: About,
-    hackathon: Hackathon,
-    project: Project,
-    research: Research,
-    publication: Publication,
-    license: License,
-    certification: Certification,
-    achievement: Achievement
+type PageLayout = NonNullable<Page['layout']>
+type TBlocksSlugs = PageLayout extends (infer U)[]
+    ? U extends { blockType: infer T } ? T : never
+    : never
+
+type TBlocks = {
+    [K in TBlocksSlugs]?: React.ComponentType<{
+        blockProps: Extract<PageLayout[number], { blockType: K }>,
+        params: PagePropsWithParams["params"];
+    }>
 }
 
-export function BlocksRenderer(props: { blocks: Page['layout'][][0] }) {
-    const { blocks = [] } = props || {}
+const _blocks: TBlocks = {
+    hero: dynamic(() => import("@/blocks/Hero/components/hero").then(({ Hero }) => {
+        return Hero
+    })),
+    contact: dynamic(() => import("@/blocks/Contact/components/contact").then(({ Contact }) => {
+        return Contact
+    })),
+    education: dynamic(() => import("@/blocks/Education/components/educations").then(({ Education }) => {
+        return Education
+    })),
+    skill: dynamic(() => import("@/blocks/Skill/components/skills").then(({ Skill }) => {
+        return Skill
+    })),
+    experiance: dynamic(() => import("@/blocks/Experiances/components/experiances").then(({ Experiance }) => {
+        return Experiance
+    })),
+    about: dynamic(() => import("@/blocks/About/components/about").then(({ About }) => {
+        return About
+    })),
+    hackathon: dynamic(() => import("@/blocks/Hackathon/components/hackathon").then(({ Hackathon }) => {
+        return Hackathon
+    })),
+    project: dynamic(() => import("@/blocks/Project/components/project").then(({ Project }) => {
+        return Project
+    })),
+    research: dynamic(() => import("@/blocks/Research/components/research").then(({ Research }) => {
+        return Research
+    })),
+    publication: dynamic(() => import("@/blocks/Publication/components/publication").then(({ Publication }) => {
+        return Publication
+    })),
+    license: dynamic(() => import("@/blocks/Licenses/components/license").then(({ License }) => {
+        return License
+    })),
+    certification: dynamic(() => import("@/blocks/Certification/components/certification").then(({ Certification }) => {
+        return Certification
+    })),
+    achievement: dynamic(() => import("@/blocks/Achievement/components/achievement").then(({ Achievement }) => {
+        return Achievement
+    }))
+}
+
+export function BlocksRenderer(props: { blocks: Page['layout'][][0], params: PagePropsWithParams['params'] }) {
+    const { blocks = [], params } = props || {}
 
     const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
@@ -47,8 +74,10 @@ export function BlocksRenderer(props: { blocks: Page['layout'][][0] }) {
                         if (Block) {
                             return (
                                 <div className="my-16" key={`${blockType}-${index}`}>
-                                    {/* @ts-expect-error there may be some mismatch between the expected types here */}
-                                    <Block {...block} />
+                                    <React.Suspense fallback='Loading...'>
+                                        {/* @ts-expect-error there may be some mismatch between the expected types here */}
+                                        <Block blockProps={block} params={params} />
+                                    </React.Suspense>
                                 </div>
                             )
                         }

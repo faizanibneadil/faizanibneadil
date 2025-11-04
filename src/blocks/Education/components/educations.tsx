@@ -2,11 +2,20 @@ import { DatesProps } from "@/components/dates";
 import BlurFade from "@/components/magicui/blur-fade";
 import { ResumeCard } from "@/components/resume-card";
 import { TEducationProps } from "@/payload-types";
+import { PagePropsWithParams } from "@/types";
 import { getClientSideURL } from "@/utilities/getURL";
 
 const BLUR_FADE_DELAY = 0.04;
-export function Education(props: TEducationProps) {
-    const { educations,blockType,blockName } = props || {}
+export async function Education(props: { blockProps: TEducationProps, params: PagePropsWithParams['params'] }) {
+    const {
+        blockProps: {
+            educations,
+            blockType,
+            blockName
+        },
+        params: paramsFromProps
+    } = props || {}
+    const params = await paramsFromProps
     return (
         <section id="education" aria-label={blockName ?? blockType}>
             <div className="flex min-h-0 flex-col gap-y-3">

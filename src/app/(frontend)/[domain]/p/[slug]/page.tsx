@@ -25,7 +25,7 @@ export default async function Page({ params }: PagePropsWithParams) {
     <main className="flex flex-col min-h-[100dvh]">
       {/* <RefreshRouteOnSave /> */}
       {isLayout(page?.pageMode?.mode) && (
-        <BlocksRenderer blocks={page.layout} />
+        <BlocksRenderer blocks={page.layout} params={params} />
       )}
       {isCollection(page?.pageMode?.mode) && (
         <CollectionRenderer params={params} configurations={page?.configurations} />
