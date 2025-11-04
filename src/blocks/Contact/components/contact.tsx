@@ -1,13 +1,22 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { IContactProps } from "@/payload-types";
-import Link from "next/link";
+// import Link from "next/link";
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import { PagePropsWithParams } from "@/types";
 
 
 const BLUR_FADE_DELAY = 0.04;
-export function Contact(props: IContactProps) {
-    const { content, blockType,blockName } = props || {}
+export async function Contact(props: { blockProps: IContactProps, params: PagePropsWithParams['params'] }) {
+    const {
+        blockProps: {
+            content,
+            blockType,
+            blockName
+        },
+        params: paramsFromProps
+    } = props || {}
+    const params = await paramsFromProps
     return (
         <section id="contact" aria-label={blockName ?? blockType}>
             <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">

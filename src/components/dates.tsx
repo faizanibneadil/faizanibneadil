@@ -1,5 +1,3 @@
-import React from 'react';
-
 export type DatesProps = {
     from?: string | null | undefined;
     to?: string | null | undefined;

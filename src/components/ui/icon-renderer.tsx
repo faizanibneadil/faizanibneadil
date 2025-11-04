@@ -4,8 +4,8 @@ import type { Icon } from '@/payload-types'
 // import { Badge } from './badge'
 
 export async function IconRenderer(props: { icon: Icon | Promise<Icon>, className: string }) {
-    const { icon, className } = props || {}
-    const iconFromProps = icon instanceof Promise ? await icon : icon
+    const { icon: iconFromProps, className } = props || {}
+    const icon = iconFromProps instanceof Promise ? await iconFromProps : iconFromProps
 
     // if (typeof icon === 'number') {
     //     return <React.Suspense fallback={<Badge variant="secondary" className={className} />}>
@@ -14,7 +14,7 @@ export async function IconRenderer(props: { icon: Icon | Promise<Icon>, classNam
     // }
 
 
-    return <div className={className} dangerouslySetInnerHTML={{ __html: (iconFromProps?.iconSpecs?.iconCode as string) || '<div>No Icon</div>' }} />
+    return <div className={className} dangerouslySetInnerHTML={{ __html: (icon?.iconSpecs?.iconCode as string) || '<div>No Icon</div>' }} />
 }
 
 // async function FetchIconBeforeRender(props: { id: number, className: string }) {

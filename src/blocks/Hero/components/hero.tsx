@@ -3,13 +3,23 @@ import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DATA } from "@/data/resume";
 import { IHeroProps } from "@/payload-types";
+import { PagePropsWithParams } from "@/types";
 import { getMediaUrl } from "@/utilities/getURL";
 
 const BLUR_FADE_DELAY = 0.04;
 
-export function Hero(props: IHeroProps) {
-    const { nameOnResume, profile,headline,blockName,blockType } = props || {}
-
+export async function Hero(props: { blockProps: IHeroProps, params: PagePropsWithParams['params'] }) {
+    const {
+        blockProps: {
+            nameOnResume,
+            profile,
+            headline,
+            blockName,
+            blockType
+        },
+        params: paramsFromProps
+    } = props || {}
+    const params = await paramsFromProps
     return (
         <section id="hero" aria-label={blockName ?? blockType}>
             <div className="mx-auto w-full max-w-2xl space-y-8">

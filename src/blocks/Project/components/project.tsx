@@ -1,12 +1,26 @@
+import React from "react";
+import { RichText } from '@payloadcms/richtext-lexical/react';
 import BlurFade from "@/components/magicui/blur-fade";
-import { IProjectProps } from "@/payload-types";
-import { RichText } from '@payloadcms/richtext-lexical/react'
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { ProjectCard } from "@/components/project-card";
+import { IProjectProps } from "@/payload-types";
+import { PagePropsWithParams } from "@/types";
+import { getProjectById } from "@/utilities/getProjectById";
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 
 const BLUR_FADE_DELAY = 0.04;
-export function Project(props: IProjectProps) {
-    const { heading, description, projects, blockName, blockType } = props || {}
+export async function Project(props: { blockProps: IProjectProps, params: PagePropsWithParams['params'] }) {
+    const {
+        blockProps: {
+            heading,
+            description,
+            projects,
+            blockName,
+            blockType
+        },
+        params: paramsFromProps
+    } = props || {}
+    const params = await paramsFromProps
+
     return (
         <section id="projects" aria-label={blockName ?? blockType}>
             <div className="space-y-12 w-full py-12">
@@ -26,16 +40,13 @@ export function Project(props: IProjectProps) {
                     </div>
                 </BlurFade>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
-                    {projects?.map((project, id) => {
-                        return typeof project === 'number' ? null : (
-                            <BlurFade
-                                key={project.title}
-                                delay={BLUR_FADE_DELAY * 12 + id * 0.05}
-                            >
-                                <ProjectCard {...project} />
+                    {projects?.map((project, idx) => (
+                        <React.Suspense key={`project-${typeof project === 'number' ? project : project.id}`}>
+                            <BlurFade delay={BLUR_FADE_DELAY * 12 + idx * 0.05}>
+                                <ProjectCard params={params} project={typeof project === 'number' ? getProjectById({ id: project }) : project} />
                             </BlurFade>
-                        )
-                    })}
+                        </React.Suspense>
+                    ))}
                 </div>
             </div>
         </section>

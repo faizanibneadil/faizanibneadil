@@ -3,10 +3,19 @@ import BlurFade from "@/components/magicui/blur-fade";
 import { Skill as RenderSkill, SkillSkeleton } from "@/components/render-skill";
 import { ISkillProps } from "@/payload-types";
 import { getSkillById } from "@/utilities/getSkillById";
+import { PagePropsWithParams } from "@/types";
 
 const BLUR_FADE_DELAY = 0.04;
-export function Skill(props: ISkillProps) {
-    const { userSkills, blockName, blockType } = props || {}
+export async function Skill(props: { blockProps: ISkillProps, params: PagePropsWithParams['params'] }) {
+    const {
+        blockProps: {
+            userSkills,
+            blockName,
+            blockType
+        },
+        params: paramsFromProps
+    } = props || {}
+    const params = await paramsFromProps
     return (
         <section id="skills" aria-label={blockName ?? blockType}>
             <div className="flex min-h-0 flex-col gap-y-3">
