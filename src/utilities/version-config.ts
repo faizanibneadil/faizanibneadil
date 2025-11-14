@@ -1,6 +1,4 @@
-import { IncomingCollectionVersions, SanitizedCollectionVersions } from "node_modules/payload/dist/versions/types";
-
-export const VersionConfig = (config?: IncomingCollectionVersions): IncomingCollectionVersions => {
+export const VersionConfig = (config?: any): any => {
     return {
         drafts: {
             autosave: {

@@ -1,6 +1,5 @@
 'use client'
 import { ReactSelect, useConfig, useField } from '@payloadcms/ui'
-import { ReactSelectAdapterProps } from 'node_modules/@payloadcms/ui/dist/elements/ReactSelect/types'
 import { TextFieldClientProps } from 'payload'
 import React from 'react'
 
@@ -40,5 +39,5 @@ export function Collections(props: TextFieldClientProps) {
     return <ReactSelect isSearchable={false} isClearable isMulti={false} value={{
         label: (value as string)?.charAt(0).toUpperCase() + (value as string)?.slice(1),
         value: value
-    }} options={options} onChange={onChange as ReactSelectAdapterProps['onChange']} />
+    }} options={options} onChange={onChange as any} />
 }
