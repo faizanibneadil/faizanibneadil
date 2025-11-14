@@ -1,8 +1,8 @@
-import { PagePropsWithParams } from "@/types"
+import type { PagePropsWithParams } from "@/types"
+import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
 import { RichText } from "@payloadcms/richtext-lexical/react"
 import { hasText } from "@payloadcms/richtext-lexical/shared"
-import { SerializedEditorState } from "node_modules/lexical/LexicalEditorState"
-import { DataFromCollectionSlug } from "payload"
+import type { DataFromCollectionSlug } from "payload"
 
 type Props = {
     entity: DataFromCollectionSlug<'blogs'>, params: Awaited<PagePropsWithParams['params']>

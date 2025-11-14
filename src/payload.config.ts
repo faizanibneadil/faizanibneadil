@@ -4,13 +4,13 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 // Plugins
-// storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { FixedToolbarFeature, lexicalEditor, InlineToolbarFeature, RelationshipFeature } from '@payloadcms/richtext-lexical'
 import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { seoPlugin } from '@payloadcms/plugin-seo';
 import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
+import { resendAdapter } from '@payloadcms/email-resend'
 // Collections
 import { Users } from '@/collections/Users'
 import { Media } from '@/collections/Media'
@@ -204,13 +204,19 @@ export default buildConfig({
             ]
         },
     }),
-    secret: process.env.PAYLOAD_SECRET || '',
+    secret: process.env.PAYLOAD_SECRET!,
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
     typescript: {
         outputFile: path.resolve(dirname, 'payload-types.ts'),
     },
+    email: resendAdapter({
+        defaultFromAddress: 'faizanibneadil1@gmail.com',
+        defaultFromName: 'Skill Shelf',
+        apiKey: process.env.RESEND_API_KEY!,
+    }),
     // database-adapter-config-start
     db: postgresAdapter({
+        blocksAsJSON: true,
         readReplicas: [process.env.NEON_READ_REPLICA_URI_1!, process.env.NEON_READ_REPLICA_URI_2!],
         pool: {
             connectionString: process.env.NEON_URI
