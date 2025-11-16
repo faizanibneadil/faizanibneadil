@@ -1,5 +1,6 @@
 import { ViewIcon as ViewIcon_f74983178adb8529ccfebbbc7e98cd63 } from '@/collections/Icons/components/view-icon.tsx'
 import { SlugComponent as SlugComponent_92cc057d0a2abb4f6cf0307edf59f986 } from '@/fields/slug/SlugComponent'
+import { CollectionView as CollectionView_d511ea1a1ba58b17eebdc5f4c966dc83 } from '@/collections/Icons/components/collection-view.tsx'
 import { TenantField as TenantField_1d0591e3cf4f332c83a86da13a0de59a } from '@payloadcms/plugin-multi-tenant/client'
 import { AssignTenantFieldTrigger as AssignTenantFieldTrigger_1d0591e3cf4f332c83a86da13a0de59a } from '@payloadcms/plugin-multi-tenant/client'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -43,6 +44,7 @@ import { TenantSelectionProvider as TenantSelectionProvider_d6d5f193a167989e2ee7
 export const importMap = {
   "@/collections/Icons/components/view-icon.tsx#ViewIcon": ViewIcon_f74983178adb8529ccfebbbc7e98cd63,
   "@/fields/slug/SlugComponent#SlugComponent": SlugComponent_92cc057d0a2abb4f6cf0307edf59f986,
+  "@/collections/Icons/components/collection-view.tsx#CollectionView": CollectionView_d511ea1a1ba58b17eebdc5f4c966dc83,
   "@payloadcms/plugin-multi-tenant/client#TenantField": TenantField_1d0591e3cf4f332c83a86da13a0de59a,
   "@payloadcms/plugin-multi-tenant/client#AssignTenantFieldTrigger": AssignTenantFieldTrigger_1d0591e3cf4f332c83a86da13a0de59a,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,

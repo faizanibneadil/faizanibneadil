@@ -1,6 +1,14 @@
+import { Icon } from '@iconify/react'
 import { DefaultCellComponentProps } from "payload"
 
 export function ViewIcon(props: DefaultCellComponentProps) {
-    const { cellData, } = props
-    return <div dangerouslySetInnerHTML={{ __html: cellData as string }} />
+    const { rowData } = props
+
+    return (
+            <Icon
+                width='100%' height='5.5em'
+                className='p-4'
+                icon={rowData.title}
+            />
+    )
 }

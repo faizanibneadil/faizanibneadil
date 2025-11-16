@@ -27,6 +27,17 @@ export const Projects: CollectionConfig<'projects'> = {
     fields: [
         TitleField(),
         {
+            type: 'upload',
+            name: 'thumbnail',
+            label: 'Thumbnail',
+            relationTo: 'media',
+            required: true,
+            hasMany: false,
+            admin: {
+                description: 'Provide project thumbnail.',
+            }
+        },
+        {
             type: 'richText',
             name: 'overview',
             editor: lexicalEditor({
@@ -136,18 +147,6 @@ export const Projects: CollectionConfig<'projects'> = {
                 }
             ],
             maxRows: 5
-        },
-        {
-            type: 'upload',
-            name: 'thumbnail',
-            label: 'Thumbnail',
-            relationTo: 'media',
-            required: true,
-            hasMany: false,
-            admin: {
-                description: 'Provide project thumbnail.',
-                position: 'sidebar'
-            }
         },
         ...slugField(),
     ],

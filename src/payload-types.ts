@@ -346,6 +346,10 @@ export interface Project {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
+  /**
+   * Provide project thumbnail.
+   */
+  thumbnail: number | Media;
   overview?: {
     root: {
       type: string;
@@ -404,10 +408,6 @@ export interface Project {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Provide project thumbnail.
-   */
-  thumbnail: number | Media;
   slug?: string | null;
   slugLock?: boolean | null;
   meta?: {
@@ -1756,6 +1756,7 @@ export interface EducationsSelect<T extends boolean = true> {
 export interface ProjectsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  thumbnail?: T;
   overview?: T;
   detailedOverview?: T;
   publishedAt?: T;
@@ -1781,7 +1782,6 @@ export interface ProjectsSelect<T extends boolean = true> {
         link?: T;
         id?: T;
       };
-  thumbnail?: T;
   slug?: T;
   slugLock?: T;
   meta?:
