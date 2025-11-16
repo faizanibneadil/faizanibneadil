@@ -16,7 +16,17 @@ export const Icons: CollectionConfig<'icons'> = {
         useAsTitle: 'title',
         group: NavigationGroups.super_admin_only,
         hidden: ({ user }) => !isSuperAdmin(user),
-        defaultColumns: ['title', 'iconSpecs.iconCode', 'iconSpecs.svg', 'slug'],
+        defaultColumns: ['title', 'iconSpecs.iconCode'],
+        components: {
+            views: {
+                list: {
+                    Component: {
+                        path: '@/collections/Icons/components/collection-view.tsx',
+                        exportName: 'CollectionView'
+                    }
+                }
+            }
+        }
     },
     access: {
         create: ({ req }) => isSuperAdmin(req.user),
