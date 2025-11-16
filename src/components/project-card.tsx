@@ -90,7 +90,7 @@ export async function ProjectCard(props: {
                   {link?.icon && (
                     <IconRenderer
                       icon={typeof link?.icon === 'number' ? getIconById({ id: link?.icon }) : link?.icon}
-                      className='[&>svg]:size-3' />
+                      width="0.75rem" height="0.75rem" />
                   )}
                   {link?.label}
                 </Badge>

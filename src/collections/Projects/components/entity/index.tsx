@@ -35,7 +35,7 @@ export function ProjectEntity(props: Props) {
                         {/* {typeof link.icon === 'number' && <span>ICON</span>} */}
                         {typeof link.icon && (
                             <React.Suspense fallback='loading...'>
-                                <IconRenderer className="[&>svg]:size-4" icon={typeof link.icon === 'number' ? getIconById({ id: link.icon }) : link.icon} />
+                                <IconRenderer width="1rem" height="1rem" icon={typeof link.icon === 'number' ? getIconById({ id: link.icon }) : link.icon} />
                             </React.Suspense>
                         )}
                         <p>{link?.label}</p>
