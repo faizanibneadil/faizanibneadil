@@ -13,18 +13,24 @@ import { getIconById } from "@/utilities/getIconById"
 export const SkillSkeleton = () => <Badge variant="secondary" className="w-6" />
 
 const BLUR_FADE_DELAY = 0.04;
-export async function Skill(props: { skill: Skill | Promise<Skill>, id: number, className?: string }) {
-    const { skill: skillFromProps, id, className } = props || {}
+export async function Skill(props: { skill: Skill | Promise<Skill>, id: number, width?: string|number, height?:string|number}) {
+    const { skill: skillFromProps, id, height,width } = props || {}
     const skill = skillFromProps instanceof Promise ? await skillFromProps : skillFromProps
     const icon = typeof skill?.techstack?.icon === 'number' ? getIconById({ id: skill?.techstack?.icon }) : skill?.techstack?.icon
 
     return icon ? (
         <Tooltip>
             <TooltipTrigger>
-                <IconRenderer icon={icon} className={cn({
-                    "[&>svg]:size-4": Boolean(className) === false,
-                    [className || '']: Boolean(className) === true
-                })} />
+                <IconRenderer
+                    icon={icon}
+                    width={cn({
+                        "2em": Boolean(width) === false,
+                        [width || '']: Boolean(width) === true
+                    })}
+                    height={cn({
+                        "2em": Boolean(height) === false,
+                        [height || '']: Boolean(height) === true
+                    })} />
             </TooltipTrigger>
             <TooltipContent>
                 <p>{skill?.title}</p>

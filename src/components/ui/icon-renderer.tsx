@@ -1,10 +1,11 @@
-import type { Icon } from '@/payload-types'
+import type { Icon as IconType } from '@/payload-types'
+import { Icon } from '@iconify/react'
 // import { getPayloadConfig } from '@/utilities/getPayloadConfig'
 // import React from 'react'
 // import { Badge } from './badge'
 
-export async function IconRenderer(props: { icon: Icon | Promise<Icon>, className: string }) {
-    const { icon: iconFromProps, className } = props || {}
+export async function IconRenderer(props: { icon: IconType | Promise<IconType>, width?: string | number, height?: string | number }) {
+    const { icon: iconFromProps, height,width } = props || {}
     const icon = iconFromProps instanceof Promise ? await iconFromProps : iconFromProps
 
     // if (typeof icon === 'number') {
@@ -14,7 +15,7 @@ export async function IconRenderer(props: { icon: Icon | Promise<Icon>, classNam
     // }
 
 
-    return <div className={className} dangerouslySetInnerHTML={{ __html: (icon?.iconSpecs?.iconCode as string) || '<div>No Icon</div>' }} />
+    return <Icon icon={icon?.title} width={width} height={height} /> //<div className={className} dangerouslySetInnerHTML={{ __html: (icon?.iconSpecs?.iconCode as string) || '<div>No Icon</div>' }} />
 }
 
 // async function FetchIconBeforeRender(props: { id: number, className: string }) {

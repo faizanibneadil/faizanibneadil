@@ -30,7 +30,7 @@ export default async function Navbar({ domain }: { domain: string }) {
                 <TooltipTrigger asChild>
                   <Link href={href} className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
                     {item?.icon && (
-                      <IconRenderer icon={typeof item.icon === 'number' ? getIconById({ id: item.icon}) : item.icon} className='[&>svg]:size-4' />
+                      <IconRenderer icon={typeof item.icon === 'number' ? getIconById({ id: item.icon}) : item.icon} width="1rem" height="1rem" />
                     )}
                   </Link>
                 </TooltipTrigger>
@@ -49,7 +49,7 @@ export default async function Navbar({ domain }: { domain: string }) {
                 <TooltipTrigger asChild>
                   <Link href={item?.link} target="_blank" className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
                     {item?.icon && (
-                      <IconRenderer icon={typeof item.icon === 'number' ? getIconById({ id: item.icon}) : item.icon} className='[&>svg]:size-4' />
+                      <IconRenderer icon={typeof item.icon === 'number' ? getIconById({ id: item.icon}) : item.icon} width="1rem" height="1rem" />
                     )}
                   </Link>
                 </TooltipTrigger>
