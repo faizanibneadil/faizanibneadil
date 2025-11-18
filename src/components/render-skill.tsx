@@ -24,11 +24,11 @@ export async function Skill(props: { skill: Skill | Promise<Skill>, id: number, 
                 <IconRenderer
                     icon={icon}
                     width={cn({
-                        "2em": Boolean(width) === false,
+                        "1em": Boolean(width) === false,
                         [width || '']: Boolean(width) === true
                     })}
                     height={cn({
-                        "2em": Boolean(height) === false,
+                        "1em": Boolean(height) === false,
                         [height || '']: Boolean(height) === true
                     })} />
             </TooltipTrigger>

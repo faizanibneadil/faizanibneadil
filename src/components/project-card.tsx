@@ -29,7 +29,7 @@ export async function ProjectCard(props: {
   const project = projectFromProps instanceof Promise ? await projectFromProps : projectFromProps
   const { RouteWithDocSlug } = generateRoute({
     domain: paramsFromProps?.domain as string,
-    slug: paramsFromProps?.slug === 'home' as string ? 'projects' : paramsFromProps?.slug,
+    slug: paramsFromProps?.slug ? paramsFromProps?.slug === 'home' as string ? 'projects' : paramsFromProps?.slug : 'projects',
     docSlug: project.slug as string
   })
 
@@ -90,7 +90,7 @@ export async function ProjectCard(props: {
                   {link?.icon && (
                     <IconRenderer
                       icon={typeof link?.icon === 'number' ? getIconById({ id: link?.icon }) : link?.icon}
-                      width="0.75rem" height="0.75rem" />
+                      />
                   )}
                   {link?.label}
                 </Badge>

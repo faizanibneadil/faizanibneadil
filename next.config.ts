@@ -11,6 +11,7 @@ export default async (pase: unknown, { defaultConfig }: { defaultConfig: NextCon
     },
     images: {
       remotePatterns: [{ hostname: 'localhost' }]
-    }
+    },
+    // cacheComponents:true,
   }, { devBundleServerPackages: false })
 }
