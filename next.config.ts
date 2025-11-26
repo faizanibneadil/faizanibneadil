@@ -6,9 +6,9 @@ export default async (pase: unknown, { defaultConfig }: { defaultConfig: NextCon
     ...defaultConfig,
     poweredByHeader: false,
     reactCompiler: true,
-    turbopack: {
-      root: __dirname
-    },
+    // turbopack: {
+    //   root: __dirname
+    // },
     images: {
       remotePatterns: [{ hostname: 'localhost' }]
     },

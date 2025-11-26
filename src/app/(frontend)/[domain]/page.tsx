@@ -2,37 +2,49 @@ import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import { getMediaUrl, getServerSideURL } from "@/utilities/getURL";
 import type { Metadata } from 'next';
 import Page from "./p/[slug]/page";
+import React from "react";
 
 type Props = {
   params: Promise<{ domain: string }>
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
+const getProfileAvatar = React.cache(async (domain: string) => {
+  try {
+    const payload = await getPayloadConfig()
+    const avatar = await payload.find({
+      collection: "users",
+      where: { 'tenants.tenant.slug': { equals: domain } },
+      select: { profile: true }
+    })
+    return getMediaUrl(avatar.docs.at(0)?.profile)
+  } catch (error) {
+    console.error('Something went wrong to fetch user profile', error)
+  }
+})
+
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const { params } = props || {}
   const domain = (await params)?.domain
-  const payload = await getPayloadConfig()
-
-  const avatar = await payload.find({
-    collection: "users",
-    where: { 'tenants.tenant.slug': { equals: domain } },
-    select: { profile: true }
-  })
-  const avatarUrl = getMediaUrl(avatar.docs.at(0)?.profile)
+  const avatarUrl = await getProfileAvatar(domain)
   return {
     title: domain,
     description: domain,
-    metadataBase: getServerSideURL(),
-    icons: [{
-      url: avatarUrl,
-      fetchPriority: 'high'
-    }],
-    openGraph: {
-      url: avatarUrl,
-      images: [{
+    ...(avatarUrl && {
+      metadataBase: getServerSideURL(),
+      icons: [{
         url: avatarUrl,
+        fetchPriority: 'high'
       }]
-    }
+    }),
+    ...(avatarUrl && {
+      openGraph: {
+        url: avatarUrl,
+        images: [{
+          url: avatarUrl,
+        }]
+      }
+    })
   }
 }
 
