@@ -55,6 +55,7 @@ import { generateRoute } from './utilities/generateRoute';
 // import { generateDescriptionWithGemini } from './utilities/generateDescriptionWithGemini';
 import { seoGemini } from './utilities/seo-gemini';
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext';
+import { initSocket } from './lib/io'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -227,6 +228,10 @@ export default buildConfig({
     onInit: async (payload) => {
         payload.logger.info('App is initialized ...')
         payload.logger.info('Finding home page in pages collection...')
+        payload.logger.info('Initializing Socket IO Server ...')
+        initSocket(payload)
+        payload.logger.info('Socket IO Server is initialized...')
+
     },
     plugins: [
         // payloadCloudPlugin(),
