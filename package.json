@@ -55,7 +55,7 @@
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.395.0",
     "motion": "^12.23.12",
-    "next": "16.0.1",
+    "next": "16.0.7",
     "next-themes": "^0.3.0",
     "payload": "^3.67.0",
     "react": "19.2.0",
