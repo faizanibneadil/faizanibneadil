@@ -227,6 +227,7 @@ export default buildConfig({
     onInit: async (payload) => {
         payload.logger.info('App is initialized ...')
         payload.logger.info('Finding home page in pages collection...')
+
     },
     plugins: [
         // payloadCloudPlugin(),
