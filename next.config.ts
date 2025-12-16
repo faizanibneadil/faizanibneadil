@@ -5,7 +5,9 @@ export default async (pase: unknown, { defaultConfig }: { defaultConfig: NextCon
   return withPayload({
     ...defaultConfig,
     poweredByHeader: false,
-    reactCompiler: true,
+    experimental:{
+      reactCompiler: true
+    },
     // turbopack: {
     //   root: __dirname
     // },
