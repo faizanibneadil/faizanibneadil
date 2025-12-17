@@ -15,7 +15,7 @@ export const Projects: CollectionConfig<'projects'> = {
     trash: true,
     admin: { 
         useAsTitle: 'title', 
-        group: NavigationGroups.portfolio,
+        // group: NavigationGroups.portfolio,
         preview: generatePreview({ collection: 'projects' }) 
     },
     access: {

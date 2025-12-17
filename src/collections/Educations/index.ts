@@ -12,7 +12,7 @@ export const Educations: CollectionConfig<'educations'> = {
     trash: true,
     admin: { 
         useAsTitle: 'title', 
-        group: NavigationGroups.resume,
+        // group: NavigationGroups.resume,
         preview: generatePreview({ collection: 'educations' })
     },
     access: {

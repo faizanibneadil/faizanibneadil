@@ -13,7 +13,7 @@ export const Achievements: CollectionConfig<'achievements'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.portfolio,
+        // group: NavigationGroups.portfolio,
         preview: generatePreview({ collection: 'achievements' })
     },
     access: {

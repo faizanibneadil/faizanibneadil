@@ -13,7 +13,7 @@ export const Researches: CollectionConfig<'researches'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.portfolio,
+        // group: NavigationGroups.portfolio,
         preview: generatePreview({ collection: 'researches' })
     },
     access: {

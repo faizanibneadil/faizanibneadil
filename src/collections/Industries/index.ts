@@ -13,7 +13,7 @@ export const Industries: CollectionConfig<'industries'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.portfolio,
+        // group: NavigationGroups.portfolio,
         hidden: ({ user }) => !isSuperAdmin(user),
         defaultColumns: ['title', 'slug']
     },

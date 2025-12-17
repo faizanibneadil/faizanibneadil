@@ -7,7 +7,9 @@ import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from '@/hooks/Re
 export const Media: CollectionConfig = {
   slug: 'media',
   trash: true,
-  admin: { group: NavigationGroups.portfolio },
+  admin: { 
+    // group: NavigationGroups.portfolio 
+  },
   upload: {
     formatOptions:{
       format: 'webp',

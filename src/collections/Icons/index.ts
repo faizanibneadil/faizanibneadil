@@ -14,19 +14,19 @@ export const Icons: CollectionConfig<'icons'> = {
             description: 'Collections of the icons'
         },
         useAsTitle: 'title',
-        group: NavigationGroups.super_admin_only,
+        // group: NavigationGroups.super_admin_only,
         hidden: ({ user }) => !isSuperAdmin(user),
         defaultColumns: ['title', 'iconSpecs.iconCode'],
-        components: {
-            views: {
-                list: {
-                    Component: {
-                        path: '@/collections/Icons/components/collection-view.tsx',
-                        exportName: 'CollectionView'
-                    }
-                }
-            }
-        }
+        // components: {
+        //     views: {
+        //         list: {
+        //             Component: {
+        //                 path: '@/collections/Icons/components/collection-view.tsx',
+        //                 exportName: 'CollectionView'
+        //             }
+        //         }
+        //     }
+        // }
     },
     access: {
         create: ({ req }) => isSuperAdmin(req.user),

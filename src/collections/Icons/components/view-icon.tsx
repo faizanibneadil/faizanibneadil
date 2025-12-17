@@ -6,7 +6,7 @@ export function ViewIcon(props: DefaultCellComponentProps) {
 
     return (
             <Icon
-                width='100%' height='5.5em'
+                width='100%' height='4em'
                 className='p-4'
                 icon={rowData.title}
             />

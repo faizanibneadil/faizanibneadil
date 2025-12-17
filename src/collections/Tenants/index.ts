@@ -15,7 +15,7 @@ export const Tenants: CollectionConfig<'tenants'> = {
   },
   admin: {
     useAsTitle: 'name',
-    group: NavigationGroups.management
+    // group: NavigationGroups.management
   },
   fields: [
     {

@@ -13,7 +13,7 @@ export const Licenses: CollectionConfig<'licenses'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.portfolio,
+        // group: NavigationGroups.portfolio,
         hidden({ user }) {
             return user ? user?.category?.slug === 'healthcare' : false
         },

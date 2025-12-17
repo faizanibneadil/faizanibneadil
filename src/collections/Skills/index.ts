@@ -14,7 +14,7 @@ export const Skills: CollectionConfig<'skills'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.resume,
+        // group: NavigationGroups.resume,
         defaultColumns: ['title', 'slug', 'techstack.icon'],
         preview: generatePreview({ collection: 'skills' })
     },
