@@ -14,7 +14,7 @@ export const Pages: CollectionConfig<'pages'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.portfolio,
+        // group: NavigationGroups.portfolio,
         preview: generatePreview({ collection: 'pages' }),
         // livePreview: {
         //     url: async ({ data, req: { payload } }) => {

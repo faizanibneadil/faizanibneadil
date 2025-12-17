@@ -13,7 +13,7 @@ export const Certifications: CollectionConfig<'certifications'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.portfolio,
+        // group: NavigationGroups.portfolio,
         preview: generatePreview({ collection: 'certifications' })
     },
     access: {

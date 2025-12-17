@@ -10,7 +10,9 @@ import type { CollectionConfig } from "payload";
 
 export const Socials: CollectionConfig<'socials'> = {
     slug: 'socials',
-    admin: { group: NavigationGroups.portfolio },
+    admin: { 
+        // group: NavigationGroups.portfolio 
+    },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,

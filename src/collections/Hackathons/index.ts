@@ -13,7 +13,7 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        group: NavigationGroups.portfolio,
+        // group: NavigationGroups.portfolio,
         hidden: ({ user }) => user ? (
             user?.industry?.slug === 'game-development' ||
             user?.industry?.slug === 'data-scienceanalytics' ||

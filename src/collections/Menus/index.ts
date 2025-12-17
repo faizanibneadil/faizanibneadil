@@ -8,7 +8,9 @@ import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/Re
 
 export const Menus: CollectionConfig<'menus'> = {
     slug: 'menus',
-    admin: { group: NavigationGroups.portfolio },
+    admin: { 
+        // group: NavigationGroups.portfolio 
+    },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
