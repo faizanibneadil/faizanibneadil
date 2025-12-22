@@ -1,20 +1,16 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { motion } from "motion/react";
-import { Building, ChevronRightIcon, Link2 } from "lucide-react";
-import Link from "next/link";
-import React from "react";
-import { Dates, DatesProps } from "./dates";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-import { RichText } from '@payloadcms/richtext-lexical/react';
-import { Education, Experience, IExperienceProps } from "@/payload-types";
-import { getMediaUrl } from "@/utilities/getURL";
-import { Skill, SkillSkeleton } from "./render-skill";
+import { Education, Experience } from "@/payload-types";
 import { getSkillById } from "@/utilities/getSkillById";
-import { BlockSlug } from "payload";
+import { getMediaUrl } from "@/utilities/getURL";
+import { RichText } from '@payloadcms/richtext-lexical/react';
+import { Link2 } from "lucide-react";
+import Link from "next/link";
+import type { BlockSlug } from "payload";
+import React from "react";
+import { Dates } from "./dates";
+import { Skill, SkillSkeleton } from "./render-skill";
 
 export const ResumeCard = (props: { experienceProps?: Experience, educationProps?: Education } & { blockType?: BlockSlug }) => {
   const {

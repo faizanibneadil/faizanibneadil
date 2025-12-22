@@ -119,6 +119,7 @@ export interface Config {
     licenses: License;
     industries: Industry;
     experiences: Experience;
+    integration: Integration;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-locked-documents': PayloadLockedDocument;
@@ -151,6 +152,7 @@ export interface Config {
     licenses: LicensesSelect<false> | LicensesSelect<true>;
     industries: IndustriesSelect<false> | IndustriesSelect<true>;
     experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
+    integration: IntegrationSelect<false> | IntegrationSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -485,6 +487,7 @@ export interface Icon {
  */
 export interface Experience {
   id: number;
+  tenant?: (number | null) | Tenant;
   /**
    * Job title. eg: (Frontend, Backend, DevOps, QA, ...) etc
    */
@@ -1336,6 +1339,19 @@ export interface Social {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "integration".
+ */
+export interface Integration {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  chatBubbleType?: 'tawk' | null;
+  tawlPropertyId?: string | null;
+  tawkWidgetId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "forms".
  */
 export interface Form {
@@ -1629,6 +1645,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'experiences';
         value: number | Experience;
+      } | null)
+    | ({
+        relationTo: 'integration';
+        value: number | Integration;
       } | null)
     | ({
         relationTo: 'forms';
@@ -2204,6 +2224,7 @@ export interface IndustriesSelect<T extends boolean = true> {
  * via the `definition` "experiences_select".
  */
 export interface ExperiencesSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   employmentType?: T;
   jobType?: T;
@@ -2215,6 +2236,18 @@ export interface ExperiencesSelect<T extends boolean = true> {
   logo?: T;
   description?: T;
   relatedSkills?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "integration_select".
+ */
+export interface IntegrationSelect<T extends boolean = true> {
+  tenant?: T;
+  chatBubbleType?: T;
+  tawlPropertyId?: T;
+  tawkWidgetId?: T;
   updatedAt?: T;
   createdAt?: T;
 }

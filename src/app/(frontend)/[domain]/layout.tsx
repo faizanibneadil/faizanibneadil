@@ -1,6 +1,11 @@
-import Navbar from "@/components/navbar";
 import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import Navbar from "@/components/navbar";
+import dynamic from "next/dynamic";
+
+const TawkChatBubble = dynamic(() => import("@/collections/Integration/components/tawk-chat-bubbles").then(({ TawkChatBubble }) => {
+    return TawkChatBubble
+}));
 
 export default async function Layout({ children, params }: React.PropsWithChildren & { params: Promise<{ domain: string }> }) {
     const { domain } = await params
@@ -12,6 +17,7 @@ export default async function Layout({ children, params }: React.PropsWithChildr
                     <Navbar domain={domain} />
                 </React.Suspense>
             </ErrorBoundary>
+            <TawkChatBubble domain={domain} />
         </div>
     )
 }
