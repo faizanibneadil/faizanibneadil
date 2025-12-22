@@ -18,7 +18,7 @@ export const editorConfig = lexicalEditor({
                     'certification',
                     'contact',
                     'education',
-                    'experiance',
+                    'experience',
                     'hackathon',
                     'hero',
                     'license',

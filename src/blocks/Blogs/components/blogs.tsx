@@ -1,9 +1,8 @@
-import { RichText } from '@payloadcms/richtext-lexical/react'
 import BlurFade from "@/components/magicui/blur-fade";
-import { IAchievementProps, IBlogsBlockProps } from "@/payload-types";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import { HackathonCard } from "@/components/hackathon-card";
+import { IBlogsBlockProps } from "@/payload-types";
 import { PagePropsWithParams } from "@/types";
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
+import { RichText } from '@payloadcms/richtext-lexical/react';
 
 const BLUR_FADE_DELAY = 0.04;
 export async function BlogsBlock(props: { blockProps: IBlogsBlockProps, params: PagePropsWithParams['params'] }) {

@@ -87,7 +87,7 @@ export interface Config {
     education: TEducationProps;
     project: IProjectProps;
     skill: ISkillProps;
-    experiance: IExperianceProps;
+    experience: IExperienceProps;
     about: IAboutProps;
     hackathon: IHackathonProps;
     research: IResearchProps;
@@ -118,13 +118,18 @@ export interface Config {
     publications: Publication;
     licenses: License;
     industries: Industry;
+    experiences: Experience;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    skills: {
+      relatedExperiences: 'experiences';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     icons: IconsSelect<false> | IconsSelect<true>;
@@ -145,6 +150,7 @@ export interface Config {
     publications: PublicationsSelect<false> | PublicationsSelect<true>;
     licenses: LicensesSelect<false> | LicensesSelect<true>;
     industries: IndustriesSelect<false> | IndustriesSelect<true>;
+    experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -444,6 +450,11 @@ export interface Skill {
    * Select those project in whitch you used this skill.
    */
   projects?: (number | Project)[] | null;
+  relatedExperiences?: {
+    docs?: (number | Experience)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -470,6 +481,64 @@ export interface Icon {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experiences".
+ */
+export interface Experience {
+  id: number;
+  /**
+   * Job title. eg: (Frontend, Backend, DevOps, QA, ...) etc
+   */
+  title: string;
+  /**
+   * Type of employment
+   */
+  employmentType?: ('full-time' | 'part-time' | 'contract' | 'freelance' | 'internship') | null;
+  /**
+   * Choose whether this job is office-based, remote, or a mix (Hybrid).
+   */
+  jobType?: ('on-site' | 'remote' | 'hybrid') | null;
+  company?: string | null;
+  /**
+   * Employment date / Joining Date
+   */
+  start?: string | null;
+  /**
+   * End date of employment. If you are skill employee of the company then leave it. We will show the present text like this (Present)
+   */
+  end?: string | null;
+  /**
+   * Company website URL
+   */
+  website?: string | null;
+  /**
+   * Location (e.g., "NY - USA", "Remote")
+   */
+  location?: string | null;
+  /**
+   * Company logo
+   */
+  logo?: (number | null) | Media;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  relatedSkills?: (number | Skill)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ISkillProps".
  */
 export interface ISkillProps {
@@ -480,23 +549,13 @@ export interface ISkillProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IExperianceProps".
+ * via the `definition` "IExperienceProps".
  */
-export interface IExperianceProps {
-  experiances?:
-    | {
-        title: string;
-        company?: string | null;
-        subtitle?: string | null;
-        start?: string | null;
-        end?: string | null;
-        description?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+export interface IExperienceProps {
+  relatedExperiences?: (number | Experience)[] | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'experiance';
+  blockType: 'experience';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1212,7 +1271,7 @@ export interface Page {
         | IHeroProps
         | ISkillProps
         | TEducationProps
-        | IExperianceProps
+        | IExperienceProps
         | IBlogsBlockProps
         | IAchievementProps
         | ICertificationProps
@@ -1568,6 +1627,10 @@ export interface PayloadLockedDocument {
         value: number | Industry;
       } | null)
     | ({
+        relationTo: 'experiences';
+        value: number | Experience;
+      } | null)
+    | ({
         relationTo: 'forms';
         value: number | Form;
       } | null)
@@ -1906,6 +1969,7 @@ export interface SkillsSelect<T extends boolean = true> {
         icon?: T;
       };
   projects?: T;
+  relatedExperiences?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -2134,6 +2198,25 @@ export interface IndustriesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experiences_select".
+ */
+export interface ExperiencesSelect<T extends boolean = true> {
+  title?: T;
+  employmentType?: T;
+  jobType?: T;
+  company?: T;
+  start?: T;
+  end?: T;
+  website?: T;
+  location?: T;
+  logo?: T;
+  description?: T;
+  relatedSkills?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

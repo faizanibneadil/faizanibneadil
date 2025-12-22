@@ -36,8 +36,8 @@ const _blocks: TBlocks = {
     skill: dynamic(() => import("@/blocks/Skill/components/skills").then(({ Skill }) => {
         return Skill
     })),
-    experiance: dynamic(() => import("@/blocks/Experiances/components/experiances").then(({ Experiance }) => {
-        return Experiance
+    experience: dynamic(() => import("@/blocks/Experiences/components/experiences").then(({ Experience }) => {
+        return Experience
     })),
     about: dynamic(() => import("@/blocks/About/components/about").then(({ About }) => {
         return About

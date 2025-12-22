@@ -17,6 +17,7 @@ import { Educations } from '@/collections/Educations'
 import { Icons } from '@/collections/Icons'
 import { Industries } from '@/collections/Industries'
 import { Users } from "@/collections/Users";
+import { Experiences } from '@/collections/Experiences'
 
 export const collections = [
     Users,
@@ -37,5 +38,6 @@ export const collections = [
     Certifications,
     Publications,
     Licenses,
-    Industries
+    Industries,
+    Experiences
 ]
