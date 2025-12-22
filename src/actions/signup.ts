@@ -67,7 +67,7 @@ export async function signup(prevState: any, formData: FormData) {
             collection: 'users',
             data: {
                 email: incomingPayload.email as string,
-                Industry: Number(incomingPayload.field),
+                industry: Number(incomingPayload.field),
                 tenants: [{
                     roles: ['tenant-admin', 'tenant-viewer'],
                     tenant: tenant.id,

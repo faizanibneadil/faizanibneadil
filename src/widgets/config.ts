@@ -1,0 +1,1 @@
+export { Visitors } from '@/widgets/visitors'

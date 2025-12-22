@@ -39,7 +39,7 @@ export const Users: CollectionConfig<'users'> = {
   },
   admin: {
     useAsTitle: 'email',
-    // group: NavigationGroups.management,
+    group: NavigationGroups.management,
   },
   auth: true,
   endpoints: [externalUsersLogin],
@@ -97,7 +97,7 @@ export const Users: CollectionConfig<'users'> = {
       relationTo: 'industries',
       hasMany: false,
       saveToJWT: true,
-      name: 'Industry',
+      name: 'industry',
       admin: {
         allowCreate:false,
         allowEdit:false,

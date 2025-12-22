@@ -103,7 +103,7 @@ export const Projects: CollectionConfig<'projects'> = {
             admin: {
                 description: 'Provide credential for testing.',
                 condition: (field, siblings, ctx) => {
-                    return typeof ctx?.user?.Industry === 'object' ? ctx?.user?.Industry?.slug === 'game-development' || ctx?.user?.Industry?.slug === 'data-scienceanalytics' || ctx?.user?.Industry?.slug === 'web-and-software-development' : false
+                    return typeof ctx?.user?.industry === 'object' ? ctx?.user?.industry?.slug === 'game-development' || ctx?.user?.industry?.slug === 'data-scienceanalytics' || ctx?.user?.industry?.slug === 'web-and-software-development' : false
                 }
             },
             fields: [

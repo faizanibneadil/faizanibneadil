@@ -11,7 +11,9 @@ import { Publication } from '@/blocks/Publication'
 import { License } from '@/blocks/Licenses'
 import { Certification } from '@/blocks/Certification'
 import { Achievement } from '@/blocks/Achievement'
-import type { Block } from 'payload'
+import { GitHubContributionsBlock } from '@/blocks/GithubContribution'
+import type { Block, BlockSlug } from 'payload'
+import { BlogsBlock } from '@/blocks/Blogs'
 
 
 export const blocks: Block[] = [
@@ -27,5 +29,31 @@ export const blocks: Block[] = [
     Publication,
     License,
     Certification,
-    Achievement
+    Achievement,
+    GitHubContributionsBlock,
+    BlogsBlock,
+]
+
+export const defaultBlocks: BlockSlug[] = [
+    'about',
+    'contact',
+    'hero',
+    'skill',
+    'education',
+    'experiance',
+    'blogs-block'
+]
+export const itSpecificBlock: BlockSlug[] = [
+    "achievement",
+    "certification",
+    "github-contributions",
+    "hackathon",
+    "project",
+    "publication",
+    "research",
+]
+export const pharmaSpecificBlocks: BlockSlug[] = [
+    'certification',
+    'license',
+    'research'
 ]

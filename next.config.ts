@@ -5,12 +5,13 @@ export default async (pase: unknown, { defaultConfig }: { defaultConfig: NextCon
   return withPayload({
     ...defaultConfig,
     poweredByHeader: false,
-    experimental:{
-      reactCompiler: true
+    reactCompiler: true,
+    turbopack: {
+      root: __dirname,
     },
-    // turbopack: {
-    //   root: __dirname
-    // },
+    devIndicators: {
+      position: 'bottom-right'
+    },
     images: {
       remotePatterns: [{ hostname: 'localhost' }]
     },
