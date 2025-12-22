@@ -1,4 +1,5 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
+import { defaultBlocks, itSpecificBlock, pharmaSpecificBlocks } from "@/blocks/config";
 import { NavigationGroups } from "@/constants";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
@@ -7,7 +8,7 @@ import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/Re
 import { generatePreview } from "@/utilities/generate-preview";
 // import { getServerSideURL } from "@/utilities/getURL";
 // import { VersionConfig } from "@/utilities/version-config";
-import type { CollectionConfig } from "payload";
+import type { BlockSlug, CollectionConfig } from "payload";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
@@ -91,21 +92,25 @@ export const Pages: CollectionConfig<'pages'> = {
             label: 'Design You\'r Page',
             blocks: [],
             maxRows: 50,
-            blockReferences: [
-                'about',
-                'achievement',
-                'certification',
-                'contact',
-                'education',
-                'experiance',
-                'hackathon',
-                'hero',
-                'license',
-                'project',
-                'publication',
-                'skill',
-                'research',
-            ],
+            filterOptions: async ({ user }) => {
+                const industry = typeof user?.industry === 'object' ? user?.industry?.slug : user?.industry
+                if (typeof industry === 'string') {
+                    switch (industry) {
+                        case 'information-technolegy':
+                            return [...itSpecificBlock, ...defaultBlocks]
+                        case 'pharma':
+                            return [...pharmaSpecificBlocks, ...defaultBlocks]
+                        default:
+                            return true
+                    }
+                }
+                return true
+            },
+            blockReferences: Array.from(new Set([
+                ...defaultBlocks,
+                ...itSpecificBlock,
+                ...pharmaSpecificBlocks
+            ])),
             admin: {
                 initCollapsed: true,
                 condition: (fields, siblings_blocks, ctx) => {

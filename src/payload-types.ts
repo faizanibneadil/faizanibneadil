@@ -95,6 +95,8 @@ export interface Config {
     license: ILicenseProps;
     certification: ICertificationProps;
     achievement: IAchievementProps;
+    'github-contributions': IGithubContributionProps;
+    'blogs-block': IBlogsBlockProps;
   };
   collections: {
     users: User;
@@ -990,6 +992,108 @@ export interface Achievement {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IGithubContributionProps".
+ */
+export interface IGithubContributionProps {
+  /**
+   * By default we will use username from social link.
+   */
+  githubContributionGraphConfig: 'useAnotherUsername' | 'useSocialUsername';
+  username?: string | null;
+  hideMonthLabels: boolean;
+  withTooltip: boolean;
+  graphBlockMargin: number;
+  graphBlockSize: number;
+  graphFontSize: number;
+  graphBlockRadius: number;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'github-contributions';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IBlogsBlockProps".
+ */
+export interface IBlogsBlockProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  blogs?: (number | Blog)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'blogs-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs".
+ */
+export interface Blog {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Blog short description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  featured_image: number | Media;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -998,7 +1102,7 @@ export interface User {
   roles?: TUserRole;
   username?: string | null;
   tenants?: TUserTenants;
-  Industry?: (number | null) | Industry;
+  industry?: (number | null) | Industry;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1086,62 +1190,6 @@ export interface Note {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "blogs".
- */
-export interface Blog {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Blog short description.
-   */
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  featured_image: number | Media;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
 export interface Page {
@@ -1160,18 +1208,20 @@ export interface Page {
   layout?:
     | (
         | IAboutProps
-        | IAchievementProps
-        | ICertificationProps
         | IContactProps
+        | IHeroProps
+        | ISkillProps
         | TEducationProps
         | IExperianceProps
+        | IBlogsBlockProps
+        | IAchievementProps
+        | ICertificationProps
+        | IGithubContributionProps
         | IHackathonProps
-        | IHeroProps
-        | ILicenseProps
         | IProjectProps
         | IPublicationProps
-        | ISkillProps
         | IResearchProps
+        | ILicenseProps
       )[]
     | null;
   publishedAt?: string | null;
@@ -1576,7 +1626,7 @@ export interface UsersSelect<T extends boolean = true> {
   roles?: T;
   username?: T;
   tenants?: T | TUserTenantsSelect<T>;
-  Industry?: T;
+  industry?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
