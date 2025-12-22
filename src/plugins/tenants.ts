@@ -19,11 +19,13 @@ export const multiTenancy = multiTenantPlugin<Config>({
         publications: {},
         researches: {},
         skills: {},
+        experiences: {},
         // icons: { },
         "form-submissions": {},
         forms: {},
         menus: { isGlobal: true },
-        socials: { isGlobal: true }
+        socials: { isGlobal: true },
+        integration: { isGlobal: true }
     },
     tenantField: {
         access: {
