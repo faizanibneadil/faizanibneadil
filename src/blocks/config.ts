@@ -3,7 +3,7 @@ import { Contact } from '@/blocks/Contact'
 import { Education } from '@/blocks/Education'
 import { Project } from '@/blocks/Project'
 import { Skill } from '@/blocks/Skill'
-import { Experiance } from '@/blocks/Experiances'
+import { Experience } from '@/blocks/Experiences'
 import { About } from '@/blocks/About'
 import { Hackathon } from '@/blocks/Hackathon'
 import { Research } from '@/blocks/Research'
@@ -22,7 +22,7 @@ export const blocks: Block[] = [
     Education,
     Project,
     Skill,
-    Experiance,
+    Experience,
     About,
     Hackathon,
     Research,
@@ -40,7 +40,7 @@ export const defaultBlocks: BlockSlug[] = [
     'hero',
     'skill',
     'education',
-    'experiance',
+    'experience',
     'blogs-block'
 ]
 export const itSpecificBlock: BlockSlug[] = [
