@@ -4,6 +4,7 @@ import { IContactProps } from "@/payload-types";
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { PagePropsWithParams } from "@/types";
+import { FormBlock } from "@/blocks/Form/components/form-block";
 
 
 const BLUR_FADE_DELAY = 0.04;
@@ -12,7 +13,11 @@ export async function Contact(props: { blockProps: IContactProps, params: PagePr
         blockProps: {
             content,
             blockType,
-            blockName
+            blockName,
+            enableIntro,
+            form: formFromProps,
+            id,
+            introContent
         },
         params: paramsFromProps
     } = props || {}
@@ -41,6 +46,12 @@ export async function Contact(props: { blockProps: IContactProps, params: PagePr
                         </p> */}
                     </div>
                 </BlurFade>
+                <FormBlock params={paramsFromProps} blockProps={{
+                    blockType: 'formBlock',
+                    form: formFromProps as NonNullable<IContactProps['form']>,
+                    enableIntro,
+                    introContent
+                }} />
             </div>
         </section>
     )

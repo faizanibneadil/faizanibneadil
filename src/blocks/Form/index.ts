@@ -1,26 +1,22 @@
-import { FixedToolbarFeature, HeadingFeature, InlineToolbarFeature, lexicalEditor, LinkFeature } from "@payloadcms/richtext-lexical";
-import type { Block } from "payload";
+import { Block } from "payload";
 
-export const Contact: Block = {
-    slug: 'contact',
-    interfaceName: 'IContactProps',
+import {
+    FixedToolbarFeature,
+    HeadingFeature,
+    InlineToolbarFeature,
+    lexicalEditor,
+} from '@payloadcms/richtext-lexical'
+
+export const FormBlock: Block = {
+    slug: 'formBlock',
+    interfaceName: 'TFormBlockProps',
+    labels: { plural: 'Forms', singular: 'Form' },
     fields: [
-        {
-            type: 'richText',
-            editor: lexicalEditor({
-                features({ defaultFeatures, rootFeatures, }) {
-                    return [
-                        ...defaultFeatures,
-                        LinkFeature(),
-                    ]
-                },
-            }),
-            name: 'content'
-        },
         {
             name: 'form',
             type: 'relationship',
             relationTo: 'forms',
+            required: true,
         },
         {
             name: 'enableIntro',
@@ -45,5 +41,5 @@ export const Contact: Block = {
             }),
             label: 'Intro Content',
         },
-    ]
+    ],
 }

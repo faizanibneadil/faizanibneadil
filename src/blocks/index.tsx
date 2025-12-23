@@ -69,6 +69,9 @@ const _blocks: TBlocks = {
     "blogs-block": dynamic(() => import("@/blocks/Blogs/components/blogs").then(({ BlogsBlock }) => {
         return BlogsBlock
     })),
+    formBlock: dynamic(() => import("@/blocks/Form/components/form-block").then(({ FormBlock }) => {
+        return FormBlock
+    })),
 }
 
 export function BlocksRenderer(props: { blocks: Page['layout'][][0], params: PagePropsWithParams['params'] }) {
