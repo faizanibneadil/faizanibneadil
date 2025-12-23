@@ -46,12 +46,15 @@ export async function Contact(props: { blockProps: IContactProps, params: PagePr
                         </p> */}
                     </div>
                 </BlurFade>
-                <FormBlock params={paramsFromProps} blockProps={{
-                    blockType: 'formBlock',
-                    form: formFromProps as NonNullable<IContactProps['form']>,
-                    enableIntro,
-                    introContent
-                }} />
+                <FormBlock
+                    params={paramsFromProps}
+                    blockProps={{
+                        blockType: 'formBlock',
+                        form: formFromProps as NonNullable<IContactProps['form']>,
+                        enableIntro,
+                        introContent
+                    }}
+                />
             </div>
         </section>
     )
