@@ -1,4 +1,3 @@
-import { Integration } from "@/payload-types";
 import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import Script from "next/script";
 

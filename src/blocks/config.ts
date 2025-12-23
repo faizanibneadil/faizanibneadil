@@ -14,6 +14,7 @@ import { Achievement } from '@/blocks/Achievement'
 import { GitHubContributionsBlock } from '@/blocks/GithubContribution'
 import type { Block, BlockSlug } from 'payload'
 import { BlogsBlock } from '@/blocks/Blogs'
+import { FormBlock } from '@/blocks/Form'
 
 
 export const blocks: Block[] = [
@@ -32,6 +33,7 @@ export const blocks: Block[] = [
     Achievement,
     GitHubContributionsBlock,
     BlogsBlock,
+    FormBlock
 ]
 
 export const defaultBlocks: BlockSlug[] = [
@@ -41,7 +43,8 @@ export const defaultBlocks: BlockSlug[] = [
     'skill',
     'education',
     'experience',
-    'blogs-block'
+    'blogs-block',
+    'formBlock'
 ]
 export const itSpecificBlock: BlockSlug[] = [
     "achievement",

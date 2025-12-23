@@ -1,5 +1,6 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { formBuilderPlugin } from "@payloadcms/plugin-form-builder";
+import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from "@payloadcms/richtext-lexical";
 
 
 export const formBuilder = formBuilderPlugin({
@@ -11,6 +12,25 @@ export const formBuilder = formBuilderPlugin({
             read: () => true,
             update: superAdminOrTenantAdminAccess,
         },
+        fields: ({ defaultFields }) => {
+            return defaultFields.map((field) => {
+                if ('name' in field && field.name === 'confirmationMessage') {
+                    return {
+                        ...field,
+                        editor: lexicalEditor({
+                            features: ({ rootFeatures }) => {
+                                return [
+                                    ...rootFeatures,
+                                    FixedToolbarFeature(),
+                                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] })
+                                ]
+                            }
+                        })
+                    }
+                }
+                return field
+            })
+        }
         // versions: {
         //     drafts: {
         //         autosave: {
@@ -30,16 +50,7 @@ export const formBuilder = formBuilderPlugin({
         }
     },
     fields: {
-        checkbox: true,
-        country: true,
-        date: true,
-        email: true,
-        message: true,
-        number: true,
-        select: true,
-        state: true,
-        text: true,
-        textarea: true
+        payment: false
     },
     redirectRelationships: ['pages']
 })

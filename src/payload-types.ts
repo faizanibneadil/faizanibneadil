@@ -97,6 +97,7 @@ export interface Config {
     achievement: IAchievementProps;
     'github-contributions': IGithubContributionProps;
     'blogs-block': IBlogsBlockProps;
+    formBlock: TFormBlockProps;
   };
   collections: {
     users: User;
@@ -265,29 +266,9 @@ export interface IContactProps {
     };
     [k: string]: unknown;
   } | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'contact';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TEducationProps".
- */
-export interface TEducationProps {
-  educations?: (number | Education)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'education';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "educations".
- */
-export interface Education {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  description?: {
+  form?: (number | null) | Form;
+  enableIntro?: boolean | null;
+  introContent?: {
     root: {
       type: string;
       children: {
@@ -302,15 +283,231 @@ export interface Education {
     };
     [k: string]: unknown;
   } | null;
-  qualification?: {
-    academy?: string | null;
-    degree?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms".
+ */
+export interface Form {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  fields?:
+    | (
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'checkbox';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'country';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'email';
+          }
+        | {
+            message?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'message';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'number';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            placeholder?: string | null;
+            options?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'select';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'state';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'text';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'textarea';
+          }
+      )[]
+    | null;
+  submitButtonLabel?: string | null;
+  /**
+   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
+   */
+  confirmationType?: ('message' | 'redirect') | null;
+  confirmationMessage?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  redirect?: {
+    type?: ('reference' | 'custom') | null;
+    reference?: {
+      relationTo: 'pages';
+      value: number | Page;
+    } | null;
+    url?: string | null;
   };
-  dates?: {
-    to?: string | null;
-    from?: string | null;
+  /**
+   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
+   */
+  emails?:
+    | {
+        emailTo?: string | null;
+        cc?: string | null;
+        bcc?: string | null;
+        replyTo?: string | null;
+        emailFrom?: string | null;
+        subject: string;
+        /**
+         * Enter the message that should be sent in this email.
+         */
+        message?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change Page Mode into collection.
+   */
+  pageMode: {
+    mode: 'layout' | 'collection';
   };
-  image: number | Media;
+  configurations?: {
+    slug?: string | null;
+  };
+  layout?:
+    | (
+        | IAboutProps
+        | IContactProps
+        | IHeroProps
+        | ISkillProps
+        | TEducationProps
+        | IExperienceProps
+        | IBlogsBlockProps
+        | TFormBlockProps
+        | IAchievementProps
+        | ICertificationProps
+        | IGithubContributionProps
+        | IHackathonProps
+        | IProjectProps
+        | IPublicationProps
+        | IResearchProps
+        | ILicenseProps
+      )[]
+    | null;
+  publishedAt?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -325,11 +522,10 @@ export interface Education {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IProjectProps".
+ * via the `definition` "IAboutProps".
  */
-export interface IProjectProps {
-  heading: string;
-  description?: {
+export interface IAboutProps {
+  content?: {
     root: {
       type: string;
       children: {
@@ -344,10 +540,67 @@ export interface IProjectProps {
     };
     [k: string]: unknown;
   } | null;
-  projects?: (number | Project)[] | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'project';
+  blockType: 'about';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ISkillProps".
+ */
+export interface ISkillProps {
+  userSkills?: (number | Skill)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'skill';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skills".
+ */
+export interface Skill {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  publishedAt?: string | null;
+  /**
+   * If you want to show an icon of the skill instead of skill as name then you have to select an icon from icons collection. REMEMBER: If the icon is available on skill only icon will be display.
+   */
+  techstack?: {
+    icon?: (number | null) | Icon;
+  };
+  /**
+   * Select those project in whitch you used this skill.
+   */
+  projects?: (number | Project)[] | null;
+  relatedExperiences?: {
+    docs?: (number | Experience)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "icons".
+ */
+export interface Icon {
+  id: number;
+  title: string;
+  iconSpecs: {
+    type: 'svg' | 'html';
+    iconCode?: string | null;
+    svg?: (number | null) | Media;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -435,54 +688,6 @@ export interface Project {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "skills".
- */
-export interface Skill {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  publishedAt?: string | null;
-  /**
-   * If you want to show an icon of the skill instead of skill as name then you have to select an icon from icons collection. REMEMBER: If the icon is available on skill only icon will be display.
-   */
-  techstack?: {
-    icon?: (number | null) | Icon;
-  };
-  /**
-   * Select those project in whitch you used this skill.
-   */
-  projects?: (number | Project)[] | null;
-  relatedExperiences?: {
-    docs?: (number | Experience)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "icons".
- */
-export interface Icon {
-  id: number;
-  title: string;
-  iconSpecs: {
-    type: 'svg' | 'html';
-    iconCode?: string | null;
-    svg?: (number | null) | Media;
-  };
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "experiences".
  */
 export interface Experience {
@@ -542,13 +747,57 @@ export interface Experience {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ISkillProps".
+ * via the `definition` "TEducationProps".
  */
-export interface ISkillProps {
-  userSkills?: (number | Skill)[] | null;
+export interface TEducationProps {
+  educations?: (number | Education)[] | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'skill';
+  blockType: 'education';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "educations".
+ */
+export interface Education {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  qualification?: {
+    academy?: string | null;
+    degree?: string | null;
+  };
+  dates?: {
+    to?: string | null;
+    from?: string | null;
+  };
+  image: number | Media;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -562,9 +811,38 @@ export interface IExperienceProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IAboutProps".
+ * via the `definition` "IBlogsBlockProps".
  */
-export interface IAboutProps {
+export interface IBlogsBlockProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  blogs?: (number | Blog)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'blogs-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs".
+ */
+export interface Blog {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
   content?: {
     root: {
       type: string;
@@ -580,46 +858,8 @@ export interface IAboutProps {
     };
     [k: string]: unknown;
   } | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'about';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IHackathonProps".
- */
-export interface IHackathonProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  hackathons?: (number | Hackathon)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'hackathon';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "hackathons".
- */
-export interface Hackathon {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
   /**
-   * Write description.
+   * Blog short description.
    */
   description?: {
     root: {
@@ -636,20 +876,9 @@ export interface Hackathon {
     };
     [k: string]: unknown;
   } | null;
-  dates: {
-    to: string;
-    from: string;
-  };
-  location?: string | null;
-  links?:
-    | {
-        icon: number | Icon;
-        label: string;
-        link: string;
-        id?: string | null;
-      }[]
-    | null;
-  image: number | Media;
+  featured_image: number | Media;
+  slug?: string | null;
+  slugLock?: boolean | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -664,9 +893,35 @@ export interface Hackathon {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IResearchProps".
+ * via the `definition` "TFormBlockProps".
  */
-export interface IResearchProps {
+export interface TFormBlockProps {
+  form: number | Form;
+  enableIntro?: boolean | null;
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'formBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IAchievementProps".
+ */
+export interface IAchievementProps {
   heading: string;
   description?: {
     root: {
@@ -683,172 +938,16 @@ export interface IResearchProps {
     };
     [k: string]: unknown;
   } | null;
-  researches?: (number | Research)[] | null;
+  achievements?: (number | Achievement)[] | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'research';
+  blockType: 'achievement';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "researches".
+ * via the `definition` "achievements".
  */
-export interface Research {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  /**
-   * Write description.
-   */
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  dates: {
-    to: string;
-    from: string;
-  };
-  location?: string | null;
-  links?:
-    | {
-        icon: number | Icon;
-        label: string;
-        link: string;
-        id?: string | null;
-      }[]
-    | null;
-  image: number | Media;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IPublicationProps".
- */
-export interface IPublicationProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  publications?: (number | Publication)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'publication';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "publications".
- */
-export interface Publication {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  /**
-   * Write description.
-   */
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  dates: {
-    to: string;
-    from: string;
-  };
-  location?: string | null;
-  links?:
-    | {
-        icon: number | Icon;
-        label: string;
-        link: string;
-        id?: string | null;
-      }[]
-    | null;
-  image: number | Media;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ILicenseProps".
- */
-export interface ILicenseProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  licenses?: (number | License)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'license';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "licenses".
- */
-export interface License {
+export interface Achievement {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
@@ -976,9 +1075,29 @@ export interface Certification {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IAchievementProps".
+ * via the `definition` "IGithubContributionProps".
  */
-export interface IAchievementProps {
+export interface IGithubContributionProps {
+  /**
+   * By default we will use username from social link.
+   */
+  githubContributionGraphConfig: 'useAnotherUsername' | 'useSocialUsername';
+  username?: string | null;
+  hideMonthLabels: boolean;
+  withTooltip: boolean;
+  graphBlockMargin: number;
+  graphBlockSize: number;
+  graphFontSize: number;
+  graphBlockRadius: number;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'github-contributions';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IHackathonProps".
+ */
+export interface IHackathonProps {
   heading: string;
   description?: {
     root: {
@@ -995,16 +1114,16 @@ export interface IAchievementProps {
     };
     [k: string]: unknown;
   } | null;
-  achievements?: (number | Achievement)[] | null;
+  hackathons?: (number | Hackathon)[] | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'achievement';
+  blockType: 'hackathon';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "achievements".
+ * via the `definition` "hackathons".
  */
-export interface Achievement {
+export interface Hackathon {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
@@ -1054,29 +1173,9 @@ export interface Achievement {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IGithubContributionProps".
+ * via the `definition` "IProjectProps".
  */
-export interface IGithubContributionProps {
-  /**
-   * By default we will use username from social link.
-   */
-  githubContributionGraphConfig: 'useAnotherUsername' | 'useSocialUsername';
-  username?: string | null;
-  hideMonthLabels: boolean;
-  withTooltip: boolean;
-  graphBlockMargin: number;
-  graphBlockSize: number;
-  graphFontSize: number;
-  graphBlockRadius: number;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'github-contributions';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IBlogsBlockProps".
- */
-export interface IBlogsBlockProps {
+export interface IProjectProps {
   heading: string;
   description?: {
     root: {
@@ -1093,20 +1192,18 @@ export interface IBlogsBlockProps {
     };
     [k: string]: unknown;
   } | null;
-  blogs?: (number | Blog)[] | null;
+  projects?: (number | Project)[] | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'blogs-block';
+  blockType: 'project';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "blogs".
+ * via the `definition` "IPublicationProps".
  */
-export interface Blog {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  content?: {
+export interface IPublicationProps {
+  heading: string;
+  description?: {
     root: {
       type: string;
       children: {
@@ -1121,8 +1218,21 @@ export interface Blog {
     };
     [k: string]: unknown;
   } | null;
+  publications?: (number | Publication)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'publication';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "publications".
+ */
+export interface Publication {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
   /**
-   * Blog short description.
+   * Write description.
    */
   description?: {
     root: {
@@ -1139,9 +1249,176 @@ export interface Blog {
     };
     [k: string]: unknown;
   } | null;
-  featured_image: number | Media;
-  slug?: string | null;
-  slugLock?: boolean | null;
+  dates: {
+    to: string;
+    from: string;
+  };
+  location?: string | null;
+  links?:
+    | {
+        icon: number | Icon;
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IResearchProps".
+ */
+export interface IResearchProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  researches?: (number | Research)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'research';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "researches".
+ */
+export interface Research {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Write description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  dates: {
+    to: string;
+    from: string;
+  };
+  location?: string | null;
+  links?:
+    | {
+        icon: number | Icon;
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ILicenseProps".
+ */
+export interface ILicenseProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  licenses?: (number | License)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'license';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "licenses".
+ */
+export interface License {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Write description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  dates: {
+    to: string;
+    from: string;
+  };
+  location?: string | null;
+  links?:
+    | {
+        icon: number | Icon;
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1252,57 +1529,6 @@ export interface Note {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
- */
-export interface Page {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  /**
-   * If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change Page Mode into collection.
-   */
-  pageMode: {
-    mode: 'layout' | 'collection';
-  };
-  configurations?: {
-    slug?: string | null;
-  };
-  layout?:
-    | (
-        | IAboutProps
-        | IContactProps
-        | IHeroProps
-        | ISkillProps
-        | TEducationProps
-        | IExperienceProps
-        | IBlogsBlockProps
-        | IAchievementProps
-        | ICertificationProps
-        | IGithubContributionProps
-        | IHackathonProps
-        | IProjectProps
-        | IPublicationProps
-        | IResearchProps
-        | ILicenseProps
-      )[]
-    | null;
-  publishedAt?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "menus".
  */
 export interface Menu {
@@ -1349,197 +1575,6 @@ export interface Integration {
   tawkWidgetId?: string | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "forms".
- */
-export interface Form {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  fields?:
-    | (
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            defaultValue?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'checkbox';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'country';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'email';
-          }
-        | {
-            message?: {
-              root: {
-                type: string;
-                children: {
-                  type: any;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            } | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'message';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'number';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            placeholder?: string | null;
-            options?:
-              | {
-                  label: string;
-                  value: string;
-                  id?: string | null;
-                }[]
-              | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'select';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'state';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'text';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'textarea';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            defaultValue?: string | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'date';
-          }
-      )[]
-    | null;
-  submitButtonLabel?: string | null;
-  /**
-   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
-   */
-  confirmationType?: ('message' | 'redirect') | null;
-  confirmationMessage?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  redirect?: {
-    type?: ('reference' | 'custom') | null;
-    reference?: {
-      relationTo: 'pages';
-      value: number | Page;
-    } | null;
-    url?: string | null;
-  };
-  /**
-   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
-   */
-  emails?:
-    | {
-        emailTo?: string | null;
-        cc?: string | null;
-        bcc?: string | null;
-        replyTo?: string | null;
-        emailFrom?: string | null;
-        subject: string;
-        /**
-         * Enter the message that should be sent in this email.
-         */
-        message?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2358,17 +2393,6 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
-              id?: T;
-              blockName?: T;
-            };
-        date?:
-          | T
-          | {
-              name?: T;
-              label?: T;
-              width?: T;
-              required?: T;
-              defaultValue?: T;
               id?: T;
               blockName?: T;
             };
