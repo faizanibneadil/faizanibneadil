@@ -3,7 +3,6 @@ export const Width: React.FC<{
   className?: string
   width?: number | string
 }> = ({ children, className, width }) => {
-  // Agar width number hai (e.g. 50) toh '%' laga dein, agar string hai toh wahi use karein
   const calculatedWidth = typeof width === 'number' ? `${width}%` : width;
 
   return (

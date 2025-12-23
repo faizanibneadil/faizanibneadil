@@ -47,7 +47,16 @@ export const formBuilder = formBuilderPlugin({
             delete: superAdminOrTenantAdminAccess,
             read: () => true,
             update: superAdminOrTenantAdminAccess,
-        }
+        },
+        // fields: ({ defaultFields }) => {
+        //     const fields = defaultFields.map(field => ({
+        //         ...field,
+        //         admin: {
+        //             readOnly: true
+        //         }
+        //     }))
+        //     return fields
+        // }
     },
     fields: {
         payment: false

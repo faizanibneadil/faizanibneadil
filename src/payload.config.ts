@@ -32,12 +32,12 @@ export default buildConfig({
                 label: 'Visitors',
                 maxWidth: 'full',
                 minWidth: 'x-small'
-            },{
-                ComponentPath: '@/widgets/config.ts#Visitors',
-                slug: 'clicks',
-                label: 'Clicks',
+            }, {
+                ComponentPath: '@/widgets/config.ts#FormSubmissions',
+                slug: 'formSubmissions',
+                label: 'Form Submissions',
                 maxWidth: 'full',
-                minWidth: 'x-small'
+                minWidth: 'medium'
             }]
         },
         suppressHydrationWarning: true,
@@ -138,5 +138,5 @@ export default buildConfig({
         payload.logger.info('Finding home page in pages collection...')
 
     },
-    plugins: [ ...plugins ],
+    plugins: [...plugins],
 })
