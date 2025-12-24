@@ -110,14 +110,14 @@ export function Form(props: { blockProps: BlockProps, params: Awaited<PagePropsW
                 {enableIntro && introContent && !hasSubmitted && (
                     <BlurFade delay={BLUR_FADE_DELAY * 16}>
                         <div className="mx-auto w-full text-foreground md:text-sm lg:text-sm xl:text-sm">
-                            <RichText data={introContent} enableGutter={false} />
+                            <RichText params={params} data={introContent} enableGutter={false} />
                         </div>
                     </BlurFade>
                 )}
             </div>
             <FormProvider {...form}>
                 {!isLoading && hasSubmitted && formConfig.confirmationType === 'message' && formConfig.confirmationMessage && (
-                    <RichText data={formConfig.confirmationMessage} />
+                    <RichText params={params} data={formConfig.confirmationMessage} />
                 )}
                 {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
                 {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
@@ -137,6 +137,7 @@ export function Form(props: { blockProps: BlockProps, params: Awaited<PagePropsW
                                             control={control}
                                             errors={errors}
                                             register={register}
+                                            params={params}
                                         />
                                     )
                                 }

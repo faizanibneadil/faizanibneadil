@@ -13,7 +13,8 @@ type Props = { collection: PaginatedDocs<DataFromCollectionSlug<'blogs'>>, param
 const BLUR_FADE_DELAY = 0.04;
 export function Blogs(props: Props) {
     const { collection: { docs }, params } = props || {}
-    const blogs = docs.map((blog, id) => {
+
+    const blogs = docs?.map((blog, id) => {
         const { RouteWithDocSlug } = generateRoute({
             domain: params.domain as string,
             slug: params.slug as string,
