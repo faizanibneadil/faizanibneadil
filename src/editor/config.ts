@@ -1,48 +1,47 @@
-import { BlocksFeature, FixedToolbarFeature, InlineToolbarFeature, RelationshipFeature, UploadFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
+import {
+    BlockquoteFeature,
+    FixedToolbarFeature,
+    HorizontalRuleFeature,
+    InlineToolbarFeature,
+    LinkFeature,
+    UploadFeature,
+    lexicalEditor
+} from '@payloadcms/richtext-lexical'
 
 
 export const editorConfig = lexicalEditor({
     features({ defaultFeatures, rootFeatures }) {
         return [
             ...defaultFeatures,
-            ...rootFeatures,
             FixedToolbarFeature(),
             InlineToolbarFeature(),
-            UploadFeature({
-                enabledCollections: ['media']
-            }),
-            BlocksFeature({
-                blocks: [
-                    'about',
-                    'achievement',
-                    'certification',
-                    'contact',
-                    'education',
-                    'experience',
-                    'hackathon',
-                    'hero',
-                    'license',
-                    'project',
-                    'publication',
-                    'research',
-                    'skill',
+            UploadFeature({ enabledCollections: ['media'] }),
+            BlockquoteFeature(),
+            HorizontalRuleFeature(),
+            LinkFeature({
+                fields: ({ defaultFields }) => [
+                    ...defaultFields,
+                    {
+                        name: 'rel',
+                        type: 'select',
+                        options: ['noopener', 'noreferrer', 'nofollow'],
+                    },
                 ],
-            }),
-            RelationshipFeature({
                 enabledCollections: [
+                    'pages',
                     'achievements',
                     'blogs',
                     'certifications',
                     'educations',
-                    'socials',
-                    'skills',
-                    'researches',
-                    'publications',
-                    'projects',
-                    'pages',
-                    'notes',
+                    'hackathons',
                     'licenses',
-                ]
+                    'media',
+                    'notes',
+                    'publications',
+                    'researches',
+                ], // Collections for internal links
+                maxDepth: 2, // Population depth for internal links
+                disableAutoLinks: 'creationOnly', // Allow auto-conversion of URLs
             })
         ]
     },

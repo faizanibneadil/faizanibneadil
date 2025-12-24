@@ -1,3 +1,4 @@
+// import { sdk } from "@/lib/sdk"
 import { Page } from "@/payload-types"
 import { PagePropsWithParams } from "@/types"
 import { getPayloadConfig } from "@/utilities/getPayloadConfig"
@@ -49,7 +50,7 @@ export async function CollectionRenderer(props: { params: PagePropsWithParams['p
     const { params, configurations } = props || {}
     const { slug, domain } = await params
     const paramsToSend = await params
-    
+
     const collectionToRenderProps = await queryCollectionBySlug({ 
         slug: configurations && configurations?.slug === slug ? slug : configurations?.slug as CollectionSlug, 
         domain 
@@ -61,10 +62,15 @@ export async function CollectionRenderer(props: { params: PagePropsWithParams['p
 
 const queryCollectionBySlug = React.cache(async ({ slug, domain }: Awaited<PagePropsWithParams['params']>) => {
     const payload = await getPayloadConfig()
-    const result = await payload.find({
-        collection: slug!,
-        pagination: true,
-        where: { 'tenant.slug': { equals: domain } }
-    })
-    return result || null
+    try {
+        const result = await payload.find({
+            collection: slug!,
+            pagination: true,
+            where: { 'tenant.slug': { equals: domain } }
+        })
+        return result || null
+    } catch (error) {
+        console.error(`Something went wrong to fetch collection from ${slug} of ${domain}`, error)
+        return null
+    }
 })
