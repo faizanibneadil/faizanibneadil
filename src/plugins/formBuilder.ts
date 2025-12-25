@@ -13,6 +13,7 @@ export const formBuilder = formBuilderPlugin({
             update: superAdminOrTenantAdminAccess,
         },
         fields: ({ defaultFields }) => {
+            // console.log({ defaultFields })
             return defaultFields.map((field) => {
                 if ('name' in field && field.name === 'confirmationMessage') {
                     return {
@@ -26,6 +27,16 @@ export const formBuilder = formBuilderPlugin({
                                 ]
                             }
                         })
+                    }
+                }
+                if('name' in field && field.name === 'submitButtonLabel'){
+                    return {
+                        type: 'row',
+                        fields: [
+                            { ...field, admin: { width: '33.33%' } },
+                            { type: 'number', defaultValue: 100, name: 'submitButtonWidth', label: 'Submit Button Width (percentage)',  admin: { width: '33.33%' } },
+                            { type: 'text', defaultValue: 'Loading...', name: 'submitButtonLoadingText', label: 'Submit Button Loading Text',  admin: { width: '33.33%', description: 'e.g: (Loading..., Submitting..., Subscribing...) etc' } }
+                        ]
                     }
                 }
                 return field

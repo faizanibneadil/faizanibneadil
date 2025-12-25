@@ -72,6 +72,9 @@ const _blocks: TBlocks = {
     formBlock: dynamic(() => import("@/blocks/Form/components/form-block").then(({ FormBlock }) => {
         return FormBlock
     })),
+    newsletter: dynamic(() => import("@/blocks/Newsletter/components/newsletter").then(({ Newsletter }) => {
+        return Newsletter
+    })),
 }
 
 export function BlocksRenderer(props: { blocks: Page['layout'][][0], params: PagePropsWithParams['params'] }) {

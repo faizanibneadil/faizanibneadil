@@ -68,6 +68,7 @@ export const Blogs: CollectionConfig<'blogs'> = {
                             blocks: [
                                 'formBlock',
                                 'project',
+                                'newsletter',
                                 CodeBlock({
                                     slug: 'PayloadCode',
                                     defaultLanguage: 'js',

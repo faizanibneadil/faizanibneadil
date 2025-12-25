@@ -98,6 +98,7 @@ export interface Config {
     'github-contributions': IGithubContributionProps;
     'blogs-block': IBlogsBlockProps;
     formBlock: TFormBlockProps;
+    newsletter: TNewsletterBlockProps;
   };
   collections: {
     users: User;
@@ -405,6 +406,11 @@ export interface Form {
       )[]
     | null;
   submitButtonLabel?: string | null;
+  submitButtonWidth?: number | null;
+  /**
+   * e.g: (Loading..., Submitting..., Subscribing...) etc
+   */
+  submitButtonLoadingText?: string | null;
   /**
    * Choose whether to display an on-page message or redirect to a different page after they submit the form.
    */
@@ -495,6 +501,7 @@ export interface Page {
         | IExperienceProps
         | IBlogsBlockProps
         | TFormBlockProps
+        | TNewsletterBlockProps
         | IAchievementProps
         | ICertificationProps
         | IGithubContributionProps
@@ -916,6 +923,32 @@ export interface TFormBlockProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TNewsletterBlockProps".
+ */
+export interface TNewsletterBlockProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  form?: (number | null) | Form;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsletter';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2398,6 +2431,8 @@ export interface FormsSelect<T extends boolean = true> {
             };
       };
   submitButtonLabel?: T;
+  submitButtonWidth?: T;
+  submitButtonLoadingText?: T;
   confirmationType?: T;
   confirmationMessage?: T;
   redirect?:
