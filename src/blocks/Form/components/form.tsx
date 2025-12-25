@@ -10,6 +10,7 @@ import { formFields } from "./fields"
 import { Button } from "@/components/ui/button"
 import BlurFade from "@/components/magicui/blur-fade"
 import { getClientSideURL } from "@/utilities/getURL"
+import { Width } from "./fields/Width"
 
 type Form = Exclude<TFormBlockProps['form'], number>
 type BlockProps = Omit<TFormBlockProps, 'form'> & { form: Form | Promise<Form> }
@@ -123,7 +124,7 @@ export function Form(props: { blockProps: BlockProps, params: Awaited<PagePropsW
                 {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
                 {!hasSubmitted && (
                     <form id={formConfig.id?.toString()} onSubmit={onSubmit}>
-                        <div className="flex flex-wrap -mx-2 justify-start">
+                        <div className="flex flex-wrap -mx-2 justify-start items-end">
                             {formConfig?.fields?.map((field, index) => {
                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 const Field: React.FC<any> = formFields?.[field.blockType as keyof typeof formFields]
@@ -143,11 +144,12 @@ export function Form(props: { blockProps: BlockProps, params: Awaited<PagePropsW
                                 }
                                 return null
                             })}
+                            <Width width={formConfig.submitButtonWidth as number} className="space-y-2">
+                                <Button disabled={form.formState.disabled} className="h-10 w-full" form={formConfig?.id?.toString()} type="submit" variant="default">
+                                    {form.formState.disabled ? (formConfig.submitButtonLoadingText || 'Submitting...') : (formConfig?.submitButtonLabel || "Submit")}
+                                </Button>
+                            </Width>
                         </div>
-
-                        <Button disabled={form.formState.disabled} className="mt-2 w-full" form={formConfig?.id?.toString()} type="submit" variant="default">
-                            {form.formState.disabled ? "Submitting..." :formConfig?.submitButtonLabel}
-                        </Button>
                     </form>
                 )}
             </FormProvider>

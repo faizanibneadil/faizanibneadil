@@ -16,6 +16,7 @@
     "utils": "@/lib/utils"
   },
   "registries": {
-    "@kibo-ui": "https://www.kibo-ui.com/r/{name}.json"
+    "@kibo-ui": "https://www.kibo-ui.com/r/{name}.json",
+    "@efferd": "https://efferd.com/r/{name}.json"
   }
 }
