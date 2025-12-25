@@ -38,6 +38,7 @@ export const Blogs: CollectionConfig<'blogs'> = {
                     return [
                         ...rootFeatures,
                         LinkFeature({
+                            maxDepth: 5,
                             enabledCollections: ['blogs', 'pages'],
                             fields: ({ config, defaultFields }) => [
                                 ...defaultFields,
@@ -68,7 +69,6 @@ export const Blogs: CollectionConfig<'blogs'> = {
                             blocks: [
                                 'formBlock',
                                 'project',
-                                'newsletter',
                                 CodeBlock({
                                     slug: 'PayloadCode',
                                     defaultLanguage: 'js',

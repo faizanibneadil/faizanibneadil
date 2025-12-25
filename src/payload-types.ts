@@ -98,7 +98,6 @@ export interface Config {
     'github-contributions': IGithubContributionProps;
     'blogs-block': IBlogsBlockProps;
     formBlock: TFormBlockProps;
-    newsletter: TNewsletterBlockProps;
   };
   collections: {
     users: User;
@@ -501,7 +500,6 @@ export interface Page {
         | IExperienceProps
         | IBlogsBlockProps
         | TFormBlockProps
-        | TNewsletterBlockProps
         | IAchievementProps
         | ICertificationProps
         | IGithubContributionProps
@@ -923,32 +921,6 @@ export interface TFormBlockProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TNewsletterBlockProps".
- */
-export interface TNewsletterBlockProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  form?: (number | null) | Form;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'newsletter';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -1,7 +1,7 @@
 // import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { FormBlock } from '@/blocks/Form/components/form-block'
 import { cn } from '@/lib/utils'
-import type { TFormBlockProps, TNewsletterBlockProps } from '@/payload-types'
+import type { TFormBlockProps } from '@/payload-types'
 import type { PagePropsWithParams } from '@/types'
 import {
   DefaultNodeTypes,
@@ -15,7 +15,6 @@ import {
 import { linkNodeJSXConverter } from './converters/LinkJSXConverter'
 import { paragraphNodeJSCConverter } from './converters/ParagraphJSXConverter'
 import { internalDocToHref } from '@/utilities/internalDocToHref'
-import { Newsletter } from '@/blocks/Newsletter/components/newsletter'
 
 // import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 
@@ -30,7 +29,7 @@ import { Newsletter } from '@/blocks/Newsletter/components/newsletter'
 
 type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<TFormBlockProps | TNewsletterBlockProps>
+  | SerializedBlockNode<TFormBlockProps>
 
 const jsxConverters: (args: {
   params: Awaited<PagePropsWithParams['params']>
@@ -41,7 +40,6 @@ const jsxConverters: (args: {
     ...paragraphNodeJSCConverter(),
     blocks: {
       formBlock: ({ node }) => <FormBlock blockProps={node.fields} params={Promise.resolve({ ...params })} />,
-      newsletter: ({ node }) => <Newsletter blockProps={node.fields} params={Promise.resolve({ ...params })}  />
       // banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
       // mediaBlock: ({ node }) => (
       //   <MediaBlock
