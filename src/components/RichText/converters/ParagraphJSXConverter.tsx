@@ -3,7 +3,7 @@ import { SerializedAutoLinkNode, SerializedLinkNode, SerializedParagraphNode } f
 import { JSXConverters } from "@payloadcms/richtext-lexical/react";
 
 
-export const paragraphNodeJSCConverter: () => JSXConverters<SerializedParagraphNode> = () => ({
+export const paragraphNodeJSXConverter: () => JSXConverters<SerializedParagraphNode> = () => ({
     paragraph: ({ node, nodesToJSX }) => {
         const children = nodesToJSX({ nodes: node.children })
 

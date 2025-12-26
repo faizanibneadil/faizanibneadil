@@ -98,6 +98,7 @@ export interface Config {
     'github-contributions': IGithubContributionProps;
     'blogs-block': IBlogsBlockProps;
     formBlock: TFormBlockProps;
+    'code-block': TCodeBlockProps;
   };
   collections: {
     users: User;
@@ -507,6 +508,7 @@ export interface Page {
         | IProjectProps
         | IPublicationProps
         | IResearchProps
+        | TCodeBlockProps
         | ILicenseProps
       )[]
     | null;
@@ -1357,6 +1359,17 @@ export interface Research {
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TCodeBlockProps".
+ */
+export interface TCodeBlockProps {
+  language?: ('ts' | 'js') | null;
+  code?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code-block';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
