@@ -15,6 +15,7 @@ import { GitHubContributionsBlock } from '@/blocks/GithubContribution'
 import type { Block, BlockSlug } from 'payload'
 import { BlogsBlock } from '@/blocks/Blogs'
 import { FormBlock } from '@/blocks/Form'
+import { Code } from '@/blocks/Code'
 
 
 export const blocks: Block[] = [
@@ -34,6 +35,7 @@ export const blocks: Block[] = [
     GitHubContributionsBlock,
     BlogsBlock,
     FormBlock,
+    Code
 ]
 
 export const defaultBlocks: BlockSlug[] = [
@@ -54,6 +56,7 @@ export const itSpecificBlock: BlockSlug[] = [
     "project",
     "publication",
     "research",
+    'code-block'
 ]
 export const pharmaSpecificBlocks: BlockSlug[] = [
     'certification',

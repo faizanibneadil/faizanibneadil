@@ -1,7 +1,7 @@
 // import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { FormBlock } from '@/blocks/Form/components/form-block'
 import { cn } from '@/lib/utils'
-import type { TFormBlockProps } from '@/payload-types'
+import type { TCodeBlockProps, TFormBlockProps } from '@/payload-types'
 import type { PagePropsWithParams } from '@/types'
 import {
   DefaultNodeTypes,
@@ -13,8 +13,9 @@ import {
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
 import { linkNodeJSXConverter } from './converters/LinkJSXConverter'
-import { paragraphNodeJSCConverter } from './converters/ParagraphJSXConverter'
+import { paragraphNodeJSXConverter } from './converters/ParagraphJSXConverter'
 import { internalDocToHref } from '@/utilities/internalDocToHref'
+import { CodeBlock } from '@/blocks/Code/components/CodeBlock'
 
 // import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 
@@ -29,7 +30,7 @@ import { internalDocToHref } from '@/utilities/internalDocToHref'
 
 type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<TFormBlockProps>
+  | SerializedBlockNode<TFormBlockProps | TCodeBlockProps>
 
 const jsxConverters: (args: {
   params: Awaited<PagePropsWithParams['params']>
@@ -37,9 +38,10 @@ const jsxConverters: (args: {
   return ({ defaultConverters }) => ({
     ...defaultConverters,
     ...linkNodeJSXConverter({ params, internalDocToHref }),
-    ...paragraphNodeJSCConverter(),
+    ...paragraphNodeJSXConverter(),
     blocks: {
       formBlock: ({ node }) => <FormBlock blockProps={node.fields} params={Promise.resolve({ ...params })} />,
+      "code-block": ({ node }) => <CodeBlock blockProps={node.fields} params={Promise.resolve({ ...params })} />
       // banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
       // mediaBlock: ({ node }) => (
       //   <MediaBlock
