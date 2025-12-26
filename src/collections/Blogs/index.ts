@@ -3,14 +3,10 @@ import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin"
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
-// import { Blog } from "@/payload-types";
 import { generatePreview } from "@/utilities/generate-preview";
-// import { getServerSideURL } from "@/utilities/getURL";
-// import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
-// import { VersionConfig } from "@/utilities/version-config";
+import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
 import { BlocksFeature, CodeBlock, LinkFeature, lexicalEditor } from "@payloadcms/richtext-lexical";
-// import { headers as getHeaders } from "next/headers";
-import type { CollectionConfig } from "payload";
+import type { CollectionConfig, RelationshipField } from "payload";
 
 
 export const Blogs: CollectionConfig<'blogs'> = {
@@ -40,30 +36,51 @@ export const Blogs: CollectionConfig<'blogs'> = {
                         LinkFeature({
                             maxDepth: 5,
                             enabledCollections: ['blogs', 'pages'],
-                            fields: ({ config, defaultFields }) => [
-                                ...defaultFields,
-                                {
-                                    type: 'select',
-                                    name: 'linkStyle',
-                                    defaultValue: 'normal',
-                                    options: [
-                                        { label: 'normal', value: 'normal' },
-                                        { label: 'Glimpse Style Preview', value: 'GlimpseStyle' }
-                                    ],
-                                    required: true
-                                },
-                                {
-                                    name: 'rel',
-                                    label: 'Rel Attribute',
-                                    type: 'select',
-                                    hasMany: true,
-                                    options: ['noopener', 'noreferrer', 'nofollow'],
-                                    admin: {
-                                        description:
-                                            'The rel attribute defines the relationship between a linked resource and the current document. This is a custom link field.',
+                            fields: ({ config, defaultFields }) => {
+                                const _defaultFields = defaultFields.map(field => {
+                                    if ('name' in field && field.name === 'doc') {
+                                        return {
+                                            ...field,
+                                            filterOptions: ({ req: { headers } }) => {
+                                                const selectedTenant = getTenantFromCookie(headers, 'number') as number
+                                                if (selectedTenant) {
+                                                    return {
+                                                        'tenant.id': {
+                                                            in: [selectedTenant]
+                                                        }
+                                                    }
+                                                }
+                                                return null
+                                            },
+                                        } as RelationshipField
+                                    }
+                                    return field
+                                })
+                                return [
+                                    ..._defaultFields,
+                                    {
+                                        type: 'select',
+                                        name: 'linkStyle',
+                                        defaultValue: 'normal',
+                                        options: [
+                                            { label: 'normal', value: 'normal' },
+                                            { label: 'Glimpse Style Preview', value: 'GlimpseStyle' }
+                                        ],
+                                        required: true
                                     },
-                                },
-                            ]
+                                    {
+                                        name: 'rel',
+                                        label: 'Rel Attribute',
+                                        type: 'select',
+                                        hasMany: true,
+                                        options: ['noopener', 'noreferrer', 'nofollow'],
+                                        admin: {
+                                            description:
+                                                'The rel attribute defines the relationship between a linked resource and the current document. This is a custom link field.',
+                                        },
+                                    },
+                                ]
+                            }
                         }),
                         BlocksFeature({
                             blocks: [
@@ -126,7 +143,7 @@ export const Blogs: CollectionConfig<'blogs'> = {
             required: true,
             admin: {
                 position: 'sidebar'
-            }
+            },
         },
         ...slugField(),
     ],
