@@ -1,5 +1,5 @@
 'use client'
-import { LinkFields, SerializedLinkNode } from "@payloadcms/richtext-lexical";
+import { LinkFields } from "@payloadcms/richtext-lexical";
 import { glimpse } from "@/components/kibo-ui/glimpse/server";
 import {
     Glimpse,
@@ -10,19 +10,25 @@ import {
     GlimpseTrigger,
 } from "@/components/kibo-ui/glimpse";
 import React from "react";
-import Link from "next/link";
 
 
-export function GlimpseLink(props: { fields: LinkFields } & { getLinkInfo: ReturnType<typeof glimpse>, label: React.ReactNode }) {
-    // console.log({ props: props.fields })
+export function GlimpseLink(props: { fields: LinkFields } & { rel?: string, target?: string } & { getLinkInfo: ReturnType<typeof glimpse>, label: React.ReactNode }) {
     const linkInfo = React.use(props.getLinkInfo)
-// console.log(props.label, linkInfo.title)
+
+    if (linkInfo.title === null && linkInfo.description === null && linkInfo.image === null) {
+        return (
+            <a className="font-medium text-primary underline !text-blue-500" target={props.target} rel={props.rel} href={props.fields?.url ?? '#'}>
+                {props.label}
+            </a>
+        )
+    }
+
     return (
         <Glimpse closeDelay={0} openDelay={0}>
             <GlimpseTrigger asChild>
-                <Link className="font-medium text-primary underline !text-blue-500" href={props.fields?.url ?? '#'}>
+                <a className="font-medium text-primary underline !text-blue-500" target={props.target} rel={props.rel} href={props.fields?.url ?? '#'}>
                     {props.label}
-                </Link>
+                </a>
             </GlimpseTrigger>
             <GlimpseContent className="w-80">
                 <GlimpseImage src={linkInfo?.image ?? ""} />
