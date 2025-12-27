@@ -10,9 +10,8 @@ export const getGitHubContributions = (username: string) =>
   unstable_cache(
     async () => {
       try {
-        const res = await fetch(
-          `https://github-contributions-api.jogruber.de/v4/${username}?y=last`,
-        )
+        const url = new URL(`/v4/${username}?y=last`,"https://github-contributions-api.jogruber.de")
+        const res = await fetch(url.toString())
 
         if (!res.ok) {
           console.error(`GitHub contributions API returned ${res.status}`)
