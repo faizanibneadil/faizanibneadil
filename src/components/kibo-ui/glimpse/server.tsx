@@ -4,29 +4,29 @@ const DESCRIPTION_REGEX = /<meta[^>]*name="description"[^>]*content="([^"]+)"/;
 const OG_DESCRIPTION_REGEX = /<meta[^>]*property="og:description"[^>]*content="([^"]+)"/;
 const OG_IMAGE_REGEX = /<meta[^>]*property="og:image"[^>]*content="([^"]+)"/;
 
-function decodeUrl(url: string): string {
-  try {
-    const decodedUrl = decodeURIComponent(url);
-    // console.log({decodedUrl})
-    if (decodedUrl === url) {
-      return decodedUrl;
-    }
-    return decodeUrl(decodedUrl);
+// function decodeUrl(url: string): string {
+//   try {
+//     const decodedUrl = decodeURIComponent(url);
+//     // console.log({decodedUrl})
+//     if (decodedUrl === url) {
+//       return decodedUrl;
+//     }
+//     return decodeUrl(decodedUrl);
 
-  } catch (error) {
-    console.error("Something went wrong to decode url", error)
-    return url;
-  }
-}
+//   } catch (error) {
+//     console.error("Something went wrong to decode url", error)
+//     return url;
+//   }
+// }
 
 export const glimpse = async (url: string) => {
   let title: string | null = null
   let description: string | null = null
   let image: string | null = null
-  // console.log({ url })
-  const decodedUrl = decodeUrl(url)
-  // console.log({ decodedUrl })
-  if (decodedUrl) {
+
+  const decodedUrl = decodeURIComponent(url)
+
+  if (decodedUrl === url) {
     try {
       const _url = new URL(decodedUrl)
       const _doc = await fetch(_url.toString());
@@ -41,6 +41,8 @@ export const glimpse = async (url: string) => {
     } catch (error) {
       console.error('Something went wrong to extract title, description, image from glimpse provided url', error)
     }
+  } else {
+    console.error("After decoding provided url the url is not equal decoded url")
   }
 
   // console.log({ title, description, image })

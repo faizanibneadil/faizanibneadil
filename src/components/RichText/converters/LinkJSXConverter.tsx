@@ -1,20 +1,14 @@
 import { Suspense } from "react"
+import { ErrorBoundary } from "react-error-boundary";
 import { GlimpseLink } from "@/components/kibo-ui/glimpse"
 import { glimpse } from "@/components/kibo-ui/glimpse/server"
 import type { PagePropsWithParams } from "@/types"
 import type { SerializedAutoLinkNode, SerializedLinkNode } from "@payloadcms/richtext-lexical"
 import type { JSXConverters } from "@payloadcms/richtext-lexical/react"
-import Link from "next/link"
 import type { ClientConfig } from "payload"
 import { getClientSideURL } from "@/utilities/getURL"
 
-const linkTypeMap = {
-  custom: 0,
-  internal: 1
-}
-const linkStyleMap = {
-  GlimpseStyle: 0
-}
+type TLinkStyle = 'GlimpseStyle' | 'normal'
 
 export const linkNodeJSXConverter: (args: {
   internalDocToHref?: (args: { node: SerializedLinkNode }) => string,
@@ -23,71 +17,67 @@ export const linkNodeJSXConverter: (args: {
 }) => JSXConverters<SerializedAutoLinkNode | SerializedLinkNode> = ({ internalDocToHref }) => ({
   autolink: ({ node, nodesToJSX }) => {
     const {
-      fields: { linkType, url, linkStyle },
+      fields: { url, linkStyle },
       children: nodes
-    } = node as typeof node & { fields: { linkStyle: keyof typeof linkStyleMap } }
+    } = node as typeof node & { fields: { linkStyle: TLinkStyle } }
 
     const children = nodesToJSX({ nodes })
 
     const rel: string | undefined = node.fields.newTab ? 'noopener noreferrer' : undefined
     const target: string | undefined = node.fields.newTab ? '_blank' : undefined
 
-    if (linkStyleMap[linkStyle] === 0) {
-      // if the url is internal then join with app base url
-      const glimpseUrl = linkTypeMap[linkType] === 1 ? new URL(url!, getClientSideURL()).toString() : url!
-      const getLinkInfo = glimpse(glimpseUrl)
+    if (linkStyle === 'GlimpseStyle') {
+      const getLinkInfo = glimpse(url!)
       return (
-        <Suspense fallback={null}>
-          <GlimpseLink fields={node.fields} getLinkInfo={getLinkInfo} label={children} />
-        </Suspense>
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={null}>
+            <GlimpseLink fields={node.fields} getLinkInfo={getLinkInfo} label={children} rel={rel} target={target} />
+          </Suspense>
+        </ErrorBoundary>
       )
     }
 
     return (
-      <Link className="font-medium text-primary underline !text-blue-500" href={node.fields.url ?? ''} {...{ rel, target }}>
+      <a className="font-medium text-primary underline !text-blue-500" href={node.fields.url} {...{ rel, target }}>
         {children}
-      </Link>
+      </a>
     )
-
   },
   link: ({ node, nodesToJSX }) => {
     const {
       fields: { linkType, url, linkStyle },
       children: nodes
-    } = node as typeof node & { fields: { linkStyle: keyof typeof linkStyleMap } }
+    } = node as typeof node & { fields: { linkStyle: TLinkStyle } }
 
     const children = nodesToJSX({ nodes })
 
     const rel: string | undefined = node.fields.newTab ? 'noopener noreferrer' : undefined
     const target: string | undefined = node.fields.newTab ? '_blank' : undefined
 
-    let href: string = node.fields.url ?? ''
-    if (linkTypeMap[linkType] === 1) {
+    let href: string = url ?? ''
+    if (linkType === 'internal') {
       if (internalDocToHref) {
         href = internalDocToHref({ node })
       } else {
-        console.error(
-          'Lexical => JSX converter: Link converter: found internal link, but internalDocToHref is not provided',
-        )
+        console.error('Lexical => JSX converter: Link converter: found internal link, but internalDocToHref is not provided',)
         href = '' // fallback
       }
     }
 
-
-    if (linkStyleMap[linkStyle] === 0) {
-      // if the url is internal then join with app base url
-      const glimpseUrl = linkTypeMap[linkType] === 1 ? new URL(url!, getClientSideURL()).toString() : url!
-      const getLinkInfo = glimpse(glimpseUrl)
+    if (linkStyle === 'GlimpseStyle') {
+      const getLinkInfo = glimpse(new URL(href!, getClientSideURL()).toString())
       return (
-        <Suspense fallback={null}>
-          <GlimpseLink fields={node.fields} getLinkInfo={getLinkInfo} label={children} />
-        </Suspense>
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={null}>
+            <GlimpseLink fields={{ ...node.fields, url: href }} getLinkInfo={getLinkInfo} label={children} rel={rel} target={target} />
+          </Suspense>
+        </ErrorBoundary>
       )
     }
     return (
-      <Link className="font-medium text-primary underline !text-blue-500" href={href} {...{ rel, target }}>
+      <a className="font-medium text-primary underline !text-blue-500" href={href} {...{ rel, target }}>
         {children}
-      </Link>
+      </a>
     )
   },
 })
