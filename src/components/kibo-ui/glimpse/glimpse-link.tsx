@@ -16,7 +16,7 @@ import Link from "next/link";
 export function GlimpseLink(props: { fields: LinkFields } & { getLinkInfo: ReturnType<typeof glimpse>, label: React.ReactNode }) {
     // console.log({ props: props.fields })
     const linkInfo = React.use(props.getLinkInfo)
-
+// console.log(props.label, linkInfo.title)
     return (
         <Glimpse closeDelay={0} openDelay={0}>
             <GlimpseTrigger asChild>

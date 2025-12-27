@@ -6,6 +6,7 @@ import type { SerializedAutoLinkNode, SerializedLinkNode } from "@payloadcms/ric
 import type { JSXConverters } from "@payloadcms/richtext-lexical/react"
 import Link from "next/link"
 import type { ClientConfig } from "payload"
+import { getClientSideURL } from "@/utilities/getURL"
 
 const linkTypeMap = {
   custom: 0,
@@ -31,8 +32,10 @@ export const linkNodeJSXConverter: (args: {
     const rel: string | undefined = node.fields.newTab ? 'noopener noreferrer' : undefined
     const target: string | undefined = node.fields.newTab ? '_blank' : undefined
 
-    if (linkTypeMap[linkType] === 0 && linkStyleMap[linkStyle] === 0) {
-      const getLinkInfo = glimpse(url as string)
+    if (linkStyleMap[linkStyle] === 0) {
+      // if the url is internal then join with app base url
+      const glimpseUrl = linkTypeMap[linkType] === 1 ? new URL(url!, getClientSideURL()).toString() : url!
+      const getLinkInfo = glimpse(glimpseUrl)
       return (
         <Suspense fallback={null}>
           <GlimpseLink fields={node.fields} getLinkInfo={getLinkInfo} label={children} />
@@ -70,8 +73,11 @@ export const linkNodeJSXConverter: (args: {
       }
     }
 
-    if (linkTypeMap[linkType] === 0 && linkStyleMap[linkStyle] === 0) {
-      const getLinkInfo = glimpse(url as string)
+
+    if (linkStyleMap[linkStyle] === 0) {
+      // if the url is internal then join with app base url
+      const glimpseUrl = linkTypeMap[linkType] === 1 ? new URL(url!, getClientSideURL()).toString() : url!
+      const getLinkInfo = glimpse(glimpseUrl)
       return (
         <Suspense fallback={null}>
           <GlimpseLink fields={node.fields} getLinkInfo={getLinkInfo} label={children} />
