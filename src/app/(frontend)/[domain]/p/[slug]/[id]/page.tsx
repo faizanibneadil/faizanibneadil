@@ -3,52 +3,194 @@ import dynamic from "next/dynamic"
 import type { PagePropsWithParams } from "@/types"
 import { getPayloadConfig } from "@/utilities/getPayloadConfig"
 import { CollectionSlug, DataFromCollectionSlug } from "payload"
+import { Metadata } from "next"
+import { getMediaUrl, getServerSideURL } from "@/utilities/getURL"
+import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintext"
 
+const og = (image: Parameters<typeof getMediaUrl>[0]) => getMediaUrl(image)
+const fallbackOg = () => `${getServerSideURL()}/graphics/favicon.svg`
 
 type TCollectionComponents = {
-    [K in CollectionSlug]?: React.ComponentType<{ entity: DataFromCollectionSlug<K>, params: Awaited<PagePropsWithParams['params']> }>
+    [K in CollectionSlug]?: {
+        component: React.ComponentType<{ entity: DataFromCollectionSlug<K>, params: Awaited<PagePropsWithParams['params']> }>,
+        metadata: (args: { doc: DataFromCollectionSlug<K> }) => Metadata | Promise<Metadata>
+    }
 }
 
 const _Collection: TCollectionComponents = {
-    blogs: dynamic(() => import('@/collections/Blogs/components/entity').then(({ BlogEntity }) => {
-        return BlogEntity
-    })),
-    notes: dynamic(() => import('@/collections/Notes/components/entity').then(({ NoteEntity }) => {
-        return NoteEntity
-    })),
-    projects: dynamic(() => import('@/collections/Projects/components/entity').then(({ ProjectEntity }) => {
-        return ProjectEntity
-    })),
-    achievements: dynamic(() => import('@/collections/Achievements/components/entity').then(({ AchievementEntity }) => {
-        return AchievementEntity
-    })),
-    certifications: dynamic(() => import('@/collections/Certifications/components/entity').then(({ CertificationEntity }) => {
-        return CertificationEntity
-    })),
-    educations: dynamic(() => import('@/collections/Educations/components/entity').then(({ EducationEntity }) => {
-        return EducationEntity
-    })),
-    hackathons: dynamic(() => import('@/collections/Hackathons/components/entity').then(({ HackathonEntity }) => {
-        return HackathonEntity
-    })),
-    licenses: dynamic(() => import('@/collections/Licenses/components/entity').then(({ LicenseEntity }) => {
-        return LicenseEntity
-    })),
-    publications: dynamic(() => import('@/collections/Publications/components/entity').then(({ PublicationEntity }) => {
-        return PublicationEntity
-    })),
-    researches: dynamic(() => import('@/collections/Researches/components/entity').then(({ ResearchEntity }) => {
-        return ResearchEntity
-    })),
-    skills: dynamic(() => import('@/collections/Skills/components/entity').then(({ SkillEntity }) => {
-        return SkillEntity
-    }))
+    blogs: {
+        component: dynamic(() => import('@/collections/Blogs/components/entity').then(({ BlogEntity }) => {
+            return BlogEntity
+        })),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title,
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content! }),
+            openGraph: {
+                type: 'article',
+                title: doc?.meta?.title || '',
+                description: doc?.meta?.description || '',
+                images: [{ url: og(doc?.meta?.image || doc?.featured_image) || fallbackOg() }]
+            }
+        })
+    },
+    notes: {
+        component: dynamic(() => import('@/collections/Notes/components/entity').then(({ NoteEntity }) => {
+            return NoteEntity
+        })),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title,
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content! }),
+            openGraph: {
+                type: 'article',
+                title: doc?.meta?.title || '',
+                description: doc?.meta?.description || '',
+                images: [{ url: og(doc?.meta?.image) ?? fallbackOg() }]
+            }
+        })
+    },
+    projects: {
+        component: dynamic(() => import('@/collections/Projects/components/entity').then(({ ProjectEntity }) => {
+            return ProjectEntity
+        })),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title,
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.overview! }),
+            openGraph: {
+                type: 'website',
+                title: doc?.meta?.title || '',
+                description: doc?.meta?.description || '',
+                images: [{ url: og(doc?.meta?.image || doc?.thumbnail) || fallbackOg() }]
+            }
+        })
+    },
+    achievements: {
+        component: dynamic(() => import('@/collections/Achievements/components/entity').then(({ AchievementEntity }) => {
+            return AchievementEntity
+        })),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title,
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            openGraph: {
+                type: 'article',
+                title: doc?.meta?.title || '',
+                description: doc?.meta?.description || '',
+                images: [{ url: og(doc?.meta?.image || doc?.image) || fallbackOg() }]
+            }
+        })
+    },
+    certifications: {
+        component: dynamic(() => import('@/collections/Certifications/components/entity').then(({ CertificationEntity }) => {
+            return CertificationEntity
+        })),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title,
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            openGraph: {
+                type: 'article',
+                title: doc?.meta?.title || '',
+                description: doc?.meta?.description || '',
+                images: [{ url: og(doc?.meta?.image || doc?.image) || fallbackOg() }]
+            }
+        })
+    },
+    educations: {
+        component: dynamic(() => import('@/collections/Educations/components/entity').then(({ EducationEntity }) => {
+            return EducationEntity
+        })),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title,
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            openGraph: {
+                type: 'article',
+                title: doc?.meta?.title || '',
+                description: doc?.meta?.description || '',
+                images: [{ url: og(doc?.meta?.image || doc?.image) || fallbackOg() }]
+            }
+        })
+    },
+    hackathons: {
+        component: dynamic(() => import('@/collections/Hackathons/components/entity').then(({ HackathonEntity }) => {
+            return HackathonEntity
+        })),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title,
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            openGraph: {
+                type: 'article',
+                title: doc?.meta?.title || '',
+                description: doc?.meta?.description || '',
+                images: [{ url: og(doc?.meta?.image ?? doc?.image) || fallbackOg() }]
+            }
+        })
+    },
+    licenses: {
+        component: dynamic(() => import('@/collections/Licenses/components/entity').then(({ LicenseEntity }) => {
+            return LicenseEntity
+        })),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title,
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            openGraph: {
+                type: 'article',
+                title: doc?.meta?.title || '',
+                description: doc?.meta?.description || '',
+                images: [{ url: og(doc?.meta?.image || doc?.image) || fallbackOg() }]
+            }
+        })
+    },
+    publications: {
+        component: dynamic(() => import('@/collections/Publications/components/entity').then(({ PublicationEntity }) => {
+            return PublicationEntity
+        })),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title,
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            openGraph: {
+                type: 'article',
+                title: doc?.meta?.title || '',
+                description: doc?.meta?.description || '',
+                images: [{ url: og(doc?.meta?.image ?? doc?.image) || fallbackOg() }]
+            }
+        })
+    },
+    researches: {
+        component: dynamic(() => import('@/collections/Researches/components/entity').then(({ ResearchEntity }) => {
+            return ResearchEntity
+        })),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title,
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            openGraph: {
+                type: 'article',
+                title: doc?.meta?.title || '',
+                description: doc?.meta?.description || '',
+                images: [{ url: og(doc?.meta?.image ?? doc?.image) || fallbackOg() }]
+            }
+        })
+    },
+    // skills: {
+    //     component: dynamic(() => import('@/collections/Skills/components/entity').then(({ SkillEntity }) => {
+    //         return SkillEntity
+    //     })),
+    //     metadata: ({doc}) => ({})
+    // }
+}
+
+export async function generateMetadata(props: PagePropsWithParams): Promise<Metadata> {
+    const params = await props.params
+    const entity = await queryEntityById({ params: props.params })
+
+    const metadata = params?.slug ? _Collection[params.slug!]?.metadata : () => ({})
+
+    // @ts-expect-error
+    return metadata({ doc: entity })
 }
 
 export default async function Page(props: PagePropsWithParams) {
     const params = await props.params
     const entity = await queryEntityById({ params: props.params })
-    const Collection = params?.slug ? _Collection[params.slug!] : () => null
+
+    const Collection = params?.slug ? _Collection[params.slug!]?.component : () => null
     // @ts-expect-error
     return <Collection entity={entity} params={params} />
 }
