@@ -1,5 +1,4 @@
-// import { MediaBlock } from '@/blocks/MediaBlock/Component'
-import { FormBlock } from '@/blocks/Form/components/form-block'
+import dynamic from 'next/dynamic'
 import { cn } from '@/lib/utils'
 import type { TCodeBlockProps, TFormBlockProps } from '@/payload-types'
 import type { PagePropsWithParams } from '@/types'
@@ -15,18 +14,8 @@ import {
 import { linkNodeJSXConverter } from './converters/LinkJSXConverter'
 import { paragraphNodeJSXConverter } from './converters/ParagraphJSXConverter'
 import { internalDocToHref } from '@/utilities/internalDocToHref'
-import { CodeBlock } from '@/blocks/Code/components/CodeBlock'
-
-// import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
-
-// import type {
-//   BannerBlock as BannerBlockProps,
-//   CallToActionBlock as CTABlockProps,
-//   MediaBlock as MediaBlockProps,
-// } from '@/payload-types'
-// import { BannerBlock } from '@/blocks/Banner/Component'
-// import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-// import { cn } from '@/lib/ui'
+const FormBlock = dynamic(() => import('@/blocks/Form/components/form-block').then(({ FormBlock }) => FormBlock))
+const CodeBlock = dynamic(() => import('@/blocks/Code/components/CodeBlock').then(({ CodeBlock }) => CodeBlock))
 
 type NodeTypes =
   | DefaultNodeTypes
@@ -42,19 +31,6 @@ const jsxConverters: (args: {
     blocks: {
       formBlock: ({ node }) => <FormBlock blockProps={node.fields} params={Promise.resolve({ ...params })} />,
       "code-block": ({ node }) => <CodeBlock blockProps={node.fields} params={Promise.resolve({ ...params })} />
-      // banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
-      // mediaBlock: ({ node }) => (
-      //   <MediaBlock
-      //     className="col-start-1 col-span-3"
-      //     imgClassName="m-0"
-      //     {...node.fields}
-      //     captionClassName="mx-auto max-w-[48rem]"
-      //     enableGutter={false}
-      //     disableInnerContainer={true}
-      //   />
-      // ),
-      // code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
-      // cta: ({ node }) => <CallToActionBlock {...node.fields} />,
     },
   })
 }
@@ -70,13 +46,11 @@ export default function RichText(props: Props) {
   return (
     <ConvertRichText
       converters={jsxConverters({ params })}
-      className={cn(
-        'payload-richtext w-full mb-5',
-        {
-          container: enableGutter,
-          'max-w-none': !enableGutter,
-          'mx-auto prose md:prose-md dark:prose-invert': enableProse,
-        },
+      className={cn('payload-richtext w-full mb-5', {
+        container: enableGutter,
+        'max-w-none': !enableGutter,
+        'mx-auto prose md:prose-md dark:prose-invert': enableProse,
+      },
         className,
       )}
       disableContainer={true}

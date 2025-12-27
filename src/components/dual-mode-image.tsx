@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { placeholderBlur } from "@/utilities/getURL";
 import Image, { StaticImageData, ImageProps } from "next/image";
 
 export type DualModeImageProps = {
@@ -13,11 +14,15 @@ export const DualModeImage = ({ darkSrc, lightSrc, className, ...props }: DualMo
         <Image
             src={darkSrc}
             className={cn('hidden dark:block', className)}
+            placeholder="blur"
+            blurDataURL={placeholderBlur}
             {...props}
         />
         <Image
             src={lightSrc}
             className={cn('shadow dark:hidden', className)}
+            placeholder="blur"
+            blurDataURL={placeholderBlur}
             {...props}
         />
     </>

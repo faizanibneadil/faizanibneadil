@@ -2,7 +2,7 @@ import BlurFade from "@/components/magicui/blur-fade";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { PagePropsWithParams } from "@/types";
 import { generateRoute } from "@/utilities/generateRoute";
-import { getMediaUrl } from "@/utilities/getURL";
+import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import Image from "next/image";
@@ -30,6 +30,8 @@ export function Blogs(props: Props) {
                         {blog?.featured_image && (
                             <Image
                                 src={getMediaUrl(blog.featured_image)}
+                                placeholder="blur"
+            blurDataURL={placeholderBlur}
                                 alt={blog.slug as string}
                                 className="h-40 w-full overflow-hidden object-cover object-top"
                                 fetchPriority="high"

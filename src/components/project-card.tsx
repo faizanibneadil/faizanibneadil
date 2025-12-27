@@ -13,7 +13,7 @@ import {
 import { Project } from "@/payload-types";
 import { getIconById } from "@/utilities/getIconById";
 import { getSkillById } from "@/utilities/getSkillById";
-import { getMediaUrl } from "@/utilities/getURL";
+import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 import { Dates } from "./dates";
 import { Skill, SkillSkeleton } from "./render-skill";
@@ -49,6 +49,8 @@ export async function ProjectCard(props: {
         <Link href={RouteWithDocSlug}>
           <Image
             src={getMediaUrl(project?.thumbnail)}
+            placeholder="blur"
+            blurDataURL={placeholderBlur}
             alt={project?.title}
             className="h-40 w-full overflow-hidden object-cover object-top"
             fetchPriority="high"
