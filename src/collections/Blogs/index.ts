@@ -35,7 +35,7 @@ export const Blogs: CollectionConfig<'blogs'> = {
                         ...rootFeatures,
                         LinkFeature({
                             maxDepth: 5,
-                            enabledCollections: ['blogs', 'pages'],
+                            enabledCollections: ['blogs', 'pages','projects'],
                             fields: ({ config, defaultFields }) => {
                                 const _defaultFields = defaultFields.map(field => {
                                     if ('name' in field && field.name === 'doc') {

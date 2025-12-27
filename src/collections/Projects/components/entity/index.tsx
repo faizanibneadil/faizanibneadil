@@ -1,5 +1,5 @@
 import { PagePropsWithParams } from "@/types"
-import { getMediaUrl } from "@/utilities/getURL"
+import { getMediaUrl, placeholderBlur } from "@/utilities/getURL"
 import Image from "next/image"
 import { DataFromCollectionSlug } from "payload"
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
@@ -21,7 +21,17 @@ export function ProjectEntity(props: Props) {
     return (
         <div className="grid grid-cols-12 gap-4">
             <div className="col-span-8 space-y-4">
-                <Image height={height as number} width={width as number} fetchPriority="high" loading="eager" alt={entity.title} src={getMediaUrl(entity.thumbnail)} />
+                <Image 
+                height={height as number} 
+                width={width as number} 
+                fetchPriority="high" 
+                loading="lazy" 
+                alt={entity.title} 
+                src={getMediaUrl(entity.thumbnail)}
+                placeholder="blur"
+            blurDataURL={placeholderBlur}
+                unoptimized
+                />
                 <h1>{entity.title}</h1>
                 {/* <p className="prose"> */}
                 {hasText(entity.overview) && (
