@@ -14,7 +14,6 @@ import { Licenses } from "@/collections/Licenses"
 import { Menus } from '@/collections/Menus'
 import { Socials } from '@/collections/Socials'
 import { Educations } from '@/collections/Educations'
-import { Icons } from '@/collections/Icons'
 import { Industries } from '@/collections/Industries'
 import { Users } from "@/collections/Users";
 import { Experiences } from '@/collections/Experiences'
@@ -22,7 +21,6 @@ import { Integration } from '@/collections/Integration'
 
 export const collections = [
     Users,
-    Icons,
     Media,
     Notes,
     Blogs,

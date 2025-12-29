@@ -7,7 +7,6 @@ import { IHackathonProps } from "@/payload-types";
 import { IconRenderer } from "./ui/icon-renderer";
 // import { getClientSideURL } from "@/utilities/getURL";
 import { Dates } from "./dates";
-import { getIconById } from "@/utilities/getIconById";
 import { getMediaUrl } from "@/utilities/getURL";
 
 type Props = Exclude<Exclude<IHackathonProps['hackathons'], null | undefined>[0], number>
@@ -46,8 +45,8 @@ export function HackathonCard({
           {links?.map((link, idx) => (
             <Link href={link.link} key={idx}>
               <Badge key={idx} title={link.label} className="flex gap-2">
-                {link?.icon && (
-                  <IconRenderer icon={typeof link.icon === 'number' ? getIconById({ id: link.icon }) : link.icon} width="0.75rem" height="0.75rem" />
+                {link?.iconify && (
+                  <IconRenderer icon={link.iconify} width="0.75rem" height="0.75rem" />
                 )}
                 {link.label}
               </Badge>

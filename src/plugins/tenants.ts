@@ -20,7 +20,6 @@ export const multiTenancy = multiTenantPlugin<Config>({
         researches: {},
         skills: {},
         experiences: {},
-        // icons: { },
         "form-submissions": {},
         forms: {},
         menus: { isGlobal: true },

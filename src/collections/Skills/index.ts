@@ -1,6 +1,6 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { NavigationGroups } from "@/constants";
-import { IconField } from "@/fields/icon";
+import { Iconify } from "@/fields/iconify";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
@@ -37,14 +37,7 @@ export const Skills: CollectionConfig<'skills'> = {
             name: 'techstack',
             label: 'Tech Stack',
             admin: { description: 'If you want to show an icon of the skill instead of skill as name then you have to select an icon from icons collection. REMEMBER: If the icon is available on skill only icon will be display.' },
-            fields: [IconField({
-                required:false,
-                admin: {
-                    components: {
-                        Cell: '@/collections/Skills/components/view-icon.tsx#ViewIcon'
-                    }
-                }
-            })]
+            fields: [Iconify()]
         }, {
             type: 'relationship',
             name: 'projects',

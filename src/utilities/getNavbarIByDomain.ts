@@ -1,6 +1,6 @@
 import React from "react"
 import { getPayloadConfig } from "./getPayloadConfig"
-import { Icon, Menu, Social } from "@/payload-types"
+import type { Menu, Social } from "@/payload-types"
 
 // TODO: wrap into next unstable cache for better performance
 export const getNavbarMenuItems = React.cache(async ({ domain }: { domain: string }) => {

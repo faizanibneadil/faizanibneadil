@@ -1,6 +1,6 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { NavigationGroups } from "@/constants";
-import { IconField } from "@/fields/icon";
+import { Iconify } from "@/fields/iconify";
 import {
     RevalidatePageAfterChange,
     RevalidatePageAfterDelete
@@ -41,7 +41,7 @@ export const Socials: CollectionConfig<'socials'> = {
                             label: 'Link',
                             required: true
                         },
-                        IconField()
+                        Iconify()
                     ]
                 }
             ]

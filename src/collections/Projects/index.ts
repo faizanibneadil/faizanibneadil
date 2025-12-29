@@ -1,6 +1,6 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { NavigationGroups } from "@/constants";
-import { IconField } from "@/fields/icon";
+import { Iconify } from "@/fields/iconify";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
@@ -130,7 +130,7 @@ export const Projects: CollectionConfig<'projects'> = {
                 {
                     type: 'row',
                     fields: [
-                        IconField(),
+                        Iconify(),
                         {
                             type: 'text',
                             label: 'Lable',

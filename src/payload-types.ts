@@ -99,10 +99,10 @@ export interface Config {
     'blogs-block': IBlogsBlockProps;
     formBlock: TFormBlockProps;
     'code-block': TCodeBlockProps;
+    eldoraUILogoTimelineBlock: TEldoraUILogoTimelineBlockProps;
   };
   collections: {
     users: User;
-    icons: Icon;
     media: Media;
     notes: Note;
     blogs: Blog;
@@ -135,7 +135,6 @@ export interface Config {
   };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
-    icons: IconsSelect<false> | IconsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     notes: NotesSelect<false> | NotesSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
@@ -501,6 +500,7 @@ export interface Page {
         | IExperienceProps
         | IBlogsBlockProps
         | TFormBlockProps
+        | TEldoraUILogoTimelineBlockProps
         | IAchievementProps
         | ICertificationProps
         | IGithubContributionProps
@@ -574,7 +574,7 @@ export interface Skill {
    * If you want to show an icon of the skill instead of skill as name then you have to select an icon from icons collection. REMEMBER: If the icon is available on skill only icon will be display.
    */
   techstack?: {
-    icon?: (number | null) | Icon;
+    iconify?: string | null;
   };
   /**
    * Select those project in whitch you used this skill.
@@ -584,24 +584,6 @@ export interface Skill {
     docs?: (number | Experience)[];
     hasNextPage?: boolean;
     totalDocs?: number;
-  };
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "icons".
- */
-export interface Icon {
-  id: number;
-  title: string;
-  iconSpecs: {
-    type: 'svg' | 'html';
-    iconCode?: string | null;
-    svg?: (number | null) | Media;
   };
   slug?: string | null;
   slugLock?: boolean | null;
@@ -673,7 +655,7 @@ export interface Project {
   };
   links?:
     | {
-        icon: number | Icon;
+        iconify?: string | null;
         label: string;
         link: string;
         id?: string | null;
@@ -926,6 +908,85 @@ export interface TFormBlockProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TEldoraUILogoTimelineBlockProps".
+ */
+export interface TEldoraUILogoTimelineBlockProps {
+  label: string;
+  heightStyleType?: ('tailwind' | 'css') | null;
+  heightStylesInCSS?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Height of the timeline container (e.g., "h-[400px]", "h-screen")
+   */
+  heightStylesInTailwind?: string | null;
+  additionalContainerStyleType?: ('tailwind' | 'css') | null;
+  containerStylesInCSS?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Additional CSS classes for the container
+   */
+  containerStylesInTailwind?: string | null;
+  /**
+   * Size of icons in pixels
+   */
+  iconSize?: number | null;
+  /**
+   * If you want to display the registered users with there profiles then select users by default logos is selected.
+   */
+  useCase?: ('logos' | 'users') | null;
+  /**
+   * Whether to display separator lines between rows
+   */
+  showRowSeparator?: boolean | null;
+  /**
+   * If checked, animations only play when the component is hovered
+   */
+  animateOnHover?: boolean | null;
+  /**
+   * Array of logo items to display on the timeline (required)
+   */
+  items?:
+    | {
+        iconify?: string | null;
+        /**
+         * Icon key from the Icons object (e.g., "discord", "gitHub", "google")
+         */
+        label?: string | null;
+        /**
+         * Animation delay in seconds (typically negative, e.g., -23)
+         */
+        animationDelay?: number | null;
+        /**
+         * Animation duration in seconds (e.g., 30, 40, 45, 60)
+         */
+        animationDuration?: number | null;
+        /**
+         * Row index (1-based) to group logos on the same timeline row
+         */
+        row?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'eldoraUILogoTimelineBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "IAchievementProps".
  */
 export interface IAchievementProps {
@@ -983,7 +1044,7 @@ export interface Achievement {
   location?: string | null;
   links?:
     | {
-        icon: number | Icon;
+        iconify?: string | null;
         label: string;
         link: string;
         id?: string | null;
@@ -1061,7 +1122,7 @@ export interface Certification {
   location?: string | null;
   links?:
     | {
-        icon: number | Icon;
+        iconify?: string | null;
         label: string;
         link: string;
         id?: string | null;
@@ -1159,7 +1220,7 @@ export interface Hackathon {
   location?: string | null;
   links?:
     | {
-        icon: number | Icon;
+        iconify?: string | null;
         label: string;
         link: string;
         id?: string | null;
@@ -1263,7 +1324,7 @@ export interface Publication {
   location?: string | null;
   links?:
     | {
-        icon: number | Icon;
+        iconify?: string | null;
         label: string;
         link: string;
         id?: string | null;
@@ -1341,7 +1402,7 @@ export interface Research {
   location?: string | null;
   links?:
     | {
-        icon: number | Icon;
+        iconify?: string | null;
         label: string;
         link: string;
         id?: string | null;
@@ -1430,7 +1491,7 @@ export interface License {
   location?: string | null;
   links?:
     | {
-        icon: number | Icon;
+        iconify?: string | null;
         label: string;
         link: string;
         id?: string | null;
@@ -1554,7 +1615,7 @@ export interface Menu {
   tenant?: (number | null) | Tenant;
   menu?:
     | {
-        icon: number | Icon;
+        iconify?: string | null;
         label: string;
         page?: (number | null) | Page;
         id?: string | null;
@@ -1574,7 +1635,7 @@ export interface Social {
     | {
         title: string;
         link: string;
-        icon: number | Icon;
+        iconify?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1588,9 +1649,11 @@ export interface Social {
 export interface Integration {
   id: number;
   tenant?: (number | null) | Tenant;
+  enableChatButton?: boolean | null;
   chatBubbleType?: 'tawk' | null;
-  tawlPropertyId?: string | null;
+  tawkPropertyId?: string | null;
   tawkWidgetId?: string | null;
+  enableTawkBubble?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1622,10 +1685,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
-      } | null)
-    | ({
-        relationTo: 'icons';
-        value: number | Icon;
       } | null)
     | ({
         relationTo: 'media';
@@ -1792,25 +1851,6 @@ export interface TUserTenantsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "icons_select".
- */
-export interface IconsSelect<T extends boolean = true> {
-  title?: T;
-  iconSpecs?:
-    | T
-    | {
-        type?: T;
-        iconCode?: T;
-        svg?: T;
-      };
-  slug?: T;
-  slugLock?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -1964,7 +2004,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   links?:
     | T
     | {
-        icon?: T;
+        iconify?: T;
         label?: T;
         link?: T;
         id?: T;
@@ -2003,7 +2043,7 @@ export interface MenusSelect<T extends boolean = true> {
   menu?:
     | T
     | {
-        icon?: T;
+        iconify?: T;
         label?: T;
         page?: T;
         id?: T;
@@ -2022,7 +2062,7 @@ export interface SocialsSelect<T extends boolean = true> {
     | {
         title?: T;
         link?: T;
-        icon?: T;
+        iconify?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -2039,7 +2079,7 @@ export interface SkillsSelect<T extends boolean = true> {
   techstack?:
     | T
     | {
-        icon?: T;
+        iconify?: T;
       };
   projects?: T;
   relatedExperiences?: T;
@@ -2067,7 +2107,7 @@ export interface HackathonsSelect<T extends boolean = true> {
   links?:
     | T
     | {
-        icon?: T;
+        iconify?: T;
         label?: T;
         link?: T;
         id?: T;
@@ -2102,7 +2142,7 @@ export interface ResearchesSelect<T extends boolean = true> {
   links?:
     | T
     | {
-        icon?: T;
+        iconify?: T;
         label?: T;
         link?: T;
         id?: T;
@@ -2137,7 +2177,7 @@ export interface AchievementsSelect<T extends boolean = true> {
   links?:
     | T
     | {
-        icon?: T;
+        iconify?: T;
         label?: T;
         link?: T;
         id?: T;
@@ -2172,7 +2212,7 @@ export interface CertificationsSelect<T extends boolean = true> {
   links?:
     | T
     | {
-        icon?: T;
+        iconify?: T;
         label?: T;
         link?: T;
         id?: T;
@@ -2207,7 +2247,7 @@ export interface PublicationsSelect<T extends boolean = true> {
   links?:
     | T
     | {
-        icon?: T;
+        iconify?: T;
         label?: T;
         link?: T;
         id?: T;
@@ -2242,7 +2282,7 @@ export interface LicensesSelect<T extends boolean = true> {
   links?:
     | T
     | {
-        icon?: T;
+        iconify?: T;
         label?: T;
         link?: T;
         id?: T;
@@ -2298,9 +2338,11 @@ export interface ExperiencesSelect<T extends boolean = true> {
  */
 export interface IntegrationSelect<T extends boolean = true> {
   tenant?: T;
+  enableChatButton?: T;
   chatBubbleType?: T;
-  tawlPropertyId?: T;
+  tawkPropertyId?: T;
   tawkWidgetId?: T;
+  enableTawkBubble?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -30,11 +30,11 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   return {
     title: domain,
     description: domain,
+    metadataBase: new URL(getServerSideURL()),
     ...(avatarUrl && {
-      metadataBase: new URL(getServerSideURL()),
       icons: [{
         url: avatarUrl,
-        fetchPriority: 'high'
+        fetchPriority: 'high',
       }]
     }),
     ...(avatarUrl && {

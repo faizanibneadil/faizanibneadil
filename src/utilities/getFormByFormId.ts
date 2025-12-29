@@ -1,6 +1,5 @@
 import React from "react"
-import { getPayloadConfig } from "./getPayloadConfig"
-import { Form, Icon } from "@/payload-types"
+import { Form } from "@/payload-types"
 import { sdk } from "@/lib/sdk"
 
 export const getFormByFormId = React.cache(async ({ id }: { id: number }) => {

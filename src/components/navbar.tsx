@@ -10,7 +10,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { getIconById } from "@/utilities/getIconById";
 import { getNavbarMenuItems, getNavbarSocialMenuItems } from "@/utilities/getNavbarIByDomain";
 
 /**
@@ -29,13 +28,14 @@ export default async function Navbar({ domain }: { domain: string }) {
       ? `/${domain}/p/${item?.page?.slug}`
       : '/'
 
-    const icon = typeof item.icon === 'number' ? getIconById({ id: item.icon }) : item.icon
     return (
       <DockIcon key={item?.id}>
         <Tooltip>
           <TooltipTrigger asChild>
             <Link href={href} className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
-                <IconRenderer icon={icon} width="1rem" height="1rem" />
+              {item.iconify && (
+                <IconRenderer icon={item.iconify} width="1rem" height="1rem" />
+              )}
             </Link>
           </TooltipTrigger>
           <TooltipContent>
@@ -47,13 +47,14 @@ export default async function Navbar({ domain }: { domain: string }) {
   })
 
   const _SocialsToRender = socials?.socialsLinks?.map(item => {
-    const icon = typeof item.icon === 'number' ? getIconById({ id: item.icon }) : item.icon
     return (
       <DockIcon key={item?.id}>
         <Tooltip>
           <TooltipTrigger asChild>
             <Link href={item?.link} target="_blank" className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-12")}>
-                <IconRenderer icon={icon} width="1rem" height="1rem" />
+              {item.iconify && (
+                <IconRenderer icon={item.iconify} width="1rem" height="1rem" />
+              )}
             </Link>
           </TooltipTrigger>
           <TooltipContent>

@@ -1,6 +1,6 @@
 import React from "react"
 import { getPayloadConfig } from "./getPayloadConfig"
-import { Form, FormSubmission, Icon } from "@/payload-types"
+import type { FormSubmission } from "@/payload-types"
 import { sdk } from "@/lib/sdk"
 
 // TODO: wrap into next unstable cache for better performance
