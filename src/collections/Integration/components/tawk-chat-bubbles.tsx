@@ -14,10 +14,20 @@ export const getTawkConfig = (domain: string) =>
                     where: { 'tenant.slug': { equals: domain } }
                 })
 
-                return { propertyId: tawk.docs?.at(0)?.tawlPropertyId, widgetId: tawk?.docs?.at(0)?.tawkWidgetId }
+                return {
+                    propertyId: tawk.docs?.at(0)?.tawkPropertyId,
+                    widgetId: tawk?.docs?.at(0)?.tawkWidgetId,
+                    enableChatButton: tawk?.docs?.at(0)?.enableChatButton,
+                    enableTAWKBubble: tawk?.docs?.at(0)?.enableTawkBubble,
+                }
             } catch (error) {
                 console.error('Failed to fetch integration:', error)
-                return { propertyId: null, widgetId: null }
+                return {
+                    propertyId: null,
+                    widgetId: null,
+                    enableChatButton: false,
+                    enableTAWKBubble: false
+                }
             }
         },
         [`tawk-integration-${domain}`],
@@ -25,12 +35,17 @@ export const getTawkConfig = (domain: string) =>
     )()
 
 export async function TawkChatBubble(props: { domain: string }) {
-    const { propertyId, widgetId } = await getTawkConfig(props.domain)
+    const {
+        propertyId,
+        widgetId,
+        enableChatButton,
+        enableTAWKBubble
+    } = await getTawkConfig(props.domain)
 
-    if (propertyId && widgetId) {
+    if (propertyId && widgetId && enableChatButton && enableTAWKBubble) {
         return (
             <Script
-                strategy="lazyOnload"
+                strategy="afterInteractive"
                 src="https://embed.tawk.to/694973b55dc095197c5b5a0f/1jd3envel"
             />
         )

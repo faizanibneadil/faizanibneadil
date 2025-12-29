@@ -16,6 +16,7 @@ import type { Block, BlockSlug } from 'payload'
 import { BlogsBlock } from '@/blocks/Blogs'
 import { FormBlock } from '@/blocks/Form'
 import { Code } from '@/blocks/Code'
+import { LogoTimeline } from '@/blocks/LogoTimeline'
 
 
 export const blocks: Block[] = [
@@ -35,7 +36,8 @@ export const blocks: Block[] = [
     GitHubContributionsBlock,
     BlogsBlock,
     FormBlock,
-    Code
+    Code,
+    LogoTimeline
 ]
 
 export const defaultBlocks: BlockSlug[] = [
@@ -47,6 +49,7 @@ export const defaultBlocks: BlockSlug[] = [
     'experience',
     'blogs-block',
     'formBlock',
+    'eldoraUILogoTimelineBlock'
 ]
 export const itSpecificBlock: BlockSlug[] = [
     "achievement",

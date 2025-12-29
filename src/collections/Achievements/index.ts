@@ -3,9 +3,9 @@ import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin"
 import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { NavigationGroups } from "@/constants";
-import { IconField } from "@/fields/icon";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
+import { Iconify } from "@/fields/iconify";
 // import { VersionConfig } from "@/utilities/version-config";
 
 export const Achievements: CollectionConfig<'achievements'> = {
@@ -73,7 +73,7 @@ export const Achievements: CollectionConfig<'achievements'> = {
                 {
                     type: 'row',
                     fields: [
-                        IconField(),
+                        Iconify(),
                         {
                             type: 'text',
                             label: 'Lable',

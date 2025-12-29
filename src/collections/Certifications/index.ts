@@ -1,6 +1,6 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { NavigationGroups } from "@/constants";
-import { IconField } from "@/fields/icon";
+import { Iconify } from "@/fields/iconify";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
@@ -73,7 +73,7 @@ export const Certifications: CollectionConfig<'certifications'> = {
                 {
                     type: 'row',
                     fields: [
-                        IconField(),
+                        Iconify(),
                         {
                             type: 'text',
                             label: 'Lable',

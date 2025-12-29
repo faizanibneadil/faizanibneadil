@@ -1,14 +1,12 @@
-import { PagePropsWithParams } from "@/types"
-import { getMediaUrl, placeholderBlur } from "@/utilities/getURL"
-import Image from "next/image"
-import { DataFromCollectionSlug } from "payload"
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-import { RichText } from '@payloadcms/richtext-lexical/react';
-import { hasText } from '@payloadcms/richtext-lexical/shared'
+import Image from "next/image";
 import Link from "next/link";
 import { IconRenderer } from "@/components/ui/icon-renderer";
-import { getIconById } from "@/utilities/getIconById";
-import React from "react";
+import { PagePropsWithParams } from "@/types";
+import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
+import { RichText } from '@payloadcms/richtext-lexical/react';
+import { hasText } from '@payloadcms/richtext-lexical/shared';
+import { DataFromCollectionSlug } from "payload";
 
 type Props = {
     entity: DataFromCollectionSlug<'projects'>, params: Awaited<PagePropsWithParams['params']>
@@ -21,16 +19,16 @@ export function ProjectEntity(props: Props) {
     return (
         <div className="grid grid-cols-12 gap-4">
             <div className="col-span-8 space-y-4">
-                <Image 
-                height={height as number} 
-                width={width as number} 
-                fetchPriority="high" 
-                loading="lazy" 
-                alt={entity.title} 
-                src={getMediaUrl(entity.thumbnail)}
-                placeholder="blur"
-            blurDataURL={placeholderBlur}
-                unoptimized
+                <Image
+                    height={height as number}
+                    width={width as number}
+                    fetchPriority="high"
+                    loading="lazy"
+                    alt={entity.title}
+                    src={getMediaUrl(entity.thumbnail)}
+                    placeholder="blur"
+                    blurDataURL={placeholderBlur}
+                    unoptimized
                 />
                 <h1>{entity.title}</h1>
                 {/* <p className="prose"> */}
@@ -43,10 +41,8 @@ export function ProjectEntity(props: Props) {
                 {entity?.links?.map(link => (
                     <Link href={link.link} className="flex gap-4 items-center " key={`resource-${link.id}`}>
                         {/* {typeof link.icon === 'number' && <span>ICON</span>} */}
-                        {typeof link.icon && (
-                            <React.Suspense fallback='loading...'>
-                                <IconRenderer width="1rem" height="1rem" icon={typeof link.icon === 'number' ? getIconById({ id: link.icon }) : link.icon} />
-                            </React.Suspense>
+                        {link.iconify && (
+                            <IconRenderer width="1rem" height="1rem" icon={link.iconify} />
                         )}
                         <p>{link?.label}</p>
                     </Link>

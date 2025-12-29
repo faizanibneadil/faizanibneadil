@@ -11,7 +11,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Project } from "@/payload-types";
-import { getIconById } from "@/utilities/getIconById";
 import { getSkillById } from "@/utilities/getSkillById";
 import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
@@ -89,8 +88,8 @@ export async function ProjectCard(props: {
             {project?.links?.map((link, idx) => (
               <Link href={link?.link} key={idx} target="_blank">
                 <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
-                  {link?.icon && (
-                    <IconRenderer icon={typeof link?.icon === 'number' ? getIconById({ id: link?.icon }) : link?.icon} />
+                  {link?.iconify && (
+                    <IconRenderer icon={link.iconify} />
                   )}
                   {link?.label}
                 </Badge>

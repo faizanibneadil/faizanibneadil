@@ -2,8 +2,8 @@ import type { CollectionConfig } from "payload";
 
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { NavigationGroups } from "@/constants";
-import { IconField } from "@/fields/icon";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { Iconify } from "@/fields/iconify";
 // import { VersionConfig } from "@/utilities/version-config";
 
 export const Menus: CollectionConfig<'menus'> = {
@@ -27,7 +27,7 @@ export const Menus: CollectionConfig<'menus'> = {
                 {
                     type: 'row',
                     fields: [
-                        IconField(),
+                        Iconify(),
                         {
                             type: 'text',
                             name: 'label',
