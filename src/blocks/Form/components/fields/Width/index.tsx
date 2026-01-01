@@ -7,11 +7,10 @@ export const Width: React.FC<{
 
   return (
     <div
-      className={`w-full ${className || ''} px-2 mb-4`}
+      className={`w-full px-2 mb-4 sm:w-[var(--field-width)] ${className || ''}`}
       style={{
-        flex: calculatedWidth ? `0 0 ${calculatedWidth}` : '0 0 100%',
-        maxWidth: calculatedWidth || '100%'
-      }}
+        '--field-width': calculatedWidth || '100%'
+      } as React.CSSProperties}
     >
       {children}
     </div>

@@ -54,7 +54,7 @@ export const formBuilder = formBuilderPlugin({
     },
     formSubmissionOverrides: {
         access: {
-            create: superAdminOrTenantAdminAccess,
+            create: () => true,
             delete: superAdminOrTenantAdminAccess,
             read: () => true,
             update: superAdminOrTenantAdminAccess,
