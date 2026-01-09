@@ -37,6 +37,15 @@ export const multiTenancy = multiTenantPlugin<Config>({
             },
         },
     },
+    i18n:{
+        translations: {
+            en: {
+                "nav-tenantSelector-label": 'Portfolios',
+                "assign-tenant-button-label": 'Assign Portfolio',
+                "field-assignedTenant-label": 'Assigned Portfolio'
+            }
+        }
+    },
     tenantsArrayField: {
         includeDefaultField: false,
     },
