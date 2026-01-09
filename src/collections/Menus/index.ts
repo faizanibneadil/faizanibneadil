@@ -8,6 +8,7 @@ import { Iconify } from "@/fields/iconify";
 
 export const Menus: CollectionConfig<'menus'> = {
     slug: 'menus',
+    labels: { plural: 'Menus', singular: 'Menu' },
     admin: { 
         // group: NavigationGroups.portfolio 
     },

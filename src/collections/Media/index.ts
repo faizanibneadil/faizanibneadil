@@ -6,6 +6,7 @@ import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from '@/hooks/Re
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: { plural: 'Media', singular: 'Media' },
   trash: true,
   admin: { 
     // group: NavigationGroups.portfolio 

@@ -11,6 +11,7 @@ import type { CollectionConfig } from "payload";
 
 export const Skills: CollectionConfig<'skills'> = {
     slug: 'skills',
+    labels: { plural: 'Skills', singular: 'Skill' },
     trash: true,
     admin: {
         useAsTitle: 'title',

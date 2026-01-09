@@ -11,6 +11,7 @@ import type { CollectionConfig, RelationshipField } from "payload";
 
 export const Blogs: CollectionConfig<'blogs'> = {
     slug: 'blogs',
+    labels: { plural: 'Blogs', singular: 'Blog' },
     trash: true,
     admin: {
         useAsTitle: 'title',

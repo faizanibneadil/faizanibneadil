@@ -2,6 +2,7 @@ import { CollectionConfig } from "payload";
 
 export const Integration: CollectionConfig<'integration'> = {
     slug: 'integration',
+    labels: { plural: 'Integrations', singular: 'Integration' },
     fields: [
         {
             type: 'checkbox',

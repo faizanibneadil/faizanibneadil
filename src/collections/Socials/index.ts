@@ -10,6 +10,7 @@ import type { CollectionConfig } from "payload";
 
 export const Socials: CollectionConfig<'socials'> = {
     slug: 'socials',
+    labels: { plural: 'Socials', singular: 'Social' },
     admin: { 
         // group: NavigationGroups.portfolio 
     },

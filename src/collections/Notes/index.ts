@@ -10,6 +10,7 @@ import { generatePreview } from "@/utilities/generate-preview";
 
 export const Notes: CollectionConfig<'notes'> = {
     slug: 'notes',
+    labels: { plural: 'Notes', singular: 'Note' },
     trash: true,
     admin: {
         useAsTitle: 'title',

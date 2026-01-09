@@ -10,6 +10,7 @@ import { CollectionConfig } from "payload";
 
 export const Hackathons: CollectionConfig<'hackathons'> = {
     slug: 'hackathons',
+    labels: { plural: 'Hackathons', singular: 'Hackathon' },
     trash: true,
     admin: {
         useAsTitle: 'title',

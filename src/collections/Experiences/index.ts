@@ -4,6 +4,7 @@ import type { CollectionConfig } from "payload";
 
 export const Experiences: CollectionConfig<'experiences'> = {
     slug: 'experiences',
+    labels: { plural: 'Experiences', singular: 'Experience' },
     admin: {
         useAsTitle: 'title'
     },

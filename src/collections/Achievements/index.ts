@@ -10,6 +10,7 @@ import { Iconify } from "@/fields/iconify";
 
 export const Achievements: CollectionConfig<'achievements'> = {
     slug: 'achievements',
+    labels: { plural: 'Achievements', singular: 'Achievement' },
     trash: true,
     admin: {
         useAsTitle: 'title',
