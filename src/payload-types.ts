@@ -99,7 +99,6 @@ export interface Config {
     'blogs-block': IBlogsBlockProps;
     formBlock: TFormBlockProps;
     'code-block': TCodeBlockProps;
-    eldoraUILogoTimelineBlock: TEldoraUILogoTimelineBlockProps;
   };
   collections: {
     users: User;
@@ -500,7 +499,6 @@ export interface Page {
         | IExperienceProps
         | IBlogsBlockProps
         | TFormBlockProps
-        | TEldoraUILogoTimelineBlockProps
         | IAchievementProps
         | ICertificationProps
         | IGithubContributionProps
@@ -905,85 +903,6 @@ export interface TFormBlockProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TEldoraUILogoTimelineBlockProps".
- */
-export interface TEldoraUILogoTimelineBlockProps {
-  label: string;
-  heightStyleType?: ('tailwind' | 'css') | null;
-  heightStylesInCSS?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  /**
-   * Height of the timeline container (e.g., "h-[400px]", "h-screen")
-   */
-  heightStylesInTailwind?: string | null;
-  additionalContainerStyleType?: ('tailwind' | 'css') | null;
-  containerStylesInCSS?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  /**
-   * Additional CSS classes for the container
-   */
-  containerStylesInTailwind?: string | null;
-  /**
-   * Size of icons in pixels
-   */
-  iconSize?: number | null;
-  /**
-   * If you want to display the registered users with there profiles then select users by default logos is selected.
-   */
-  useCase?: ('logos' | 'users') | null;
-  /**
-   * Whether to display separator lines between rows
-   */
-  showRowSeparator?: boolean | null;
-  /**
-   * If checked, animations only play when the component is hovered
-   */
-  animateOnHover?: boolean | null;
-  /**
-   * Array of logo items to display on the timeline (required)
-   */
-  items?:
-    | {
-        iconify?: string | null;
-        /**
-         * Icon key from the Icons object (e.g., "discord", "gitHub", "google")
-         */
-        label?: string | null;
-        /**
-         * Animation delay in seconds (typically negative, e.g., -23)
-         */
-        animationDelay?: number | null;
-        /**
-         * Animation duration in seconds (e.g., 30, 40, 45, 60)
-         */
-        animationDuration?: number | null;
-        /**
-         * Row index (1-based) to group logos on the same timeline row
-         */
-        row?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'eldoraUILogoTimelineBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
