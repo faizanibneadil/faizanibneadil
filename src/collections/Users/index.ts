@@ -30,6 +30,7 @@ const defaultTenantArrayField = tenantsArrayField({
 
 export const Users: CollectionConfig<'users'> = {
   slug: 'users',
+  labels: { plural: 'Users', singular: 'User' },
   trash: true,
   access: {
     create: createAccess,

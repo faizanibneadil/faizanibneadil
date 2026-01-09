@@ -6,6 +6,7 @@ import { NavigationGroups } from '@/constants'
 
 export const Tenants: CollectionConfig<'tenants'> = {
   slug: 'tenants',
+  labels: { plural: 'Portfolios', singular: 'Portfolio' },
   trash:true,
   access: {
     create: isSuperAdminAccess,

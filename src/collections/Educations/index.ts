@@ -9,6 +9,7 @@ import type { CollectionConfig } from "payload";
 
 export const Educations: CollectionConfig<'educations'> = {
     slug: 'educations',
+    labels: { plural: 'Educations', singular: 'Education' },
     trash: true,
     admin: { 
         useAsTitle: 'title', 

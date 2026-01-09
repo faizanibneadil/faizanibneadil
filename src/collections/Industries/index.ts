@@ -10,6 +10,7 @@ import type { CollectionConfig } from "payload";
 
 export const Industries: CollectionConfig<'industries'> = {
     slug: 'industries',
+    labels: { plural: 'Industries', singular: 'Industry' },
     trash: true,
     admin: {
         useAsTitle: 'title',

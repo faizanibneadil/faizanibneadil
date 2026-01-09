@@ -12,6 +12,7 @@ import type { BlockSlug, CollectionConfig } from "payload";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
+    labels: { plural: 'Pages', singular: 'Page' },
     trash: true,
     admin: {
         useAsTitle: 'title',
