@@ -4,6 +4,7 @@ import type { PagePropsWithParams } from "@/types"
 import { getMediaUrl } from "@/utilities/getURL"
 import { DefaultTypedEditorState } from "@payloadcms/richtext-lexical"
 import { hasText } from "@payloadcms/richtext-lexical/shared"
+import { BackButton } from "@/components/BackButton"
 
 type Props = {
     entity: DataFromCollectionSlug<'blogs'>, params: Awaited<PagePropsWithParams['params']>
@@ -12,6 +13,9 @@ export function BlogEntity(props: Props) {
     const { entity, params } = props
     // console.log({ entity })
     return (
+        <div className="space-y-2">
+            <BackButton />
+
         <div className='w-full flex flex-col gap-4'>
             <img
                 className='w-full'
@@ -22,6 +26,7 @@ export function BlogEntity(props: Props) {
             {hasText(entity.content) && (
                 <RichText params={params} enableGutter={false} data={entity.content as DefaultTypedEditorState} />  
             )}
+        </div>
         </div>
     )
 }
