@@ -1,3 +1,4 @@
+import { BackButton } from "@/components/BackButton";
 import BlurFade from "@/components/magicui/blur-fade"
 import { ProjectCard } from "@/components/project-card"
 import type { PagePropsWithParams } from "@/types";
@@ -12,5 +13,10 @@ export function Projects(props: Props) {
             <ProjectCard project={project} params={params} />
         </BlurFade>
     ))
-    return <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{projects}</div>
+    return (
+        <div className="space-y-2">
+            <BackButton />
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{projects}</div>
+        </div>
+    )
 }

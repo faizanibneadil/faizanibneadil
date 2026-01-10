@@ -1,3 +1,4 @@
+import { BackButton } from "@/components/BackButton";
 import BlurFade from "@/components/magicui/blur-fade";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { PagePropsWithParams } from "@/types";
@@ -31,7 +32,7 @@ export function Blogs(props: Props) {
                             <Image
                                 src={getMediaUrl(blog.featured_image)}
                                 placeholder="blur"
-            blurDataURL={placeholderBlur}
+                                blurDataURL={placeholderBlur}
                                 alt={blog.slug as string}
                                 className="h-40 w-full overflow-hidden object-cover object-top"
                                 fetchPriority="high"
@@ -55,5 +56,10 @@ export function Blogs(props: Props) {
             </BlurFade>
         )
     })
-    return <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{blogs}</div>
+    return (
+        <div className="space-y-2">
+            <BackButton />
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{blogs}</div>
+        </div>
+    )
 }
