@@ -1,5 +1,9 @@
+import { FeatureSection } from "@/components/feature-section";
 import HeroSection from "@/components/hero-section";
+import { LogoCloud } from "@/components/logo-cloud";
+import { HeroSection1 } from "@/components/ui/hero-section-1";
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 
 
 export const metadata: Metadata = {
@@ -12,6 +16,27 @@ export const metadata: Metadata = {
     }
 }
 
-export default function Page() {
-    return <HeroSection />
+export default async function Page() {
+    const isAuthenticated = Boolean((await cookies()).get('payload-token'))
+
+    return (
+        <>
+            <HeroSection1 isAuthenticated={isAuthenticated} />
+            <section className="min-h-40 w-full place-content-center">
+                <section className="relative mx-auto max-w-screen">
+                    {/* <h2 className="mb-5 text-center font-medium text-foreground text-xl tracking-tight md:text-3xl">
+                        <span className="text-muted-foreground">Trusted by experts.</span>
+                        <br />
+                        <span className="font-semibold">Used by the leaders.</span>
+                    </h2> */}
+                    <div className="mask-[linear-gradient(to_right,transparent,black,transparent)] mx-auto my-5 h-px max-w- bg-border" />
+                    <LogoCloud />
+                    <div className="mask-[linear-gradient(to_right,transparent,black,transparent)] mt-5 h-px bg-border" />
+                </section>
+            </section>
+            <section className="min-h-screen place-content-center p-4">
+                <FeatureSection />
+            </section>
+        </>
+    )
 }

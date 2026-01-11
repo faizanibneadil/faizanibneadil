@@ -9,6 +9,7 @@ import { isSuperAdmin } from '@/access/isSuperAdmin'
 import { setCookieBasedOnDomain } from './hooks/setCookieBasedOnDomain'
 import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
 import { NavigationGroups } from '@/constants'
+import { externalUsersSignUp } from './endpoints/externalUsersSignUp'
 
 const defaultTenantArrayField = tenantsArrayField({
   tenantsArrayFieldName: 'tenants',
@@ -43,14 +44,14 @@ export const Users: CollectionConfig<'users'> = {
     // group: NavigationGroups.management,
   },
   auth: true,
-  endpoints: [externalUsersLogin],
+  endpoints: [externalUsersLogin, externalUsersSignUp],
   fields: [
     {
       type: 'upload',
       name: 'profile',
       relationTo: 'media',
       label: 'Profile Avatar',
-      admin:{ position: 'sidebar'}
+      admin: { position: 'sidebar' }
     },
     {
       admin: {
@@ -100,9 +101,9 @@ export const Users: CollectionConfig<'users'> = {
       saveToJWT: true,
       name: 'industry',
       admin: {
-        allowCreate:false,
-        allowEdit:false,
-        isSortable:false,
+        allowCreate: false,
+        allowEdit: false,
+        isSortable: false,
         condition: (fields, siblings, ctx) => {
           if (fields?.roles?.includes('user')) {
             return true

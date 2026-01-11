@@ -8,6 +8,7 @@ import { Inter as FontSans } from "next/font/google";
 import React from "react";
 import "./globals.css";
 import { getServerSideURL } from "@/utilities/getURL";
+import { Toaster } from "@/components/ui/sonner";
 
 
 const fontSans = FontSans({
@@ -66,6 +67,7 @@ export default async function RootLayout({
               {children}
             </TooltipProvider>
           </ThemeProvider>
+          <Toaster />
       </body>
     </html>
   );

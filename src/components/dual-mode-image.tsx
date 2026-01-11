@@ -16,6 +16,7 @@ export const DualModeImage = ({ darkSrc, lightSrc, className, ...props }: DualMo
             className={cn('hidden dark:block', className)}
             placeholder="blur"
             blurDataURL={placeholderBlur}
+            unoptimized
             {...props}
         />
         <Image
@@ -23,6 +24,7 @@ export const DualModeImage = ({ darkSrc, lightSrc, className, ...props }: DualMo
             className={cn('shadow dark:hidden', className)}
             placeholder="blur"
             blurDataURL={placeholderBlur}
+            unoptimized
             {...props}
         />
     </>
