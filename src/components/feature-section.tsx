@@ -1,11 +1,17 @@
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { cn } from "@/lib/utils";
 import {
+	BarChart3,
+	Code2,
 	Cpu,
 	Fingerprint,
+	Globe,
+	LayoutDashboard,
+	MousePointer2,
 	Pencil,
 	Settings2,
 	Sparkles,
+	SparklesIcon,
 	Zap,
 } from "lucide-react";
 import type React from "react";
@@ -74,48 +80,33 @@ export function FeatureCard({
 
 const features: FeatureType[] = [
 	{
-		title: "Faaast",
-		icon: Zap,
-		description: "It supports an entire helping developers and innovate.",
+		title: "Drag & Drop Builder",
+		icon: MousePointer2,
+		description: "Create stunning layouts without writing a single line of code using our intuitive editor.",
 	},
 	{
-		title: "Powerful",
-		icon: Cpu,
-		description: "It supports an entire helping developers and businesses.",
+		title: "SEO Optimized",
+		icon: Globe,
+		description: "Automatically generated meta tags and sitemaps to ensure you rank on the first page.",
 	},
 	{
-		title: "Security",
-		icon: Fingerprint,
-		description: "It supports an helping developers businesses.",
-	},
+        title: "AI-Powered Copy",
+        icon: SparklesIcon,
+        description: "Generate professional portfolio descriptions and bios instantly using our built-in AI tools.",
+    },
 	{
-		title: "Customization",
-		icon: Pencil,
-		description: "It supports helping developers and businesses innovate.",
-	},
+        title: "Developer Friendly",
+        icon: Code2,
+        description: "Full API access and webhooks support for developers who want to extend their portfolio.",
+    },
 	{
-		title: "Control",
-		icon: Settings2,
-		description: "It supports helping developers and businesses innovate.",
-	},
+        title: "Live Analytics",
+        icon: BarChart3,
+        description: "Track your visitors and see which projects are getting the most attention in real-time.",
+    },
 	{
-		title: "Built for AI",
-		icon: Sparkles,
-		description: "It supports helping developers and businesses innovate.",
-	},
-	{
-		title: "Faaast",
-		icon: Zap,
-		description: "It supports an entire helping developers and innovate.",
-	},
-	{
-		title: "Powerful",
-		icon: Cpu,
-		description: "It supports an entire helping developers and businesses.",
-	},
-	{
-		title: "Security",
-		icon: Fingerprint,
-		description: "It supports an helping developers businesses.",
-	},
+        title: "Dynamic Content",
+        icon: LayoutDashboard,
+        description: "Manage your blogs, testimonials, and projects easily through the powerful Payload dashboard.",
+    },
 ];
