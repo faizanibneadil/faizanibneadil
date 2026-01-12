@@ -31,8 +31,9 @@ const transitionVariants = {
   },
 };
 
-export function HeroSection1(props: { isAuthenticated: boolean }) {
-  const { isAuthenticated } = props || {}
+export function HeroSection1(props: { isAuthenticated: boolean, searchParamsFromProps: { vp: string } }) {
+  const { isAuthenticated, searchParamsFromProps } = props || {}
+
   const defaultItems = [
     {
       image: '/portfolios/faizanadil-fe.png',
@@ -96,7 +97,7 @@ export function HeroSection1(props: { isAuthenticated: boolean }) {
                   preset="fade-in-blur"
                   speedSegment={0.3}
                   as="h1"
-                  className="mt-8 text-balance text-6xl dark:text-white text-black md:text-7xl xl:text-[5.25rem] "
+                  className="mt-8 text-balance text-4xl dark:text-white text-black md:text-7xl xl:text-[5.25rem] "
                 >
                   Put your skills on the shelf, let the world see
                 </TextEffect>
@@ -106,7 +107,7 @@ export function HeroSection1(props: { isAuthenticated: boolean }) {
                   speedSegment={0.3}
                   delay={0.5}
                   as="p"
-                  className="mx-auto mt-8 max-w-2xl text-balance text-lg dark:text-white/60 text-black"
+                  className="mx-auto mt-8 max-w-2xl text-balance text-sm md:text-lg dark:text-white/60 text-black"
                 >
                   Skill Shelf is designed to let your skills shine — a platform made for creators, learners, and professionals.
                 </TextEffect>
@@ -124,7 +125,7 @@ export function HeroSection1(props: { isAuthenticated: boolean }) {
                     },
                     ...transitionVariants,
                   }}
-                  className="mt-12 flex flex-col items-center justify-center gap-2 md:flex-row"
+                  className="mt-12 flex flex-row items-center justify-center gap-2"
                 >
                   {isAuthenticated && (
                     <div key={1} className="">
@@ -175,12 +176,14 @@ export function HeroSection1(props: { isAuthenticated: boolean }) {
               </div>
             </div>
 
-            <div className="mt-12 w-screen relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw]">
+            <div className="md:mt-12 w-screen relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw]">
               <CircularGallery
                 items={defaultItems}
-                bend={-9}
+                bend={searchParamsFromProps?.vp === 'd' ? -9 : -0.5}
                 textColor="#ffffff"
                 borderRadius={0.03}
+                imageHeight={searchParamsFromProps.vp === 'd' ? 900 : 700}
+                imageWidth={searchParamsFromProps.vp === 'd' ? 600 : 500}
               />
             </div>
           </div>

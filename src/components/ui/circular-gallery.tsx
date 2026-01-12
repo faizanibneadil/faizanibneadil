@@ -198,6 +198,8 @@ interface MediaProps {
   textColor: string;
   borderRadius?: number;
   font?: string;
+  imageWidth?: number,
+        imageHeight?: number
 }
 
 /**
@@ -230,6 +232,8 @@ class Media {
   speed: number = 0;
   isBefore: boolean = false;
   isAfter: boolean = false;
+  imageWidth = 700;
+  imageHeight = 900;
 
   constructor({
     geometry,
@@ -246,6 +250,8 @@ class Media {
     textColor,
     borderRadius = 0,
     font,
+    imageHeight,
+    imageWidth
   }: MediaProps) {
     this.geometry = geometry;
     this.gl = gl;
@@ -261,6 +267,8 @@ class Media {
     this.textColor = textColor;
     this.borderRadius = borderRadius;
     this.font = font;
+    this.imageHeight = imageHeight || 900;
+    this.imageWidth = imageWidth || 700
 
     this.createShader();
     this.createMesh();
@@ -428,9 +436,9 @@ class Media {
     // Scale the images based on screen size
     this.scale = this.screen.height / 1500;
     this.plane.scale.y =
-      (this.viewport.height * (900 * this.scale)) / this.screen.height;
+      (this.viewport.height * (this.imageHeight * this.scale)) / this.screen.height;
     this.plane.scale.x =
-      (this.viewport.width * (700 * this.scale)) / this.screen.width;
+      (this.viewport.width * (this.imageWidth * this.scale)) / this.screen.width;
 
     this.program.uniforms.uPlaneSizes.value = [
       this.plane.scale.x,
@@ -450,6 +458,8 @@ interface AppConfig {
   textColor?: string;
   borderRadius?: number;
   font?: string;
+  imageWidth?: number,
+  imageHeight?: number
 }
 
 /**
@@ -475,6 +485,8 @@ class App {
   screen!: { width: number; height: number };
   viewport!: { width: number; height: number };
   raf: number = 0;
+  imageWidth = 700
+  imageHeight = 900
 
   boundOnResize!: () => void;
   boundOnWheel!: () => void;
@@ -493,12 +505,16 @@ class App {
       textColor = "#ffffff",
       borderRadius = 0,
       font = "bold 30px DM Sans",
+      imageHeight = 900,
+      imageWidth = 700
     }: AppConfig
   ) {
     document.documentElement.classList.remove("no-js");
     this.container = container;
     this.scroll = { ease: 0.05, current: 0, target: 0, last: 0 };
     this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
+    this.imageWidth = imageWidth || 700
+    this.imageHeight = imageHeight || 900
 
     this.createRenderer();
     this.createCamera();
@@ -598,6 +614,8 @@ class App {
         textColor,
         borderRadius,
         font,
+        imageWidth: this.imageWidth,
+        imageHeight: this.imageHeight
       });
     });
   }
@@ -718,6 +736,8 @@ interface CircularGalleryProps {
   textColor?: string;
   borderRadius?: number;
   font?: string;
+  imageWidth?: number;
+  imageHeight?: number
 }
 
 /**
@@ -729,6 +749,8 @@ export default function CircularGallery({
   textColor = "#ffffff",
   borderRadius = 0.05,
   font = "bold 30px DM Sans",
+  imageHeight = 900,
+  imageWidth = 700,
 }: CircularGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -740,6 +762,8 @@ export default function CircularGallery({
       textColor,
       borderRadius,
       font,
+      imageWidth,
+      imageHeight
     });
 
     return () => {
