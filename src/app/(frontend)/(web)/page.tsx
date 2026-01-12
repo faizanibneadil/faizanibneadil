@@ -16,12 +16,13 @@ export const metadata: Metadata = {
     }
 }
 
-export default async function Page() {
+export default async function Page(props:{searchParams: Promise<{vp:string}>}) {
+    const searchParamsFromProps = await props.searchParams
     const isAuthenticated = Boolean((await cookies()).get('payload-token'))
 
     return (
         <>
-            <HeroSection1 isAuthenticated={isAuthenticated} />
+            <HeroSection1 isAuthenticated={isAuthenticated} searchParamsFromProps={searchParamsFromProps} />
             <section className="min-h-40 w-full place-content-center">
                 <section className="relative mx-auto max-w-screen">
                     {/* <h2 className="mb-5 text-center font-medium text-foreground text-xl tracking-tight md:text-3xl">
