@@ -3,6 +3,22 @@ import { SignUp } from "../_components/signup";
 
 import { sdk } from "@/lib/sdk";
 import { SignUpForm } from "./_cpmponents/sign-up-form";
+import { getServerSideURL } from "@/utilities/getURL";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: {
+        default: 'Sign Up - Skill Shelf',
+        template: '% - Skill Shelf'
+    },
+    metadataBase: new URL(getServerSideURL()),
+    openGraph: {
+        url: './graphics/website-og.png',
+        images: [{
+            url: './graphics/website-og.png',
+        }]
+    }
+}
 
 export default async function Page() {
     const industries = await sdk.find({

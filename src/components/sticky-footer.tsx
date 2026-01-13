@@ -110,10 +110,10 @@ const footerLinkGroups: FooterLinkGroup[] = [
 	{
 		label: "Product",
 		links: [
-			{ title: "Home", href: "#" },
-			{ title: "Pricing", href: "#" },
-			{ title: "Features", href: "#" },
-			{ title: "Changelog", href: "#" },
+			{ title: "Home", href: "/" },
+			{ title: "Pricing", href: "/pricing" },
+			{ title: "Features", href: "features" },
+			{ title: "Changelog", href: "/changelog" },
 			// { title: "Insurance", href: "#" },
 			// { title: "Crypto Wallets", href: "#" },
 			// { title: "FX & Currency Exchange", href: "#" },
@@ -153,7 +153,7 @@ const footerLinkGroups: FooterLinkGroup[] = [
 			// { title: "API Reference", href: "#" },
 			// { title: "Developer Tools", href: "#" },
 			{ title: "Guides & Tutorials", href: "#" },
-			{ title: "Whitepapers", href: "#" },
+			{ title: "Feedback", href: "#" },
 			// { title: "Reports & Research", href: "#" },
 			// { title: "Events & Webinars", href: "#" },
 			// { title: "E-books", href: "#" },
