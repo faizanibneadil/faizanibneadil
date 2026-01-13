@@ -40,13 +40,13 @@ export function Header(props: { isAuthenticated: boolean }) {
 				</Link>
 				<div className="hidden items-center gap-1 md:flex">
 					{navLinks.map((link, i) => (
-						<a
+						<Link
 							className={buttonVariants({ variant: "ghost" })}
 							href={link.href}
 							key={i}
 						>
 							{link.label}
-						</a>
+						</Link>
 					))}
 					{!isAuthenticated && (
 						<>
