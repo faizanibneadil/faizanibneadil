@@ -9,6 +9,10 @@ import Link from "next/link";
 
 export const navLinks = [
 	{
+		label: "Home",
+		href: "/",
+	},
+	{
 		label: "Features",
 		href: "/features",
 	},
