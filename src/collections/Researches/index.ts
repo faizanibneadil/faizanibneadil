@@ -15,7 +15,10 @@ export const Researches: CollectionConfig<'researches'> = {
     admin: {
         useAsTitle: 'title',
         // group: NavigationGroups.portfolio,
-        preview: generatePreview({ collection: 'researches' })
+        preview: generatePreview({ collection: 'researches' }),
+        hidden: ({ user }) => {
+            return user?.industry.slug === 'digital-artist'
+        },
     },
     access: {
         create: superAdminOrTenantAdminAccess,

@@ -15,8 +15,11 @@ export const Licenses: CollectionConfig<'licenses'> = {
     admin: {
         useAsTitle: 'title',
         // group: NavigationGroups.portfolio,
-        hidden({ user }) {
-            return user ? user?.category?.slug === 'healthcare' : false
+        hidden: ({ user }) => {
+            if (user?.industry.slug === 'healthcare') {
+                return false
+            }
+            return true
         },
         preview: generatePreview({ collection: 'licenses' })
     },
