@@ -15,11 +15,12 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
     admin: {
         useAsTitle: 'title',
         // group: NavigationGroups.portfolio,
-        hidden: ({ user }) => user ? (
-            user?.industry?.slug === 'game-development' ||
-            user?.industry?.slug === 'data-scienceanalytics' ||
-            user?.industry?.slug === 'web-and-software-development'
-        ) : false,
+        hidden: ({ user }) => {
+            if (user?.industry.slug === 'information-technology') {
+                return false
+            }
+            return true
+        },
         preview: generatePreview({ collection: 'hackathons' })
     },
     access: {

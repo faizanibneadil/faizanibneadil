@@ -63,3 +63,10 @@ export const pharmaSpecificBlocks: BlockSlug[] = [
     'license',
     'research'
 ]
+
+export const digitalArtistSpecificBlocks: BlockSlug[] = [
+    "achievement",
+    "certification",
+    "project",
+    "publication",
+]

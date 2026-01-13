@@ -1,5 +1,5 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { defaultBlocks, itSpecificBlock, pharmaSpecificBlocks } from "@/blocks/config";
+import { defaultBlocks, digitalArtistSpecificBlocks, itSpecificBlock, pharmaSpecificBlocks } from "@/blocks/config";
 import { NavigationGroups } from "@/constants";
 import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
@@ -101,6 +101,8 @@ export const Pages: CollectionConfig<'pages'> = {
                             return [...itSpecificBlock, ...defaultBlocks]
                         case 'pharma':
                             return [...pharmaSpecificBlocks, ...defaultBlocks]
+                        case 'digital-artist':
+                            return [...digitalArtistSpecificBlocks, ...defaultBlocks]
                         default:
                             return true
                     }
@@ -110,7 +112,8 @@ export const Pages: CollectionConfig<'pages'> = {
             blockReferences: Array.from(new Set([
                 ...defaultBlocks,
                 ...itSpecificBlock,
-                ...pharmaSpecificBlocks
+                ...pharmaSpecificBlocks,
+                ...digitalArtistSpecificBlocks
             ])),
             admin: {
                 initCollapsed: true,
