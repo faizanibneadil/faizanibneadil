@@ -10,15 +10,15 @@ import Link from "next/link";
 export const navLinks = [
 	{
 		label: "Features",
-		href: "#",
+		href: "/features",
 	},
 	{
 		label: "Pricing",
-		href: "#",
+		href: "/pricing",
 	},
 	{
 		label: "Changelog",
-		href: "#",
+		href: "/changelog",
 	},
 ];
 

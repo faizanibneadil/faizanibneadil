@@ -2,6 +2,7 @@ import { FeatureSection } from "@/components/feature-section";
 import HeroSection from "@/components/hero-section";
 import { LogoCloud } from "@/components/logo-cloud";
 import { HeroSection1 } from "@/components/ui/hero-section-1";
+import { getServerSideURL } from "@/utilities/getURL";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
@@ -13,10 +14,17 @@ export const metadata: Metadata = {
     title: {
         default: 'Skill Shelf',
         template: '% - Skill Shelf'
+    },
+    metadataBase: new URL(getServerSideURL()),
+    openGraph: {
+        url: './graphics/website-og.png',
+        images: [{
+            url: './graphics/website-og.png',
+        }]
     }
 }
 
-export default async function Page(props:{searchParams: Promise<{vp:string}>}) {
+export default async function Page(props: { searchParams: Promise<{ vp: string }> }) {
     const searchParamsFromProps = await props.searchParams
     const isAuthenticated = Boolean((await cookies()).get('payload-token'))
 
