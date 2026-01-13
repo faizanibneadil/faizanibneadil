@@ -13,10 +13,34 @@ import { toast } from "sonner";
 import { z } from 'zod';
 
 const SignUpFormSchema = z.object({
-    email: z.email(),
-    password: z.string({ error: 'Password is required.' }).min(6, 'Minimum 8 characters'),
-    username: z.string({ error: 'username is required.' }).min(6, 'Minimum 6 characters').max(24, 'Maximum 24 characters'),
-    industry: z.string({ error: 'Field is required.' })
+    // 1. Email Validation
+    // .email() builtin hai, lekin mazeed solid banane ke liye regex add kar sakte hain
+    email: z
+        .string()
+        .min(1, 'Email is required')
+        .email('Invalid email address')
+        .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Email cannot contain spaces or invalid format'),
+
+    // 2. Password Validation (6-20 chars, no spaces)
+    password: z
+        .string()
+        .min(6, 'Minimum 6 characters')
+        .max(20, 'Maximum 20 characters')
+        .refine((s) => !s.includes(' '), 'Password cannot contain spaces'),
+
+    // 3. Username Validation (6-24 chars, no spaces)
+    username: z
+        .string({ error: 'Username is required.' })
+        .min(6, 'Minimum 6 characters')
+        .max(24, 'Maximum 24 characters')
+        // Regex breakdown: 
+        // ^: start, [a-zA-Z0-9-]: allowed chars, +: one or more, $: end
+        .regex(/^[a-zA-Z0-9-]+$/, 'Only letters, numbers, and hyphens (-) are allowed. No spaces or special characters.')
+        // Ye check karega ke hyphen start ya end mein na ho (Clean look ke liye)
+        .refine((s) => !s.startsWith('-') && !s.endsWith('-'), 'Username cannot start or end with a hyphen'),
+
+    // 4. Industry
+    industry: z.string().min(1, 'Field is required'),
 })
 
 export function SignUpForm(props: {
@@ -58,7 +82,7 @@ export function SignUpForm(props: {
                 })
             }
             // console.log(response.errors)
-            if(!('errors' in response)){
+            if (!('errors' in response)) {
                 router.replace('/admin')
             }
         } catch (error) {
