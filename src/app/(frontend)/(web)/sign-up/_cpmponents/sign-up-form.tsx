@@ -4,6 +4,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } 
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { sdk } from "@/lib/sdk";
+import { Config, Industry } from "@/payload-types";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AtSignIcon, Fingerprint, User } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -44,11 +45,7 @@ const SignUpFormSchema = z.object({
 })
 
 export function SignUpForm(props: {
-    industries: PaginatedDocs<{
-        id: number;
-        title: string;
-        slug?: string | null | undefined;
-    }>
+    industries: Industry[]
 }) {
     const { industries } = props || {}
 
@@ -161,7 +158,7 @@ export function SignUpForm(props: {
                                         <SelectValue id="field" placeholder="Select a field" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {industries?.docs?.map(field => (
+                                        {industries?.map(field => (
                                             <SelectItem key={`field-${field?.id}`} value={field?.id?.toString()}>{field?.title}</SelectItem>
                                         ))}
                                     </SelectContent>
