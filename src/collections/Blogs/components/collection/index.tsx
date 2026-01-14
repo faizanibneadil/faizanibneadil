@@ -28,9 +28,9 @@ export function Blogs(props: Props) {
             >
                 <Card className="flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full">
                     <Link href={RouteWithDocSlug} className="block cursor-pointer">
-                        {blog?.featured_image && (
+                        {blog?.content?.featured_image && (
                             <Image
-                                src={getMediaUrl(blog.featured_image)}
+                                src={getMediaUrl(blog?.content.featured_image)}
                                 placeholder="blur"
                                 blurDataURL={placeholderBlur}
                                 alt={blog.slug as string}
@@ -46,8 +46,8 @@ export function Blogs(props: Props) {
                     <CardHeader className="px-2">
                         <div className="space-y-1">
                             <CardTitle className="mt-1 text-base">{blog.title}</CardTitle>
-                            {blog?.description && (<div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
-                                <RichText data={blog.description as SerializedEditorState} />
+                            {blog?.content?.description && (<div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
+                                <RichText data={blog?.content?.description as SerializedEditorState} />
                             </div>)}
                         </div>
                     </CardHeader>

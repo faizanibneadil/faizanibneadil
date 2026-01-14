@@ -6,6 +6,7 @@ import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
+import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 // import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
@@ -14,10 +15,10 @@ export const Projects: CollectionConfig<'projects'> = {
     slug: 'projects',
     labels: { plural: 'Projects', singular: 'Project' },
     trash: true,
-    admin: { 
-        useAsTitle: 'title', 
+    admin: {
+        useAsTitle: 'title',
         // group: NavigationGroups.portfolio,
-        preview: generatePreview({ collection: 'projects' }) 
+        preview: generatePreview({ collection: 'projects' })
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -28,126 +29,172 @@ export const Projects: CollectionConfig<'projects'> = {
     fields: [
         TitleField(),
         {
-            type: 'upload',
-            name: 'thumbnail',
-            label: 'Thumbnail',
-            relationTo: 'media',
-            required: true,
-            hasMany: false,
-            admin: {
-                description: 'Provide project thumbnail.',
-            }
-        },
-        {
-            type: 'richText',
-            name: 'overview',
-            editor: lexicalEditor({
-                features({ defaultFeatures, rootFeatures, }) {
-                    return [...defaultFeatures, ...rootFeatures]
-                },
-            }),
-            label: 'Overview'
-        },
-        {
-            type: 'richText',
-            name: 'detailedOverview',
-            editor: lexicalEditor({
-                features({ defaultFeatures, rootFeatures, }) {
-                    return [...defaultFeatures, ...rootFeatures]
-                },
-            }),
-            label: 'Detailed Overview'
-        },
-        {
-            name: 'publishedAt',
-            type: 'date',
-            admin: {
-                position: 'sidebar',
-            },
-        },
-        {
-            type: 'relationship',
-            name: 'Skills',
-            relationTo: 'skills',
-            hasMany: true,
-            admin: {
-                description: 'Provide list of skills. You used to build this project',
-                appearance: 'drawer'
-            }
-        },
-        {
-            type: 'group',
-            name: 'dates',
-            label: 'Dates',
-            fields: [
+            type: 'tabs',
+            tabs: [
                 {
-                    type: 'row',
+                    name: 'content',
+                    label: 'Content',
                     fields: [
                         {
-                            type: 'date',
-                            name: 'to',
-                            label: 'TO'
+                            type: 'upload',
+                            name: 'thumbnail',
+                            label: 'Thumbnail',
+                            relationTo: 'media',
+                            required: true,
+                            hasMany: false,
+                            admin: {
+                                description: 'Provide project thumbnail.',
+                            }
                         },
                         {
+                            type: 'richText',
+                            name: 'overview',
+                            editor: lexicalEditor({
+                                features({ defaultFeatures, rootFeatures, }) {
+                                    return [...defaultFeatures, ...rootFeatures]
+                                },
+                            }),
+                            label: 'Overview'
+                        },
+                        {
+                            type: 'richText',
+                            name: 'detailedOverview',
+                            editor: lexicalEditor({
+                                features({ defaultFeatures, rootFeatures, }) {
+                                    return [...defaultFeatures, ...rootFeatures]
+                                },
+                            }),
+                            label: 'Detailed Overview'
+                        },
+                        {
+                            name: 'publishedAt',
                             type: 'date',
-                            name: 'from',
-                            label: 'FROM'
-                        }
+                            admin: {
+                                position: 'sidebar',
+                            },
+                        },
+                        {
+                            type: 'relationship',
+                            name: 'Skills',
+                            relationTo: 'skills',
+                            hasMany: true,
+                            admin: {
+                                description: 'Provide list of skills. You used to build this project',
+                                appearance: 'drawer'
+                            }
+                        },
+                        {
+                            type: 'group',
+                            name: 'dates',
+                            label: 'Dates',
+                            fields: [
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        {
+                                            type: 'date',
+                                            name: 'to',
+                                            label: 'TO'
+                                        },
+                                        {
+                                            type: 'date',
+                                            name: 'from',
+                                            label: 'FROM'
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type: 'group',
+                            name: 'credential',
+                            label: 'Credential',
+                            admin: {
+                                description: 'Provide credential for testing.',
+                                condition: (field, siblings, ctx) => {
+                                    return typeof ctx?.user?.industry === 'object' ? ctx?.user?.industry?.slug === 'game-development' || ctx?.user?.industry?.slug === 'data-scienceanalytics' || ctx?.user?.industry?.slug === 'web-and-software-development' : false
+                                }
+                            },
+                            fields: [
+                                { type: 'email', name: 'credential_email', label: 'Email' },
+                                { type: 'text', name: 'credential_password', label: 'Password' },
+                                {
+                                    type: 'text',
+                                    name: 'credential_username',
+                                    label: 'Username',
+                                    admin: {
+                                        description: 'If you handled your authentication with username then provide otherwize leave it.'
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            type: 'array',
+                            name: 'links',
+                            labels: { singular: 'Link', plural: 'Links' },
+                            admin: {
+                                initCollapsed: true
+                            },
+                            fields: [
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        Iconify(),
+                                        {
+                                            type: 'text',
+                                            label: 'Lable',
+                                            name: 'label',
+                                            required: true
+                                        },
+                                        {
+                                            type: 'text',
+                                            name: 'link',
+                                            label: 'Link',
+                                            required: true
+                                        }
+                                    ]
+                                }
+                            ],
+                            maxRows: 5
+                        },
+                    ]
+                },
+                {
+                    name: 'seo',
+                    label: 'SEO',
+                    fields: [
+                        MetaTitleField({
+                            // if the `generateTitle` function is configured
+                            hasGenerateFn: true,
+                        }),
+                        MetaDescriptionField({
+                            // if the `generateDescription` function is configured
+                            hasGenerateFn: true,
+                        }),
+                        MetaImageField({
+                            // the upload collection slug
+                            relationTo: 'media',
+
+                            // if the `generateImage` function is configured
+                            hasGenerateFn: true,
+                        }),
+                        PreviewField({
+                            // if the `generateUrl` function is configured
+                            hasGenerateFn: true,
+
+                            // field paths to match the target field for data
+                            titlePath: 'meta.title',
+                            descriptionPath: 'meta.description',
+                        }),
+                        OverviewField({
+                            // field paths to match the target field for data
+                            titlePath: 'meta.title',
+                            descriptionPath: 'meta.description',
+                            imagePath: 'meta.image',
+                        })
                     ]
                 }
             ]
-        },
-        {
-            type: 'group',
-            name: 'credential',
-            label: 'Credential',
-            admin: {
-                description: 'Provide credential for testing.',
-                condition: (field, siblings, ctx) => {
-                    return typeof ctx?.user?.industry === 'object' ? ctx?.user?.industry?.slug === 'game-development' || ctx?.user?.industry?.slug === 'data-scienceanalytics' || ctx?.user?.industry?.slug === 'web-and-software-development' : false
-                }
-            },
-            fields: [
-                { type: 'email', name: 'credential_email', label: 'Email' },
-                { type: 'text', name: 'credential_password', label: 'Password' },
-                {
-                    type: 'text',
-                    name: 'credential_username',
-                    label: 'Username',
-                    admin: {
-                        description: 'If you handled your authentication with username then provide otherwize leave it.'
-                    }
-                }
-            ]
-        },
-        {
-            type: 'array',
-            name: 'links',
-            labels: { singular: 'Link', plural: 'Links' },
-            admin: {
-                initCollapsed: true
-            },
-            fields: [
-                {
-                    type: 'row',
-                    fields: [
-                        Iconify(),
-                        {
-                            type: 'text',
-                            label: 'Lable',
-                            name: 'label',
-                            required: true
-                        },
-                        {
-                            type: 'text',
-                            name: 'link',
-                            label: 'Link',
-                            required: true
-                        }
-                    ]
-                }
-            ],
-            maxRows: 5
         },
         ...slugField(),
     ],

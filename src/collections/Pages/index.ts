@@ -9,6 +9,13 @@ import { generatePreview } from "@/utilities/generate-preview";
 // import { getServerSideURL } from "@/utilities/getURL";
 // import { VersionConfig } from "@/utilities/version-config";
 import type { BlockSlug, CollectionConfig } from "payload";
+import {
+    MetaDescriptionField,
+    MetaImageField,
+    MetaTitleField,
+    OverviewField,
+    PreviewField,
+} from '@payloadcms/plugin-seo/fields'
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
@@ -43,87 +50,133 @@ export const Pages: CollectionConfig<'pages'> = {
     fields: [
         TitleField(),
         {
-            type: 'group',
-            name: 'pageMode',
-            label: 'Page Mode',
-            admin: {
-                description: 'If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change Page Mode into collection.',
-            },
-            fields: [
+            type: 'tabs',
+            tabs: [
                 {
-                    type: 'radio',
-                    name: 'mode',
-                    label: 'Mode',
-                    defaultValue: 'layout',
-                    required: true,
-                    options: [
-                        { label: 'Layout', value: 'layout' },
-                        { label: 'Collection', value: 'collection' }
-                    ],
+                    name: 'content',
+                    label: 'Content',
+                    fields: [
+                        {
+                            type: 'group',
+                            name: 'pageMode',
+                            label: 'Page Mode',
+                            admin: {
+                                description: 'If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change Page Mode into collection.',
+                            },
+                            fields: [
+                                {
+                                    type: 'radio',
+                                    name: 'mode',
+                                    label: 'Mode',
+                                    defaultValue: 'layout',
+                                    required: true,
+                                    options: [
+                                        { label: 'Layout', value: 'layout' },
+                                        { label: 'Collection', value: 'collection' }
+                                    ],
+                                }
+                            ]
+                        },
+                        {
+                            type: 'group',
+                            name: 'configurations',
+                            label: 'Configurations',
+                            admin: {
+                                condition: (fields, siblings_blocks, ctx) => {
+                                    if (fields?.content?.pageMode?.mode === 'collection') {
+                                        return true
+                                    }
+                                    return false
+                                },
+                            },
+                            fields: [
+                                {
+                                    type: 'text',
+                                    name: 'slug',
+                                    admin: {
+                                        components: {
+                                            Field: '@/collections/Pages/components/collections.tsx#Collections'
+                                        }
+                                    }
+                                },
+                            ]
+                        },
+                        {
+                            type: 'blocks',
+                            name: 'layout',
+                            label: 'Design You\'r Page',
+                            blocks: [],
+                            maxRows: 50,
+                            filterOptions: async ({ user }) => {
+                                const industry = typeof user?.industry === 'object' ? user?.industry?.slug : user?.industry
+                                if (typeof industry === 'string') {
+                                    switch (industry) {
+                                        case 'information-technolegy':
+                                            return [...itSpecificBlock, ...defaultBlocks]
+                                        case 'pharma':
+                                            return [...pharmaSpecificBlocks, ...defaultBlocks]
+                                        case 'digital-artist':
+                                            return [...digitalArtistSpecificBlocks, ...defaultBlocks]
+                                        default:
+                                            return true
+                                    }
+                                }
+                                return true
+                            },
+                            blockReferences: Array.from(new Set([
+                                ...defaultBlocks,
+                                ...itSpecificBlock,
+                                ...pharmaSpecificBlocks,
+                                ...digitalArtistSpecificBlocks
+                            ])),
+                            admin: {
+                                initCollapsed: true,
+                                condition: (fields, siblings_blocks, ctx) => {
+                                    if (fields?.content?.pageMode?.mode === 'layout') {
+                                        return true
+                                    }
+                                    return false
+                                }
+                            }
+                        },
+                    ]
+                },
+                {
+                    name: 'seo',
+                    label: 'SEO',
+                    fields: [
+                        MetaTitleField({
+                            // if the `generateTitle` function is configured
+                            hasGenerateFn: true,
+                        }),
+                        MetaDescriptionField({
+                            // if the `generateDescription` function is configured
+                            hasGenerateFn: true,
+                        }),
+                        MetaImageField({
+                            // the upload collection slug
+                            relationTo: 'media',
+
+                            // if the `generateImage` function is configured
+                            hasGenerateFn: true,
+                        }),
+                        PreviewField({
+                            // if the `generateUrl` function is configured
+                            hasGenerateFn: true,
+
+                            // field paths to match the target field for data
+                            titlePath: 'meta.title',
+                            descriptionPath: 'meta.description',
+                        }),
+                        OverviewField({
+                            // field paths to match the target field for data
+                            titlePath: 'meta.title',
+                            descriptionPath: 'meta.description',
+                            imagePath: 'meta.image',
+                        })
+                    ]
                 }
             ]
-        },
-        {
-            type: 'group',
-            name: 'configurations',
-            label: 'Configurations',
-            admin: {
-                condition: (fields, siblings_blocks, ctx) => {
-                    if (fields?.pageMode?.mode === 'collection') {
-                        return true
-                    }
-                    return false
-                },
-            },
-            fields: [
-                {
-                    type: 'text',
-                    name: 'slug',
-                    admin: {
-                        components: {
-                            Field: '@/collections/Pages/components/collections.tsx#Collections'
-                        }
-                    }
-                },
-            ]
-        },
-        {
-            type: 'blocks',
-            name: 'layout',
-            label: 'Design You\'r Page',
-            blocks: [],
-            maxRows: 50,
-            filterOptions: async ({ user }) => {
-                const industry = typeof user?.industry === 'object' ? user?.industry?.slug : user?.industry
-                if (typeof industry === 'string') {
-                    switch (industry) {
-                        case 'information-technolegy':
-                            return [...itSpecificBlock, ...defaultBlocks]
-                        case 'pharma':
-                            return [...pharmaSpecificBlocks, ...defaultBlocks]
-                        case 'digital-artist':
-                            return [...digitalArtistSpecificBlocks, ...defaultBlocks]
-                        default:
-                            return true
-                    }
-                }
-                return true
-            },
-            blockReferences: Array.from(new Set([
-                ...defaultBlocks,
-                ...itSpecificBlock,
-                ...pharmaSpecificBlocks,
-                ...digitalArtistSpecificBlocks
-            ])),
-            admin: {
-                initCollapsed: true,
-                condition: (fields, siblings_blocks, ctx) => {
-                    if (fields?.pageMode?.mode === 'layout') {
-                        return true
-                    }
-                    return false
-                }
-            }
         },
         {
             name: 'publishedAt',

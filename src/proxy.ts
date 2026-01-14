@@ -11,6 +11,10 @@ export function proxy(req: NextRequest) {
     const paramValue = deviceQueryParams[deviceType] || 'd';
     const url = req.nextUrl.clone();
 
+    if(req.nextUrl.pathname.includes('/admin')){
+        return NextResponse.next()
+    }
+
     if (url.searchParams.get('vp') === paramValue) {
         return NextResponse.next();
     }

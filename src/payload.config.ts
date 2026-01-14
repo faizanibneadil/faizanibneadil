@@ -126,9 +126,9 @@ export default buildConfig({
     // database-adapter-config-start
     db: postgresAdapter({
         blocksAsJSON: true,
-        readReplicas: [process.env.NEON_READ_REPLICA_URI_1!, process.env.NEON_READ_REPLICA_URI_2!],
+        readReplicas: [process.env.DEV_NEON_READ_REPLICA_URI_1!, process.env.DEV_NEON_READ_REPLICA_URI_2!],
         pool: {
-            connectionString: process.env.NEON_URI
+            connectionString: process.env.DEV_NEON_URI
         }
     }),
     // database-adapter-config-end

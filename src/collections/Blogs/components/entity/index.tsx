@@ -19,12 +19,12 @@ export function BlogEntity(props: Props) {
         <div className='w-full flex flex-col gap-4'>
             <img
                 className='w-full'
-                src={getMediaUrl(entity.featured_image)}
+                src={getMediaUrl(entity?.content?.featured_image)}
                 alt={entity.title}
             />
             <h1>{entity.title}</h1>
-            {hasText(entity.content) && (
-                <RichText params={params} enableGutter={false} data={entity.content as DefaultTypedEditorState} />  
+            {hasText(entity?.content?.content) && (
+                <RichText params={params} enableGutter={false} data={entity?.content?.content as DefaultTypedEditorState} />  
             )}
         </div>
         </div>

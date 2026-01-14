@@ -46,7 +46,7 @@ const _Collections: TCollectionComponents = {
     }), { ssr: true })
 }
 
-export async function CollectionRenderer(props: { params: PagePropsWithParams['params'], configurations: Page['configurations'] }) {
+export async function CollectionRenderer(props: { params: PagePropsWithParams['params'], configurations: Page['content']['configurations'] }) {
     const { params, configurations } = props || {}
     const { slug, domain } = await params
     const paramsToSend = await params
