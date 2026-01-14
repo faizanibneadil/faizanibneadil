@@ -69,7 +69,9 @@ export function Form(props: { blockProps: BlockProps, params: Awaited<PagePropsW
                         tenant: formConfig.tenant
                     }),
                     ...(typeof formConfig.tenant === 'object' && {
-                        tenant: formConfig.tenant?.id
+                        tenant: formConfig.tenant?.map((tenant) => {
+                            return typeof tenant === 'object' ? tenant.id : tenant
+                        })
                     }),
                     submissionData: dataToSend,
                 }),

@@ -24,11 +24,6 @@ export default async function Page() {
     const industries = await sdk.find({
         collection:'industries',
         pagination: false,
-        select: {
-            id: true,
-            title: true,
-            slug: true
-        }
     })
     return (
         <div className="relative w-full md:h-screen md:overflow-hidden">
@@ -43,7 +38,7 @@ export default async function Page() {
                         </p>
                     </div>
                     <div className="space-y-">
-                        <SignUpForm industries={industries} />
+                        <SignUpForm industries={industries.docs} />
                     </div>
                     <p className="mt-8 text-muted-foreground text-sm">
                         By clicking continue, you agree to our{" "}

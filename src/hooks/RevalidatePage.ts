@@ -29,23 +29,25 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
         req: { payload, context, headers },
         collection,
     }) => {
-        const domain = typeof doc?.tenant === 'number'
-            ? await getDomain({ headers, payload, tenantId: doc?.tenant })
-            : doc?.tenant?.domain
-
-        if (domain) {
-            const { RootRoute, Route } = generateRoute({
-                domain,
-                slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
-            })
-            if (!context.disableRevalidate) {
-                invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
-                invalidateRootRoute && revalidatePath(RootRoute)
-                payload.logger.info(`Revalidating page at [PATH]:${Route}`)
-                revalidatePath(Route)
-                revalidateTag('pages-sitemap','max')
+        doc?.tenant?.forEach(async t => {
+            const domain = typeof t === 'number'
+                ? await getDomain({ headers, payload, tenantId: t })
+                : t?.domain
+    
+            if (domain) {
+                const { RootRoute, Route } = generateRoute({
+                    domain,
+                    slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
+                })
+                if (!context.disableRevalidate) {
+                    invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
+                    invalidateRootRoute && revalidatePath(RootRoute)
+                    payload.logger.info(`Revalidating page at [PATH]:${Route}`)
+                    revalidatePath(Route)
+                    revalidateTag('pages-sitemap','max')
+                }
             }
-        }
+        })
         return doc
     }
 }
@@ -58,22 +60,24 @@ export const RevalidatePageAfterDelete: AppCollectionAfterDeleteHook<Page, {
         req: { context, payload, headers },
         collection
     }) => {
-        const domain = typeof doc?.tenant === 'number'
-            ? await getDomain({ headers, payload, tenantId: doc?.tenant })
-            : doc?.tenant?.domain
-        if (domain) {
-            const { RootRoute, Route } = generateRoute({
-                domain,
-                slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
-            })
-            if (!context.disableRevalidate) {
-                invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
-                invalidateRootRoute && revalidatePath(RootRoute)
-                payload.logger.info(`Revalidating page at [PATH]:${Route}`)
-                revalidatePath(Route)
-                revalidateTag('pages-sitemap','max')
+        doc?.tenant?.forEach(async t => {
+            const domain = typeof t === 'number'
+                ? await getDomain({ headers, payload, tenantId: t })
+                : t?.domain
+            if (domain) {
+                const { RootRoute, Route } = generateRoute({
+                    domain,
+                    slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
+                })
+                if (!context.disableRevalidate) {
+                    invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
+                    invalidateRootRoute && revalidatePath(RootRoute)
+                    payload.logger.info(`Revalidating page at [PATH]:${Route}`)
+                    revalidatePath(Route)
+                    revalidateTag('pages-sitemap','max')
+                }
             }
-        }
+        })
 
         return doc
     }
