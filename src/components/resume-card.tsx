@@ -92,15 +92,13 @@ export const ResumeCard = (props: { experienceProps?: Experience, educationProps
       educationProps: {
         createdAt,
         id,
-        image,
+        content: {
+          image,
+          dates,
+          description,
+          qualification,
+        } = {} as Education['content'],
         title,
-        updatedAt,
-        dates,
-        deletedAt,
-        description,
-        meta,
-        qualification,
-        tenant
       } = {} as Education
     } = props || {}
 

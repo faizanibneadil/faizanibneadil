@@ -12,13 +12,20 @@ import { getMediaUrl } from "@/utilities/getURL";
 type Props = Exclude<Exclude<IHackathonProps['hackathons'], null | undefined>[0], number>
 
 export function HackathonCard({
-  dates,
   id,
-  image,
+  content: {
+    dates,
+    image,
+    description,
+    links,
+    location
+  },
   title,
-  description,
-  links,
-  location
+  createdAt,
+  updatedAt,
+  deletedAt,
+  seo,
+  tenant
 }: Props) {
   return (
     <li className="relative ml-10 py-4">

@@ -24,8 +24,8 @@ export async function Education(props: { blockProps: TEducationProps, params: Pa
                 </BlurFade>
                 {educations?.map((education, id) => {
                     return typeof education === 'number' ? null : (
-                        <BlurFade key={education?.qualification?.academy} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
-                            <ResumeCard blockType="education" key={education?.qualification?.academy} educationProps={education}/>
+                        <BlurFade key={education?.content?.qualification?.academy} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
+                            <ResumeCard blockType="education" key={education?.content?.qualification?.academy} educationProps={education}/>
                         </BlurFade>
                     )
                 })}

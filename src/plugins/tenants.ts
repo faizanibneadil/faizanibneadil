@@ -27,6 +27,7 @@ export const multiTenancy = multiTenantPlugin<Config>({
         integration: { isGlobal: true }
     },
     tenantField: {
+        hasMany: true,
         access: {
             read: () => true,
             update: ({ req }) => {

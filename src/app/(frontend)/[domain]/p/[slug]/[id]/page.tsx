@@ -23,13 +23,13 @@ const _Collection: TCollectionComponents = {
             return BlogEntity
         })),
         metadata: ({ doc }) => ({
-            title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content! }),
+            title: doc?.seo?.title || doc?.title,
+            description: doc?.seo?.description || convertLexicalToPlaintext({ data: doc?.content?.content! }),
             openGraph: {
                 type: 'article',
-                title: doc?.meta?.title || '',
-                description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image || doc?.featured_image) || fallbackOg() }]
+                title: doc?.seo?.title || '',
+                description: doc?.seo?.description || '',
+                images: [{ url: og(doc?.seo?.image || doc?.content?.featured_image) || fallbackOg() }]
             }
         })
     },
@@ -38,13 +38,13 @@ const _Collection: TCollectionComponents = {
             return NoteEntity
         })),
         metadata: ({ doc }) => ({
-            title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content! }),
+            title: doc?.seo?.title || doc?.title,
+            description: doc?.seo?.description || convertLexicalToPlaintext({ data: doc?.content?.content! }),
             openGraph: {
                 type: 'article',
-                title: doc?.meta?.title || '',
-                description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image) ?? fallbackOg() }]
+                title: doc?.seo?.title || '',
+                description: doc?.seo?.description || '',
+                images: [{ url: og(doc?.seo?.image) ?? fallbackOg() }]
             }
         })
     },
@@ -53,13 +53,13 @@ const _Collection: TCollectionComponents = {
             return ProjectEntity
         })),
         metadata: ({ doc }) => ({
-            title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.overview! }),
+            title: doc?.seo?.title || doc?.title,
+            description: doc?.seo?.description || convertLexicalToPlaintext({ data: doc?.content?.overview! }),
             openGraph: {
                 type: 'website',
-                title: doc?.meta?.title || '',
-                description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image || doc?.thumbnail) || fallbackOg() }]
+                title: doc?.seo?.title || '',
+                description: doc?.seo?.description || '',
+                images: [{ url: og(doc?.seo?.image || doc?.content?.thumbnail) || fallbackOg() }]
             }
         })
     },
@@ -68,13 +68,13 @@ const _Collection: TCollectionComponents = {
             return AchievementEntity
         })),
         metadata: ({ doc }) => ({
-            title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            title: doc?.seo?.title || doc?.title,
+            description: doc?.seo?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
             openGraph: {
                 type: 'article',
-                title: doc?.meta?.title || '',
-                description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image || doc?.image) || fallbackOg() }]
+                title: doc?.seo?.title || '',
+                description: doc?.seo?.description || '',
+                images: [{ url: og(doc?.seo?.image || doc?.content?.image) || fallbackOg() }]
             }
         })
     },
@@ -83,13 +83,13 @@ const _Collection: TCollectionComponents = {
             return CertificationEntity
         })),
         metadata: ({ doc }) => ({
-            title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            title: doc?.seo?.title || doc?.title,
+            description: doc?.seo?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
             openGraph: {
                 type: 'article',
-                title: doc?.meta?.title || '',
-                description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image || doc?.image) || fallbackOg() }]
+                title: doc?.seo?.title || '',
+                description: doc?.seo?.description || '',
+                images: [{ url: og(doc?.seo?.image || doc?.content?.image) || fallbackOg() }]
             }
         })
     },
@@ -98,13 +98,13 @@ const _Collection: TCollectionComponents = {
             return EducationEntity
         })),
         metadata: ({ doc }) => ({
-            title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            title: doc?.seo?.title || doc?.title,
+            description: doc?.seo?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
             openGraph: {
                 type: 'article',
-                title: doc?.meta?.title || '',
-                description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image || doc?.image) || fallbackOg() }]
+                title: doc?.seo?.title || '',
+                description: doc?.seo?.description || '',
+                images: [{ url: og(doc?.seo?.image || doc?.content?.image) || fallbackOg() }]
             }
         })
     },
@@ -113,13 +113,13 @@ const _Collection: TCollectionComponents = {
             return HackathonEntity
         })),
         metadata: ({ doc }) => ({
-            title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            title: doc?.seo?.title || doc?.title,
+            description: doc?.seo?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
             openGraph: {
                 type: 'article',
-                title: doc?.meta?.title || '',
-                description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image ?? doc?.image) || fallbackOg() }]
+                title: doc?.seo?.title || '',
+                description: doc?.seo?.description || '',
+                images: [{ url: og(doc?.seo?.image ?? doc?.content?.image) || fallbackOg() }]
             }
         })
     },
@@ -128,13 +128,13 @@ const _Collection: TCollectionComponents = {
             return LicenseEntity
         })),
         metadata: ({ doc }) => ({
-            title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            title: doc?.seo?.title || doc?.title,
+            description: doc?.seo?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
             openGraph: {
                 type: 'article',
-                title: doc?.meta?.title || '',
-                description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image || doc?.image) || fallbackOg() }]
+                title: doc?.seo?.title || '',
+                description: doc?.seo?.description || '',
+                images: [{ url: og(doc?.seo?.image || doc?.content?.image) || fallbackOg() }]
             }
         })
     },
@@ -143,13 +143,13 @@ const _Collection: TCollectionComponents = {
             return PublicationEntity
         })),
         metadata: ({ doc }) => ({
-            title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            title: doc?.seo?.title || doc?.title,
+            description: doc?.seo?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
             openGraph: {
                 type: 'article',
-                title: doc?.meta?.title || '',
-                description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image ?? doc?.image) || fallbackOg() }]
+                title: doc?.seo?.title || '',
+                description: doc?.seo?.description || '',
+                images: [{ url: og(doc?.seo?.image ?? doc?.content?.image) || fallbackOg() }]
             }
         })
     },
@@ -158,13 +158,13 @@ const _Collection: TCollectionComponents = {
             return ResearchEntity
         })),
         metadata: ({ doc }) => ({
-            title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
+            title: doc?.seo?.title || doc?.title,
+            description: doc?.seo?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
             openGraph: {
                 type: 'article',
-                title: doc?.meta?.title || '',
-                description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image ?? doc?.image) || fallbackOg() }]
+                title: doc?.seo?.title || '',
+                description: doc?.seo?.description || '',
+                images: [{ url: og(doc?.seo?.image ?? doc?.content?.image) || fallbackOg() }]
             }
         })
     },

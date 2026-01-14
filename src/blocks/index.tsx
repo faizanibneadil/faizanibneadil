@@ -22,7 +22,7 @@ type TBlocks = {
         skeleton: React.ComponentType<{}>,
         component: React.ComponentType<{
             params: PagePropsWithParams['params'],
-            blockProps: Extract<NonNullable<Page['layout']>[number], { blockType: K }>
+            blockProps: Extract<NonNullable<Page['content']['layout']>[number], { blockType: K }>
         }>
     }
 }
@@ -140,7 +140,7 @@ const _blocks: TBlocks = {
     },
 }
 
-export function BlocksRenderer(props: { blocks: Page['layout'][][0], params: PagePropsWithParams['params'] }) {
+export function BlocksRenderer(props: { blocks: Page['content']['layout'][][0], params: PagePropsWithParams['params'] }) {
     const { blocks = [], params } = props || {}
 
     const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0

@@ -14,8 +14,8 @@ const CollectionRenderer = dynamic(() => import("@/collections").then(({ Collect
   return CollectionRenderer
 }), { ssr: true })
 
-const isLayout = (mode: Page['pageMode']['mode']) => mode === 'layout'
-const isCollection = (mode: Page['pageMode']['mode']) => mode === 'collection'
+const isLayout = (mode: Page['content']['pageMode']['mode']) => mode === 'layout'
+const isCollection = (mode: Page['content']['pageMode']['mode']) => mode === 'collection'
 
 export default async function Page({ params }: PagePropsWithParams) {
   const { slug = 'home', domain } = await params
@@ -24,11 +24,11 @@ export default async function Page({ params }: PagePropsWithParams) {
   return (
     <main className="flex flex-col min-h-[100dvh]">
       {/* <RefreshRouteOnSave /> */}
-      {isLayout(page?.pageMode?.mode) && (
-        <BlocksRenderer blocks={page.layout} params={params} />
+      {isLayout(page?.content?.pageMode?.mode) && (
+        <BlocksRenderer blocks={page?.content.layout} params={params} />
       )}
-      {isCollection(page?.pageMode?.mode) && (
-        <CollectionRenderer params={params} configurations={page?.configurations} />
+      {isCollection(page?.content?.pageMode?.mode) && (
+        <CollectionRenderer params={params} configurations={page?.content?.configurations} />
       )}
     </main>
   )

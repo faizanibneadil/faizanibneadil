@@ -5,6 +5,7 @@ import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
 import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
+import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 import { BlocksFeature, CodeBlock, LinkFeature, lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig, RelationshipField } from "payload";
 
@@ -27,92 +28,138 @@ export const Blogs: CollectionConfig<'blogs'> = {
     fields: [
         TitleField(),
         {
-            type: 'richText',
-            name: 'content',
-            label: false,
-            editor: lexicalEditor({
-                features({ defaultFeatures, rootFeatures, }) {
-                    return [
-                        ...rootFeatures,
-                        LinkFeature({
-                            maxDepth: 5,
-                            enabledCollections: ['blogs', 'pages','projects'],
-                            fields: ({ config, defaultFields }) => {
-                                const _defaultFields = defaultFields.map(field => {
-                                    if ('name' in field && field.name === 'doc') {
-                                        return {
-                                            ...field,
-                                            filterOptions: ({ req: { headers } }) => {
-                                                const selectedTenant = getTenantFromCookie(headers, 'number') as number
-                                                if (selectedTenant) {
-                                                    return {
-                                                        'tenant.id': {
-                                                            in: [selectedTenant]
-                                                        }
+            type: 'tabs',
+            tabs: [
+                {
+                    name: 'content',
+                    label: 'Content',
+                    fields: [
+                        {
+                            type: 'richText',
+                            name: 'content',
+                            label: false,
+                            editor: lexicalEditor({
+                                features({ defaultFeatures, rootFeatures, }) {
+                                    return [
+                                        ...rootFeatures,
+                                        LinkFeature({
+                                            maxDepth: 5,
+                                            enabledCollections: ['blogs', 'pages', 'projects'],
+                                            fields: ({ config, defaultFields }) => {
+                                                const _defaultFields = defaultFields.map(field => {
+                                                    if ('name' in field && field.name === 'doc') {
+                                                        return {
+                                                            ...field,
+                                                            filterOptions: ({ req: { headers } }) => {
+                                                                const selectedTenant = getTenantFromCookie(headers, 'number') as number
+                                                                if (selectedTenant) {
+                                                                    return {
+                                                                        'tenant.id': {
+                                                                            in: [selectedTenant]
+                                                                        }
+                                                                    }
+                                                                }
+                                                                return null
+                                                            },
+                                                        } as RelationshipField
                                                     }
-                                                }
-                                                return null
-                                            },
-                                        } as RelationshipField
-                                    }
-                                    return field
-                                })
-                                return [
-                                    ..._defaultFields,
-                                    {
-                                        type: 'select',
-                                        name: 'linkStyle',
-                                        defaultValue: 'normal',
-                                        options: [
-                                            { label: 'normal', value: 'normal' },
-                                            { label: 'Glimpse Style Preview', value: 'GlimpseStyle' }
-                                        ],
-                                        required: true
-                                    },
-                                    {
-                                        name: 'rel',
-                                        label: 'Rel Attribute',
-                                        type: 'select',
-                                        hasMany: true,
-                                        options: ['noopener', 'noreferrer', 'nofollow'],
-                                        admin: {
-                                            description:
-                                                'The rel attribute defines the relationship between a linked resource and the current document. This is a custom link field.',
-                                        },
-                                    },
-                                ]
-                            }
-                        }),
-                        BlocksFeature({
-                            blocks: ['formBlock', 'project', 'code-block'],
-                        }),
+                                                    return field
+                                                })
+                                                return [
+                                                    ..._defaultFields,
+                                                    {
+                                                        type: 'select',
+                                                        name: 'linkStyle',
+                                                        defaultValue: 'normal',
+                                                        options: [
+                                                            { label: 'normal', value: 'normal' },
+                                                            { label: 'Glimpse Style Preview', value: 'GlimpseStyle' }
+                                                        ],
+                                                        required: true
+                                                    },
+                                                    {
+                                                        name: 'rel',
+                                                        label: 'Rel Attribute',
+                                                        type: 'select',
+                                                        hasMany: true,
+                                                        options: ['noopener', 'noreferrer', 'nofollow'],
+                                                        admin: {
+                                                            description:
+                                                                'The rel attribute defines the relationship between a linked resource and the current document. This is a custom link field.',
+                                                        },
+                                                    },
+                                                ]
+                                            }
+                                        }),
+                                        BlocksFeature({
+                                            blocks: ['formBlock', 'project', 'code-block'],
+                                        }),
+                                    ]
+                                },
+                            })
+                        },
+                        {
+                            type: 'richText',
+                            name: 'description',
+                            label: false,
+                            admin: {
+                                description: 'Blog short description.'
+                            },
+                            editor: lexicalEditor({
+                                features({ defaultFeatures, rootFeatures, }) {
+                                    return [...defaultFeatures, ...rootFeatures]
+                                },
+                            })
+                        },
+                        {
+                            type: 'upload',
+                            name: 'featured_image',
+                            label: 'Featured Image',
+                            relationTo: 'media',
+                            hasMany: false,
+                            required: true,
+                            admin: {
+                                position: 'sidebar'
+                            },
+                        },
                     ]
                 },
-            })
-        },
-        {
-            type: 'richText',
-            name: 'description',
-            label: false,
-            admin: {
-                description: 'Blog short description.'
-            },
-            editor: lexicalEditor({
-                features({ defaultFeatures, rootFeatures, }) {
-                    return [...defaultFeatures, ...rootFeatures]
-                },
-            })
-        },
-        {
-            type: 'upload',
-            name: 'featured_image',
-            label: 'Featured Image',
-            relationTo: 'media',
-            hasMany: false,
-            required: true,
-            admin: {
-                position: 'sidebar'
-            },
+                {
+                    name: 'seo',
+                    label: 'SEO',
+                    fields: [
+                        MetaTitleField({
+                            // if the `generateTitle` function is configured
+                            hasGenerateFn: true,
+                        }),
+                        MetaDescriptionField({
+                            // if the `generateDescription` function is configured
+                            hasGenerateFn: true,
+                        }),
+                        MetaImageField({
+                            // the upload collection slug
+                            relationTo: 'media',
+
+                            // if the `generateImage` function is configured
+                            hasGenerateFn: true,
+                        }),
+                        PreviewField({
+                            // if the `generateUrl` function is configured
+                            hasGenerateFn: true,
+
+                            // field paths to match the target field for data
+                            titlePath: 'meta.title',
+                            descriptionPath: 'meta.description',
+                        }),
+                        OverviewField({
+                            // field paths to match the target field for data
+                            titlePath: 'meta.title',
+                            descriptionPath: 'meta.description',
+                            imagePath: 'meta.image',
+                        })
+                    ]
+                }
+            ]
         },
         ...slugField(),
     ],
