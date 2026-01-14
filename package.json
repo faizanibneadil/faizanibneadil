@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
-    "vercel:build": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:status && payload migrate --force-accept-warning && payload migrate:status && next build",
+    "build:vercel": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:status && payload migrate --force-accept-warning && payload migrate:status && next build",
     "build:turbopack": "cross-env NODE_OPTIONS=--no-deprecation next build --turbopack",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "dev:turbopack": "cross-env NODE_OPTIONS=--no-deprecation next dev --turbopack",
