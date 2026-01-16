@@ -41,7 +41,7 @@ import { WatchTenantCollection as WatchTenantCollection_1d0591e3cf4f332c83a86da1
 import { Branding as Branding_35efad1771fa9db75baa88a976c0c6bd } from '@/components/branding.tsx'
 import { GlobalViewRedirect as GlobalViewRedirect_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
 import { TenantSelector as TenantSelector_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
-import { UploadthingClientUploadHandler as UploadthingClientUploadHandler_749dcaa11bb61b873d113cb6c609bc10 } from '@payloadcms/storage-uploadthing/client'
+import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { TenantSelectionProvider as TenantSelectionProvider_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
 import { Visitors as Visitors_72b66f25e816188e5bb68c5553064a23 } from '@/widgets/config.ts'
 import { FormSubmissions as FormSubmissions_72b66f25e816188e5bb68c5553064a23 } from '@/widgets/config.ts'
@@ -91,7 +91,7 @@ export const importMap = {
   "@/components/branding.tsx#Branding": Branding_35efad1771fa9db75baa88a976c0c6bd,
   "@payloadcms/plugin-multi-tenant/rsc#GlobalViewRedirect": GlobalViewRedirect_d6d5f193a167989e2ee7d14202901e62,
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelector": TenantSelector_d6d5f193a167989e2ee7d14202901e62,
-  "@payloadcms/storage-uploadthing/client#UploadthingClientUploadHandler": UploadthingClientUploadHandler_749dcaa11bb61b873d113cb6c609bc10,
+  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelectionProvider": TenantSelectionProvider_d6d5f193a167989e2ee7d14202901e62,
   "@/widgets/config.ts#Visitors": Visitors_72b66f25e816188e5bb68c5553064a23,
   "@/widgets/config.ts#FormSubmissions": FormSubmissions_72b66f25e816188e5bb68c5553064a23,
