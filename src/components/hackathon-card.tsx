@@ -24,7 +24,6 @@ export function HackathonCard({
   createdAt,
   updatedAt,
   deletedAt,
-  seo,
   tenant
 }: Props) {
   return (

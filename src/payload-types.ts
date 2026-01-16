@@ -512,7 +512,7 @@ export interface Page {
         )[]
       | null;
   };
-  seo?: {
+  meta?: {
     title?: string | null;
     description?: string | null;
     /**
@@ -663,7 +663,7 @@ export interface Project {
         }[]
       | null;
   };
-  seo?: {
+  meta?: {
     title?: string | null;
     description?: string | null;
     /**
@@ -780,7 +780,7 @@ export interface Education {
     };
     image: number | Media;
   };
-  seo?: {
+  meta?: {
     title?: string | null;
     description?: string | null;
     /**
@@ -872,7 +872,7 @@ export interface Blog {
     } | null;
     featured_image: number | Media;
   };
-  seo?: {
+  meta?: {
     title?: string | null;
     description?: string | null;
     /**
@@ -980,7 +980,7 @@ export interface Achievement {
       | null;
     image: number | Media;
   };
-  seo?: {
+  meta?: {
     title?: string | null;
     description?: string | null;
     /**
@@ -1060,7 +1060,7 @@ export interface Certification {
       | null;
     image: number | Media;
   };
-  seo?: {
+  meta?: {
     title?: string | null;
     description?: string | null;
     /**
@@ -1160,7 +1160,7 @@ export interface Hackathon {
       | null;
     image: number | Media;
   };
-  seo?: {
+  meta?: {
     title?: string | null;
     description?: string | null;
     /**
@@ -1266,7 +1266,7 @@ export interface Publication {
       | null;
     image: number | Media;
   };
-  seo?: {
+  meta?: {
     title?: string | null;
     description?: string | null;
     /**
@@ -1346,7 +1346,7 @@ export interface Research {
       | null;
     image: number | Media;
   };
-  seo?: {
+  meta?: {
     title?: string | null;
     description?: string | null;
     /**
@@ -1437,7 +1437,7 @@ export interface License {
       | null;
     image: number | Media;
   };
-  seo?: {
+  meta?: {
     title?: string | null;
     description?: string | null;
     /**
@@ -1535,7 +1535,7 @@ export interface Note {
       [k: string]: unknown;
     } | null;
   };
-  seo?: {
+  meta?: {
     title?: string | null;
     description?: string | null;
     /**
@@ -1823,7 +1823,7 @@ export interface NotesSelect<T extends boolean = true> {
     | {
         content?: T;
       };
-  seo?:
+  meta?:
     | T
     | {
         title?: T;
@@ -1848,7 +1848,7 @@ export interface BlogsSelect<T extends boolean = true> {
         description?: T;
         featured_image?: T;
       };
-  seo?:
+  meta?:
     | T
     | {
         title?: T;
@@ -1883,7 +1883,7 @@ export interface PagesSelect<T extends boolean = true> {
             };
         layout?: T | {};
       };
-  seo?:
+  meta?:
     | T
     | {
         title?: T;
@@ -1922,7 +1922,7 @@ export interface EducationsSelect<T extends boolean = true> {
             };
         image?: T;
       };
-  seo?:
+  meta?:
     | T
     | {
         title?: T;
@@ -1970,7 +1970,7 @@ export interface ProjectsSelect<T extends boolean = true> {
               id?: T;
             };
       };
-  seo?:
+  meta?:
     | T
     | {
         title?: T;
@@ -2078,7 +2078,7 @@ export interface HackathonsSelect<T extends boolean = true> {
             };
         image?: T;
       };
-  seo?:
+  meta?:
     | T
     | {
         title?: T;
@@ -2117,7 +2117,7 @@ export interface ResearchesSelect<T extends boolean = true> {
             };
         image?: T;
       };
-  seo?:
+  meta?:
     | T
     | {
         title?: T;
@@ -2156,7 +2156,7 @@ export interface AchievementsSelect<T extends boolean = true> {
             };
         image?: T;
       };
-  seo?:
+  meta?:
     | T
     | {
         title?: T;
@@ -2195,7 +2195,7 @@ export interface CertificationsSelect<T extends boolean = true> {
             };
         image?: T;
       };
-  seo?:
+  meta?:
     | T
     | {
         title?: T;
@@ -2234,7 +2234,7 @@ export interface PublicationsSelect<T extends boolean = true> {
             };
         image?: T;
       };
-  seo?:
+  meta?:
     | T
     | {
         title?: T;
@@ -2273,7 +2273,7 @@ export interface LicensesSelect<T extends boolean = true> {
             };
         image?: T;
       };
-  seo?:
+  meta?:
     | T
     | {
         title?: T;

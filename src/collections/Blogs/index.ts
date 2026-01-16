@@ -125,7 +125,7 @@ export const Blogs: CollectionConfig<'blogs'> = {
                     ]
                 },
                 {
-                    name: 'seo',
+                    name: 'meta',
                     label: 'SEO',
                     fields: [
                         MetaTitleField({

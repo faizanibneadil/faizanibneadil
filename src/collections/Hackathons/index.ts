@@ -122,7 +122,7 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
                     }]
                 },
                 {
-                    name: 'seo',
+                    name: 'meta',
                     label: 'SEO',
                     fields: [
                         MetaTitleField({

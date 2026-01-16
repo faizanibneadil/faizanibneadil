@@ -1,25 +1,12 @@
 import { generateRoute } from "@/utilities/generateRoute";
 import { getServerSideURL } from "@/utilities/getURL";
 import { seoGemini } from "@/utilities/seo-gemini";
+import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
 import { seoPlugin } from "@payloadcms/plugin-seo";
 import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintext";
 
 
 export const seo = seoPlugin({
-    collections: [
-        // 'achievements',
-        // 'blogs',
-        // 'categories',
-        // 'certifications',
-        // 'educations',
-        // 'hackathons',
-        // 'licenses',
-        // 'notes',
-        // 'pages',
-        // 'projects',
-        // 'publications',
-        // 'researches',
-    ],
     uploadsCollection: 'media',
     generateTitle: async ({ doc, collectionSlug, req: { payload } }) => {
         const fallbackTitle = doc?.title || 'Untitled'
@@ -51,7 +38,7 @@ export const seo = seoPlugin({
         }
 
     },
-    generateDescription: async ({ doc, collectionSlug,req: { payload } }) => {
+    generateDescription: async ({ doc, collectionSlug, req: { payload } }) => {
         try {
             switch (collectionSlug) {
                 case 'blogs':
@@ -84,26 +71,30 @@ export const seo = seoPlugin({
                     return 'You have to write description manually...'
             }
         } catch (error) {
-            payload.logger.error(error,`Somwthing went wrong when generating seo description using gemini.`)
+            payload.logger.error(error, `Somwthing went wrong when generating seo description using gemini.`)
             return 'You have to write description manually...'
         }
     },
-    generateURL: async ({ doc, collectionSlug, req: { payload } }) => {
+    generateURL: async ({ doc, collectionSlug, req: { payload, headers } }) => {
         try {
-            const { domain } = await payload?.findByID({
-                collection: 'tenants',
-                id: doc?.tenant as number,
-                select: { domain: true }
-            })
+            const idOfTenant = getTenantFromCookie(headers, 'number')
+            if (idOfTenant) {
+                const { domain } = await payload?.findByID({
+                    collection: 'tenants',
+                    id: idOfTenant,
+                    select: { domain: true }
+                })
 
-            const { RouteWithDocSlug } = generateRoute({
-                domain: domain as string,
-                slug: collectionSlug,
-                id: doc?.id,
-                docSlug: doc?.slug
-            })
+                const { RouteWithDocSlug } = generateRoute({
+                    domain: domain as string,
+                    slug: collectionSlug,
+                    id: doc?.id,
+                    docSlug: doc?.slug
+                })
 
-            return getServerSideURL() + RouteWithDocSlug
+                return getServerSideURL() + RouteWithDocSlug
+            }
+            return getServerSideURL()
         } catch (error) {
             payload.logger.error(error, 'Something went wrong in seo generateURL fn when fetching domain.')
             return getServerSideURL()

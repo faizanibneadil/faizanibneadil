@@ -42,7 +42,7 @@ export const Notes: CollectionConfig<'notes'> = {
                     ]
                 },
                 {
-                    name: 'seo',
+                    name: 'meta',
                     label: 'SEO',
                     fields: [
                         MetaTitleField({

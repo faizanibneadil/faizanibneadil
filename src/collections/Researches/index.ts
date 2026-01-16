@@ -152,12 +152,12 @@ export const Researches: CollectionConfig<'researches'> = {
                             hasMany: false,
                             admin: {
                                 position: 'sidebar'
-                            }
+                            },
                         }
                     ]
                 },
                 {
-                    name: 'seo',
+                    name: 'meta',
                     label: 'SEO',
                     fields: [
                         MetaTitleField({

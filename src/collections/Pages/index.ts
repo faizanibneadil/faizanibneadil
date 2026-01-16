@@ -142,7 +142,7 @@ export const Pages: CollectionConfig<'pages'> = {
                     ]
                 },
                 {
-                    name: 'seo',
+                    name: 'meta',
                     label: 'SEO',
                     fields: [
                         MetaTitleField({

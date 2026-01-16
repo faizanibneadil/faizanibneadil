@@ -114,7 +114,7 @@ export const Achievements: CollectionConfig<'achievements'> = {
                     ]
                 },
                 {
-                    name: 'seo',
+                    name: 'meta',
                     label: 'SEO',
                     fields: [
                         MetaTitleField({
