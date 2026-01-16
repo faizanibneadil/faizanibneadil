@@ -96,7 +96,7 @@ export const Educations: CollectionConfig<'educations'> = {
                     ]
                 },
                 {
-                    name: 'seo',
+                    name: 'meta',
                     label: 'SEO',
                     fields: [
                         MetaTitleField({

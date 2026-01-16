@@ -160,7 +160,7 @@ export const Projects: CollectionConfig<'projects'> = {
                     ]
                 },
                 {
-                    name: 'seo',
+                    name: 'meta',
                     label: 'SEO',
                     fields: [
                         MetaTitleField({

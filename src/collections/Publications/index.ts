@@ -114,7 +114,7 @@ export const Publications: CollectionConfig<'publications'> = {
                     ]
                 },
                 {
-                    name: 'seo',
+                    name: 'meta',
                     label: 'SEO',
                     fields: [
                         MetaTitleField({

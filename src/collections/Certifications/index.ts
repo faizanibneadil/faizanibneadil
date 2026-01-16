@@ -114,7 +114,7 @@ export const Certifications: CollectionConfig<'certifications'> = {
                     ]
                 },
                 {
-                    name: 'seo',
+                    name: 'meta',
                     label: 'SEO',
                     fields: [
                         MetaTitleField({

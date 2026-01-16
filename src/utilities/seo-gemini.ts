@@ -34,12 +34,10 @@ ${collection} Content: ${data}`;
             })
         })
         const json = await response.json()
-        console.log(JSON.stringify(json, null, 4))
         generatedContent = json?.candidates?.[0]?.content?.parts?.[0]?.text;
     } catch (error) {
         console.error(error)
         generatedContent = data
     }
-    console.log({generatedContent})
     return generatedContent
 }

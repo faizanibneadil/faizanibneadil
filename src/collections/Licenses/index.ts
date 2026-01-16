@@ -124,7 +124,7 @@ export const Licenses: CollectionConfig<'licenses'> = {
                     ]
                 },
                 {
-                    name: 'seo',
+                    name: 'meta',
                     label: 'SEO',
                     fields: [
                         MetaTitleField({
