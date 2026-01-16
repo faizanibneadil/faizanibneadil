@@ -12,9 +12,9 @@ export const Media: CollectionConfig = {
     // group: NavigationGroups.portfolio 
   },
   upload: {
-    formatOptions:{
-      format: 'webp',
-    },
+    // formatOptions:{
+    //   format: 'webp',
+    // },
     mimeTypes: ['image/*'],
   },
   access: {
