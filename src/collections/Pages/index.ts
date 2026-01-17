@@ -1,21 +1,18 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { defaultBlocks, digitalArtistSpecificBlocks, itSpecificBlock, pharmaSpecificBlocks } from "@/blocks/config";
-import { NavigationGroups } from "@/constants";
-import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
-// import { getServerSideURL } from "@/utilities/getURL";
-// import { VersionConfig } from "@/utilities/version-config";
-import type { BlockSlug, CollectionConfig } from "payload";
+import { slugify } from "@/utilities/slugify";
 import {
     MetaDescriptionField,
     MetaImageField,
     MetaTitleField,
     OverviewField,
     PreviewField,
-} from '@payloadcms/plugin-seo/fields'
+} from '@payloadcms/plugin-seo/fields';
+import { slugField, type CollectionConfig } from "payload";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
@@ -185,7 +182,13 @@ export const Pages: CollectionConfig<'pages'> = {
                 position: 'sidebar',
             },
         },
-        ...slugField(),
+        slugField({
+            name: 'slug',
+            checkboxName: 'lockSlug',
+            slugify: ({ valueToSlugify }) => {
+                return slugify(valueToSlugify)
+            },
+        }),
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],

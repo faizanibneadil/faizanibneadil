@@ -1,13 +1,11 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { NavigationGroups } from "@/constants";
 import { Iconify } from "@/fields/iconify";
-import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
-// import { VersionConfig } from "@/utilities/version-config";
-import type { CollectionConfig } from "payload";
+import { slugify } from "@/utilities/slugify";
+import { slugField, type CollectionConfig } from "payload";
 
 export const Skills: CollectionConfig<'skills'> = {
     slug: 'skills',
@@ -54,7 +52,13 @@ export const Skills: CollectionConfig<'skills'> = {
             collection: 'experiences',
             on: 'relatedSkills',
         },
-        ...slugField()
+        slugField({
+            name: 'slug',
+            checkboxName: 'lockSlug',
+            slugify: ({ valueToSlugify }) => {
+                return slugify(valueToSlugify)
+            },
+        }),
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],

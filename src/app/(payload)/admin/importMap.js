@@ -33,7 +33,7 @@ import { FixedToolbarFeatureClient as FixedToolbarFeatureClient_e70f5e05f09f93e0
 import { CodeComponent as CodeComponent_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { codeConverterClient as codeConverterClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { CodeBlockBlockComponent as CodeBlockBlockComponent_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { SlugComponent as SlugComponent_92cc057d0a2abb4f6cf0307edf59f986 } from '@/fields/slug/SlugComponent'
+import { SlugField as SlugField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
 import { Collections as Collections_08a3ec38ae16a57bef8dd73840b4dd25 } from '@/collections/Pages/components/collections.tsx'
 import { Description as Description_edbe09833807e9442aeddc602174b6a3 } from '@/fields/iconify/components/description.tsx'
 import { Iconify as Iconify_68e950f21990a0da73a219f82200d91b } from '@/fields/iconify/components/field.tsx'
@@ -83,7 +83,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#CodeComponent": CodeComponent_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#codeConverterClient": codeConverterClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#CodeBlockBlockComponent": CodeBlockBlockComponent_e70f5e05f09f93e00b997edb1ef0c864,
-  "@/fields/slug/SlugComponent#SlugComponent": SlugComponent_92cc057d0a2abb4f6cf0307edf59f986,
+  "@payloadcms/ui#SlugField": SlugField_3817bf644402e67bfe6577f60ef982de,
   "@/collections/Pages/components/collections.tsx#Collections": Collections_08a3ec38ae16a57bef8dd73840b4dd25,
   "@/fields/iconify/components/description.tsx#Description": Description_edbe09833807e9442aeddc602174b6a3,
   "@/fields/iconify/components/field.tsx#Iconify": Iconify_68e950f21990a0da73a219f82200d91b,

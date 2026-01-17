@@ -1,12 +1,10 @@
 import { isSuperAdmin } from "@/access/isSuperAdmin";
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { NavigationGroups } from "@/constants";
-import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
-// import { VersionConfig } from "@/utilities/version-config";
+import { slugify } from "@/utilities/slugify";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import type { CollectionConfig } from "payload";
+import { type CollectionConfig, slugField } from "payload";
 
 export const Industries: CollectionConfig<'industries'> = {
     slug: 'industries',
@@ -35,7 +33,13 @@ export const Industries: CollectionConfig<'industries'> = {
                 description: 'Write description.'
             }
         },
-        ...slugField()
+        slugField({
+            name: 'slug',
+            checkboxName: 'lockSlug',
+            slugify: ({ valueToSlugify }) => {
+                return slugify(valueToSlugify)
+            },
+        }),
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
