@@ -521,8 +521,11 @@ export interface Page {
     image?: (number | null) | Media;
   };
   publishedAt?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -585,8 +588,11 @@ export interface Skill {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  slug?: string | null;
-  slugLock?: boolean | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -671,8 +677,11 @@ export interface Project {
      */
     image?: (number | null) | Media;
   };
-  slug?: string | null;
-  slugLock?: boolean | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -880,8 +889,11 @@ export interface Blog {
      */
     image?: (number | null) | Media;
   };
-  slug?: string | null;
-  slugLock?: boolean | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1504,8 +1516,11 @@ export interface Industry {
     };
     [k: string]: unknown;
   } | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1855,8 +1870,8 @@ export interface BlogsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  lockSlug?: T;
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -1891,8 +1906,8 @@ export interface PagesSelect<T extends boolean = true> {
         image?: T;
       };
   publishedAt?: T;
+  lockSlug?: T;
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -1977,8 +1992,8 @@ export interface ProjectsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  lockSlug?: T;
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -2044,8 +2059,8 @@ export interface SkillsSelect<T extends boolean = true> {
       };
   projects?: T;
   relatedExperiences?: T;
+  lockSlug?: T;
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -2291,8 +2306,8 @@ export interface LicensesSelect<T extends boolean = true> {
 export interface IndustriesSelect<T extends boolean = true> {
   title?: T;
   description?: T;
+  lockSlug?: T;
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;

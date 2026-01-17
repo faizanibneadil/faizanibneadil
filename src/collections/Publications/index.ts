@@ -1,11 +1,9 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { NavigationGroups } from "@/constants";
 import { Iconify } from "@/fields/iconify";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
-// import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
 

@@ -1,13 +1,12 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-// import { NavigationGroups } from "@/constants";
-import { slugField } from "@/fields/slug";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
+import { slugify } from "@/utilities/slugify";
 import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
-import { BlocksFeature, CodeBlock, LinkFeature, lexicalEditor } from "@payloadcms/richtext-lexical";
-import type { CollectionConfig, RelationshipField } from "payload";
+import { BlocksFeature, LinkFeature, lexicalEditor } from "@payloadcms/richtext-lexical";
+import { slugField, type CollectionConfig, type RelationshipField } from "payload";
 
 
 export const Blogs: CollectionConfig<'blogs'> = {
@@ -161,7 +160,13 @@ export const Blogs: CollectionConfig<'blogs'> = {
                 }
             ]
         },
-        ...slugField(),
+        slugField({
+            name: 'slug',
+            checkboxName: 'lockSlug',
+            slugify: ({ valueToSlugify }) => {
+                return slugify(valueToSlugify)
+            },
+        }),
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
