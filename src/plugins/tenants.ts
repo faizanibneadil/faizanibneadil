@@ -24,7 +24,8 @@ export const multiTenancy = multiTenantPlugin<Config>({
         forms: {},
         menus: { isGlobal: true },
         socials: { isGlobal: true },
-        integration: { isGlobal: true }
+        integration: { isGlobal: true },
+        "portfolio-settings": { isGlobal: true }
     },
     tenantField: {
         hasMany: true,

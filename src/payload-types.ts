@@ -121,6 +121,7 @@ export interface Config {
     industries: Industry;
     experiences: Experience;
     integration: Integration;
+    'portfolio-settings': PortfolioSetting;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-locked-documents': PayloadLockedDocument;
@@ -153,6 +154,7 @@ export interface Config {
     industries: IndustriesSelect<false> | IndustriesSelect<true>;
     experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
     integration: IntegrationSelect<false> | IntegrationSelect<true>;
+    'portfolio-settings': PortfolioSettingsSelect<false> | PortfolioSettingsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -520,6 +522,10 @@ export interface Page {
      */
     image?: (number | null) | Media;
   };
+  /**
+   * Set this page as your portfolio's primary Home Page. Only one page can be active as the Main Page at a time.
+   */
+  isRootPage: boolean;
   publishedAt?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -1615,6 +1621,20 @@ export interface Integration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio-settings".
+ */
+export interface PortfolioSetting {
+  id: number;
+  tenant?: (number | Tenant)[] | null;
+  /**
+   * This field defines the 'Home' or 'Landing Page' for your entire Portfolio. By selecting a page here, you are designating it as the entry point of your website. Note: Changing this selection will automatically mark the selected page as the 'Main Page' and remove the 'Main Page' status from any other page for this portfolio to ensure there is always exactly one root page.
+   */
+  rootPage: number | Page;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
@@ -1717,6 +1737,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'integration';
         value: number | Integration;
+      } | null)
+    | ({
+        relationTo: 'portfolio-settings';
+        value: number | PortfolioSetting;
       } | null)
     | ({
         relationTo: 'forms';
@@ -1905,6 +1929,7 @@ export interface PagesSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  isRootPage?: T;
   publishedAt?: T;
   lockSlug?: T;
   slug?: T;
@@ -2343,6 +2368,16 @@ export interface IntegrationSelect<T extends boolean = true> {
   tawkPropertyId?: T;
   tawkWidgetId?: T;
   enableTawkBubble?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio-settings_select".
+ */
+export interface PortfolioSettingsSelect<T extends boolean = true> {
+  tenant?: T;
+  rootPage?: T;
   updatedAt?: T;
   createdAt?: T;
 }

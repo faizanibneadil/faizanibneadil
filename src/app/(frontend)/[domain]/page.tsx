@@ -2,7 +2,10 @@ import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import { getMediaUrl, getServerSideURL } from "@/utilities/getURL";
 import type { Metadata } from 'next';
 import Page from "./p/[slug]/page";
-import React from "react";
+import React, { cache } from "react";
+import type { PagePropsWithParams } from "@/types";
+import type { CollectionSlug } from "payload";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ domain: string }>
@@ -48,7 +51,41 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 }
 
-export default Page
+export default async function DomainPage(props: PagePropsWithParams) {
+  const params = await props.params
+  const __rootPageSlug = await queryRootPageByDomain({ domain: params.domain! })
+
+  if (!__rootPageSlug) {
+    return notFound()
+  }
+
+  return Page({ ...props, params: Promise.resolve({ ...params, slug: __rootPageSlug as CollectionSlug }) })
+}
+
+const queryRootPageByDomain = cache(async ({ domain }: { domain: string }) => {
+  const payload = await getPayloadConfig()
+  const __slug = await payload.find({
+    collection: 'pages',
+    where: {
+      and: [
+        {
+          'tenant.slug': {
+            equals: domain
+          }
+        },
+        {
+          isRootPage: {
+            equals: true
+          }
+        }
+      ]
+    },
+    select: {
+      slug: true
+    }
+  })
+  return __slug?.docs?.at(0)?.slug
+})
 
 
 //import { BlocksRenderrer } from "@/blocks";
