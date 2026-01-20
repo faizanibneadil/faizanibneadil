@@ -14,7 +14,6 @@ export function Iconify(props: TextFieldClientProps) {
     const field = useField({ ...props, validate: undefined })
     const [open, setOpen] = useState(false)
     const [_icons, setIcons] = useState<Record<string, any>>({ icons: [] })
-    const [query, setQuery] = useState('')
 
     const onOpenChange = useCallback((open: boolean) => {
         setOpen((val) => !val)
@@ -30,7 +29,9 @@ export function Iconify(props: TextFieldClientProps) {
                 console.error('Something went wrong to fetch icon from iconify', error)
             })
         }
-        if (debouncedValue || field.value) void getIcons()
+        if (debouncedValue || field.value) {
+            void getIcons()
+        }
     }, [debouncedValue])
 
     function onSelectIcon(icon: string) {
@@ -54,17 +55,13 @@ export function Iconify(props: TextFieldClientProps) {
                     iconPosition="left"
                     iconStyle={field.value ? "none" : "with-border"}
                     buttonStyle="icon-label" el='button'
+                    type="button"
                 >
                     {field.value ? `${(field.value as string)} (Change)` : 'Select icon'}
                 </Button>
             </PopoverTrigger>
             <PopoverContent sideOffset={10} align="start" className="w-full flex flex-col gap-2 bg-transparent p-0">
                 <TextField {...props} />
-                {/* <div className="field-type text read-only">
-                    <div className="field-type_wrap text">
-                        <input onChange={({ target: { value } }) => setQuery(value)} placeholder="Search icon..." />
-                    </div>
-                </div> */}
                 {Boolean(icons?.length) && (
                     <div className="rounded-[var(--style-radius-s)] border border-solid border-[var(--theme-elevation-150)] p-2 bg-[var(--theme-bg)]">
                         <div className="flex flex-wrap max-w-3xl gap-2">

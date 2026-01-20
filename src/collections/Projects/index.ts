@@ -134,21 +134,27 @@ export const Projects: CollectionConfig<'projects'> = {
                                 initCollapsed: true
                             },
                             fields: [
+                                Iconify(),
                                 {
                                     type: 'row',
                                     fields: [
-                                        Iconify(),
                                         {
                                             type: 'text',
                                             label: 'Lable',
                                             name: 'label',
-                                            required: true
+                                            required: true,
+                                            admin: {
+                                                width: '50%'
+                                            }
                                         },
                                         {
                                             type: 'text',
                                             name: 'link',
                                             label: 'Link',
-                                            required: true
+                                            required: true,
+                                            admin: {
+                                                width: '50%'
+                                            }
                                         }
                                     ]
                                 }

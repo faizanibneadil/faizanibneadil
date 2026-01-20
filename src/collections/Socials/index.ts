@@ -11,7 +11,7 @@ import type { CollectionConfig } from "payload";
 export const Socials: CollectionConfig<'socials'> = {
     slug: 'socials',
     labels: { plural: 'Socials', singular: 'Social' },
-    admin: { 
+    admin: {
         // group: NavigationGroups.portfolio 
     },
     access: {
@@ -27,6 +27,7 @@ export const Socials: CollectionConfig<'socials'> = {
             labels: { plural: 'Socials Links', singular: 'Social Link' },
             maxRows: 4,
             fields: [
+                Iconify(),
                 {
                     type: 'row',
                     fields: [
@@ -34,15 +35,20 @@ export const Socials: CollectionConfig<'socials'> = {
                             type: 'text',
                             name: 'title',
                             label: 'Title',
-                            required: true
+                            required: true,
+                            admin: {
+                                width: '50%'
+                            }
                         },
                         {
                             type: 'text',
                             name: 'link',
                             label: 'Link',
-                            required: true
+                            required: true,
+                            admin: {
+                                width: '50%'
+                            }
                         },
-                        Iconify()
                     ]
                 }
             ]

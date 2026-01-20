@@ -37,6 +37,6 @@ export const PortfolioSettings: CollectionConfig<'portfolio-settings'> = {
         },
     ],
     hooks: {
-        afterChange: [PopulateRootPage]
+        afterChange: [PopulateRootPage()]
     }
 }

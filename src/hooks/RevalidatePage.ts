@@ -1,21 +1,22 @@
 import React from 'react'
-import { Page } from '@/payload-types'
-import { AppCollectionAfterChangeHook, AppCollectionAfterDeleteHook } from '@/types'
+import type { Page } from '@/payload-types'
+import type { AppCollectionAfterChangeHook, AppCollectionAfterDeleteHook } from '@/types'
+import type { PayloadRequest } from 'payload'
 import { generateRoute } from '@/utilities/generateRoute'
 import { getTenantFromCookie } from '@payloadcms/plugin-multi-tenant/utilities'
 import { revalidatePath, revalidateTag } from 'next/cache'
-import { BasePayload } from 'payload'
 
-const getDomain = React.cache(async ({ payload, headers, tenantId }: { payload: BasePayload, headers: Headers, tenantId?: number}) => {
+const getDomain = React.cache(async ({ req, tenantId }: { req:PayloadRequest, tenantId?: number}) => {
     try {
-        const tenant = await payload?.findByID({
+        const tenant = await req.payload?.findByID({
             collection: 'tenants',
-            id: tenantId || getTenantFromCookie(headers, 'number') as number,
-            select: { domain: true }
+            id: tenantId || getTenantFromCookie(req.headers, 'number') as number,
+            select: { domain: true },
+            req
         })
         return tenant?.domain
     } catch (error) {
-        payload.logger.warn(error, 'Something went wrong to fetch domain')
+        req.payload.logger.warn(error, 'Something went wrong to fetch domain')
         return null
     }
 })
@@ -26,12 +27,12 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
     return async ({
         doc,
         previousDoc,
-        req: { payload, context, headers },
+        req,
         collection,
     }) => {
         doc?.tenant?.forEach(async t => {
             const domain = typeof t === 'number'
-                ? await getDomain({ headers, payload, tenantId: t })
+                ? await getDomain({ req, tenantId: t })
                 : t?.domain
     
             if (domain) {
@@ -39,10 +40,10 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
                     domain,
                     slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
                 })
-                if (!context.disableRevalidate) {
-                    invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
+                if (!req.context.disableRevalidate) {
+                    invalidateRootRoute && req.payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
                     invalidateRootRoute && revalidatePath(RootRoute)
-                    payload.logger.info(`Revalidating page at [PATH]:${Route}`)
+                    req.payload.logger.info(`Revalidating page at [PATH]:${Route}`)
                     revalidatePath(Route)
                     revalidateTag('pages-sitemap','max')
                 }
@@ -57,22 +58,22 @@ export const RevalidatePageAfterDelete: AppCollectionAfterDeleteHook<Page, {
 }> = ({ invalidateRootRoute }) => {
     return async ({
         doc,
-        req: { context, payload, headers },
+        req,
         collection
     }) => {
         doc?.tenant?.forEach(async t => {
             const domain = typeof t === 'number'
-                ? await getDomain({ headers, payload, tenantId: t })
+                ? await getDomain({ req, tenantId: t })
                 : t?.domain
             if (domain) {
                 const { RootRoute, Route } = generateRoute({
                     domain,
                     slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
                 })
-                if (!context.disableRevalidate) {
-                    invalidateRootRoute && payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
+                if (!req.context.disableRevalidate) {
+                    invalidateRootRoute && req.payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
                     invalidateRootRoute && revalidatePath(RootRoute)
-                    payload.logger.info(`Revalidating page at [PATH]:${Route}`)
+                    req.payload.logger.info(`Revalidating page at [PATH]:${Route}`)
                     revalidatePath(Route)
                     revalidateTag('pages-sitemap','max')
                 }

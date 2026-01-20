@@ -1595,9 +1595,9 @@ export interface Social {
   tenant?: (number | Tenant)[] | null;
   socialsLinks?:
     | {
+        iconify?: string | null;
         title: string;
         link: string;
-        iconify?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -2061,9 +2061,9 @@ export interface SocialsSelect<T extends boolean = true> {
   socialsLinks?:
     | T
     | {
+        iconify?: T;
         title?: T;
         link?: T;
-        iconify?: T;
         id?: T;
       };
   updatedAt?: T;

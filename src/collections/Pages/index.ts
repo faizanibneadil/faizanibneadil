@@ -188,18 +188,19 @@ export const Pages: CollectionConfig<'pages'> = {
                 description: "Set this page as your portfolio's primary Home Page. Only one page can be active as the Main Page at a time."
             },
             required: true,
-            validate: async (value, { req: { payload, headers } }) => {
-                const selectedTenantId = getTenantFromCookie(headers, 'number')
+            validate: async (value, { req }) => {
+                const selectedTenantId = getTenantFromCookie(req.headers, 'number')
                 if (value === false) {
                     try {
-                        const pages = await payload.count({
+                        const pages = await req.payload.count({
                             collection: 'pages',
                             where: {
                                 and: [
                                     { tenant: { equals: selectedTenantId } },
                                     { isRootPage: { equals: true } }
                                 ]
-                            }
+                            },
+                            req
                         });
 
                         if (pages.totalDocs === 0) {
@@ -207,10 +208,10 @@ export const Pages: CollectionConfig<'pages'> = {
                         }
                     } catch (error) {
                         if (error instanceof APIError) {
-                            payload.logger.error({ error }, 'Payload Error')
+                            req.payload.logger.error({ error }, 'Payload Error')
                             return error.message
                         }
-                        payload.logger.error({ error }, 'Internal Server Error')
+                        req.payload.logger.error({ error }, 'Internal Server Error')
                         return 'Internal Server Error'
                     }
                 }
@@ -228,20 +229,21 @@ export const Pages: CollectionConfig<'pages'> = {
             name: 'slug',
             checkboxName: 'lockSlug',
             slugify: ({ valueToSlugify }) => {
-                return slugify(valueToSlugify)
+                const generatedSlug = slugify(valueToSlugify)
+                return `${generatedSlug}-${Date.now()}`
             },
         }),
     ],
     hooks: {
         afterChange: [
-            SwapRootPage,
+            SwapRootPage(),
             RevalidatePageAfterChange({ invalidateRootRoute: true })
         ],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
-        beforeDelete: [ProtectRootPage],
+        beforeDelete: [ProtectRootPage()],
         beforeChange: [
             populatePublishedAt,
-            ProtectRootPageFromTrash
+            ProtectRootPageFromTrash()
         ],
     },
     // versions: VersionConfig(),
