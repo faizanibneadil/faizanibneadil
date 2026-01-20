@@ -2,9 +2,12 @@ import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin"
 import { defaultBlocks, digitalArtistSpecificBlocks, itSpecificBlock, pharmaSpecificBlocks } from "@/blocks/config";
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
+import { ProtectRootPage } from "@/collections/Pages/hooks/ProtectRootPage";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { SwapRootPage } from "@/collections/Pages/hooks/SwapRootPage";
 import { generatePreview } from "@/utilities/generate-preview";
 import { slugify } from "@/utilities/slugify";
+import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
 import {
     MetaDescriptionField,
     MetaImageField,
@@ -12,7 +15,8 @@ import {
     OverviewField,
     PreviewField,
 } from '@payloadcms/plugin-seo/fields';
-import { slugField, type CollectionConfig } from "payload";
+import { slugField, type CollectionConfig, APIError } from "payload";
+import { ProtectRootPageFromTrash } from "./hooks/ProtectRootPageFromTrash";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
@@ -176,6 +180,44 @@ export const Pages: CollectionConfig<'pages'> = {
             ]
         },
         {
+            type: 'checkbox',
+            name: 'isRootPage',
+            label: 'Set as Main page',
+            admin: {
+                position: 'sidebar',
+                description: "Set this page as your portfolio's primary Home Page. Only one page can be active as the Main Page at a time."
+            },
+            required: true,
+            validate: async (value, { req: { payload, headers } }) => {
+                const selectedTenantId = getTenantFromCookie(headers, 'number')
+                if (value === false) {
+                    try {
+                        const pages = await payload.count({
+                            collection: 'pages',
+                            where: {
+                                and: [
+                                    { tenant: { equals: selectedTenantId } },
+                                    { isRootPage: { equals: true } }
+                                ]
+                            }
+                        });
+
+                        if (pages.totalDocs === 0) {
+                            return "At least one landing page is required.";
+                        }
+                    } catch (error) {
+                        if (error instanceof APIError) {
+                            payload.logger.error({ error }, 'Payload Error')
+                            return error.message
+                        }
+                        payload.logger.error({ error }, 'Internal Server Error')
+                        return 'Internal Server Error'
+                    }
+                }
+                return true
+            },
+        },
+        {
             name: 'publishedAt',
             type: 'date',
             admin: {
@@ -191,9 +233,16 @@ export const Pages: CollectionConfig<'pages'> = {
         }),
     ],
     hooks: {
-        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterChange: [
+            SwapRootPage,
+            RevalidatePageAfterChange({ invalidateRootRoute: true })
+        ],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
-        beforeChange: [populatePublishedAt],
+        beforeDelete: [ProtectRootPage],
+        beforeChange: [
+            populatePublishedAt,
+            ProtectRootPageFromTrash
+        ],
     },
     // versions: VersionConfig(),
 }
