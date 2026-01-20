@@ -2,7 +2,7 @@
 // import { SignUp } from "../_components/signup";
 
 import { sdk } from "@/lib/sdk";
-import { SignUpForm } from "./_cpmponents/sign-up-form";
+import { SignUpForm } from "./_components/sign-up-form";
 import { getServerSideURL } from "@/utilities/getURL";
 import type { Metadata } from "next";
 

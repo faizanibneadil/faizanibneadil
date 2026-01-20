@@ -5,6 +5,7 @@ export const Iconify: () => Field = () => ({
     name: 'iconify',
     label: 'Search icon',
     admin: {
+        width: '50%',
         components: {
             Field: {
                 path: '@/fields/iconify/components/field.tsx',
