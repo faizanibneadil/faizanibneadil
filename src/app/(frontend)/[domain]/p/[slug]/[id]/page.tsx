@@ -2,8 +2,8 @@ import React from "react"
 import dynamic from "next/dynamic"
 import type { PagePropsWithParams } from "@/types"
 import { getPayloadConfig } from "@/utilities/getPayloadConfig"
-import { CollectionSlug, DataFromCollectionSlug } from "payload"
-import { Metadata } from "next"
+import type { CollectionSlug, DataFromCollectionSlug } from "payload"
+import type { Metadata } from "next"
 import { getMediaUrl, getServerSideURL } from "@/utilities/getURL"
 import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintext"
 
@@ -178,40 +178,55 @@ const _Collection: TCollectionComponents = {
 
 export async function generateMetadata(props: PagePropsWithParams): Promise<Metadata> {
     const params = await props.params
-    const entity = await queryEntityById({ params: props.params })
 
-    const metadata = params?.slug ? _Collection[params.slug!]?.metadata : () => ({})
+    const slug = params.slug as CollectionSlug
+    const domain = params.domain
+    const docId = params.id
+    const doc = await queryEntityById(slug, domain!, docId!)
 
-    // @ts-expect-error
-    return metadata({ doc: entity })
+    if (slug in _Collection) {
+        const metadata = _Collection[params.slug!]?.metadata
+        // @ts-expect-error
+        return metadata({ doc })
+    }
+
+
+    return {}
 }
 
 export default async function Page(props: PagePropsWithParams) {
     const params = await props.params
-    const entity = await queryEntityById({ params: props.params })
 
-    const Collection = params?.slug ? _Collection[params.slug!]?.component : () => null
-    // @ts-expect-error
-    return <Collection entity={entity} params={params} />
+    const slug = params.slug as CollectionSlug
+    const domain = params.domain
+    const docId = params.id
+    const entity = await queryEntityById(slug, domain!, docId!)
+
+    if (slug in _Collection) {
+        const Collection = _Collection[params.slug!]?.component
+        // @ts-expect-error
+        return <Collection entity={entity} params={params} />
+    }
+
+    return null
 }
 
-const queryEntityById = React.cache(async (args: PagePropsWithParams) => {
-    const params = await args.params
+const queryEntityById = React.cache(async (slug: CollectionSlug, domain: string, id: string) => {
     const payload = await getPayloadConfig()
     const entity = await payload.find({
-        collection: params.slug!,
+        collection: slug,
         limit: 1,
         pagination: false,
         where: {
             and: [
                 {
                     slug: {
-                        equals: params.id
+                        equals: id
                     }
                 },
                 {
                     'tenant.slug': {
-                        equals: params.domain
+                        in: [domain]
                     }
                 }
             ]

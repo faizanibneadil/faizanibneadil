@@ -1,10 +1,10 @@
-import React from "react"
-import { getPayloadConfig } from "./getPayloadConfig"
+import {cache} from "react"
+// import { getPayloadConfig } from "./getPayloadConfig"
 import type { FormSubmission } from "@/payload-types"
 import { sdk } from "@/lib/sdk"
 
 // TODO: wrap into next unstable cache for better performance
-export const getRecentFormSubmissions = React.cache(async ({ tenantId }: { tenantId: string | number | undefined }) => {
+export const getRecentFormSubmissions = cache(async (tenantId: string | number | undefined) => {
     try {
         const submissions = await sdk.find({
             collection: 'form-submissions',

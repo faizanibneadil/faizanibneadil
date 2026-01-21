@@ -65,7 +65,7 @@ export const ResumeCard = (props: { experienceProps?: Experience, educationProps
                   <h3 className="font-normal">TechStack: </h3>
                   {skillsFromProps?.map((skill, idx) => (
                     <React.Suspense key={`skill-${idx}`} fallback={<SkillSkeleton />}>
-                      <Skill id={idx} skill={typeof skill === 'number' ? getSkillById({ id: skill }) : skill} />
+                      <Skill id={idx} skill={typeof skill === 'number' ? getSkillById(skill) : skill} />
                     </React.Suspense>
                   ))}
                 </div>

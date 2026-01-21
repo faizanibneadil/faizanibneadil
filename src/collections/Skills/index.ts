@@ -63,9 +63,9 @@ export const Skills: CollectionConfig<'skills'> = {
             relationTo: 'projects',
             hasMany: true,
             admin: {
-                description: 'Select those project in whitch you used this skill.',
-                appearance: 'drawer'
-            }
+                description: 'Select those project in which you used this skill.',
+                // appearance: 'drawer'
+            },
         }, {
             name: 'relatedExperiences',
             type: 'join',

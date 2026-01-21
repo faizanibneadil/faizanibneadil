@@ -19,8 +19,8 @@ import { getNavbarMenuItems, getNavbarSocialMenuItems } from "@/utilities/getNav
  */
 export default async function Navbar({ domain }: { domain: string }) {
   const [menu, socials] = await Promise.all([
-    getNavbarMenuItems({ domain }),
-    getNavbarSocialMenuItems({ domain })
+    getNavbarMenuItems(domain),
+    getNavbarSocialMenuItems(domain)
   ])
 
   const _MenuToRender = menu?.menu?.map(item => {

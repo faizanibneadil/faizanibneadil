@@ -6,5 +6,5 @@ import { useRouter } from "next/navigation"
 
 export function BackButton(){
     const router = useRouter()
-    return <Button size='icon' onClick={() => router.back()} variant='secondary' className="rounded-md size-8"><ChevronLeft className="size-4" /></Button>
+    return <Button size='icon' onClick={() => router.back()} variant='secondary' className="rounded-md size-12"><ChevronLeft className="size-6" /></Button>
 }

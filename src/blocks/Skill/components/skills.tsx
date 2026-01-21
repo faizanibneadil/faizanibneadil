@@ -45,7 +45,7 @@ export async function Skill(props: { blockProps: ISkillProps, params: PagePropsW
                 <div className="flex flex-wrap gap-1">
                     {providedSkills?.map((skill, id) => (
                         <React.Suspense key={`skill-${id}`} fallback={<SkillSkeleton />}>
-                            <RenderSkill width='2em' height='2em' skill={typeof skill === 'number' ? getSkillById({ id: skill }) : skill} id={id} />
+                            <RenderSkill width='2em' height='2em' skill={typeof skill === 'number' ? getSkillById(skill) : skill} id={id} />
                         </React.Suspense>
                     ))}
                 </div>

@@ -2,7 +2,7 @@ import React from "react"
 import { Form } from "@/payload-types"
 import { sdk } from "@/lib/sdk"
 
-export const getFormByFormId = React.cache(async ({ id }: { id: number }) => {
+export const getFormByFormId = React.cache(async (id: number) => {
     try {
         const form = await sdk.findByID({ collection: 'forms', id })
         return form

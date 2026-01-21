@@ -14,7 +14,6 @@ export function BlogEntity(props: Props) {
     // console.log({ entity })
     return (
         <div className="space-y-2">
-            <BackButton />
 
         <div className='w-full flex flex-col gap-4'>
             <img

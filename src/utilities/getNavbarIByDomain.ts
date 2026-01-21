@@ -1,9 +1,9 @@
-import React from "react"
+import { cache } from "react"
 import { getPayloadConfig } from "./getPayloadConfig"
 import type { Menu, Social } from "@/payload-types"
 
 // TODO: wrap into next unstable cache for better performance
-export const getNavbarMenuItems = React.cache(async ({ domain }: { domain: string }) => {
+export const getNavbarMenuItems = cache(async (domain: string) => {
     try {
         const payload = await getPayloadConfig()
         const menu = (await payload.find({
@@ -23,7 +23,7 @@ export const getNavbarMenuItems = React.cache(async ({ domain }: { domain: strin
 })
 
 // TODO: wrap into next unstable cache for better performance
-export const getNavbarSocialMenuItems = React.cache(async ({ domain }: { domain: string }) => {
+export const getNavbarSocialMenuItems = cache(async (domain: string) => {
     try {
         const payload = await getPayloadConfig()
         const socials = (await payload.find({
