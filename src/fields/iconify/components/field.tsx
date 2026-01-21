@@ -61,7 +61,14 @@ export function Iconify(props: TextFieldClientProps) {
                 </Button>
             </PopoverTrigger>
             <PopoverContent sideOffset={10} align="start" className="w-full flex flex-col gap-2 bg-transparent p-0">
-                
+                <TextField {...props} />
+                {Boolean(icons?.length) && (
+                    <div className="rounded-[var(--style-radius-s)] border border-solid border-[var(--theme-elevation-150)] p-2 bg-[var(--theme-bg)]">
+                        <div className="flex flex-wrap max-w-3xl gap-2">
+                            {icons}
+                        </div>
+                    </div>
+                )}
             </PopoverContent>
         </Popover>
     )
