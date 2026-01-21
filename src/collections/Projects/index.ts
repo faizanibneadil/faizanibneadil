@@ -78,7 +78,7 @@ export const Projects: CollectionConfig<'projects'> = {
                             hasMany: true,
                             admin: {
                                 description: 'Provide list of skills. You used to build this project',
-                                appearance: 'drawer'
+                                // appearance: 'drawer'
                             }
                         },
                         {

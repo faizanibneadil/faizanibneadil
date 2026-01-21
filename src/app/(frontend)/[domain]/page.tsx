@@ -2,7 +2,7 @@ import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import { getMediaUrl, getServerSideURL } from "@/utilities/getURL";
 import type { Metadata } from 'next';
 import Page from "./p/[slug]/page";
-import React, { cache } from "react";
+import { cache } from "react";
 import type { PagePropsWithParams } from "@/types";
 import type { CollectionSlug } from "payload";
 import { notFound } from "next/navigation";
@@ -12,7 +12,7 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-const getProfileAvatar = React.cache(async (domain: string) => {
+const getProfileAvatar = cache(async (domain: string) => {
   try {
     const payload = await getPayloadConfig()
     const avatar = await payload.find({
@@ -53,7 +53,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function DomainPage(props: PagePropsWithParams) {
   const params = await props.params
-  const __rootPageSlug = await queryRootPageByDomain({ domain: params.domain! })
+  const __rootPageSlug = await queryRootPageByDomain(params.domain!)
 
   if (!__rootPageSlug) {
     return notFound()
@@ -62,7 +62,7 @@ export default async function DomainPage(props: PagePropsWithParams) {
   return Page({ ...props, params: Promise.resolve({ ...params, slug: __rootPageSlug as CollectionSlug }) })
 }
 
-const queryRootPageByDomain = cache(async ({ domain }: { domain: string }) => {
+const queryRootPageByDomain = cache(async (domain: string) => {
   const payload = await getPayloadConfig()
   const __slug = await payload.find({
     collection: 'pages',

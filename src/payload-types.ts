@@ -597,7 +597,7 @@ export interface Skill {
     iconify?: string | null;
   };
   /**
-   * Select those project in whitch you used this skill.
+   * Select those project in which you used this skill.
    */
   projects?: (number | Project)[] | null;
   relatedExperiences?: {

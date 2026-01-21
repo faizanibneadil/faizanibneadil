@@ -12,7 +12,7 @@ export async function FormBlock(props: { blockProps: TFormBlockProps, params: Pa
     const params = await paramsFromProps
 
     const form = typeof blockProps?.form === 'number'
-        ? getFormByFormId({ id: blockProps.form })
+        ? getFormByFormId(blockProps.form)
         : blockProps.form
 
     return (

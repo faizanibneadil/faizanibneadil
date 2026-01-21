@@ -16,14 +16,6 @@ export async function EducationSkeleton() {
                                 <div className="flex flex-col items-start justify-start font-semibold leading-none text-xs sm:text-sm">
                                     <Skeleton className="mb-1 w-40 h-2" />
                                     <Skeleton className="mb-1 w-20 h-2" />
-                                    {/* <div className="flex flex-wrap gap-1 mt-1">
-                                        <h3 className="font-normal">TechStack: </h3>
-                                        {skillsFromProps?.map((skill, idx) => (
-                                            <React.Suspense key={`skill-${idx}`} fallback={<SkillSkeleton />}>
-                                                <Skill id={idx} skill={typeof skill === 'number' ? getSkillById({ id: skill }) : skill} />
-                                            </React.Suspense>
-                                        ))}
-                                    </div> */}
                                 </div>
                                 <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right">
                                     <Skeleton className="mb-1 w-20 h-2" />

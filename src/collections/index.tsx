@@ -1,13 +1,17 @@
 // import { sdk } from "@/lib/sdk"
+import { cache } from "react"
 import type { Page } from "@/payload-types"
 import type { PagePropsWithParams } from "@/types"
 import { getPayloadConfig } from "@/utilities/getPayloadConfig"
 import dynamic from "next/dynamic"
 import type { CollectionSlug, DataFromCollectionSlug, PaginatedDocs } from "payload"
-import React from "react"
 
 type TCollectionComponents = {
-    [K in CollectionSlug]?: React.ComponentType<{ collection: PaginatedDocs<DataFromCollectionSlug<K>>, params: Awaited<PagePropsWithParams['params']> }>
+    [K in CollectionSlug]?: React.ComponentType<{
+        collection: PaginatedDocs<DataFromCollectionSlug<K>>,
+        params: Awaited<PagePropsWithParams['params']>,
+        isRootPage: boolean
+    }>
 }
 
 const _Collections: TCollectionComponents = {
@@ -47,26 +51,30 @@ const _Collections: TCollectionComponents = {
 }
 
 export async function CollectionRenderer(props: { params: PagePropsWithParams['params'], configurations: Page['content']['configurations'] }) {
-    const { params, configurations } = props || {}
-    const { slug, domain } = await params
-    const paramsToSend = await params
+    const paramsFromProps = await props.params
 
-    const collectionToRenderProps = await queryCollectionBySlug({
-        slug: configurations && configurations?.slug === slug ? slug : configurations?.slug as CollectionSlug,
-        domain
-    })
-    const CollectionToRender = _Collections[slug!]
-    // @ts-expect-error
-    return slug && slug in _Collections ? <CollectionToRender collection={collectionToRenderProps} params={paramsToSend} /> : null
+    const slugFromConfig = props.configurations?.slug as CollectionSlug
+    const domain = paramsFromProps.domain
+    const collectionToRenderProps = await queryCollectionBySlug(slugFromConfig, domain!)
+    const CollectionToRender = _Collections[slugFromConfig]
+    if (slugFromConfig in _Collections && collectionToRenderProps) {
+        // @ts-expect-error
+        return <CollectionToRender collection={collectionToRenderProps} params={paramsFromProps} />
+    }
+    return null
 }
 
-const queryCollectionBySlug = React.cache(async ({ slug, domain }: Awaited<PagePropsWithParams['params']>) => {
+const queryCollectionBySlug = cache(async (slug: CollectionSlug, domain: string) => {
     const payload = await getPayloadConfig()
     try {
         const result = await payload.find({
             collection: slug!,
             pagination: true,
-            where: { 'tenant.slug': { equals: domain } }
+            where: {
+                'tenant.slug': {
+                    in: [domain]
+                }
+            }
         })
         return result || null
     } catch (error) {

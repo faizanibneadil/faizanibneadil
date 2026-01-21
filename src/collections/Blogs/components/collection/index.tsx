@@ -10,7 +10,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { DataFromCollectionSlug, PaginatedDocs } from "payload";
 
-type Props = { collection: PaginatedDocs<DataFromCollectionSlug<'blogs'>>, params: Awaited<PagePropsWithParams['params']> }
+type Props = {
+    collection: PaginatedDocs<DataFromCollectionSlug<'blogs'>>,
+    params: Awaited<PagePropsWithParams['params']>,
+}
 const BLUR_FADE_DELAY = 0.04;
 export function Blogs(props: Props) {
     const { collection: { docs }, params } = props || {}
@@ -58,7 +61,6 @@ export function Blogs(props: Props) {
     })
     return (
         <div className="space-y-2">
-            <BackButton />
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{blogs}</div>
         </div>
     )

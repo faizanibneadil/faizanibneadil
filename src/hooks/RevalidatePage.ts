@@ -1,4 +1,4 @@
-import React from 'react'
+import { cache } from 'react'
 import type { Page } from '@/payload-types'
 import type { AppCollectionAfterChangeHook, AppCollectionAfterDeleteHook } from '@/types'
 import type { PayloadRequest } from 'payload'
@@ -6,7 +6,7 @@ import { generateRoute } from '@/utilities/generateRoute'
 import { getTenantFromCookie } from '@payloadcms/plugin-multi-tenant/utilities'
 import { revalidatePath, revalidateTag } from 'next/cache'
 
-const getDomain = React.cache(async ({ req, tenantId }: { req:PayloadRequest, tenantId?: number}) => {
+const getDomain = cache(async (req: PayloadRequest, tenantId?: number) => {
     try {
         const tenant = await req.payload?.findByID({
             collection: 'tenants',
@@ -32,9 +32,9 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
     }) => {
         doc?.tenant?.forEach(async t => {
             const domain = typeof t === 'number'
-                ? await getDomain({ req, tenantId: t })
+                ? await getDomain(req, t)
                 : t?.domain
-    
+
             if (domain) {
                 const { RootRoute, Route } = generateRoute({
                     domain,
@@ -45,7 +45,7 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
                     invalidateRootRoute && revalidatePath(RootRoute)
                     req.payload.logger.info(`Revalidating page at [PATH]:${Route}`)
                     revalidatePath(Route)
-                    revalidateTag('pages-sitemap','max')
+                    revalidateTag('pages-sitemap', 'max')
                 }
             }
         })
@@ -63,7 +63,7 @@ export const RevalidatePageAfterDelete: AppCollectionAfterDeleteHook<Page, {
     }) => {
         doc?.tenant?.forEach(async t => {
             const domain = typeof t === 'number'
-                ? await getDomain({ req, tenantId: t })
+                ? await getDomain(req, t)
                 : t?.domain
             if (domain) {
                 const { RootRoute, Route } = generateRoute({
@@ -75,7 +75,7 @@ export const RevalidatePageAfterDelete: AppCollectionAfterDeleteHook<Page, {
                     invalidateRootRoute && revalidatePath(RootRoute)
                     req.payload.logger.info(`Revalidating page at [PATH]:${Route}`)
                     revalidatePath(Route)
-                    revalidateTag('pages-sitemap','max')
+                    revalidateTag('pages-sitemap', 'max')
                 }
             }
         })
