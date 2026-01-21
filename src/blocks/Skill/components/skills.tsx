@@ -4,7 +4,8 @@ import { Skill as RenderSkill, SkillSkeleton } from "@/components/render-skill";
 import type { ISkillProps } from "@/payload-types";
 import { getSkillById } from "@/utilities/getSkillById";
 import type { PagePropsWithParams } from "@/types";
-import { sdk } from "@/lib/sdk";
+// import { sdk } from "@/lib/sdk";
+import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Skill(props: { blockProps: ISkillProps, params: PagePropsWithParams['params'] }) {
@@ -18,12 +19,12 @@ export async function Skill(props: { blockProps: ISkillProps, params: PagePropsW
         params: paramsFromProps
     } = props || {}
     const params = await paramsFromProps
-
     let providedSkills = userSkills
 
     if (showAllSkills === true) {
         try {
-            const getSkills = await sdk.find({
+            const payload = await getPayloadConfig()
+            const getSkills = await payload.find({
                 collection: 'skills',
                 where: { 'tenant.slug': { in: [params.domain] } },
                 pagination: false
@@ -31,7 +32,7 @@ export async function Skill(props: { blockProps: ISkillProps, params: PagePropsW
             providedSkills = getSkills.docs
         } catch (error) {
             console.error('Something went wrong to get all skills from skills collection in skills block', error)
-            providedSkills = []
+            providedSkills = userSkills?.length === 0 ? [] : userSkills
         }
     }
 
