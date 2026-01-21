@@ -565,6 +565,13 @@ export interface IAboutProps {
  * via the `definition` "ISkillProps".
  */
 export interface ISkillProps {
+  /**
+   * Check this to display every skill from your collection. Uncheck to manually select specific skills.
+   */
+  showAllSkills?: boolean | null;
+  /**
+   * Choose specific skills you want to showcase.
+   */
   userSkills?: (number | Skill)[] | null;
   id?: string | null;
   blockName?: string | null;
@@ -579,10 +586,14 @@ export interface Skill {
   tenant?: (number | Tenant)[] | null;
   title: string;
   publishedAt?: string | null;
-  /**
-   * If you want to show an icon of the skill instead of skill as name then you have to select an icon from icons collection. REMEMBER: If the icon is available on skill only icon will be display.
-   */
   techstack?: {
+    /**
+     * Enable this to show the technology icon on the portfolio. If disabled, only the skill name will be displayed.
+     */
+    showIcon?: boolean | null;
+    /**
+     * Search and select an icon for this skill. Note: This icon will only be visible if "Display Icon" is enabled above.
+     */
     iconify?: string | null;
   };
   /**
@@ -2080,6 +2091,7 @@ export interface SkillsSelect<T extends boolean = true> {
   techstack?:
     | T
     | {
+        showIcon?: T;
         iconify?: T;
       };
   projects?: T;
