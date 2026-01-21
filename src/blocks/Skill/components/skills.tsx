@@ -1,9 +1,9 @@
 import React from "react";
 import BlurFade from "@/components/magicui/blur-fade";
 import { Skill as RenderSkill, SkillSkeleton } from "@/components/render-skill";
-import { ISkillProps } from "@/payload-types";
+import type { ISkillProps } from "@/payload-types";
 import { getSkillById } from "@/utilities/getSkillById";
-import { PagePropsWithParams } from "@/types";
+import type { PagePropsWithParams } from "@/types";
 import { sdk } from "@/lib/sdk";
 
 const BLUR_FADE_DELAY = 0.04;
@@ -21,10 +21,11 @@ export async function Skill(props: { blockProps: ISkillProps, params: PagePropsW
 
     let providedSkills = userSkills
 
-    if(showAllSkills === true){
+    if (showAllSkills === true) {
         try {
             const getSkills = await sdk.find({
                 collection: 'skills',
+                where: { 'tenant.slug': { in: [params.domain] } },
                 pagination: false
             })
             providedSkills = getSkills.docs
