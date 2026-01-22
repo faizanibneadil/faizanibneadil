@@ -1,16 +1,13 @@
-
+import type { BlockSlug } from "payload";
+import { Building2, Clock, Home, Link2, MapPin } from "lucide-react";
+import Link from "next/link";
+import { RichText } from '@payloadcms/richtext-lexical/react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Education, Experience } from "@/payload-types";
-// import { getSkillById } from "@/utilities/getSkillById";
 import { getMediaUrl } from "@/utilities/getURL";
-import { RichText } from '@payloadcms/richtext-lexical/react';
-import { Link2 } from "lucide-react";
-import Link from "next/link";
-import type { BlockSlug } from "payload";
-// import React from "react";
 import { Dates } from "./dates";
-// import { Skill, SkillSkeleton } from "./render-skill";
+import { Badge } from "./ui/badge";
 
 export const ResumeCard = (props: { experienceProps?: Experience, educationProps?: Education } & { blockType?: BlockSlug }) => {
   const {
@@ -20,10 +17,7 @@ export const ResumeCard = (props: { experienceProps?: Experience, educationProps
   if (blockType === 'experience') {
     const {
       experienceProps: {
-        // createdAt,
-        // id,
         title,
-        // updatedAt,
         company,
         description,
         employmentType,
@@ -31,11 +25,23 @@ export const ResumeCard = (props: { experienceProps?: Experience, educationProps
         jobType,
         location,
         logo,
-        // relatedSkills: skillsFromProps,
         start,
         website
       } = {} as Experience
     } = props || {}
+
+    const jobTypeIconMap: Record<NonNullable<typeof jobType>, () => React.ReactNode> = {
+      "on-site": () => <Building2 className="size-3" />,
+      hybrid: () => (
+        <div className="flex gap-1 items-center">
+          <Building2 className="size-3" />
+          <Home className="size-3" />
+        </div>
+      ),
+      remote: () => <Home className="size-3" />
+    }
+    const JobTypeIcon = jobTypeIconMap[jobType as NonNullable<typeof jobType>]
+
     return (
       <Card className="flex">
         <div className="flex-none">
@@ -61,20 +67,29 @@ export const ResumeCard = (props: { experienceProps?: Experience, educationProps
                     <Link2 className="size-3" />
                   </div>
                 )}
-                {/* <div className="flex flex-wrap gap-1 mt-1">
-                  <h3 className="font-normal">TechStack: </h3>
-                  {skillsFromProps?.map((skill, idx) => (
-                    <React.Suspense key={`skill-${idx}`} fallback={<SkillSkeleton />}>
-                      <Skill id={idx} skill={typeof skill === 'number' ? getSkillById(skill) : skill} />
-                    </React.Suspense>
-                  ))}
-                </div> */}
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {jobType && (
+                    <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
+                      <JobTypeIcon />
+                      <span className="font-sans text-sx capitalize font-normal">{jobType}</span>
+                    </Badge>
+                  )}
+                  {location && (
+                    <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
+                      <MapPin className="size-3" />
+                      <span className="font-sans text-sx capitalize font-normal">{location}</span>
+                    </Badge>
+                  )}
+                  {employmentType && (
+                    <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
+                      <Clock className="size-3" />
+                      <span className="font-sans text-sx capitalize font-normal">{employmentType}</span>
+                    </Badge>
+                  )}
+                </div>
               </div>
               <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right">
                 <Dates to={start} from={end} />
-                {jobType && <div className="font-sans text-xs capitalize">{jobType}</div>}
-                {location && <div className="font-sans text-xs capitalize">{location}</div>}
-                {employmentType && <div className="font-sans text-xs capitalize">{employmentType}</div>}
               </div>
             </div>
           </CardHeader>
@@ -90,8 +105,6 @@ export const ResumeCard = (props: { experienceProps?: Experience, educationProps
   if (blockType === 'education') {
     const {
       educationProps: {
-        createdAt,
-        id,
         content: {
           image,
           dates,
