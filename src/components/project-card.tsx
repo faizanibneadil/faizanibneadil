@@ -53,7 +53,7 @@ export async function ProjectCard(props: {
             alt={project?.title}
             className="h-40 w-full overflow-hidden object-cover object-top"
             fetchPriority="high"
-            loading="eager"
+            loading="lazy"
             height={40}
             unoptimized
             width={200}

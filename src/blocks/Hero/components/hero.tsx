@@ -43,6 +43,8 @@ export async function Hero(props: { blockProps: IHeroProps, params: PagePropsWit
                                 alt={nameOnResume as string}
                                 src={getMediaUrl(profile)}
                                 className="object-cover object-top aspect-auto"
+                                fetchPriority="high"
+                                loading="lazy"
                             />
                             <AvatarFallback>{DATA.initials}</AvatarFallback>
                         </Avatar>
