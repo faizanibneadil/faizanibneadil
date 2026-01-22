@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import { Fragment, Suspense } from "react";
 import dynamic from "next/dynamic";
 import type { Page } from "@/payload-types";
 import type { PagePropsWithParams } from "@/types";
@@ -22,6 +22,7 @@ type TBlocks = {
         component: React.ComponentType<{
             params: PagePropsWithParams['params'],
             blockProps: Extract<NonNullable<Page['content']['layout']>[number], { blockType: K }>
+            searchParams: PagePropsWithParams['searchParams']
         }>
     }
 }
@@ -139,8 +140,8 @@ const _blocks: TBlocks = {
     },
 }
 
-export function BlocksRenderer(props: { blocks: Page['content']['layout'][][0], params: PagePropsWithParams['params'] }) {
-    const { blocks = [], params } = props || {}
+export async function BlocksRenderer(props: { blocks: Page['content']['layout'][][0], params: PagePropsWithParams['params'], searchParams: PagePropsWithParams['searchParams'] }) {
+    const { blocks = [], params, searchParams } = props || {}
 
     const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
@@ -163,10 +164,10 @@ export function BlocksRenderer(props: { blocks: Page['content']['layout'][][0], 
                         if (Block) {
                             return (
                                 <div className="my-5 first:mt-0" key={`${blockType}-${index}`}>
-                                    <React.Suspense fallback={<Skeleton />}>
+                                    <Suspense fallback={<Skeleton />}>
                                         {/* @ts-expect-error there may be some mismatch between the expected types here */}
-                                        <Block blockProps={block} params={params} />
-                                    </React.Suspense>
+                                        <Block blockProps={block} params={params} searchParams={searchParams} />
+                                    </Suspense>
                                 </div>
                             )
                         }

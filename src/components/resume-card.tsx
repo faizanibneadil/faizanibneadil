@@ -8,11 +8,16 @@ import { Education, Experience } from "@/payload-types";
 import { getMediaUrl } from "@/utilities/getURL";
 import { Dates } from "./dates";
 import { Badge } from "./ui/badge";
+import { cn } from "@/lib/utils";
+import type { PagePropsWithParams } from "@/types";
 
-export const ResumeCard = (props: { experienceProps?: Experience, educationProps?: Education } & { blockType?: BlockSlug }) => {
+export const ResumeCard = async (props: { experienceProps?: Experience, educationProps?: Education } & { blockType?: BlockSlug, searchParams?: PagePropsWithParams['searchParams'] }) => {
   const {
-    blockType
+    blockType,
+    searchParams
   } = props || {}
+
+  const queryParams = await searchParams
 
   if (blockType === 'experience') {
     const {
@@ -43,8 +48,8 @@ export const ResumeCard = (props: { experienceProps?: Experience, educationProps
     const JobTypeIcon = jobTypeIconMap[jobType as NonNullable<typeof jobType>]
 
     return (
-      <Card className="flex">
-        <div className="flex-none">
+      <div className="space-y-2">
+        <div className="flex gap-2 items-center justify-between">
           <Avatar className="border size-12 m-auto bg-muted-background dark:bg-foreground">
             <AvatarImage
               src={getMediaUrl(logo)}
@@ -55,50 +60,103 @@ export const ResumeCard = (props: { experienceProps?: Experience, educationProps
             />
             <AvatarFallback>{company?.[0]}</AvatarFallback>
           </Avatar>
+          <div className="flex flex-col gap-1 flex-1">
+            <h3>{title}</h3>
+            {company && (
+              <div className="flex items-center gap-1 group">
+                <Link href={website || "#"} className="font-sans text-xs capitalize font-normal text-muted-foreground group-hover:hover:text-blue-600 group-hover:underline">{company}</Link>
+                <Link2 className="size-3" />
+              </div>
+            )}
+          </div>
+          <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right">
+            <Dates to={start} from={end} />
+          </div>
         </div>
-        <div className="flex-grow ml-4 items-center flex-col group">
-          <CardHeader>
-            <div className="flex items-start justify-between gap-x-2 text-base">
-              <div className="flex flex-col items-start justify-start font-semibold leading-none text-xs sm:text-sm">
-                <h3>{title}</h3>
-                {company && (
-                  <div className="flex items-center gap-1 group">
-                    <Link href={website || "#"} className="font-sans text-xs capitalize font-normal text-muted-foreground group-hover:hover:text-blue-600 group-hover:underline">{company}</Link>
-                    <Link2 className="size-3" />
-                  </div>
-                )}
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {jobType && (
-                    <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
-                      <JobTypeIcon />
-                      <span className="font-sans text-sx capitalize font-normal">{jobType}</span>
-                    </Badge>
-                  )}
-                  {location && (
-                    <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
-                      <MapPin className="size-3" />
-                      <span className="font-sans text-sx capitalize font-normal">{location}</span>
-                    </Badge>
-                  )}
-                  {employmentType && (
-                    <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
-                      <Clock className="size-3" />
-                      <span className="font-sans text-sx capitalize font-normal">{employmentType}</span>
-                    </Badge>
-                  )}
-                </div>
-              </div>
-              <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right">
-                <Dates to={start} from={end} />
-              </div>
-            </div>
-          </CardHeader>
-          {description && (
-            <RichText data={description} className="mt-2 prose max-w-full text-pretty font-sans text-xs text-foreground dark:prose-invert" />
+        <div className={cn("flex flex-wrap gap-1", {
+          "ml-12": queryParams?.vp === 'd'
+        })}>
+          {jobType && (
+            <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
+              <JobTypeIcon />
+              <span className="font-sans text-sx capitalize font-normal">{jobType}</span>
+            </Badge>
           )}
-
+          {location && (
+            <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
+              <MapPin className="size-3" />
+              <span className="font-sans text-sx capitalize font-normal">{location}</span>
+            </Badge>
+          )}
+          {employmentType && (
+            <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
+              <Clock className="size-3" />
+              <span className="font-sans text-sx capitalize font-normal">{employmentType}</span>
+            </Badge>
+          )}
         </div>
-      </Card>
+        {description && (
+          <RichText data={description} className={cn("mt-2 prose max-w-full text-pretty font-sans text-xs text-foreground dark:prose-invert", {
+            "ml-12": queryParams?.vp === 'd'
+          })} />
+        )}
+      </div>
+      // <Card className="flex">
+      //   <div className="flex-none">
+      //     <Avatar className="border size-12 m-auto bg-muted-background dark:bg-foreground">
+      //       <AvatarImage
+      //         src={getMediaUrl(logo)}
+      //         alt={company as string}
+      //         className="object-contain"
+      //         fetchPriority="high"
+      //         loading="lazy"
+      //       />
+      //       <AvatarFallback>{company?.[0]}</AvatarFallback>
+      //     </Avatar>
+      //   </div>
+      //   <div className="flex-grow ml-4 items-center flex-col group">
+      //     <CardHeader>
+      //       <div className="flex items-start justify-between gap-x-2 text-base">
+      //         <div className="flex flex-col items-start justify-start font-semibold leading-none text-xs sm:text-sm">
+      //           <h3>{title}</h3>
+      //           {company && (
+      //             <div className="flex items-center gap-1 group">
+      //               <Link href={website || "#"} className="font-sans text-xs capitalize font-normal text-muted-foreground group-hover:hover:text-blue-600 group-hover:underline">{company}</Link>
+      //               <Link2 className="size-3" />
+      //             </div>
+      //           )}
+      //           <div className="flex flex-wrap gap-1 mt-1">
+      //             {jobType && (
+      //               <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
+      //                 <JobTypeIcon />
+      //                 <span className="font-sans text-sx capitalize font-normal">{jobType}</span>
+      //               </Badge>
+      //             )}
+      //             {location && (
+      //               <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
+      //                 <MapPin className="size-3" />
+      //                 <span className="font-sans text-sx capitalize font-normal">{location}</span>
+      //               </Badge>
+      //             )}
+      //             {employmentType && (
+      //               <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
+      //                 <Clock className="size-3" />
+      //                 <span className="font-sans text-sx capitalize font-normal">{employmentType}</span>
+      //               </Badge>
+      //             )}
+      //           </div>
+      //         </div>
+      //         <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right">
+      //           <Dates to={start} from={end} />
+      //         </div>
+      //       </div>
+      //     </CardHeader>
+      //     {description && (
+      //       <RichText data={description} className="mt-2 prose max-w-full text-pretty font-sans text-xs text-foreground dark:prose-invert" />
+      //     )}
+
+      //   </div>
+      // </Card>
     );
   }
 

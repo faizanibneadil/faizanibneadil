@@ -1,3 +1,4 @@
+import { RichTextLinkFeature } from "@/utilities/RichTextLinkFeature";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
 
@@ -104,7 +105,11 @@ export const Experiences: CollectionConfig<'experiences'> = {
         },
         {
             type: 'richText',
-            editor: lexicalEditor(),
+            editor: lexicalEditor({
+                features({ defaultFeatures, rootFeatures, }) {
+                    return [...rootFeatures, RichTextLinkFeature()]
+                },
+            }),
             name: 'description',
             label: 'Description'
         },
