@@ -2,15 +2,15 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Education, Experience } from "@/payload-types";
-import { getSkillById } from "@/utilities/getSkillById";
+// import { getSkillById } from "@/utilities/getSkillById";
 import { getMediaUrl } from "@/utilities/getURL";
 import { RichText } from '@payloadcms/richtext-lexical/react';
 import { Link2 } from "lucide-react";
 import Link from "next/link";
 import type { BlockSlug } from "payload";
-import React from "react";
+// import React from "react";
 import { Dates } from "./dates";
-import { Skill, SkillSkeleton } from "./render-skill";
+// import { Skill, SkillSkeleton } from "./render-skill";
 
 export const ResumeCard = (props: { experienceProps?: Experience, educationProps?: Education } & { blockType?: BlockSlug }) => {
   const {
@@ -20,10 +20,10 @@ export const ResumeCard = (props: { experienceProps?: Experience, educationProps
   if (blockType === 'experience') {
     const {
       experienceProps: {
-        createdAt,
-        id,
+        // createdAt,
+        // id,
         title,
-        updatedAt,
+        // updatedAt,
         company,
         description,
         employmentType,
@@ -31,7 +31,7 @@ export const ResumeCard = (props: { experienceProps?: Experience, educationProps
         jobType,
         location,
         logo,
-        relatedSkills: skillsFromProps,
+        // relatedSkills: skillsFromProps,
         start,
         website
       } = {} as Experience
@@ -45,7 +45,7 @@ export const ResumeCard = (props: { experienceProps?: Experience, educationProps
               alt={company as string}
               className="object-contain"
               fetchPriority="high"
-              loading="eager"
+              loading="lazy"
             />
             <AvatarFallback>{company?.[0]}</AvatarFallback>
           </Avatar>
@@ -61,14 +61,14 @@ export const ResumeCard = (props: { experienceProps?: Experience, educationProps
                     <Link2 className="size-3" />
                   </div>
                 )}
-                <div className="flex flex-wrap gap-1 mt-1">
+                {/* <div className="flex flex-wrap gap-1 mt-1">
                   <h3 className="font-normal">TechStack: </h3>
                   {skillsFromProps?.map((skill, idx) => (
                     <React.Suspense key={`skill-${idx}`} fallback={<SkillSkeleton />}>
                       <Skill id={idx} skill={typeof skill === 'number' ? getSkillById(skill) : skill} />
                     </React.Suspense>
                   ))}
-                </div>
+                </div> */}
               </div>
               <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right">
                 <Dates to={start} from={end} />
@@ -112,7 +112,7 @@ export const ResumeCard = (props: { experienceProps?: Experience, educationProps
                 alt={title}
                 className="object-contain"
                 fetchPriority="high"
-                loading="eager"
+                loading="lazy"
               />
               <AvatarFallback>{title?.[0]}</AvatarFallback>
             </Avatar>
