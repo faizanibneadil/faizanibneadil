@@ -1,7 +1,6 @@
 import type { BlockSlug } from "payload";
 import { Building2, Clock, Home, Link2, MapPin } from "lucide-react";
 import Link from "next/link";
-import { RichText } from '@payloadcms/richtext-lexical/react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Education, Experience } from "@/payload-types";
@@ -10,14 +9,17 @@ import { Dates } from "./dates";
 import { Badge } from "./ui/badge";
 import { cn } from "@/lib/utils";
 import type { PagePropsWithParams } from "@/types";
+import RichText from "./RichText";
 
-export const ResumeCard = async (props: { experienceProps?: Experience, educationProps?: Education } & { blockType?: BlockSlug, searchParams?: PagePropsWithParams['searchParams'] }) => {
+export const ResumeCard = async (props: { experienceProps?: Experience, educationProps?: Education } & { blockType?: BlockSlug, searchParams?: PagePropsWithParams['searchParams'], params?: PagePropsWithParams['params'] }) => {
   const {
     blockType,
-    searchParams
+    searchParams: searchParamsFromProps,
+    params: paramsFromProps
   } = props || {}
 
-  const queryParams = await searchParams
+  const searchParams = await searchParamsFromProps
+  const params = await paramsFromProps
 
   if (blockType === 'experience') {
     const {
@@ -74,7 +76,7 @@ export const ResumeCard = async (props: { experienceProps?: Experience, educatio
           </div>
         </div>
         <div className={cn("flex flex-wrap gap-1", {
-          "ml-12": queryParams?.vp === 'd'
+          "ml-12": searchParams?.vp === 'd'
         })}>
           {jobType && (
             <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
@@ -95,10 +97,8 @@ export const ResumeCard = async (props: { experienceProps?: Experience, educatio
             </Badge>
           )}
         </div>
-        {description && (
-          <RichText data={description} className={cn("mt-2 prose max-w-full text-pretty font-sans text-xs text-foreground dark:prose-invert", {
-            "ml-12": queryParams?.vp === 'd'
-          })} />
+        {description && params && (
+          <RichText className={searchParams?.vp === 'd' ? "ml-12" : undefined} params={params} data={description} />
         )}
       </div>
       // <Card className="flex">
@@ -200,8 +200,8 @@ export const ResumeCard = async (props: { experienceProps?: Experience, educatio
               </div>
               {qualification?.degree && <div className="font-sans text-xs">{qualification?.degree}</div>}
             </CardHeader>
-            {description && (
-              <RichText data={description} className="mt-2 prose max-w-full text-pretty font-sans text-xs text-foreground dark:prose-invert" />
+            {description && params && (
+              <RichText className={searchParams?.vp === 'd' ? "ml-12" : undefined} params={params} data={description} />
             )}
           </div>
         </Card>
