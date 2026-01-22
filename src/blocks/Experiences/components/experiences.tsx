@@ -25,7 +25,7 @@ export async function Experience(props: { blockProps: IExperienceProps, params: 
                 {experiences?.map((work, id) => {
                     return typeof work === 'number' ? null : (
                         <BlurFade key={work.id} delay={BLUR_FADE_DELAY * 6 + id * 0.05}>
-                            <ResumeCard key={work.id} experienceProps={work} blockType="experience" searchParams={searchParams} />
+                            <ResumeCard key={work.id} experienceProps={work} blockType="experience" params={paramsFromProps} searchParams={searchParams} />
                         </BlurFade>
                     )
                 })}
