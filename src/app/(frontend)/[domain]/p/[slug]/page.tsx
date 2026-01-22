@@ -20,7 +20,7 @@ const CollectionRenderer = dynamic(() => import("@/collections").then(({ Collect
 const isLayout = (mode: Page['content']['pageMode']['mode']) => mode === 'layout'
 const isCollection = (mode: Page['content']['pageMode']['mode']) => mode === 'collection'
 
-export default async function Page({ params }: PagePropsWithParams) {
+export default async function Page({ params,searchParams }: PagePropsWithParams) {
   const { slug, domain } = await params
   const page = await queryPageBySlug(slug!, domain!)
 
@@ -37,7 +37,7 @@ export default async function Page({ params }: PagePropsWithParams) {
   return (
     <main className="flex flex-col min-h-[100dvh]">
       {isLayout(page?.content?.pageMode?.mode) && (
-        <BlocksRenderer blocks={page?.content.layout} params={params} />
+        <BlocksRenderer blocks={page?.content.layout} params={params} searchParams={searchParams} />
       )}
       {isCollection(page?.content?.pageMode?.mode) && (
         <div className="flex flex-col gap-4">
