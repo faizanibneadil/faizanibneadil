@@ -22,7 +22,7 @@ const getProfileAvatar = cache(async (domain: string) => {
           },
           ...(isNumericDomain
             ? [{
-              'tenant.id': {
+              'tenants.tenant.id': {
                 equals: Number(domain),
               },
             }]
