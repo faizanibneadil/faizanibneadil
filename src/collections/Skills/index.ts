@@ -76,7 +76,8 @@ export const Skills: CollectionConfig<'skills'> = {
             name: 'slug',
             checkboxName: 'lockSlug',
             slugify: ({ valueToSlugify }) => {
-                return slugify(valueToSlugify)
+                const slug = slugify(valueToSlugify)
+                return `${slug}-${Date.now()}`
             },
         }),
     ],

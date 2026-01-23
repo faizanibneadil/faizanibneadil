@@ -13,13 +13,12 @@ export const ProtectRootPageFromTrash: () => CollectionBeforeChangeHook<Page> = 
 
         if (isMovingToTrash && originalDoc?.isRootPage) {
             const selectedTenantId = getTenantFromCookie(req.headers, 'number');
-            const tId = Number(selectedTenantId);
 
             const otherRoots = await req.payload.count({
                 collection: 'pages',
                 where: {
                     and: [
-                        { tenant: { equals: tId } },
+                        { tenant: { equals: selectedTenantId } },
                         { isRootPage: { equals: true } },
                         { id: { not_equals: originalDoc.id } },
                         { deletedAt: { exists: false } }

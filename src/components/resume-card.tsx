@@ -8,18 +8,18 @@ import { getMediaUrl } from "@/utilities/getURL";
 import { Dates } from "./dates";
 import { Badge } from "./ui/badge";
 import { cn } from "@/lib/utils";
-import type { PagePropsWithParams } from "@/types";
-import RichText from "./RichText";
+import type { BlockParams, PageProps } from "@/types";
+import CMSRichText from "./RichText";
 
-export const ResumeCard = async (props: { experienceProps?: Experience, educationProps?: Education } & { blockType?: BlockSlug, searchParams?: PagePropsWithParams['searchParams'], params?: PagePropsWithParams['params'] }) => {
+export const ResumeCard = async (props: { experienceProps?: Experience, educationProps?: Education } & { blockType?: BlockSlug } & BlockParams) => {
   const {
     blockType,
     searchParams: searchParamsFromProps,
     params: paramsFromProps
   } = props || {}
 
-  const searchParams = await searchParamsFromProps
-  const params = await paramsFromProps
+  const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
+  const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
 
   if (blockType === 'experience') {
     const {
@@ -97,66 +97,15 @@ export const ResumeCard = async (props: { experienceProps?: Experience, educatio
             </Badge>
           )}
         </div>
-        {description && params && (
-          <RichText className={searchParams?.vp === 'd' ? "ml-12" : undefined} params={params} data={description} />
+        {description && params && Boolean(Object.keys(params || {}).length) && (
+          <div className={cn("mt-2 prose max-w-full text-pretty font-sans text-xs text-foreground dark:prose-invert", {
+            "ml-12": searchParams?.vp === 'd'
+          })}>
+            <CMSRichText data={description} params={params} searchParams={searchParams} />
+          </div>
         )}
-      </div>
-      // <Card className="flex">
-      //   <div className="flex-none">
-      //     <Avatar className="border size-12 m-auto bg-muted-background dark:bg-foreground">
-      //       <AvatarImage
-      //         src={getMediaUrl(logo)}
-      //         alt={company as string}
-      //         className="object-contain"
-      //         fetchPriority="high"
-      //         loading="lazy"
-      //       />
-      //       <AvatarFallback>{company?.[0]}</AvatarFallback>
-      //     </Avatar>
-      //   </div>
-      //   <div className="flex-grow ml-4 items-center flex-col group">
-      //     <CardHeader>
-      //       <div className="flex items-start justify-between gap-x-2 text-base">
-      //         <div className="flex flex-col items-start justify-start font-semibold leading-none text-xs sm:text-sm">
-      //           <h3>{title}</h3>
-      //           {company && (
-      //             <div className="flex items-center gap-1 group">
-      //               <Link href={website || "#"} className="font-sans text-xs capitalize font-normal text-muted-foreground group-hover:hover:text-blue-600 group-hover:underline">{company}</Link>
-      //               <Link2 className="size-3" />
-      //             </div>
-      //           )}
-      //           <div className="flex flex-wrap gap-1 mt-1">
-      //             {jobType && (
-      //               <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
-      //                 <JobTypeIcon />
-      //                 <span className="font-sans text-sx capitalize font-normal">{jobType}</span>
-      //               </Badge>
-      //             )}
-      //             {location && (
-      //               <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
-      //                 <MapPin className="size-3" />
-      //                 <span className="font-sans text-sx capitalize font-normal">{location}</span>
-      //               </Badge>
-      //             )}
-      //             {employmentType && (
-      //               <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
-      //                 <Clock className="size-3" />
-      //                 <span className="font-sans text-sx capitalize font-normal">{employmentType}</span>
-      //               </Badge>
-      //             )}
-      //           </div>
-      //         </div>
-      //         <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right">
-      //           <Dates to={start} from={end} />
-      //         </div>
-      //       </div>
-      //     </CardHeader>
-      //     {description && (
-      //       <RichText data={description} className="mt-2 prose max-w-full text-pretty font-sans text-xs text-foreground dark:prose-invert" />
-      //     )}
 
-      //   </div>
-      // </Card>
+      </div>
     );
   }
 
@@ -200,8 +149,10 @@ export const ResumeCard = async (props: { experienceProps?: Experience, educatio
               </div>
               {qualification?.degree && <div className="font-sans text-xs">{qualification?.degree}</div>}
             </CardHeader>
-            {description && params && (
-              <RichText className={searchParams?.vp === 'd' ? "ml-12" : undefined} params={params} data={description} />
+            {description && params && Boolean(Object.keys(params || {}).length) && (
+              <div className="mt-2 prose max-w-full text-pretty font-sans text-xs text-foreground dark:prose-invert">
+                <CMSRichText data={description} params={params} searchParams={searchParams} />
+              </div>
             )}
           </div>
         </Card>

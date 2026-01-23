@@ -1,13 +1,13 @@
 // import { AdminBar } from "@/components/AdminBar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { DATA } from "@/data/resume";
-import type { Metadata } from "next";
+// import { DATA } from "@/data/resume";
+// import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 // import { draftMode } from 'next/headers';
 import React from "react";
 import "./globals.css";
-import { getServerSideURL } from "@/utilities/getURL";
+// import { getServerSideURL } from "@/utilities/getURL";
 import { Toaster } from "@/components/ui/sonner";
 
 

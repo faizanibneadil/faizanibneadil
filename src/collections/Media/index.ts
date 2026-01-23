@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { superAdminOrTenantAdminAccess } from '@/access/superAdminOrTenantAdmin'
-import { NavigationGroups } from '@/constants'
+// import { NavigationGroups } from '@/constants'
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from '@/hooks/RevalidatePage'
 
 export const Media: CollectionConfig = {

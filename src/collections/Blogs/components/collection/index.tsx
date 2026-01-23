@@ -1,22 +1,36 @@
-import { BackButton } from "@/components/BackButton";
-import BlurFade from "@/components/magicui/blur-fade";
-import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { PagePropsWithParams } from "@/types";
-import { generateRoute } from "@/utilities/generateRoute";
-import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-import { RichText } from "@payloadcms/richtext-lexical/react";
 import Image from "next/image";
 import Link from "next/link";
-import { DataFromCollectionSlug, PaginatedDocs } from "payload";
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
+import { RichText } from "@payloadcms/richtext-lexical/react";
+import BlurFade from "@/components/magicui/blur-fade";
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import type { CollectionProps } from "@/types";
+import { generateRoute } from "@/utilities/generateRoute";
+import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
 
-type Props = {
-    collection: PaginatedDocs<DataFromCollectionSlug<'blogs'>>,
-    params: Awaited<PagePropsWithParams['params']>,
-}
 const BLUR_FADE_DELAY = 0.04;
-export function Blogs(props: Props) {
-    const { collection: { docs }, params } = props || {}
+export async function Blogs(props: CollectionProps<'blogs'>) {
+    const { 
+        collection, 
+        params:paramsFromProps,
+        searchParams: searchParamsFromProps
+    } = props || {}
+
+    const { 
+        docs,
+        hasNextPage,
+        hasPrevPage,
+        limit,
+        pagingCounter,
+        totalDocs,
+        totalPages,
+        nextPage,
+        page,
+        prevPage
+    } = collection || {}
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     const blogs = docs?.map((blog, id) => {
         const { RouteWithDocSlug } = generateRoute({

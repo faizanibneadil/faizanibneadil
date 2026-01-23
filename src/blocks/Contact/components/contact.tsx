@@ -1,27 +1,33 @@
 import BlurFade from "@/components/magicui/blur-fade";
-import { IContactProps } from "@/payload-types";
+import type { IContactProps } from "@/payload-types";
 // import Link from "next/link";
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import { PagePropsWithParams } from "@/types";
+import type { BlockProps } from "@/types";
 import { FormBlock } from "@/blocks/Form/components/form-block";
 
 
 const BLUR_FADE_DELAY = 0.04;
-export async function Contact(props: { blockProps: IContactProps, params: PagePropsWithParams['params'] }) {
+export async function Contact(props: BlockProps<'contact'>) {
     const {
-        blockProps: {
-            content,
-            blockType,
-            blockName,
-            enableIntro,
-            form: formFromProps,
-            id,
-            introContent
-        },
-        params: paramsFromProps
+        blockProps,
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps
     } = props || {}
-    const params = await paramsFromProps
+
+    const {
+        blockType,
+        blockName,
+        content,
+        enableIntro,
+        form: formFromProps,
+        id,
+        introContent
+    } = blockProps || {}
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
+
     return (
         <section id="contact" aria-label={blockName ?? blockType}>
             <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
@@ -47,6 +53,7 @@ export async function Contact(props: { blockProps: IContactProps, params: PagePr
                     </div>
                 </BlurFade>
                 <FormBlock
+                    searchParams={searchParamsFromProps}
                     params={paramsFromProps}
                     blockProps={{
                         blockType: 'formBlock',

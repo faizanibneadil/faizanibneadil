@@ -1,8 +1,7 @@
 'use client'
 
 import RichText from "@/components/RichText"
-import { TFormBlockProps } from "@/payload-types"
-import { PagePropsWithParams } from "@/types"
+import type { BlockProps as BlockParams } from "@/types"
 import { useRouter } from "next/navigation"
 import React from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -12,11 +11,11 @@ import BlurFade from "@/components/magicui/blur-fade"
 import { getClientSideURL } from "@/utilities/getURL"
 import { Width } from "./fields/Width"
 
-type Form = Exclude<TFormBlockProps['form'], number>
-type BlockProps = Omit<TFormBlockProps, 'form'> & { form: Form | Promise<Form> }
+type Form = Exclude<BlockParams<'formBlock'>['blockProps']['form'], number>
+type BlockProps = Omit<BlockParams<'formBlock'>['blockProps'], 'form'> & { form: Form | Promise<Form> }
 
 const BLUR_FADE_DELAY = 0.04;
-export function Form(props: { blockProps: BlockProps, params: Awaited<PagePropsWithParams['params']> }) {
+export function Form(props: { blockProps: BlockProps } & Omit<BlockParams<'formBlock'>, 'blockProps'>) {
     const {
         blockProps: {
             blockType,
@@ -26,8 +25,12 @@ export function Form(props: { blockProps: BlockProps, params: Awaited<PagePropsW
             id,
             introContent
         },
-        params
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps
     } = props || {}
+
+    const params = paramsFromProps instanceof Promise ? React.use(paramsFromProps) : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? React.use(searchParamsFromProps) : searchParamsFromProps
     const formConfig = fromFromProps instanceof Promise ? React.use(fromFromProps) : fromFromProps
 
     const [isLoading, setIsLoading] = React.useState(false)
@@ -36,7 +39,7 @@ export function Form(props: { blockProps: BlockProps, params: Awaited<PagePropsW
     const router = useRouter()
 
     const form = useForm({
-        defaultValues: formConfig.fields as NonNullable<Form['fields']>,
+        defaultValues: formConfig?.fields as NonNullable<Form['fields']> ?? {},
         disabled: isLoading
     })
 
@@ -64,15 +67,13 @@ export function Form(props: { blockProps: BlockProps, params: Awaited<PagePropsW
         try {
             const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
                 body: JSON.stringify({
-                    form: formConfig.id,
-                    ...(typeof formConfig.tenant === 'number' && {
-                        tenant: formConfig.tenant
+                    form: formConfig?.id,
+                    ...(typeof formConfig?.tenant === 'number' && {
+                        tenant: formConfig?.tenant
                     }),
-                    ...(typeof formConfig.tenant === 'object' && {
-                        tenant: formConfig.tenant?.map((tenant) => {
-                            return typeof tenant === 'object' ? tenant.id : tenant
-                        })
-                    }),
+                    tenant: typeof formConfig?.tenant === 'object'
+                        ? formConfig?.tenant?.id
+                        : formConfig?.tenant,
                     submissionData: dataToSend,
                 }),
                 headers: {
@@ -99,8 +100,8 @@ export function Form(props: { blockProps: BlockProps, params: Awaited<PagePropsW
             setIsLoading(false)
             setHasSubmitted(true)
 
-            if (formConfig.confirmationType === 'redirect' && formConfig.redirect) {
-                const { url } = formConfig.redirect
+            if (formConfig?.confirmationType === 'redirect' && formConfig?.redirect) {
+                const { url } = formConfig?.redirect
                 const redirectUrl = url
                 if (redirectUrl) router.push(redirectUrl)
             }
@@ -119,24 +120,24 @@ export function Form(props: { blockProps: BlockProps, params: Awaited<PagePropsW
             {/* <div className="grid items-center justify-start gap-4 text-center w-full"> */}
             <div className="space-y-1">
                 <h2 className="text-center font-semibold text-2xl tracking-tight md:text-4xl">
-                    {formConfig.title}
+                    {formConfig?.title}
                 </h2>
                 {enableIntro && introContent && !hasSubmitted && (
                     <BlurFade delay={BLUR_FADE_DELAY * 16}>
                         <div className="mx-auto w-full text-foreground md:text-sm lg:text-sm xl:text-sm">
-                            <RichText className="text-balance text-center text-muted-foreground text-sm md:text-base" params={params} data={introContent} enableGutter={false} />
+                            <RichText className="text-balance text-center text-muted-foreground text-sm md:text-base" searchParams={searchParams} params={params} data={introContent} enableGutter={false} />
                         </div>
                     </BlurFade>
                 )}
             </div>
             <FormProvider {...form}>
-                {!isLoading && hasSubmitted && formConfig.confirmationType === 'message' && formConfig.confirmationMessage && (
-                    <RichText params={params} data={formConfig.confirmationMessage} />
+                {!isLoading && hasSubmitted && formConfig?.confirmationType === 'message' && formConfig?.confirmationMessage && (
+                    <RichText searchParams={searchParams} params={params} data={formConfig?.confirmationMessage!} />
                 )}
                 {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
                 {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
                 {!hasSubmitted && (
-                    <form id={formConfig.id?.toString()} onSubmit={onSubmit}>
+                    <form id={formConfig?.id?.toString()} onSubmit={onSubmit}>
                         <div className="flex flex-wrap -mx-2 w-[calc(100%+1rem)] justify-start items-end">
                             {formConfig?.fields?.map((field, index) => {
                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -157,9 +158,9 @@ export function Form(props: { blockProps: BlockProps, params: Awaited<PagePropsW
                                 }
                                 return null
                             })}
-                            <Width width={formConfig.submitButtonWidth as number} className="space-y-2">
+                            <Width width={formConfig?.submitButtonWidth as number} className="space-y-2">
                                 <Button disabled={form.formState.disabled} className="h-10 w-full" form={formConfig?.id?.toString()} type="submit" variant="default">
-                                    {form.formState.disabled ? (formConfig.submitButtonLoadingText || 'Submitting...') : (formConfig?.submitButtonLabel || "Submit")}
+                                    {form.formState.disabled ? (formConfig?.submitButtonLoadingText || 'Submitting...') : (formConfig?.submitButtonLabel || "Submit")}
                                 </Button>
                             </Width>
                         </div>

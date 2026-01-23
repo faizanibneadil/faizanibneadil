@@ -1,32 +1,52 @@
-import React from "react";
 import BlurFade from "@/components/magicui/blur-fade";
 import { Skill as RenderSkill, SkillSkeleton } from "@/components/render-skill";
-import type { ISkillProps } from "@/payload-types";
 import { getSkillById } from "@/utilities/getSkillById";
-import type { PagePropsWithParams } from "@/types";
-// import { sdk } from "@/lib/sdk";
+import type { BlockProps } from "@/types";
 import { getPayloadConfig } from "@/utilities/getPayloadConfig";
+import { Suspense } from "react";
 
 const BLUR_FADE_DELAY = 0.04;
-export async function Skill(props: { blockProps: ISkillProps, params: PagePropsWithParams['params'] }) {
+export async function Skill(props: BlockProps<'skill'>) {
     const {
-        blockProps: {
-            userSkills,
-            blockName,
-            blockType,
-            showAllSkills
-        },
-        params: paramsFromProps
+        blockProps,
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps
     } = props || {}
-    const params = await paramsFromProps
-    let providedSkills = userSkills
 
+    const {
+        blockType,
+        blockName,
+        id,
+        showAllSkills,
+        userSkills
+    } = blockProps || {}
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    const searchParams = paramsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
+    
+    let providedSkills = userSkills
     if (showAllSkills === true) {
         try {
+            const isNumericDomain = !Number.isNaN(Number(params.domain))
             const payload = await getPayloadConfig()
             const getSkills = await payload.find({
                 collection: 'skills',
-                where: { 'tenant.slug': { in: [params.domain] } },
+                where: {
+                    or: [
+                        {
+                            'tenant.slug': {
+                                equals: params.domain
+                            }
+                        },
+                        ...(isNumericDomain
+                            ? [{
+                                'tenant.id': {
+                                    equals: Number(params.domain),
+                                },
+                            }]
+                            : []),
+                    ]
+                },
                 pagination: false
             })
             providedSkills = getSkills.docs
@@ -44,9 +64,9 @@ export async function Skill(props: { blockProps: ISkillProps, params: PagePropsW
                 </BlurFade>
                 <div className="flex flex-wrap gap-1">
                     {providedSkills?.map((skill, id) => (
-                        <React.Suspense key={`skill-${id}`} fallback={<SkillSkeleton />}>
+                        <Suspense key={`skill-${id}`} fallback={<SkillSkeleton />}>
                             <RenderSkill width='2em' height='2em' skill={typeof skill === 'number' ? getSkillById(skill) : skill} id={id} />
-                        </React.Suspense>
+                        </Suspense>
                     ))}
                 </div>
             </div>

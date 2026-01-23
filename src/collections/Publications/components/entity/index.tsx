@@ -1,10 +1,13 @@
-import { PagePropsWithParams } from "@/types"
-import { DataFromCollectionSlug } from "payload"
+import type { DocProps } from "@/types"
 
-type Props = {
-    entity: DataFromCollectionSlug<'publications'>, params: Awaited<PagePropsWithParams['params']>
-}
-export function PublicationEntity(props: Props) {
-    const { entity, params } = props
+export async function PublicationEntity(props: DocProps<'publications'>) {
+    const {
+        entity,
+        params:paramsFromProps,
+        searchParams: searchParamsFromProps
+    } = props || {}
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
     return null
 }

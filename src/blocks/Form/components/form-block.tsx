@@ -1,23 +1,35 @@
 import { Suspense } from "react";
-import { TFormBlockProps } from "@/payload-types";
-import { PagePropsWithParams } from "@/types";
+import { BlockProps } from "@/types";
 import { getFormByFormId } from "@/utilities/getFormByFormId";
 import { Form } from "./form";
 
-export async function FormBlock(props: { blockProps: TFormBlockProps, params: PagePropsWithParams['params'] }) {
+export async function FormBlock(props: BlockProps<'formBlock'>) {
     const {
         blockProps,
-        params: paramsFromProps
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps
     } = props || {}
-    const params = await paramsFromProps
 
-    const form = typeof blockProps?.form === 'number'
-        ? getFormByFormId(blockProps.form)
-        : blockProps.form
+    const {
+        blockType,
+        form: formFromProps,
+        blockName,
+        enableIntro,
+        id,
+        introContent
+    } = blockProps || {}
+
+
+    const form = typeof formFromProps === 'number'
+        ? await getFormByFormId(formFromProps)
+        : formFromProps
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     return (
         <Suspense fallback='Loading...'>
-            <Form blockProps={{ ...blockProps, form }} params={params} />
+            <Form blockProps={{ ...blockProps, form }} params={paramsFromProps} searchParams={searchParamsFromProps} />
         </Suspense>
     )
 }

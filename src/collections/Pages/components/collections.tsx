@@ -1,6 +1,6 @@
 'use client'
 import { ReactSelect, useConfig, useField } from '@payloadcms/ui'
-import { TextFieldClientProps } from 'payload'
+import type { TextFieldClientProps } from 'payload'
 import React from 'react'
 
 const excludeCollection = [

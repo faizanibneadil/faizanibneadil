@@ -1,11 +1,30 @@
-import { PagePropsWithParams } from "@/types"
+import type { CollectionProps } from "@/types"
 import { generateRoute } from "@/utilities/generateRoute"
 import Link from "next/link"
-import { DataFromCollectionSlug, PaginatedDocs } from "payload"
 
-type Props = { collection: PaginatedDocs<DataFromCollectionSlug<'licenses'>>, params: Awaited<PagePropsWithParams['params']> }
-export function Licenses(props: Props) {
-    const { collection: { docs }, params } = props || {}
+export async function Licenses(props: CollectionProps<'licenses'>) {
+    const {
+        collection,
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps
+    } = props || {}
+
+    const {
+        docs,
+        hasNextPage,
+        hasPrevPage,
+        limit,
+        pagingCounter,
+        totalDocs,
+        totalPages,
+        nextPage,
+        page,
+        prevPage
+    } = collection || {}
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
+
     const projects = docs.map(doc => {
         const { RouteWithDocSlug } = generateRoute({
             domain: params.domain as string,

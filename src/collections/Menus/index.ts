@@ -46,31 +46,6 @@ export const Menus: CollectionConfig<'menus'> = {
                             admin: {
                                 width: '50%'
                             },
-                            filterOptions: ({ siblingData, data }) => {
-                                const siblings: any = siblingData
-                                const currentResourceId = typeof siblings?.page === 'object'
-                                    ? siblings?.page?.id
-                                    : siblings?.page;
-
-                                const otherSelectedPageIds = data?.menu
-                                    ?.map((item: any) => {
-                                        return typeof item.page === 'object' ? item.page.id : item.page
-                                    })
-                                    .filter((id: any) => {
-                                        return id !== currentResourceId
-                                    })
-                                    .filter(Boolean) || [];
-
-                                if (otherSelectedPageIds.length === 0) {
-                                    return true
-                                }
-
-                                return {
-                                    id: {
-                                        not_in: otherSelectedPageIds,
-                                    },
-                                }
-                            }
                         }
                     ]
                 }

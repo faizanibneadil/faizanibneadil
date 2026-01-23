@@ -1,23 +1,29 @@
 import { RichText } from '@payloadcms/richtext-lexical/react';
 import { HackathonCard } from "@/components/hackathon-card";
 import BlurFade from "@/components/magicui/blur-fade";
-import { IHackathonProps } from "@/payload-types";
-import { PagePropsWithParams } from "@/types";
+import type { BlockProps } from "@/types";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 
 const BLUR_FADE_DELAY = 0.04;
-export async function Hackathon(props: { blockProps: IHackathonProps, params: PagePropsWithParams['params'] }) {
+export async function Hackathon(props: BlockProps<'hackathon'>) {
     const {
-        blockProps: {
-            hackathons,
-            heading,
-            description,
-            blockName,
-            blockType
-        },
-        params: paramsFromProps
+        blockProps,
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps
     } = props || {}
-    const params = await paramsFromProps
+
+    const {
+        blockType,
+        heading,
+        blockName,
+        description,
+        hackathons,
+        id
+    } = blockProps || {}
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
+
     return (
         <section id="hackathons" aria-label={blockName ?? blockType}>
             <div className="space-y-12 w-full py-12">

@@ -5,17 +5,29 @@ import type { Menu, Social } from "@/payload-types"
 // TODO: wrap into next unstable cache for better performance
 export const getNavbarMenuItems = cache(async (domain: string) => {
     try {
+        const isNumericDomain = !Number.isNaN(Number(domain))
         const payload = await getPayloadConfig()
-        const menu = (await payload.find({
+        const menu = await payload.find({
             collection: 'menus',
             limit: 1,
             where: {
-                'tenant.slug': {
-                    equals: domain
-                }
+                or: [
+                    {
+                        'tenant.slug': {
+                            equals: domain
+                        }
+                    },
+                    ...(isNumericDomain
+                        ? [{
+                            'tenant.id': {
+                                equals: Number(domain),
+                            },
+                        }]
+                        : []),
+                ]
             }
-        }))?.docs?.at(0)
-        return menu
+        })
+        return menu?.docs?.at(0)
     } catch (error) {
         console.error("Something went wrong to fetch navbar menu items", error)
         return {} as Menu
@@ -25,14 +37,26 @@ export const getNavbarMenuItems = cache(async (domain: string) => {
 // TODO: wrap into next unstable cache for better performance
 export const getNavbarSocialMenuItems = cache(async (domain: string) => {
     try {
+        const isNumericDomain = !Number.isNaN(Number(domain))
         const payload = await getPayloadConfig()
         const socials = (await payload.find({
             collection: 'socials',
             limit: 1,
             where: {
-                'tenant.slug': {
-                    equals: domain
-                }
+                or: [
+                    {
+                        'tenant.slug': {
+                            equals: domain
+                        }
+                    },
+                    ...(isNumericDomain
+                        ? [{
+                            'tenant.id': {
+                                equals: Number(domain),
+                            },
+                        }]
+                        : []),
+                ]
             }
         }))?.docs?.at(0)
         return socials

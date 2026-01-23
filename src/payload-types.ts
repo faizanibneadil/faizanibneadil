@@ -212,7 +212,7 @@ export interface IHeroProps {
  */
 export interface Media {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   alt: string;
   prefix?: string | null;
   updatedAt: string;
@@ -294,7 +294,7 @@ export interface IContactProps {
  */
 export interface Form {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   fields?:
     | (
@@ -480,7 +480,7 @@ export interface Form {
  */
 export interface Page {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   content: {
     /**
@@ -583,7 +583,7 @@ export interface ISkillProps {
  */
 export interface Skill {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   publishedAt?: string | null;
   techstack?: {
@@ -620,7 +620,7 @@ export interface Skill {
  */
 export interface Project {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   content: {
     /**
@@ -709,7 +709,7 @@ export interface Project {
  */
 export interface Experience {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   /**
    * Job title. eg: (Frontend, Backend, DevOps, QA, ...) etc
    */
@@ -778,7 +778,7 @@ export interface TEducationProps {
  */
 export interface Education {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   content: {
     description?: {
@@ -860,7 +860,7 @@ export interface IBlogsBlockProps {
  */
 export interface Blog {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   content: {
     content?: {
@@ -973,7 +973,7 @@ export interface IAchievementProps {
  */
 export interface Achievement {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   content: {
     /**
@@ -1053,7 +1053,7 @@ export interface ICertificationProps {
  */
 export interface Certification {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   content: {
     /**
@@ -1153,7 +1153,7 @@ export interface IHackathonProps {
  */
 export interface Hackathon {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   content: {
     /**
@@ -1259,7 +1259,7 @@ export interface IPublicationProps {
  */
 export interface Publication {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   content: {
     /**
@@ -1339,7 +1339,7 @@ export interface IResearchProps {
  */
 export interface Research {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   content: {
     /**
@@ -1430,7 +1430,7 @@ export interface ILicenseProps {
  */
 export interface License {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   content: {
     /**
@@ -1548,7 +1548,7 @@ export interface Industry {
  */
 export interface Note {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   content?: {
     content?: {
@@ -1585,7 +1585,7 @@ export interface Note {
  */
 export interface Menu {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   menu?:
     | {
         iconify?: string | null;
@@ -1603,7 +1603,7 @@ export interface Menu {
  */
 export interface Social {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   socialsLinks?:
     | {
         iconify?: string | null;
@@ -1621,7 +1621,7 @@ export interface Social {
  */
 export interface Integration {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   enableChatButton?: boolean | null;
   chatBubbleType?: 'tawk' | null;
   tawkPropertyId?: string | null;
@@ -1636,7 +1636,7 @@ export interface Integration {
  */
 export interface PortfolioSetting {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   /**
    * This field defines the 'Home' or 'Landing Page' for your entire Portfolio. By selecting a page here, you are designating it as the entry point of your website. Note: Changing this selection will automatically mark the selected page as the 'Main Page' and remove the 'Main Page' status from any other page for this portfolio to ensure there is always exactly one root page.
    */
@@ -1650,7 +1650,7 @@ export interface PortfolioSetting {
  */
 export interface FormSubmission {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   form: number | Form;
   submissionData?:
     | {

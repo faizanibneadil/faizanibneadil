@@ -2,24 +2,29 @@ import React from "react";
 import { RichText } from '@payloadcms/richtext-lexical/react';
 import BlurFade from "@/components/magicui/blur-fade";
 import { ProjectCard } from "@/components/project-card";
-import { IProjectProps } from "@/payload-types";
-import { PagePropsWithParams } from "@/types";
+import type { BlockProps } from "@/types";
 import { getProjectById } from "@/utilities/getProjectById";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 
 const BLUR_FADE_DELAY = 0.04;
-export async function Project(props: { blockProps: IProjectProps, params: PagePropsWithParams['params'] }) {
+export async function Project(props: BlockProps<'project'>) {
     const {
-        blockProps: {
-            heading,
-            description,
-            projects,
-            blockName,
-            blockType
-        },
-        params: paramsFromProps
+        blockProps,
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps
     } = props || {}
-    const params = await paramsFromProps
+
+    const {
+        blockType,
+        heading,
+        blockName,
+        description,
+        id,
+        projects
+    } = blockProps || {}
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     return (
         <section id="projects" aria-label={blockName ?? blockType}>
@@ -43,7 +48,7 @@ export async function Project(props: { blockProps: IProjectProps, params: PagePr
                     {projects?.map((project, idx) => (
                         <React.Suspense key={`project-${typeof project === 'number' ? project : project.id}`}>
                             <BlurFade delay={BLUR_FADE_DELAY * 12 + idx * 0.05}>
-                                <ProjectCard params={params} project={typeof project === 'number' ? getProjectById(project) : project} />
+                                <ProjectCard params={params} searchParams={searchParams} project={typeof project === 'number' ? getProjectById(project) : project} />
                             </BlurFade>
                         </React.Suspense>
                     ))}

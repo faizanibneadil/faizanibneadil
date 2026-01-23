@@ -30,7 +30,7 @@ export function GlimpseLink(props: { fields: LinkFields } & { rel?: string, targ
                     {props.label}
                 </a>
             </GlimpseTrigger>
-            <GlimpseContent className="w-80">
+            <GlimpseContent className="w-80 z-[9999]">
                 <GlimpseImage src={linkInfo?.image ?? ""} />
                 <GlimpseTitle>{linkInfo?.title}</GlimpseTitle>
                 <GlimpseDescription>{linkInfo?.description}</GlimpseDescription>

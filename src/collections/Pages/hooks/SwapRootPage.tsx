@@ -20,7 +20,7 @@ export const SwapRootPage: () => CollectionAfterChangeHook<Page> = () => {
                     collection: 'pages',
                     where: {
                         and: [
-                            { tenant: { in: [selectedTenantId] } },
+                            { tenant: { equals: selectedTenantId } },
                             { isRootPage: { equals: true } },
                             { id: { not_equals: doc.id } },
                         ],
@@ -31,7 +31,7 @@ export const SwapRootPage: () => CollectionAfterChangeHook<Page> = () => {
                 });
                 await req.payload.update({
                     collection: 'portfolio-settings',
-                    where: { tenant: { in: [selectedTenantId] } },
+                    where: { tenant: { equals: selectedTenantId } },
                     data: {
                         rootPage: doc?.id
                     },
