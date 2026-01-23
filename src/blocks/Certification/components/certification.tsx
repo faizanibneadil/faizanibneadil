@@ -1,23 +1,29 @@
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import BlurFade from "@/components/magicui/blur-fade";
-import { ICertificationProps } from "@/payload-types";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { HackathonCard } from "@/components/hackathon-card";
-import { PagePropsWithParams } from "@/types";
+import type { BlockProps } from "@/types";
 
 const BLUR_FADE_DELAY = 0.04;
-export async function Certification(props: { blockProps: ICertificationProps, params: PagePropsWithParams['params'] }) {
+export async function Certification(props: BlockProps<'certification'>) {
     const {
-        blockProps: {
-            certifications,
-            heading,
-            description,
-            blockType,
-            blockName
-        },
-        params: paramsFromProps
+        blockProps,
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps
     } = props || {}
-    const params = await paramsFromProps
+
+    const {
+        blockType,
+        heading,
+        blockName,
+        certifications,
+        description,
+        id
+    } = blockProps || {}
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
+
     return (
         <section id="researches" aria-label={blockName ?? blockType}>
             <div className="space-y-12 w-full py-12">

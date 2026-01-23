@@ -18,7 +18,7 @@ export const ProtectRootPage: () => CollectionBeforeDeleteHook = () => {
                 collection: 'pages',
                 where: {
                     and: [
-                        { tenant: { in: [selectedTenantId] } },
+                        { tenant: { equals: selectedTenantId } },
                         { isRootPage: { equals: true, } },
                         { id: { not_equals: id } }
                     ]

@@ -3,21 +3,32 @@ import { getMediaUrl, getServerSideURL } from "@/utilities/getURL";
 import type { Metadata } from 'next';
 import Page from "./p/[slug]/page";
 import { cache } from "react";
-import type { PagePropsWithParams } from "@/types";
+import type { PageProps } from "@/types";
 import type { CollectionSlug } from "payload";
 import { notFound } from "next/navigation";
 
-type Props = {
-  params: Promise<{ domain: string }>
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}
-
 const getProfileAvatar = cache(async (domain: string) => {
   try {
+    const isNumericDomain = !Number.isNaN(Number(domain))
     const payload = await getPayloadConfig()
     const avatar = await payload.find({
       collection: "users",
-      where: { 'tenants.tenant.slug': { equals: domain } },
+      where: {
+        or: [
+          {
+            'tenants.tenant.slug': {
+              equals: domain
+            }
+          },
+          ...(isNumericDomain
+            ? [{
+              'tenant.id': {
+                equals: Number(domain),
+              },
+            }]
+            : []),
+        ]
+      },
       select: { profile: true }
     })
     return getMediaUrl(avatar.docs.at(0)?.profile)
@@ -26,9 +37,12 @@ const getProfileAvatar = cache(async (domain: string) => {
   }
 })
 
-export async function generateMetadata(props: Props): Promise<Metadata> {
-  const { params } = props || {}
-  const domain = (await params)?.domain
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const {
+    params: paramsFromProps
+  } = props || {}
+
+  const domain = (await paramsFromProps)?.domain
   const avatarUrl = await getProfileAvatar(domain)
   return {
     title: domain,
@@ -51,34 +65,63 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 }
 
-export default async function DomainPage(props: PagePropsWithParams) {
-  const params = await props.params
+export default async function DomainPage(props: PageProps) {
+  const {
+    params: paramsFromProps,
+    searchParams: searchParamsFromProps
+  } = props || {}
+
+  const params = await paramsFromProps
   const __rootPageSlug = await queryRootPageByDomain(params.domain!)
 
   if (!__rootPageSlug) {
     return notFound()
   }
 
-  return Page({ ...props, params: Promise.resolve({ ...params, slug: __rootPageSlug as CollectionSlug }) })
+  const paramsPromise = new Promise<typeof params>((resolve, reject) => {
+    if (__rootPageSlug) {
+      resolve({
+        ...params,
+        slug: __rootPageSlug as CollectionSlug
+      })
+    } else {
+      reject({ ...params })
+    }
+  })
+
+  return <Page params={paramsPromise} searchParams={searchParamsFromProps} />
+
 }
 
 const queryRootPageByDomain = cache(async (domain: string) => {
   const payload = await getPayloadConfig()
+  const isNumericDomain = !Number.isNaN(Number(domain))
   const __slug = await payload.find({
     collection: 'pages',
     where: {
       and: [
         {
-          'tenant.slug': {
-            equals: domain
-          }
+          or: [
+            {
+              'tenant.slug': {
+                equals: domain
+              }
+            },
+            ...(isNumericDomain
+              ? [{
+                'tenant.id': {
+                  equals: Number(domain),
+                },
+              }]
+              : []),
+          ]
         },
         {
           isRootPage: {
             equals: true
           }
         }
-      ]
+      ],
     },
     select: {
       slug: true

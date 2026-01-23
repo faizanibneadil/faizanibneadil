@@ -10,28 +10,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Project } from "@/payload-types";
+import type { Project } from "@/payload-types";
 import { getSkillById } from "@/utilities/getSkillById";
 import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 import { Dates } from "./dates";
 import { Skill, SkillSkeleton } from "./render-skill";
 import { IconRenderer } from "./ui/icon-renderer";
-import { PagePropsWithParams } from "@/types";
+import type { BlockParams } from "@/types";
 import { generateRoute } from "@/utilities/generateRoute";
 
-export async function ProjectCard(props: {
-  project: Project | Promise<Project>,
-  params: Awaited<PagePropsWithParams['params']>
-}) {
-  const { project: projectFromProps, params: paramsFromProps } = props || {}
+export async function ProjectCard(props: { project: Project | Promise<Project> } & BlockParams) {
+  const {
+    project: projectFromProps,
+    params: paramsFromProps,
+    searchParams: searchParamsFromProps
+  } = props || {}
+  const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+  const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
   const project = projectFromProps instanceof Promise ? await projectFromProps : projectFromProps
   const { RouteWithDocSlug } = generateRoute({
-    domain: paramsFromProps?.domain as string,
-    slug: paramsFromProps?.slug ? paramsFromProps?.slug === 'home' as string ? 'projects' : paramsFromProps?.slug : 'projects',
+    domain: params?.domain as string,
+    slug: 'projects',
     docSlug: project.slug as string
   })
-
+  // console.log(paramsFromProps)
   return (
     <Card className="flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full">
       {/* {video && (

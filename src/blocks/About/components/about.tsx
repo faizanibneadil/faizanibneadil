@@ -1,25 +1,27 @@
 import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html';
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-// import config from '@payload-config'
 import BlurFade from "@/components/magicui/blur-fade";
-// import Markdown from "react-markdown";
-import { IAboutProps } from '@/payload-types';
-import { PagePropsWithParams } from '@/types';
+import type { BlockProps } from '@/types';
 
 
 const BLUR_FADE_DELAY = 0.04;
-
-
-export async function About(props: { blockProps: IAboutProps, params: PagePropsWithParams['params'] }) {
+export async function About(props: BlockProps<'about'>) {
     const {
-        blockProps: {
-            content,
-            blockType,
-            blockName
-        },
-        params: paramsFromProps
+        blockProps,
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps
     } = props || {}
-    const params = await paramsFromProps
+
+    const {
+        blockType,
+        blockName,
+        content,
+        id
+    } = blockProps || {}
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
+
     return (
         <section id="about" aria-label={blockName ?? blockType}>
             <BlurFade delay={BLUR_FADE_DELAY * 3}>

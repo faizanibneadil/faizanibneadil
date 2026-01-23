@@ -2,7 +2,7 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { CollectionConfig } from "payload";
 
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { NavigationGroups } from "@/constants";
+// import { NavigationGroups } from "@/constants";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";

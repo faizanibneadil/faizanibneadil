@@ -189,6 +189,7 @@ export const Pages: CollectionConfig<'pages'> = {
             },
             required: true,
             validate: async (value, { req }) => {
+                // TODO: get tenant from doc
                 const selectedTenantId = getTenantFromCookie(req.headers, 'number')
                 if (value === false) {
                     try {
@@ -225,12 +226,24 @@ export const Pages: CollectionConfig<'pages'> = {
                 position: 'sidebar',
             },
         },
+        // TODO: use custom solution for this field
         slugField({
             name: 'slug',
             checkboxName: 'lockSlug',
-            slugify: ({ valueToSlugify }) => {
-                const generatedSlug = slugify(valueToSlugify)
-                return `${generatedSlug}-${Date.now()}`
+            slugify: ({ valueToSlugify, data }) => {
+                const fieldToSlug = slugify(valueToSlugify)
+                let prefix = ''
+
+                if (data?.content?.pageMode?.mode === 'collection') {
+                    prefix = data?.content?.configurations?.slug
+                }
+
+                if (data?.content?.pageMode?.mode === 'layout') {
+                    prefix = 'pages'
+                }
+
+                return `${prefix}-${fieldToSlug}-${Date.now()}`
+
             },
         }),
     ],

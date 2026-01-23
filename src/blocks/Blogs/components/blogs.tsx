@@ -1,22 +1,28 @@
 import BlurFade from "@/components/magicui/blur-fade";
-import { IBlogsBlockProps } from "@/payload-types";
-import { PagePropsWithParams } from "@/types";
+import type { BlockProps } from "@/types";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 import { RichText } from '@payloadcms/richtext-lexical/react';
 
 const BLUR_FADE_DELAY = 0.04;
-export async function BlogsBlock(props: { blockProps: IBlogsBlockProps, params: PagePropsWithParams['params'] }) {
+export async function BlogsBlock(props: BlockProps<'blogs-block'>) {
     const {
-        blockProps: {
-            blogs,
-            heading,
-            description,
-            blockType,
-            blockName
-        },
-        params: paramsFromProps
+        blockProps,
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps
     } = props || {}
-    const params = await paramsFromProps
+
+    const {
+        blockType,
+        heading,
+        blockName,
+        blogs,
+        description,
+        id
+    } = blockProps || {}
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
+
     return (
         <section id="researches" aria-label={blockName ?? blockType}>
             <div className="space-y-12 w-full py-12">

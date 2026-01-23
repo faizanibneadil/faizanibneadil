@@ -7,9 +7,9 @@ export function internalDocToHref({ node }: { node: SerializedLinkNode }) {
     if (typeof doc !== 'object') {
       throw new Error('Expected value to be an object')
     }
-  
+
     const route = generateRoute({
-      domain: (doc?.tenant as { domain: string })?.domain as string,
+      domain: typeof doc?.tenant === 'object' ? (doc?.tenant as any)?.domain : doc?.tenant, 
       slug: relationTo as CollectionSlug,
       docSlug: doc?.slug as string,
       id: doc?.id

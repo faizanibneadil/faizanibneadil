@@ -6,6 +6,7 @@ export default async (pase: unknown, { defaultConfig }: { defaultConfig: NextCon
     ...defaultConfig,
     poweredByHeader: false,
     reactCompiler: true,
+    typedRoutes: false,
     turbopack: {
       root: __dirname,
     },

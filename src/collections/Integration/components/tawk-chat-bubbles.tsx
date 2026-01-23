@@ -9,9 +9,25 @@ export const getTawkConfig = (domain: string) =>
         async () => {
             try {
                 const payload = await getPayloadConfig()
+                const isNumericDomain = !Number.isNaN(Number(domain))
                 const tawk = await payload.find({
                     collection: 'integration',
-                    where: { 'tenant.slug': { equals: domain } }
+                    where: {
+                        or: [
+                            {
+                                'tenant.slug': {
+                                    equals: domain
+                                }
+                            },
+                            ...(isNumericDomain
+                                ? [{
+                                    'tenant.id': {
+                                        equals: Number(domain),
+                                    },
+                                }]
+                                : []),
+                        ]
+                    }
                 })
 
                 return {

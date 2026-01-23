@@ -9,6 +9,7 @@ export const PopulateRootPage: () => CollectionAfterChangeHook<PortfolioSettings
         req,
         previousDoc
     }) => {
+        // TODO: get selected tenant from doc
         const selectedTenantId = getTenantFromCookie(req.headers, 'number')
         const earlierSelectedPage = typeof previousDoc?.rootPage === 'object' ? previousDoc?.rootPage?.id : previousDoc?.rootPage;
         const selectedPage = typeof doc?.rootPage === 'object' ? doc?.rootPage?.id : doc?.rootPage;
@@ -31,7 +32,7 @@ export const PopulateRootPage: () => CollectionAfterChangeHook<PortfolioSettings
                 collection: 'pages',
                 where: {
                     and: [
-                        { tenant: { in: [selectedTenantId] } },
+                        { tenant: { equals: selectedTenantId } },
                         { isRootPage: { equals: true } },
                         { id: { not_equals: selectedPage } },
                     ],

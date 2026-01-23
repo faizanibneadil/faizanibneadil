@@ -16,6 +16,7 @@ export const PortfolioSettings: CollectionConfig<'portfolio-settings'> = {
                 description: "This field defines the 'Home' or 'Landing Page' for your entire Portfolio. By selecting a page here, you are designating it as the entry point of your website. Note: Changing this selection will automatically mark the selected page as the 'Main Page' and remove the 'Main Page' status from any other page for this portfolio to ensure there is always exactly one root page."
             },
             defaultValue: async ({ req }) => {
+                // TODO: get selected Tenant from doc
                 const selectedTenantId = getTenantFromCookie(req.headers, 'number')
                 if (selectedTenantId) {
                     try {

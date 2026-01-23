@@ -28,7 +28,6 @@ export const multiTenancy = multiTenantPlugin<Config>({
         "portfolio-settings": { isGlobal: true }
     },
     tenantField: {
-        hasMany: true,
         access: {
             read: () => true,
             update: ({ req }) => {

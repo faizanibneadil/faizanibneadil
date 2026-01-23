@@ -2,7 +2,7 @@ import { Suspense, cache } from "react";
 import { notFound } from "next/navigation";
 import dynamic from "next/dynamic";
 import type { Page } from "@/payload-types";
-import type { PagePropsWithParams } from "@/types";
+import type { PageProps } from "@/types";
 import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import type { CollectionSlug } from "payload";
 import { BackButton } from "@/components/BackButton";
@@ -20,8 +20,13 @@ const CollectionRenderer = dynamic(() => import("@/collections").then(({ Collect
 const isLayout = (mode: Page['content']['pageMode']['mode']) => mode === 'layout'
 const isCollection = (mode: Page['content']['pageMode']['mode']) => mode === 'collection'
 
-export default async function Page({ params,searchParams }: PagePropsWithParams) {
-  const { slug, domain } = await params
+export default async function Page(props: PageProps) {
+  const {
+    params: paramsFromProps,
+    searchParams: searchParamsFromProps
+  } = props || {}
+  const { slug, domain } = await paramsFromProps
+
   const page = await queryPageBySlug(slug!, domain!)
 
   const slugFromConfig = page?.content.configurations?.slug as CollectionSlug
@@ -37,7 +42,7 @@ export default async function Page({ params,searchParams }: PagePropsWithParams)
   return (
     <main className="flex flex-col min-h-[100dvh]">
       {isLayout(page?.content?.pageMode?.mode) && (
-        <BlocksRenderer blocks={page?.content.layout} params={params} searchParams={searchParams} />
+        <BlocksRenderer blocks={page?.content.layout} params={paramsFromProps} searchParams={searchParamsFromProps} />
       )}
       {isCollection(page?.content?.pageMode?.mode) && (
         <div className="flex flex-col gap-4">
@@ -52,7 +57,7 @@ export default async function Page({ params,searchParams }: PagePropsWithParams)
               </div>
             </div>
           )}
-          <CollectionRenderer params={params} configurations={page?.content?.configurations} />
+          <CollectionRenderer searchParams={searchParamsFromProps} params={paramsFromProps} page={page} />
         </div>
       )}
     </main>
@@ -60,13 +65,25 @@ export default async function Page({ params,searchParams }: PagePropsWithParams)
 }
 
 const queryTotalDocsBySlug = cache(async (slug: CollectionSlug, domain: string) => {
+  const isNumericDomain = !Number.isNaN(Number(domain))
   const payload = await getPayloadConfig()
   const records = await payload.count({
     collection: slug,
     where: {
-      'tenant.slug': {
-        in: [domain]
-      }
+      or: [
+        ...(isNumericDomain
+          ? [{
+            'tenant.id': {
+              equals: Number(domain),
+            },
+          }]
+          : []),
+        {
+          'tenant.slug': {
+            equals: domain
+          }
+        }
+      ]
     },
   })
 
@@ -74,6 +91,7 @@ const queryTotalDocsBySlug = cache(async (slug: CollectionSlug, domain: string) 
 })
 
 const queryPageBySlug = cache(async (slug: string, domain: string) => {
+  const isNumericDomain = !Number.isNaN(Number(domain))
   const payload = await getPayloadConfig()
   const pages = await payload.find({
     collection: 'pages',
@@ -82,15 +100,26 @@ const queryPageBySlug = cache(async (slug: string, domain: string) => {
     where: {
       and: [
         {
+          or: [
+            ...(isNumericDomain
+              ? [{
+                'tenant.id': {
+                  equals: Number(domain),
+                },
+              }]
+              : []),
+            {
+              'tenant.slug': {
+                equals: domain
+              }
+            },
+          ]
+        },
+        {
           slug: {
             equals: slug
           }
         },
-        {
-          'tenant.slug': {
-            in: [domain]
-          }
-        }
       ],
     },
   })

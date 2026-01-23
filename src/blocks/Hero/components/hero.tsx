@@ -2,24 +2,29 @@ import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DATA } from "@/data/resume";
-import { IHeroProps } from "@/payload-types";
-import { PagePropsWithParams } from "@/types";
+import type { BlockProps } from "@/types";
 import { getMediaUrl } from "@/utilities/getURL";
 
 const BLUR_FADE_DELAY = 0.04;
 
-export async function Hero(props: { blockProps: IHeroProps, params: PagePropsWithParams['params'] }) {
+export async function Hero(props: BlockProps<'hero'>) {
     const {
-        blockProps: {
-            nameOnResume,
-            profile,
-            headline,
-            blockName,
-            blockType
-        },
-        params: paramsFromProps
+        blockProps,
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps
     } = props || {}
-    const params = await paramsFromProps
+
+    const {
+        blockType,
+        blockName,
+        headline,
+        id,
+        nameOnResume,
+        profile
+    } = blockProps || {}
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
     return (
         <section id="hero" aria-label={blockName ?? blockType}>
             <div className="mx-auto w-full max-w-2xl space-y-8">

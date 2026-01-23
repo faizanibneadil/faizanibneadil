@@ -2,7 +2,7 @@ import { Suspense } from "react"
 import { ErrorBoundary } from "react-error-boundary";
 import { GlimpseLink } from "@/components/kibo-ui/glimpse"
 import { glimpse } from "@/components/kibo-ui/glimpse/server"
-import type { PagePropsWithParams } from "@/types"
+import type { PageProps } from "@/types"
 import type { SerializedAutoLinkNode, SerializedLinkNode } from "@payloadcms/richtext-lexical"
 import type { JSXConverters } from "@payloadcms/richtext-lexical/react"
 import type { ClientConfig } from "payload"
@@ -12,7 +12,7 @@ type TLinkStyle = 'GlimpseStyle' | 'normal'
 
 export const linkNodeJSXConverter: (args: {
   internalDocToHref?: (args: { node: SerializedLinkNode }) => string,
-  params?: Awaited<PagePropsWithParams['params']>,
+  params?: Awaited<PageProps['params']>,
   config?: ClientConfig
 }) => JSXConverters<SerializedAutoLinkNode | SerializedLinkNode> = ({ internalDocToHref }) => ({
   autolink: ({ node, nodesToJSX }) => {

@@ -1,20 +1,29 @@
 'use client'
+import { use } from 'react'
 import { Highlight, themes } from 'prism-react-renderer'
-import { CopyButton } from './CopyButton'
-import { PagePropsWithParams } from '@/types'
-import type { TCodeBlockProps } from '@/payload-types'
+// import { CopyButton } from './CopyButton'
+import type { BlockProps } from '@/types'
 import { useTheme } from 'next-themes'
 
-export function CodeBlockClient(props: { blockProps: TCodeBlockProps, params: PagePropsWithParams['params'] }) {
+export function CodeBlockClient(props: BlockProps<'code-block'>) {
     const {
-        blockProps: {
-            blockType,
-            blockName,
-            code,
-            id,
-            language
-        },
+        blockProps,
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps
     } = props || {}
+
+    const {
+        blockType,
+        blockName,
+        code,
+        id,
+        language
+    } = blockProps || {}
+
+
+    const params = paramsFromProps instanceof Promise ? use(paramsFromProps) : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? use(searchParamsFromProps) : searchParamsFromProps
+
 
     const { theme, systemTheme } = useTheme()
 
@@ -24,7 +33,7 @@ export function CodeBlockClient(props: { blockProps: TCodeBlockProps, params: Pa
     }
 
     const themeToUse = themesMap[theme as keyof typeof themesMap] || themesMap[systemTheme as keyof typeof themesMap]
-    
+
     if (!code || !language) return null
 
     return (

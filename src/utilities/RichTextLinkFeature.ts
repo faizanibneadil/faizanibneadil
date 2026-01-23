@@ -12,16 +12,16 @@ export const RichTextLinkFeature = () => {
                     return {
                         ...field,
                         filterOptions: ({ req: { headers } }) => {
-                            const selectedTenant = getTenantFromCookie(headers, 'number') as number
+                            const selectedTenant = getTenantFromCookie(headers,'number')
                             if (selectedTenant) {
                                 return {
                                     'tenant.id': {
-                                        in: [selectedTenant]
+                                        equals: selectedTenant
                                     }
                                 }
                             }
                             return null
-                        },
+                        }
                     } as RelationshipField
                 }
                 return field
