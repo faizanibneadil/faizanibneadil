@@ -10,14 +10,15 @@ import {
     GlimpseTrigger,
 } from "@/components/kibo-ui/glimpse";
 import React from "react";
+import { cn } from "@/lib/utils";
 
 
-export function GlimpseLink(props: { fields: LinkFields } & { rel?: string, target?: string } & { getLinkInfo: ReturnType<typeof glimpse>, label: React.ReactNode }) {
+export function GlimpseLink(props: { fields: LinkFields } & { rel?: string, target?: string } & { getLinkInfo: ReturnType<typeof glimpse>, label: React.ReactNode, className?: string }) {
     const linkInfo = React.use(props.getLinkInfo)
 
     if (linkInfo.title === null && linkInfo.description === null && linkInfo.image === null) {
         return (
-            <a className="font-medium text-primary underline !text-blue-500" target={props.target} rel={props.rel} href={props.fields?.url ?? '#'}>
+            <a className={cn("font-medium text-primary underline !text-blue-500",props.className)} target={props.target} rel={props.rel} href={props.fields?.url ?? '#'}>
                 {props.label}
             </a>
         )
@@ -26,7 +27,7 @@ export function GlimpseLink(props: { fields: LinkFields } & { rel?: string, targ
     return (
         <Glimpse closeDelay={0} openDelay={0}>
             <GlimpseTrigger asChild>
-                <a className="font-medium text-primary underline !text-blue-500" target={props.target} rel={props.rel} href={props.fields?.url ?? '#'}>
+                <a className={cn("font-medium text-primary underline !text-blue-500", props.className)} target={props.target} rel={props.rel} href={props.fields?.url ?? '#'}>
                     {props.label}
                 </a>
             </GlimpseTrigger>
