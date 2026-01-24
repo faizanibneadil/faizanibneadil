@@ -69,7 +69,7 @@ export default async function Navbar({ domain }: { domain: string }) {
   })
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-1 z-30 mx-auto mb-4 flex flex-col gap-1 origin-bottom h-full max-h-14">
+    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 mx-auto mb-4 flex flex-col gap-1 origin-bottom h-full max-h-14">
       <div className="fixed bottom-0 inset-x-0 h-16 w-full bg-background to-transparent backdrop-blur-lg [-webkit-mask-image:linear-gradient(to_top,black,transparent)] dark:bg-background"></div>
       <Dock className="z-50 pointer-events-auto relative mx-auto flex min-h-full h-full items-center px-1 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] ">
         {_MenuToRender}
@@ -87,18 +87,23 @@ export default async function Navbar({ domain }: { domain: string }) {
           </Tooltip>
         </DockIcon>
       </Dock>
-      <GlimpseLink
-        fields={{
-          url: 'https://skillshelf.vercel.app',
-          linkType: 'custom',
-          newTab: true,
-        }}
-        rel={undefined}
-        className="z-50 pointer-events-auto relative mx-auto flex items-center text-[0.60rem]/[0.75rem] text-black dark:text-white antialiased no-underline after:content-['_↗'] after:font-bold after:ml-0.5"
-        target="_blank"
-        getLinkInfo={SaaSInfo}
-        label='Crafted by SkillShelf'
-      />
+      <div className="relative w-full flex items-center justify-center">
+        <div className="z-50 pointer-events-auto absolute mb-2 rounded-full mx-auto flex items-center bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] ">
+          <GlimpseLink
+            fields={{
+              url: 'https://skillshelf.vercel.app',
+              linkType: 'custom',
+              newTab: true,
+            }}
+            style={{'textDecoration': 'none'}}
+            rel={undefined}
+            className='text-[0.65rem]/[0.75rem] px-3 py-0.5 after:content-["_↗"] after:ml-1 text-black dark:text-white font-medium'
+            target="_blank"
+            getLinkInfo={SaaSInfo}
+            label='Crafted by SkillShelf'
+          />
+        </div>
+      </div>
     </div>
   );
 }
