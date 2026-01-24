@@ -2,6 +2,7 @@ import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import Script from "next/script";
 
 import { unstable_cache } from 'next/cache'
+import type { BaseParams } from "@/types";
 
 
 export const getTawkConfig = (domain: string) =>
@@ -50,13 +51,19 @@ export const getTawkConfig = (domain: string) =>
         { revalidate: 86400 }, // Cache for 1 day (86400 seconds)
     )()
 
-export async function TawkChatBubble(props: { domain: string }) {
+export async function TawkChatBubble(props: Omit<BaseParams, 'searchParams'>) {
+    const {
+        params: paramsFromProps
+    } = props || {}
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+
     const {
         propertyId,
         widgetId,
         enableChatButton,
         enableTAWKBubble
-    } = await getTawkConfig(props.domain)
+    } = await getTawkConfig(params?.domain)
 
     if (propertyId && widgetId && enableChatButton && enableTAWKBubble) {
         return (

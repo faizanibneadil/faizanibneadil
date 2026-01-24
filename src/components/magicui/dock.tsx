@@ -75,7 +75,7 @@ const DockIcon = ({
   size,
   magnification = DEFAULT_MAGNIFICATION,
   distance = DEFAULT_DISTANCE,
-  mouseX,
+  mouseX= useMotionValue(Infinity),
   className,
   children,
   ...props
