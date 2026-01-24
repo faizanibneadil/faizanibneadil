@@ -14,11 +14,10 @@ export async function BlocksRenderer(props: BlocksRegistryProps) {
     if (hasBlocks) {
         return (
             <Fragment>
-                <section id="contact" className="relative mx-auto flex w-full max-w-3xl flex-col justify-between gap-y-6 bg-secondary/80 py-2 dark:bg-secondary/40 -mt-10">
-                    {/* <div className="-translate-x-1/2 -top-px pointer-events-none absolute left-1/2 w-screen border-t" /> */}
+                {/* <section id="contact" className="relative mx-auto flex w-full max-w-3xl flex-col justify-between gap-y-6 bg-secondary/80 py-2 dark:bg-secondary/40 -mt-10">
                     <a href='https://skillshelf.vercel.app' className="text-xs">Powered by skillshelf.vercel.app</a>
                     <div className="-translate-x-1/2 -bottom-px pointer-events-none absolute left-1/2 w-screen border-b" />
-                </section>
+                </section> */}
 
                 {blocks.map((block, index) => {
                     const { blockType } = block
