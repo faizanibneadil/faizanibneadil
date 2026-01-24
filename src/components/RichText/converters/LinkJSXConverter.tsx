@@ -25,12 +25,22 @@ export const linkNodeJSXConverter: (args: {
 
     const rel: string | undefined = node.fields.newTab ? 'noopener noreferrer' : undefined
     const target: string | undefined = node.fields.newTab ? '_blank' : undefined
+    const FallbackLink = () => (
+      <a
+        className="font-medium text-primary underline !text-blue-500"
+        target={target}
+        rel={rel}
+        href={node?.fields?.url}
+      >
+        {children}
+      </a>
+    )
 
     if (linkStyle === 'GlimpseStyle') {
       const getLinkInfo = glimpse(url!)
       return (
-        <ErrorBoundary fallback={null}>
-          <Suspense fallback={null}>
+        <ErrorBoundary fallback={<FallbackLink />}>
+          <Suspense fallback={<FallbackLink />}>
             <GlimpseLink fields={node.fields} getLinkInfo={getLinkInfo} label={children} rel={rel} target={target} />
           </Suspense>
         </ErrorBoundary>
@@ -53,8 +63,19 @@ export const linkNodeJSXConverter: (args: {
 
     const rel: string | undefined = node.fields.newTab ? 'noopener noreferrer' : undefined
     const target: string | undefined = node.fields.newTab ? '_blank' : undefined
-
     let href: string = url ?? ''
+
+    const FallbackLink = () => (
+      <a
+        className="font-medium text-primary underline !text-blue-500"
+        target={target}
+        rel={rel}
+        href={href}
+      >
+        {children}
+      </a>
+    )
+
     if (linkType === 'internal') {
       if (internalDocToHref) {
         href = internalDocToHref({ node })
@@ -67,8 +88,8 @@ export const linkNodeJSXConverter: (args: {
     if (linkStyle === 'GlimpseStyle') {
       const getLinkInfo = glimpse(new URL(href!, getClientSideURL()).toString())
       return (
-        <ErrorBoundary fallback={null}>
-          <Suspense fallback={null}>
+        <ErrorBoundary fallback={<FallbackLink />}>
+          <Suspense fallback={<FallbackLink />}>
             <GlimpseLink fields={{ ...node.fields, url: href }} getLinkInfo={getLinkInfo} label={children} rel={rel} target={target} />
           </Suspense>
         </ErrorBoundary>
