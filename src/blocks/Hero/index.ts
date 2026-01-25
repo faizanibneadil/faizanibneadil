@@ -1,5 +1,6 @@
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
+import { RevalidateProfileAvatar } from './hooks/RevalidateProfileAvatar'
+
 export const Hero: Block = {
     slug: 'hero',
     interfaceName: 'IHeroProps',
@@ -18,7 +19,10 @@ export const Hero: Block = {
             type: 'upload',
             relationTo: 'media',
             name: 'profile',
-            label: 'Profile Image'
+            label: 'Profile Image',
+            hooks: {
+                afterChange: [RevalidateProfileAvatar()]
+            }
         }
     ]
 }
