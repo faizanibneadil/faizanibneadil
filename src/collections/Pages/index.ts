@@ -17,6 +17,7 @@ import {
 } from '@payloadcms/plugin-seo/fields';
 import { slugField, type CollectionConfig, APIError } from "payload";
 import { ProtectRootPageFromTrash } from "./hooks/ProtectRootPageFromTrash";
+import { RevalidateRootPageQuery } from "./hooks/RevalidateRootPageQuery";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
@@ -188,6 +189,9 @@ export const Pages: CollectionConfig<'pages'> = {
                 description: "Set this page as your portfolio's primary Home Page. Only one page can be active as the Main Page at a time."
             },
             required: true,
+            hooks: {
+                afterChange: [RevalidateRootPageQuery()]
+            },
             validate: async (value, { req }) => {
                 // TODO: get tenant from doc
                 const selectedTenantId = getTenantFromCookie(req.headers, 'number')

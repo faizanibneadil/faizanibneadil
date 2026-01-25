@@ -1,49 +1,23 @@
-import { getPayloadConfig } from "@/utilities/getPayloadConfig";
-import { getMediaUrl, getServerSideURL } from "@/utilities/getURL";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { notFound } from "next/navigation";
+import type { CollectionSlug } from "payload";
+import { getServerSideURL } from "@/utilities/getURL";
 import type { Metadata } from 'next';
 import Page from "./p/[slug]/page";
-import { cache } from "react";
 import type { PageProps } from "@/types";
-import type { CollectionSlug } from "payload";
-import { notFound } from "next/navigation";
+import { getProfileAvatarByDomain } from "@/utilities/getProfileAvatar";
+import { queryRootPageByDomain } from "@/utilities/QueryRootPageByDomain";
+import { BlocksRegistries } from "@/registries";
 
-const getProfileAvatar = cache(async (domain: string) => {
-  try {
-    const isNumericDomain = !Number.isNaN(Number(domain))
-    const payload = await getPayloadConfig()
-    const avatar = await payload.find({
-      collection: "users",
-      where: {
-        or: [
-          {
-            'tenants.tenant.slug': {
-              equals: domain
-            }
-          },
-          ...(isNumericDomain
-            ? [{
-              'tenants.tenant.id': {
-                equals: Number(domain),
-              },
-            }]
-            : []),
-        ]
-      },
-      select: { profile: true }
-    })
-    return getMediaUrl(avatar.docs.at(0)?.profile)
-  } catch (error) {
-    console.error('Something went wrong to fetch user profile', error)
-  }
-})
-
+// TODO: add root page laval metadata
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const {
     params: paramsFromProps
   } = props || {}
 
   const domain = (await paramsFromProps)?.domain
-  const avatarUrl = await getProfileAvatar(domain)
+  const avatarUrl = await getProfileAvatarByDomain(domain)
   return {
     title: domain,
     description: domain,
@@ -89,47 +63,36 @@ export default async function DomainPage(props: PageProps) {
     }
   })
 
-  return <Page params={paramsPromise} searchParams={searchParamsFromProps} />
+  return (
+    <ErrorBoundary fallback={null}>
+      <Suspense fallback={<PageSkeleton />}>
+        <Page params={paramsPromise} searchParams={searchParamsFromProps} />
+      </Suspense>
+    </ErrorBoundary>
+  )
 
 }
 
-const queryRootPageByDomain = cache(async (domain: string) => {
-  const payload = await getPayloadConfig()
-  const isNumericDomain = !Number.isNaN(Number(domain))
-  const __slug = await payload.find({
-    collection: 'pages',
-    where: {
-      and: [
-        {
-          or: [
-            {
-              'tenant.slug': {
-                equals: domain
-              }
-            },
-            ...(isNumericDomain
-              ? [{
-                'tenant.id': {
-                  equals: Number(domain),
-                },
-              }]
-              : []),
-          ]
-        },
-        {
-          isRootPage: {
-            equals: true
-          }
-        }
-      ],
-    },
-    select: {
-      slug: true
-    }
-  })
-  return __slug?.docs?.at(0)?.slug
-})
-
+export function PageSkeleton() {
+  const HeroSkeleton = BlocksRegistries.hero?.skeleton
+  const AboutSkeleton = BlocksRegistries.about?.skeleton
+  const GithubContributionsSkeleton = BlocksRegistries["github-contributions"]?.skeleton
+  const ExperienceSkeleton = BlocksRegistries.experience?.skeleton
+  const ProjectSkeleton = BlocksRegistries.project?.skeleton
+  const SkillsSkeleton = BlocksRegistries.skill?.skeleton
+  const ContactSkeleton = BlocksRegistries.contact?.skeleton
+  return (
+    <div className="my-5 first:mt-0">
+      {HeroSkeleton && <HeroSkeleton />}
+      {AboutSkeleton && <AboutSkeleton />}
+      {GithubContributionsSkeleton && <GithubContributionsSkeleton />}
+      {ExperienceSkeleton && <ExperienceSkeleton />}
+      {ProjectSkeleton && <ProjectSkeleton />}
+      {SkillsSkeleton && <SkillsSkeleton />}
+      {ContactSkeleton && <ContactSkeleton />}
+    </div>
+  )
+}
 
 //import { BlocksRenderrer } from "@/blocks";
 //import { Hero } from "@/blocks/Hero/components/hero";

@@ -1,0 +1,1 @@
+export const ONE_MONTH_CACHE_TIME = 2592000
