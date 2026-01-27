@@ -46,8 +46,10 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
                 invalidateRootRoute && revalidatePath(RootRoute)
                 req.payload.logger.info(`Revalidating page at [PATH]:${Route}`)
                 revalidatePath(Route)
-                revalidateTag(`query-page-by-${doc?.slug}-${domain}`, 'max')
-                revalidateTag(`query-total-docs-by-${slugFromConfig}-${domain}`, 'max')
+                doc?.slug && req.payload.logger.info(`query-page-by-${doc?.slug}-${domain}`)
+                doc?.slug && revalidateTag(`query-page-by-${doc?.slug}-${domain}`, 'max')
+                slugFromConfig && req.payload.logger.info(`query-total-docs-by-${slugFromConfig}-${domain}`)
+                slugFromConfig && revalidateTag(`query-total-docs-by-${slugFromConfig}-${domain}`, 'max')
                 revalidateTag('pages-sitemap', 'max')
             }
         }

@@ -1,13 +1,9 @@
-import React from "react"
-import { Form } from "@/payload-types"
 import { sdk } from "@/lib/sdk"
+import { unstable_cache } from "next/cache"
+import { ONE_MONTH_CACHE_TIME } from "../../constants"
 
-export const getFormByFormId = React.cache(async (id: number) => {
-    try {
-        const form = await sdk.findByID({ collection: 'forms', id })
-        return form
-    } catch (error) {
-        console.error("Something went wrong to fetch icon")
-        return {} as Form
-    }
-})
+const getForm = async (id: number) => await sdk.findByID({ collection: 'forms', id })
+export const getFormByFormId = (id: number) =>
+    unstable_cache(() => getForm(id), [`get-form-by-id-${id}`], {
+        revalidate: ONE_MONTH_CACHE_TIME // Cache for 1 month
+    })()
