@@ -1,8 +1,9 @@
-import { cache } from "react"
+import { Suspense, cache } from "react"
 import type { CollectionsRegistryProps } from "@/types"
 import { getPayloadConfig } from "@/utilities/getPayloadConfig"
 import type { CollectionSlug } from "payload"
 import { CollectionsRegistries } from "@/registries"
+import { ErrorBoundary } from "react-error-boundary"
 
 
 export async function CollectionRenderer(props: CollectionsRegistryProps) {
@@ -20,9 +21,21 @@ export async function CollectionRenderer(props: CollectionsRegistryProps) {
 
     const collectionToRenderProps = await queryCollectionBySlug(slugFromConfig, domain!)
     if (Object.hasOwn(CollectionsRegistries, slugFromConfig) && collectionToRenderProps) {
-        const CollectionToRender = CollectionsRegistries[slugFromConfig]
-        // @ts-expect-error
-        return <CollectionToRender collection={collectionToRenderProps} searchParams={searchParamsFromProps} params={paramsFromProps} />
+        const CollectionToRender = CollectionsRegistries[slugFromConfig]?.component!
+        const Skeleton = CollectionsRegistries[slugFromConfig]?.skeleton!
+
+        return (
+            <ErrorBoundary fallback={null}>
+                <Suspense fallback={<Skeleton />}>
+                    <CollectionToRender
+                        // @ts-expect-error
+                        collection={collectionToRenderProps}
+                        searchParams={searchParamsFromProps}
+                        params={paramsFromProps}
+                    />
+                </Suspense>
+            </ErrorBoundary>
+        )
     }
     return null
 }

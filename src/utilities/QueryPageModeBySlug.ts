@@ -1,23 +1,22 @@
 import { unstable_cache } from "next/cache"
 import { getPayloadConfig } from "./getPayloadConfig"
 import { ONE_MONTH_CACHE_TIME } from "../../constants"
+import type { CollectionSlug } from "payload"
 
-export const queryRootPageByDomain = (domain: string) =>
+export const queryPageModeBySlug = (slug: CollectionSlug, domain: string) =>
     unstable_cache(
         async () => {
-            const payload = await getPayloadConfig()
             const isNumericDomain = !Number.isNaN(Number(domain))
-            const __slug = await payload.find({
+            const payload = await getPayloadConfig()
+            const pages = await payload.find({
                 collection: 'pages',
+                limit: 1,
+                pagination: false,
+                depth: 0,
                 where: {
                     and: [
                         {
                             or: [
-                                {
-                                    'tenant.slug': {
-                                        equals: domain
-                                    }
-                                },
                                 ...(isNumericDomain
                                     ? [{
                                         'tenant.id': {
@@ -25,30 +24,34 @@ export const queryRootPageByDomain = (domain: string) =>
                                         },
                                     }]
                                     : []),
+                                {
+                                    'tenant.slug': {
+                                        equals: domain
+                                    }
+                                },
                             ]
                         },
                         {
-                            isRootPage: {
-                                equals: true
+                            slug: {
+                                equals: slug
                             }
-                        }
+                        },
                     ],
                 },
-                depth: 0,
                 select: {
-                    slug: true,
                     content: {
                         pageMode: {
                             mode: true
                         },
-                        configurations:{
+                        configurations: {
                             slug: true
                         }
                     }
                 }
             })
-            return __slug?.docs?.at(0)
+
+            return pages.docs?.at(0) || null
         },
-        [`query-root-page-by-${domain}`],
+        [`query-page-mode-by-${slug}-${domain}`],
         { revalidate: ONE_MONTH_CACHE_TIME }, // Cache for 1 month
     )()
