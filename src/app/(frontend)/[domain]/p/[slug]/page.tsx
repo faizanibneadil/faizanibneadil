@@ -1,13 +1,15 @@
-import { Suspense, cache } from "react";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import dynamic from "next/dynamic";
 import type { Page } from "@/payload-types";
 import type { PageProps } from "@/types";
-import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import type { CollectionSlug } from "payload";
 import { BackButton } from "@/components/BackButton";
 import { CollectionCount } from "@/components/collection-count";
 import { Skeleton } from "@/components/ui/skeleton";
+import { isCollection, isLayout } from "@/utilities/getPageMode";
+import { queryPageBySlug } from "@/utilities/QueryPageBySlug";
+import { queryTotalDocsBySlug } from "@/utilities/QueryTotalDocsBySlug";
 
 const BlocksRenderer = dynamic(() => import("@/blocks").then(({ BlocksRenderer }) => ({
   default: BlocksRenderer
@@ -17,8 +19,7 @@ const CollectionRenderer = dynamic(() => import("@/collections").then(({ Collect
   default: CollectionRenderer
 })), { ssr: true })
 
-const isLayout = (mode: Page['content']['pageMode']['mode']) => mode === 'layout'
-const isCollection = (mode: Page['content']['pageMode']['mode']) => mode === 'collection'
+
 
 export default async function Page(props: PageProps) {
   const {
@@ -63,66 +64,3 @@ export default async function Page(props: PageProps) {
     </main>
   )
 }
-
-const queryTotalDocsBySlug = cache(async (slug: CollectionSlug, domain: string) => {
-  const isNumericDomain = !Number.isNaN(Number(domain))
-  const payload = await getPayloadConfig()
-  const records = await payload.count({
-    collection: slug,
-    where: {
-      or: [
-        ...(isNumericDomain
-          ? [{
-            'tenant.id': {
-              equals: Number(domain),
-            },
-          }]
-          : []),
-        {
-          'tenant.slug': {
-            equals: domain
-          }
-        }
-      ]
-    },
-  })
-
-  return records
-})
-
-const queryPageBySlug = cache(async (slug: string, domain: string) => {
-  const isNumericDomain = !Number.isNaN(Number(domain))
-  const payload = await getPayloadConfig()
-  const pages = await payload.find({
-    collection: 'pages',
-    limit: 1,
-    pagination: false,
-    where: {
-      and: [
-        {
-          or: [
-            ...(isNumericDomain
-              ? [{
-                'tenant.id': {
-                  equals: Number(domain),
-                },
-              }]
-              : []),
-            {
-              'tenant.slug': {
-                equals: domain
-              }
-            },
-          ]
-        },
-        {
-          slug: {
-            equals: slug
-          }
-        },
-      ],
-    },
-  })
-
-  return pages.docs?.at(0) || null
-})

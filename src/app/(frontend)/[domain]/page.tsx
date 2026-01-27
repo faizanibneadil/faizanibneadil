@@ -8,7 +8,8 @@ import Page from "./p/[slug]/page";
 import type { PageProps } from "@/types";
 import { getProfileAvatarByDomain } from "@/utilities/getProfileAvatar";
 import { queryRootPageByDomain } from "@/utilities/QueryRootPageByDomain";
-import { BlocksRegistries } from "@/registries";
+import { BlocksRegistries, CollectionsRegistries } from "@/registries";
+import { isCollection, isLayout } from "@/utilities/getPageMode";
 
 // TODO: add root page laval metadata
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
@@ -46,7 +47,10 @@ export default async function DomainPage(props: PageProps) {
   } = props || {}
 
   const params = await paramsFromProps
-  const __rootPageSlug = await queryRootPageByDomain(params.domain!)
+  const __rootPage = await queryRootPageByDomain(params.domain!)
+  const __rootPageSlug = __rootPage?.slug as CollectionSlug
+  const __mode = __rootPage?.content?.pageMode?.mode
+  const __rootPageSlugFromConfig = __rootPage?.content?.configurations?.slug as CollectionSlug
 
   if (!__rootPageSlug) {
     return notFound()
@@ -56,16 +60,29 @@ export default async function DomainPage(props: PageProps) {
     if (__rootPageSlug) {
       resolve({
         ...params,
-        slug: __rootPageSlug as CollectionSlug
+        slug: __rootPageSlug
       })
     } else {
       reject({ ...params })
     }
   })
 
+  let PageSkeletonToRender: React.ComponentType<{}>
+  switch (__mode!) {
+    case 'collection':
+      PageSkeletonToRender = CollectionsRegistries[__rootPageSlugFromConfig]?.skeleton!
+      break;
+    case 'layout':
+      PageSkeletonToRender = PageSkeleton
+      break;
+    default:
+      PageSkeletonToRender = () => <p>Fallback skeleton</p>
+      break;
+  }
+  
   return (
     <ErrorBoundary fallback={null}>
-      <Suspense fallback={<PageSkeleton />}>
+      <Suspense fallback={<PageSkeletonToRender />}>
         <Page params={paramsPromise} searchParams={searchParamsFromProps} />
       </Suspense>
     </ErrorBoundary>

@@ -34,6 +34,8 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
             ? await getDomain(req, doc?.tenant)
             : doc?.tenant?.domain
 
+        const slugFromConfig = doc?.content?.configurations?.slug
+
         if (domain) {
             const { RootRoute, Route } = generateRoute({
                 domain,
@@ -44,6 +46,8 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
                 invalidateRootRoute && revalidatePath(RootRoute)
                 req.payload.logger.info(`Revalidating page at [PATH]:${Route}`)
                 revalidatePath(Route)
+                revalidateTag(`query-page-by-${doc?.slug}-${domain}`, 'max')
+                revalidateTag(`query-total-docs-by-${slugFromConfig}-${domain}`, 'max')
                 revalidateTag('pages-sitemap', 'max')
             }
         }
@@ -62,6 +66,9 @@ export const RevalidatePageAfterDelete: AppCollectionAfterDeleteHook<Page, {
         const domain = typeof doc?.tenant === 'number'
             ? await getDomain(req, doc?.tenant)
             : doc?.tenant?.domain
+            
+        const slugFromConfig = doc?.content?.configurations?.slug
+
         if (domain) {
             const { RootRoute, Route } = generateRoute({
                 domain,
@@ -72,6 +79,8 @@ export const RevalidatePageAfterDelete: AppCollectionAfterDeleteHook<Page, {
                 invalidateRootRoute && revalidatePath(RootRoute)
                 req.payload.logger.info(`Revalidating page at [PATH]:${Route}`)
                 revalidatePath(Route)
+                revalidateTag(`query-page-by-${doc?.slug}-${domain}`, 'max')
+                revalidateTag(`query-total-docs-by-${slugFromConfig}-${domain}`, 'max')
                 revalidateTag('pages-sitemap', 'max')
             }
         }

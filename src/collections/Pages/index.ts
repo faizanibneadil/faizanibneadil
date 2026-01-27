@@ -18,6 +18,8 @@ import {
 import { slugField, type CollectionConfig, APIError } from "payload";
 import { ProtectRootPageFromTrash } from "./hooks/ProtectRootPageFromTrash";
 import { RevalidateRootPageQuery } from "./hooks/RevalidateRootPageQuery";
+import { RevalidatePageModeQuery } from "./hooks/RevalidatePageModeQuery";
+import { RevalidatePageCollectionSlugQuery } from "./hooks/RevalidatePageCollectionSlugQuery";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
@@ -65,6 +67,9 @@ export const Pages: CollectionConfig<'pages'> = {
                             admin: {
                                 description: 'If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change Page Mode into collection.',
                             },
+                            hooks: {
+                                afterChange: [RevalidatePageModeQuery()]
+                            },
                             fields: [
                                 {
                                     type: 'radio',
@@ -99,6 +104,9 @@ export const Pages: CollectionConfig<'pages'> = {
                                         components: {
                                             Field: '@/collections/Pages/components/collections.tsx#Collections'
                                         }
+                                    },
+                                    hooks: {
+                                        afterChange: [RevalidatePageCollectionSlugQuery()]
                                     }
                                 },
                             ]
