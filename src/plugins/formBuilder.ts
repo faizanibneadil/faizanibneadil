@@ -1,4 +1,5 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
+import { RevalidateFormById } from "@/hooks/RevalidateFormById";
 import { RevalidatePageAfterChange } from "@/hooks/RevalidatePage";
 import { formBuilderPlugin } from "@payloadcms/plugin-form-builder";
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from "@payloadcms/richtext-lexical";
@@ -17,7 +18,8 @@ export const formBuilder = formBuilderPlugin({
             afterChange: [
                 RevalidatePageAfterChange({
                     invalidateRootRoute: true
-                })
+                }),
+                RevalidateFormById()
             ]
         },
         fields: ({ defaultFields }) => {

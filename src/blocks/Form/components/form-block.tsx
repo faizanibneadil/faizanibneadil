@@ -20,9 +20,7 @@ export async function FormBlock(props: BlockProps<'formBlock'>) {
     } = blockProps || {}
 
 
-    const form = typeof formFromProps === 'number'
-        ? await getFormByFormId(formFromProps)
-        : formFromProps
+    const form = await getFormByFormId(typeof formFromProps === 'number' ? formFromProps : formFromProps?.id)
 
     const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
     const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
