@@ -76,7 +76,7 @@ export const ResumeCard = async (props: { experienceProps?: Experience, educatio
           </div>
         </div>
         <div className={cn("flex flex-wrap gap-1", {
-          "ml-12": searchParams?.vp === 'd'
+          "ml-14": searchParams?.vp === 'd'
         })}>
           {jobType && (
             <Badge className="flex items-center gap-1 rounded-full" variant='outline'>
@@ -99,7 +99,7 @@ export const ResumeCard = async (props: { experienceProps?: Experience, educatio
         </div>
         {description && params && Boolean(Object.keys(params || {}).length) && (
           <div className={cn("mt-2 prose max-w-full text-pretty font-sans text-xs text-foreground dark:prose-invert", {
-            "ml-12": searchParams?.vp === 'd'
+            "ml-14": searchParams?.vp === 'd'
           })}>
             <CMSRichText data={description} params={params} searchParams={searchParams} />
           </div>
