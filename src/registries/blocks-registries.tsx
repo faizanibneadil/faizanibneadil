@@ -65,7 +65,9 @@ export const BlocksRegistries: TBlocks = {
         component: dynamic(() => import("@/blocks/Project/components/project").then(({ Project }) => ({
             default: Project
         }))),
-        skeleton: () => <div>Loading projects Details ...</div>
+        skeleton: dynamic(() => import('@/blocks/Project/components/project-skeleton').then(({ProjectSkeleton}) =>({
+            default: ProjectSkeleton
+        })))
     },
     research: {
         component: dynamic(() => import("@/blocks/Research/components/research").then(({ Research }) => ({
