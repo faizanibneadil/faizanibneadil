@@ -25,7 +25,9 @@ export const BlocksRegistries: TBlocks = {
         component: dynamic(() => import("@/blocks/Contact/components/contact").then(({ Contact }) => ({
             default: Contact
         }))),
-        skeleton: () => <div>Loading details ...</div>
+        skeleton: dynamic(() => import('@/blocks/Contact/components/contact-skeleton').then(({ ContactSkeleton }) => ({
+            default: ContactSkeleton
+        })))
     },
     education: {
         component: dynamic(() => import("@/blocks/Education/components/educations").then(({ Education }) => ({
@@ -39,7 +41,9 @@ export const BlocksRegistries: TBlocks = {
         component: dynamic(() => import("@/blocks/Skill/components/skills").then(({ Skill }) => ({
             default: Skill
         }))),
-        skeleton: () => <div>Loading skills details ...</div>
+        skeleton: dynamic(() => import('@/blocks/Skill/components/skill-skeleton').then(({ SkillSkeleton }) => ({
+            default: SkillSkeleton
+        })))
     },
     experience: {
         component: dynamic(() => import("@/blocks/Experiences/components/experiences").then(({ Experience }) => ({
@@ -65,7 +69,7 @@ export const BlocksRegistries: TBlocks = {
         component: dynamic(() => import("@/blocks/Project/components/project").then(({ Project }) => ({
             default: Project
         }))),
-        skeleton: dynamic(() => import('@/blocks/Project/components/project-skeleton').then(({ProjectSkeleton}) =>({
+        skeleton: dynamic(() => import('@/blocks/Project/components/project-skeleton').then(({ ProjectSkeleton }) => ({
             default: ProjectSkeleton
         })))
     },
@@ -117,7 +121,9 @@ export const BlocksRegistries: TBlocks = {
         component: dynamic(() => import("@/blocks/Form/components/form-block").then(({ FormBlock }) => ({
             default: FormBlock
         }))),
-        skeleton: () => <div>Loading form details ...</div>
+        skeleton: dynamic(() => import('@/blocks/Form/components/form-block-skeleton').then(({ FormBlockSkeleton }) => ({
+            default: FormBlockSkeleton
+        })))
     },
     "code-block": {
         component: dynamic(() => import("@/blocks/Code/components/CodeBlock").then(({ CodeBlock }) => ({
