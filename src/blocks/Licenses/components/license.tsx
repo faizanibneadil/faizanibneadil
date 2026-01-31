@@ -50,7 +50,8 @@ export async function License(props: BlockProps<'license'>) {
                                     key={license.id}
                                     delay={BLUR_FADE_DELAY * 15 + id * 0.05}
                                 >
-                                    <HackathonCard {...license} />
+                                    make license card
+                                    {/* <HackathonCard {...license} /> */}
                                 </BlurFade>
                             )
                         })}

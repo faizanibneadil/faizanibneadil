@@ -2,42 +2,38 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { notFound } from "next/navigation";
 import type { CollectionSlug } from "payload";
-import { getServerSideURL } from "@/utilities/getURL";
 import type { Metadata } from 'next';
-import Page from "./p/[slug]/page";
+import Page, { generateMetadata as PageGenerateMetadata } from "./p/[slug]/page";
 import type { PageProps } from "@/types";
-import { getProfileAvatarByDomain } from "@/utilities/getProfileAvatar";
 import { queryRootPageByDomain } from "@/utilities/QueryRootPageByDomain";
 import { BlocksRegistries, CollectionsRegistries } from "@/registries";
-import { isCollection, isLayout } from "@/utilities/getPageMode";
 
 // TODO: add root page laval metadata
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const {
-    params: paramsFromProps
+    params: paramsFromProps,
+    searchParams: searchParamsFromProps
   } = props || {}
 
-  const domain = (await paramsFromProps)?.domain
-  const avatarUrl = await getProfileAvatarByDomain(domain)
-  return {
-    title: domain,
-    description: domain,
-    metadataBase: new URL(getServerSideURL()),
-    ...(avatarUrl && {
-      icons: [{
-        url: avatarUrl,
-        fetchPriority: 'high',
-      }]
-    }),
-    ...(avatarUrl && {
-      openGraph: {
-        url: avatarUrl,
-        images: [{
-          url: avatarUrl,
-        }]
-      }
-    })
-  }
+  const params = await paramsFromProps
+  const __rootPage = await queryRootPageByDomain(params.domain!)
+  const __rootPageSlug = __rootPage?.slug as CollectionSlug
+
+  const paramsPromise = new Promise<typeof params>((resolve, reject) => {
+    if (__rootPageSlug) {
+      resolve({
+        ...params,
+        slug: __rootPageSlug
+      })
+    } else {
+      reject({ ...params })
+    }
+  })
+
+  return PageGenerateMetadata({
+    params: paramsPromise,
+    searchParams: searchParamsFromProps
+  })
 }
 
 export default async function DomainPage(props: PageProps) {
@@ -79,7 +75,7 @@ export default async function DomainPage(props: PageProps) {
       PageSkeletonToRender = () => <p>Fallback skeleton</p>
       break;
   }
-  
+
   return (
     <ErrorBoundary fallback={null}>
       <Suspense fallback={<PageSkeletonToRender />}>

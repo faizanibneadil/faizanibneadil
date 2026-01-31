@@ -9,7 +9,6 @@ export const multiTenancy = multiTenantPlugin<Config>({
         pages: {},
         blogs: {},
         media: {},
-        notes: {},
         projects: {},
         educations: {},
         achievements: {},

@@ -36,7 +36,6 @@ export const editorConfig = lexicalEditor({
                     'hackathons',
                     'licenses',
                     'media',
-                    'notes',
                     'publications',
                     'researches',
                 ], // Collections for internal links

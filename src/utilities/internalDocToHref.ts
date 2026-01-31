@@ -22,7 +22,6 @@ export function internalDocToHref({ node }: { node: SerializedLinkNode }) {
       certifications: route.RouteWithDocSlug,
       forms: route.RouteWithDocSlug,
       licenses: route.RouteWithDocSlug,
-      notes: route.RouteWithDocSlug,
       projects: route.RouteWithDocSlug,
       publications: route.RouteWithDocSlug,
       researches: route.RouteWithDocSlug,

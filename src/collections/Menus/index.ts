@@ -1,17 +1,11 @@
 import type { CollectionConfig } from "payload";
-
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-// import { NavigationGroups } from "@/constants";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { Iconify } from "@/fields/iconify";
-// import { VersionConfig } from "@/utilities/version-config";
 
 export const Menus: CollectionConfig<'menus'> = {
     slug: 'menus',
     labels: { plural: 'Menus', singular: 'Menu' },
-    admin: {
-        // group: NavigationGroups.portfolio 
-    },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
@@ -56,5 +50,4 @@ export const Menus: CollectionConfig<'menus'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    // versions: VersionConfig(),
 }

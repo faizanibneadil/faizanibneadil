@@ -1,5 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import type { PageProps } from "@/types"
+import { getMediaUrl } from "@/utilities/getURL"
+import type { Metadata } from "next"
 import dynamic from "next/dynamic"
 import type { CollectionSlug, DataFromCollectionSlug, PaginatedDocs } from "payload"
 
@@ -9,7 +11,8 @@ export type TCollectionRegistries = {
             collection: PaginatedDocs<DataFromCollectionSlug<K>>,
             isRootPage: boolean
         } & PageProps>,
-        skeleton: React.ComponentType<{}>
+        skeleton: React.ComponentType<{}>,
+        metadata: (args: { doc: DataFromCollectionSlug<K> }) => Metadata | Promise<Metadata>
     }
 }
 
@@ -18,6 +21,13 @@ export const CollectionsRegistries: TCollectionRegistries = {
         component: dynamic(() => import("@/collections/Blogs/components/collection").then(({ Blogs }) => ({
             default: Blogs
         })), { ssr: true }),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title || 'Unknown Document.',
+            description: doc?.meta?.description || 'No Description Provided.',
+            ...(doc?.meta?.image && {
+                icons: [{ url: getMediaUrl(doc?.meta?.image), fetchPriority: 'high' }]
+            }),
+        }),
         skeleton: () => {
             const projects = Array.from({ length: 10 }).map((item, idx) => (
                 <div key={`project-${idx}`} className="flex flex-col gap-4">
@@ -50,16 +60,17 @@ export const CollectionsRegistries: TCollectionRegistries = {
             )
         }
     },
-    notes: {
-        component: dynamic(() => import("@/collections/Notes/components/collection").then(({ Notes }) => ({
-            default: Notes
-        })), { ssr: true }),
-        skeleton: () => <p>Display notes skeleton</p>
-    },
     projects: {
         component: dynamic(() => import("@/collections/Projects/components/collection").then(({ Projects }) => ({
             default: Projects
         })), { ssr: true }),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title || 'Unknown Document.',
+            description: doc?.meta?.description || 'No Description Provided.',
+            ...(doc?.meta?.image && {
+                icons: [{ url: getMediaUrl(doc?.meta?.image), fetchPriority: 'high' }]
+            }),
+        }),
         skeleton: () => {
             const projects = Array.from({ length: 10 }).map((item, idx) => (
                 <div key={`project-${idx}`} className="flex flex-col gap-4">
@@ -96,48 +107,65 @@ export const CollectionsRegistries: TCollectionRegistries = {
         component: dynamic(() => import("@/collections/Achievements/components/collection").then(({ Achievements }) => ({
             default: Achievements
         })), { ssr: true }),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title || 'Unknown Document.',
+            description: doc?.meta?.description || 'No Description Provided.',
+            ...(doc?.meta?.image && {
+                icons: [{ url: getMediaUrl(doc?.meta?.image), fetchPriority: 'high' }]
+            }),
+        }),
         skeleton: () => <p>Display achievements skeleton</p>
     },
     certifications: {
         component: dynamic(() => import("@/collections/Certifications/components/collection").then(({ Certifications }) => ({
             default: Certifications
         })), { ssr: true }),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title || 'Unknown Document.',
+            description: doc?.meta?.description || 'No Description Provided.',
+            ...(doc?.meta?.image && {
+                icons: [{ url: getMediaUrl(doc?.meta?.image), fetchPriority: 'high' }]
+            }),
+        }),
         skeleton: () => <p>Display certifications skeleton</p>
-    },
-    educations: {
-        component: dynamic(() => import("@/collections/Educations/components/collection").then(({ Educations }) => ({
-            default: Educations
-        })), { ssr: true }),
-        skeleton: () => <p>Display educations skeleton</p>
     },
     hackathons: {
         component: dynamic(() => import("@/collections/Hackathons/components/collection").then(({ Hackathons }) => ({
             default: Hackathons
         })), { ssr: true }),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title || 'Unknown Document.',
+            description: doc?.meta?.description || 'No Description Provided.',
+            ...(doc?.meta?.image && {
+                icons: [{ url: getMediaUrl(doc?.meta?.image), fetchPriority: 'high' }]
+            }),
+        }),
         skeleton: () => <p>Display hackathon skeleton</p>
-    },
-    licenses: {
-        component: dynamic(() => import("@/collections/Licenses/components/collection").then(({ Licenses }) => ({
-            default: Licenses
-        })), { ssr: true }),
-        skeleton: () => <p>Display licenses skeleton</p>
     },
     publications: {
         component: dynamic(() => import("@/collections/Publications/components/collection").then(({ Publications }) => ({
             default: Publications
         })), { ssr: true }),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title || 'Unknown Document.',
+            description: doc?.meta?.description || 'No Description Provided.',
+            ...(doc?.meta?.image && {
+                icons: [{ url: getMediaUrl(doc?.meta?.image), fetchPriority: 'high' }]
+            }),
+        }),
         skeleton: () => <p>Display publications skeleton</p>
     },
     researches: {
         component: dynamic(() => import("@/collections/Researches/components/collection").then(({ Researches }) => ({
             default: Researches
         })), { ssr: true }),
+        metadata: ({ doc }) => ({
+            title: doc?.meta?.title || doc?.title || 'Unknown Document.',
+            description: doc?.meta?.description || 'No Description Provided.',
+            ...(doc?.meta?.image && {
+                icons: [{ url: getMediaUrl(doc?.meta?.image), fetchPriority: 'high' }]
+            }),
+        }),
         skeleton: () => <p>Display researches skeleton</p>
     },
-    skills: {
-        component: dynamic(() => import("@/collections/Skills/components/collection").then(({ Skills }) => ({
-            default: Skills
-        })), { ssr: true }),
-        skeleton: () => <p>Display skills skeleton</p>
-    }
 }

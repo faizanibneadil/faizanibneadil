@@ -1,12 +1,7 @@
 import { isSuperAdmin } from "@/access/isSuperAdmin";
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { NavigationGroups } from "@/constants";
-import { Iconify } from "@/fields/iconify";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
-import { generatePreview } from "@/utilities/generate-preview";
-import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
-// import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
 
@@ -16,17 +11,12 @@ export const Licenses: CollectionConfig<'licenses'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        // group: NavigationGroups.portfolio,
+        defaultColumns: ['title', 'issuingAuthority', 'licenseNumber', 'status'],
         hidden: ({ user }) => {
-            if(isSuperAdmin(user)){
-                return false
-            }
-            if (user?.industry.slug === 'healthcare') {
-                return false
-            }
-            return true
+            if (isSuperAdmin(user)) return false;
+            // Sirf healthcare ya relevant industries ke liye show hoga
+            return user?.industry?.slug !== 'healthcare';
         },
-        preview: generatePreview({ collection: 'licenses' })
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -37,139 +27,118 @@ export const Licenses: CollectionConfig<'licenses'> = {
     fields: [
         TitleField(),
         {
-            type: 'tabs',
-            tabs: [
+            type: 'row',
+            fields: [
                 {
-                    name: 'content',
-                    label: 'Content',
-                    fields: [
-                        {
-                            type: 'richText',
-                            name: 'description',
-                            label: false,
-                            editor: lexicalEditor(),
-                            admin: {
-                                description: 'Write description.'
-                            }
-                        },
-                        {
-                            type: 'group',
-                            name: 'dates',
-                            label: 'Dates',
-                            fields: [
-                                {
-                                    type: 'row',
-                                    fields: [
-                                        {
-                                            type: 'date',
-                                            name: 'to',
-                                            label: 'TO',
-                                            required: true
-                                        },
-                                        {
-                                            type: 'date',
-                                            name: 'from',
-                                            label: 'FROM',
-                                            required: true
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            type: 'text',
-                            name: 'location',
-                            label: 'Location'
-                        },
-                        {
-                            type: 'array',
-                            name: 'links',
-                            labels: { singular: 'Link', plural: 'Links' },
-                            admin: {
-                                initCollapsed: true
-                            },
-                            fields: [
-                                Iconify(),
-                                {
-                                    type: 'row',
-                                    fields: [
-                                        {
-                                            type: 'text',
-                                            label: 'Lable',
-                                            name: 'label',
-                                            required: true,
-                                            admin: {
-                                                width: '50%'
-                                            }
-                                        },
-                                        {
-                                            type: 'text',
-                                            name: 'link',
-                                            label: 'Link',
-                                            required: true,
-                                            admin: {
-                                                width: '50%'
-                                            }
-                                        }
-                                    ]
-                                }
-                            ],
-                            maxRows: 5
-                        },
-                        {
-                            type: 'upload',
-                            relationTo: 'media',
-                            name: 'image',
-                            label: 'Avatar',
-                            required: true,
-                            hasMany: false,
-                            admin: {
-                                position: 'sidebar'
-                            }
-                        }
-                    ]
+                    name: 'issuingAuthority',
+                    type: 'text',
+                    label: 'Issuing Authority / Board',
+                    required: true,
+                    admin: {
+                        width: '50%',
+                        description: 'e.g., Pakistan Medical Commission, State Bar, etc.'
+                    }
                 },
                 {
-                    name: 'meta',
-                    label: 'SEO',
+                    name: 'licenseNumber',
+                    type: 'text',
+                    label: 'License / Registration Number',
+                    required: true,
+                    admin: {
+                        width: '50%',
+                        description: 'The official unique ID of your license.'
+                    }
+                },
+            ]
+        },
+        {
+            type: 'upload',
+            relationTo: 'media',
+            name: 'image',
+            label: 'Official Seal / Logo',
+            required: true,
+            admin: {
+                description: 'Upload the logo of the issuing board or a scan of the license.'
+            }
+        },
+        {
+            type: 'richText',
+            name: 'description',
+            label: 'Scope of Practice',
+            editor: lexicalEditor(),
+            admin: {
+                description: 'Briefly describe the professional activities this license permits.'
+            }
+        },
+        {
+            type: 'group',
+            name: 'validity',
+            label: 'Validity Details',
+            fields: [
+                {
+                    type: 'row',
                     fields: [
-                        MetaTitleField({
-                            // if the `generateTitle` function is configured
-                            hasGenerateFn: true,
-                        }),
-                        MetaDescriptionField({
-                            // if the `generateDescription` function is configured
-                            hasGenerateFn: true,
-                        }),
-                        MetaImageField({
-                            // the upload collection slug
-                            relationTo: 'media',
-
-                            // if the `generateImage` function is configured
-                            hasGenerateFn: true,
-                        }),
-                        PreviewField({
-                            // if the `generateUrl` function is configured
-                            hasGenerateFn: true,
-
-                            // field paths to match the target field for data
-                            titlePath: 'meta.title',
-                            descriptionPath: 'meta.description',
-                        }),
-                        OverviewField({
-                            // field paths to match the target field for data
-                            titlePath: 'meta.title',
-                            descriptionPath: 'meta.description',
-                            imagePath: 'meta.image',
-                        })
+                        {
+                            name: 'issuedDate',
+                            type: 'date',
+                            label: 'Issue Date',
+                            required: true,
+                            admin: { width: '33.33%' }
+                        },
+                        {
+                            name: 'expiryDate',
+                            type: 'date',
+                            label: 'Expiry Date',
+                            required: true, // Licenses usually always have an expiry
+                            admin: { width: '33.33%' }
+                        },
+                        {
+                            name: 'status',
+                            type: 'select',
+                            label: 'Status',
+                            defaultValue: 'active',
+                            options: [
+                                { label: 'Active', value: 'active' },
+                                { label: 'Expired', value: 'expired' },
+                                { label: 'Under Renewal', value: 'renewal' },
+                                { label: 'Inactive', value: 'inactive' },
+                            ],
+                            admin: { width: '33.33%' }
+                        },
                     ]
                 }
             ]
+        },
+        {
+            type: 'text',
+            name: 'location',
+            label: 'Jurisdiction / Region',
+            admin: {
+                placeholder: 'e.g., Sindh, Pakistan or New York, USA'
+            }
+        },
+        {
+            type: 'array',
+            name: 'resources',
+            label: 'Resources',
+            labels: { singular: 'Resource', plural: 'Resources' },
+            admin: {
+                description: 'Links to online registries or downloadable license copies.'
+            },
+            fields: [
+                {
+                    type: 'row',
+                    fields: [
+                        { name: 'label', type: 'text', label: 'Label', required: true, admin: { placeholder: 'e.g., Verify on PMC Portal' } },
+                        { name: 'link', type: 'text', label: 'Link', required: true, admin: { placeholder: 'https://...' } }
+                    ]
+                }
+            ],
+            maxRows: 3
         },
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    // versions: VersionConfig(),
 }

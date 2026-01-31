@@ -112,13 +112,19 @@ export const ResumeCard = async (props: { experienceProps?: Experience, educatio
   if (blockType === 'education') {
     const {
       educationProps: {
-        content: {
-          image,
-          dates,
-          description,
-          qualification,
-        } = {} as Education['content'],
+        createdAt,
+        id,
         title,
+        updatedAt,
+        academy,
+        dates,
+        degree,
+        deletedAt,
+        description,
+        details,
+        image,
+        resources,
+        tenant
       } = {} as Education
     } = props || {}
 
@@ -147,7 +153,7 @@ export const ResumeCard = async (props: { experienceProps?: Experience, educatio
                   <Dates to={dates?.to} from={dates?.from} />
                 </div>
               </div>
-              {qualification?.degree && <div className="font-sans text-xs">{qualification?.degree}</div>}
+              {degree && <div className="font-sans text-xs">{degree}</div>}
             </CardHeader>
             {description && params && Boolean(Object.keys(params || {}).length) && (
               <div className="mt-2 prose max-w-full text-pretty font-sans text-xs text-foreground dark:prose-invert">

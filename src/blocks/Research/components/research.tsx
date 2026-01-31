@@ -50,7 +50,8 @@ export async function Research(props: BlockProps<'research'>) {
                                     key={research.id}
                                     delay={BLUR_FADE_DELAY * 15 + id * 0.05}
                                 >
-                                    <HackathonCard {...research} />
+                                    make research card
+                                    {/* <HackathonCard {...research} /> */}
                                 </BlurFade>
                             )
                         })}

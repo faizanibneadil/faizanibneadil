@@ -1,8 +1,6 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { Iconify } from "@/fields/iconify";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
-import { generatePreview } from "@/utilities/generate-preview";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
@@ -13,8 +11,7 @@ export const Publications: CollectionConfig<'publications'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        // group: NavigationGroups.portfolio,
-        preview: generatePreview({ collection: 'publications' })
+        defaultColumns: ['title', 'publisher', 'publishedDate', 'type'],
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -32,120 +29,112 @@ export const Publications: CollectionConfig<'publications'> = {
                     label: 'Content',
                     fields: [
                         {
-                            type: 'richText',
-                            name: 'description',
-                            label: false,
-                            editor: lexicalEditor(),
-                            admin: {
-                                description: 'Write description.'
-                            }
-                        },
-                        {
-                            type: 'group',
-                            name: 'dates',
-                            label: 'Dates',
+                            type: 'row',
                             fields: [
                                 {
-                                    type: 'row',
-                                    fields: [
-                                        {
-                                            type: 'date',
-                                            name: 'to',
-                                            label: 'TO',
-                                            required: true
-                                        },
-                                        {
-                                            type: 'date',
-                                            name: 'from',
-                                            label: 'FROM',
-                                            required: true
-                                        }
-                                    ]
-                                }
+                                    name: 'type',
+                                    type: 'select',
+                                    label: 'Publication Type',
+                                    required: true,
+                                    options: [
+                                        { label: 'Research Paper / Journal', value: 'research_paper' },
+                                        { label: 'Book / Textbook', value: 'book' },
+                                        { label: 'Conference Proceeding', value: 'conference' },
+                                        { label: 'Patent', value: 'patent' },
+                                        { label: 'White Paper', value: 'white_paper' },
+                                    ],
+                                    admin: {
+                                        width: '50%',
+                                        description: 'Select the formal category of this work.'
+                                    }
+                                },
+                                {
+                                    name: 'publisher',
+                                    type: 'text',
+                                    label: 'Publisher / Journal / Body',
+                                    required: true,
+                                    admin: {
+                                        width: '50%',
+                                        description: 'e.g., IEEE, Springer, Oxford University Press.'
+                                    }
+                                },
                             ]
-                        },
-                        {
-                            type: 'text',
-                            name: 'location',
-                            label: 'Location'
-                        },
-                        {
-                            type: 'array',
-                            name: 'links',
-                            labels: { singular: 'Link', plural: 'Links' },
-                            admin: {
-                                initCollapsed: true
-                            },
-                            fields: [
-                                Iconify(),
-                                {
-                                    type: 'row',
-                                    fields: [
-                                        {
-                                            type: 'text',
-                                            label: 'Lable',
-                                            name: 'label',
-                                            required: true,
-                                            admin: {
-                                                width: '50%'
-                                            }
-                                        },
-                                        {
-                                            type: 'text',
-                                            name: 'link',
-                                            label: 'Link',
-                                            required: true,
-                                            admin: {
-                                                width: '50%'
-                                            }
-                                        }
-                                    ]
-                                }
-                            ],
-                            maxRows: 5
                         },
                         {
                             type: 'upload',
                             relationTo: 'media',
                             name: 'image',
-                            label: 'Avatar',
+                            label: 'Cover / Thumbnail',
                             required: true,
-                            hasMany: false,
                             admin: {
-                                position: 'sidebar'
+                                description: 'Upload a book cover or a preview image of the paper.'
                             }
-                        }
+                        },
+                        {
+                            type: 'richText',
+                            name: 'description',
+                            label: 'Abstract / Summary',
+                            editor: lexicalEditor(),
+                            admin: {
+                                description: 'Provide a formal abstract or high-level summary of the work.'
+                            }
+                        },
+                        {
+                            type: 'row',
+                            fields: [
+                                {
+                                    name: 'publishedDate',
+                                    type: 'date',
+                                    label: 'Publication Date',
+                                    required: true,
+                                    admin: { width: '50%', description: 'The official date of release or filing.' }
+                                },
+                                {
+                                    name: 'doi',
+                                    type: 'text',
+                                    label: 'DOI / ISSN / Patent No.',
+                                    admin: {
+                                        width: '50%',
+                                        description: 'Formal identification number for citation.',
+                                        placeholder: 'e.g., 10.1038/nature12345'
+                                    }
+                                },
+                            ]
+                        },
+                        {
+                            type: 'array',
+                            name: 'resources',
+                            label: 'Recourses',
+                            labels: { singular: 'Recurse', plural: 'Recourses' },
+                            admin: {
+                                description: 'Add links to the full text, library record, or digital PDF.'
+                            },
+                            fields: [
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        { name: 'label', type: 'text', label: 'Label', required: true, admin: { placeholder: 'e.g., Read on IEEE Xplore' } },
+                                        { name: 'link', type: 'text', label: 'URL', required: true, admin: { placeholder: 'https://...' } }
+                                    ]
+                                }
+                            ],
+                            maxRows: 3
+                        },
                     ]
                 },
                 {
                     name: 'meta',
                     label: 'SEO',
                     fields: [
-                        MetaTitleField({
-                            // if the `generateTitle` function is configured
-                            hasGenerateFn: true,
-                        }),
-                        MetaDescriptionField({
-                            // if the `generateDescription` function is configured
-                            hasGenerateFn: true,
-                        }),
-                        MetaImageField({
-                            // the upload collection slug
-                            relationTo: 'media',
-
-                            // if the `generateImage` function is configured
-                            hasGenerateFn: true,
-                        }),
+                        MetaTitleField({ hasGenerateFn: true }),
+                        MetaDescriptionField({ hasGenerateFn: true }),
+                        MetaImageField({ relationTo: 'media', hasGenerateFn: true }),
                         PreviewField({
-                            // if the `generateUrl` function is configured
                             hasGenerateFn: true,
-
-                            // field paths to match the target field for data
                             titlePath: 'meta.title',
                             descriptionPath: 'meta.description',
                         }),
                         OverviewField({
-                            // field paths to match the target field for data
                             titlePath: 'meta.title',
                             descriptionPath: 'meta.description',
                             imagePath: 'meta.image',
@@ -159,5 +148,4 @@ export const Publications: CollectionConfig<'publications'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    // versions: VersionConfig(),
 }

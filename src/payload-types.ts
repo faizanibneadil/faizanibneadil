@@ -103,7 +103,6 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    notes: Note;
     blogs: Blog;
     pages: Page;
     educations: Education;
@@ -136,7 +135,6 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    notes: NotesSelect<false> | NotesSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     educations: EducationsSelect<false> | EducationsSelect<true>;
@@ -780,40 +778,55 @@ export interface Education {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+  /**
+   * Name of the school, university, or bootcamp.
+   */
+  academy?: string | null;
+  /**
+   * e.g., Computer Science, Graphic Design, etc.
+   */
+  degree?: string | null;
+  /**
+   * Upload university or school logo.
+   */
+  image?: (number | null) | Media;
+  /**
+   * Mention key subjects, thesis topics, or academic honors.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    qualification?: {
-      academy?: string | null;
-      degree?: string | null;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
-    dates?: {
-      to?: string | null;
-      from?: string | null;
-    };
-    image: number | Media;
+    [k: string]: unknown;
+  } | null;
+  details?: {
+    grade?: string | null;
+    location?: string | null;
   };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
+  dates?: {
+    from?: string | null;
+    to?: string | null;
+    currentlyStudying?: boolean | null;
   };
+  /**
+   * Add links to your thesis, university profile, or digital degree copy.
+   */
+  resources?:
+    | {
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -975,9 +988,19 @@ export interface Achievement {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
+  content?: {
     /**
-     * Write description.
+     * Select the category that best classifies this recognition.
+     */
+    type?:
+      | ('award' | 'honor' | 'speaking-engagement' | 'competition-winner' | 'community-contribution' | 'other')
+      | null;
+    /**
+     * Upload a high-quality badge, logo, or certificate photo for visual proof.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Provide a detailed overview of the achievement and your specific role or contribution.
      */
     description?: {
       root: {
@@ -994,20 +1017,40 @@ export interface Achievement {
       };
       [k: string]: unknown;
     } | null;
-    dates: {
-      to: string;
-      from: string;
+    dates?: {
+      /**
+       * Starting date or date received.
+       */
+      from?: string | null;
+      /**
+       * End date or leave blank if it is a single-day event.
+       */
+      to?: string | null;
+      /**
+       * Physical venue or digital platform where the event took place.
+       */
+      location?: string | null;
     };
-    location?: string | null;
-    links?:
+    /**
+     * Quantify your success with measurable data (e.g., Rank, Growth %, or Scale).
+     */
+    stats?:
       | {
-          iconify?: string | null;
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Add relevant links to verify this achievement (e.g., News articles, YouTube, or Event sites).
+     */
+    resources?:
+      | {
           label: string;
           link: string;
           id?: string | null;
         }[]
       | null;
-    image: number | Media;
   };
   meta?: {
     title?: string | null;
@@ -1019,7 +1062,6 @@ export interface Achievement {
   };
   updatedAt: string;
   createdAt: string;
-  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1057,7 +1099,19 @@ export interface Certification {
   title: string;
   content: {
     /**
-     * Write description.
+     * The entity that granted this credential (e.g., Cisco, Yale, PMI).
+     */
+    issuer: string;
+    /**
+     * Unique identifier provided by the issuer for verification.
+     */
+    credentialId?: string | null;
+    /**
+     * Upload a high-resolution logo of the issuer or the official certification badge.
+     */
+    image: number | Media;
+    /**
+     * Detail the curriculum, skills mastered, or the exam passed to earn this certificate.
      */
     description?: {
       root: {
@@ -1074,20 +1128,30 @@ export interface Certification {
       };
       [k: string]: unknown;
     } | null;
-    dates: {
-      to: string;
-      from: string;
+    validity: {
+      /**
+       * Date when the credential was granted.
+       */
+      issuedDate: string;
+      /**
+       * Date when the credential expires.
+       */
+      expiryDate?: string | null;
+      /**
+       * Check if this certification is valid indefinitely.
+       */
+      isLifetime?: boolean | null;
     };
-    location?: string | null;
-    links?:
+    /**
+     * Provide links to official verification portals, online badges, or PDF copies.
+     */
+    resources?:
       | {
-          iconify?: string | null;
           label: string;
           link: string;
           id?: string | null;
         }[]
       | null;
-    image: number | Media;
   };
   meta?: {
     title?: string | null;
@@ -1263,7 +1327,19 @@ export interface Publication {
   title: string;
   content: {
     /**
-     * Write description.
+     * Select the formal category of this work.
+     */
+    type: 'research_paper' | 'book' | 'conference' | 'patent' | 'white_paper';
+    /**
+     * e.g., IEEE, Springer, Oxford University Press.
+     */
+    publisher: string;
+    /**
+     * Upload a book cover or a preview image of the paper.
+     */
+    image: number | Media;
+    /**
+     * Provide a formal abstract or high-level summary of the work.
      */
     description?: {
       root: {
@@ -1280,20 +1356,24 @@ export interface Publication {
       };
       [k: string]: unknown;
     } | null;
-    dates: {
-      to: string;
-      from: string;
-    };
-    location?: string | null;
-    links?:
+    /**
+     * The official date of release or filing.
+     */
+    publishedDate: string;
+    /**
+     * Formal identification number for citation.
+     */
+    doi?: string | null;
+    /**
+     * Add links to the full text, library record, or digital PDF.
+     */
+    resources?:
       | {
-          iconify?: string | null;
           label: string;
           link: string;
           id?: string | null;
         }[]
       | null;
-    image: number | Media;
   };
   meta?: {
     title?: string | null;
@@ -1343,7 +1423,19 @@ export interface Research {
   title: string;
   content: {
     /**
-     * Write description.
+     * Current progress of the research.
+     */
+    status: 'ongoing' | 'completed' | 'on_hold' | 'under_review';
+    /**
+     * State your position in this study.
+     */
+    role?: string | null;
+    /**
+     * An image representing the research or the project poster.
+     */
+    image: number | Media;
+    /**
+     * Detail your hypothesis, research methodology, and findings.
      */
     description?: {
       root: {
@@ -1361,19 +1453,20 @@ export interface Research {
       [k: string]: unknown;
     } | null;
     dates: {
-      to: string;
       from: string;
+      to?: string | null;
+      location?: string | null;
     };
-    location?: string | null;
-    links?:
+    /**
+     * Links to dataset, methodology papers, or whitepapers.
+     */
+    resources?:
       | {
-          iconify?: string | null;
           label: string;
           link: string;
           id?: string | null;
         }[]
       | null;
-    image: number | Media;
   };
   meta?: {
     title?: string | null;
@@ -1432,48 +1525,52 @@ export interface License {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
-    /**
-     * Write description.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+  /**
+   * e.g., Pakistan Medical Commission, State Bar, etc.
+   */
+  issuingAuthority: string;
+  /**
+   * The official unique ID of your license.
+   */
+  licenseNumber: string;
+  /**
+   * Upload the logo of the issuing board or a scan of the license.
+   */
+  image: number | Media;
+  /**
+   * Briefly describe the professional activities this license permits.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    dates: {
-      to: string;
-      from: string;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
-    location?: string | null;
-    links?:
-      | {
-          iconify?: string | null;
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
-    image: number | Media;
+    [k: string]: unknown;
+  } | null;
+  validity: {
+    issuedDate: string;
+    expiryDate: string;
+    status?: ('active' | 'expired' | 'renewal' | 'inactive') | null;
   };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
+  location?: string | null;
+  /**
+   * Links to online registries or downloadable license copies.
+   */
+  resources?:
+    | {
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1538,43 +1635,6 @@ export interface Industry {
    */
   lockSlug?: boolean | null;
   slug: string;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "notes".
- */
-export interface Note {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  content?: {
-    content?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1676,10 +1736,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
-      } | null)
-    | ({
-        relationTo: 'notes';
-        value: number | Note;
       } | null)
     | ({
         relationTo: 'blogs';
@@ -1863,29 +1919,6 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "notes_select".
- */
-export interface NotesSelect<T extends boolean = true> {
-  tenant?: T;
-  title?: T;
-  content?:
-    | T
-    | {
-        content?: T;
-      };
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "blogs_select".
  */
 export interface BlogsSelect<T extends boolean = true> {
@@ -1955,30 +1988,29 @@ export interface PagesSelect<T extends boolean = true> {
 export interface EducationsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  academy?: T;
+  degree?: T;
+  image?: T;
+  description?: T;
+  details?:
     | T
     | {
-        description?: T;
-        qualification?:
-          | T
-          | {
-              academy?: T;
-              degree?: T;
-            };
-        dates?:
-          | T
-          | {
-              to?: T;
-              from?: T;
-            };
-        image?: T;
+        grade?: T;
+        location?: T;
       };
-  meta?:
+  dates?:
     | T
     | {
-        title?: T;
-        description?: T;
-        image?: T;
+        from?: T;
+        to?: T;
+        currentlyStudying?: T;
+      };
+  resources?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -2151,23 +2183,24 @@ export interface ResearchesSelect<T extends boolean = true> {
   content?:
     | T
     | {
+        status?: T;
+        role?: T;
+        image?: T;
         description?: T;
         dates?:
           | T
           | {
-              to?: T;
               from?: T;
+              to?: T;
+              location?: T;
             };
-        location?: T;
-        links?:
+        resources?:
           | T
           | {
-              iconify?: T;
               label?: T;
               link?: T;
               id?: T;
             };
-        image?: T;
       };
   meta?:
     | T
@@ -2190,23 +2223,30 @@ export interface AchievementsSelect<T extends boolean = true> {
   content?:
     | T
     | {
+        type?: T;
+        image?: T;
         description?: T;
         dates?:
           | T
           | {
-              to?: T;
               from?: T;
+              to?: T;
+              location?: T;
             };
-        location?: T;
-        links?:
+        stats?:
           | T
           | {
-              iconify?: T;
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+        resources?:
+          | T
+          | {
               label?: T;
               link?: T;
               id?: T;
             };
-        image?: T;
       };
   meta?:
     | T
@@ -2217,7 +2257,6 @@ export interface AchievementsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
-  deletedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2229,23 +2268,24 @@ export interface CertificationsSelect<T extends boolean = true> {
   content?:
     | T
     | {
+        issuer?: T;
+        credentialId?: T;
+        image?: T;
         description?: T;
-        dates?:
+        validity?:
           | T
           | {
-              to?: T;
-              from?: T;
+              issuedDate?: T;
+              expiryDate?: T;
+              isLifetime?: T;
             };
-        location?: T;
-        links?:
+        resources?:
           | T
           | {
-              iconify?: T;
               label?: T;
               link?: T;
               id?: T;
             };
-        image?: T;
       };
   meta?:
     | T
@@ -2268,23 +2308,19 @@ export interface PublicationsSelect<T extends boolean = true> {
   content?:
     | T
     | {
+        type?: T;
+        publisher?: T;
+        image?: T;
         description?: T;
-        dates?:
+        publishedDate?: T;
+        doi?: T;
+        resources?:
           | T
           | {
-              to?: T;
-              from?: T;
-            };
-        location?: T;
-        links?:
-          | T
-          | {
-              iconify?: T;
               label?: T;
               link?: T;
               id?: T;
             };
-        image?: T;
       };
   meta?:
     | T
@@ -2304,33 +2340,24 @@ export interface PublicationsSelect<T extends boolean = true> {
 export interface LicensesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  issuingAuthority?: T;
+  licenseNumber?: T;
+  image?: T;
+  description?: T;
+  validity?:
     | T
     | {
-        description?: T;
-        dates?:
-          | T
-          | {
-              to?: T;
-              from?: T;
-            };
-        location?: T;
-        links?:
-          | T
-          | {
-              iconify?: T;
-              label?: T;
-              link?: T;
-              id?: T;
-            };
-        image?: T;
+        issuedDate?: T;
+        expiryDate?: T;
+        status?: T;
       };
-  meta?:
+  location?: T;
+  resources?:
     | T
     | {
-        title?: T;
-        description?: T;
-        image?: T;
+        label?: T;
+        link?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;

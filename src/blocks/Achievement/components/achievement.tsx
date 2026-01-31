@@ -1,8 +1,8 @@
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import BlurFade from "@/components/magicui/blur-fade";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import { HackathonCard } from "@/components/hackathon-card";
-import { BlockProps } from "@/types";
+import type { BlockProps } from "@/types";
+import { AchievementCard } from '@/components/achievement-card';
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Achievement(props: BlockProps<'achievement'>) {
@@ -21,8 +21,8 @@ export async function Achievement(props: BlockProps<'achievement'>) {
         id
     } = blockProps || {}
 
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
+    // const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    // const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     return (
         <section id="researches" aria-label={blockName ?? blockType}>
@@ -50,7 +50,7 @@ export async function Achievement(props: BlockProps<'achievement'>) {
                                     key={achievement.id}
                                     delay={BLUR_FADE_DELAY * 15 + id * 0.05}
                                 >
-                                    <HackathonCard {...achievement} />
+                                    <AchievementCard achievement={achievement} params={paramsFromProps} searchParams={searchParamsFromProps} />
                                 </BlurFade>
                             )
                         })}

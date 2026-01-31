@@ -19,7 +19,6 @@ export const seo = seoPlugin({
                 case 'educations':
                 case 'hackathons':
                 case 'licenses':
-                case 'notes':
                 case 'pages':
                 case 'projects':
                 case 'researches':
@@ -42,12 +41,6 @@ export const seo = seoPlugin({
         try {
             switch (collectionSlug) {
                 case 'blogs':
-                case 'notes':
-                    return await seoGemini({
-                        collection: collectionSlug,
-                        entity: 'description',
-                        data: convertLexicalToPlaintext({ data: doc?.content })
-                    })
                 case 'achievements':
                 case 'industries':
                 case 'certifications':

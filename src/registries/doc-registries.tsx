@@ -31,21 +31,6 @@ export const DocRegistries: TDocComponents = {
             }
         })
     },
-    notes: {
-        component: dynamic(() => import('@/collections/Notes/components/entity').then(({ NoteEntity }) => {
-            return NoteEntity
-        })),
-        metadata: ({ doc }) => ({
-            title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content?.content! }),
-            openGraph: {
-                type: 'article',
-                title: doc?.meta?.title || '',
-                description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image) ?? fallbackOg() }]
-            }
-        })
-    },
     projects: {
         component: dynamic(() => import('@/collections/Projects/components/entity').then(({ ProjectEntity }) => {
             return ProjectEntity
@@ -91,21 +76,6 @@ export const DocRegistries: TDocComponents = {
             }
         })
     },
-    educations: {
-        component: dynamic(() => import('@/collections/Educations/components/entity').then(({ EducationEntity }) => {
-            return EducationEntity
-        })),
-        metadata: ({ doc }) => ({
-            title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
-            openGraph: {
-                type: 'article',
-                title: doc?.meta?.title || '',
-                description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image || doc?.content?.image) || fallbackOg() }]
-            }
-        })
-    },
     hackathons: {
         component: dynamic(() => import('@/collections/Hackathons/components/entity').then(({ HackathonEntity }) => {
             return HackathonEntity
@@ -118,21 +88,6 @@ export const DocRegistries: TDocComponents = {
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
                 images: [{ url: og(doc?.meta?.image ?? doc?.content?.image) || fallbackOg() }]
-            }
-        })
-    },
-    licenses: {
-        component: dynamic(() => import('@/collections/Licenses/components/entity').then(({ LicenseEntity }) => {
-            return LicenseEntity
-        })),
-        metadata: ({ doc }) => ({
-            title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
-            openGraph: {
-                type: 'article',
-                title: doc?.meta?.title || '',
-                description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image || doc?.content?.image) || fallbackOg() }]
             }
         })
     },
@@ -166,10 +121,4 @@ export const DocRegistries: TDocComponents = {
             }
         })
     },
-    // skills: {
-    //     component: dynamic(() => import('@/collections/Skills/components/entity').then(({ SkillEntity }) => {
-    //         return SkillEntity
-    //     })),
-    //     metadata: ({doc}) => ({})
-    // }
 }
