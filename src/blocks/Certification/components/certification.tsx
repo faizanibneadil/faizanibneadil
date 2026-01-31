@@ -50,7 +50,8 @@ export async function Certification(props: BlockProps<'certification'>) {
                                     key={certification.id}
                                     delay={BLUR_FADE_DELAY * 15 + id * 0.05}
                                 >
-                                    <HackathonCard {...certification} />
+                                    make card for certificate
+                                    {/* <HackathonCard {...certification} /> */}
                                 </BlurFade>
                             )
                         })}

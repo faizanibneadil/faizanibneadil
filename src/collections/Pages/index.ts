@@ -5,7 +5,6 @@ import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { ProtectRootPage } from "@/collections/Pages/hooks/ProtectRootPage";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { SwapRootPage } from "@/collections/Pages/hooks/SwapRootPage";
-import { generatePreview } from "@/utilities/generate-preview";
 import { slugify } from "@/utilities/slugify";
 import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
 import {
@@ -27,23 +26,6 @@ export const Pages: CollectionConfig<'pages'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        // group: NavigationGroups.portfolio,
-        preview: generatePreview({ collection: 'pages' }),
-        // livePreview: {
-        //     url: async ({ data, req: { payload } }) => {
-        //         try {
-        //             const { domain } = await payload.findByID({
-        //                 collection: 'tenants',
-        //                 id: data?.tenant,
-        //                 select: { domain: true }
-        //             })
-        //             return getServerSideURL() + `/${domain}/p/${data?.pageMode?.mode === 'collection' ? data?.configurations?.slug ?? data?.slug : data?.slug}`
-        //         } catch (error) {
-        //             payload.logger.error(error, 'Something went wrong when fetching tenant for live preview.')
-        //             return getServerSideURL()
-        //         }
-        //     }
-        // }
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -90,10 +72,7 @@ export const Pages: CollectionConfig<'pages'> = {
                             label: 'Configurations',
                             admin: {
                                 condition: (fields, siblings_blocks, ctx) => {
-                                    if (fields?.content?.pageMode?.mode === 'collection') {
-                                        return true
-                                    }
-                                    return false
+                                    return fields?.content?.pageMode?.mode === 'collection'
                                 },
                             },
                             fields: [
@@ -142,10 +121,7 @@ export const Pages: CollectionConfig<'pages'> = {
                             admin: {
                                 initCollapsed: true,
                                 condition: (fields, siblings_blocks, ctx) => {
-                                    if (fields?.content?.pageMode?.mode === 'layout') {
-                                        return true
-                                    }
-                                    return false
+                                    return fields?.content?.pageMode?.mode === 'layout'
                                 }
                             }
                         },
@@ -271,5 +247,4 @@ export const Pages: CollectionConfig<'pages'> = {
             ProtectRootPageFromTrash()
         ],
     },
-    // versions: VersionConfig(),
 }

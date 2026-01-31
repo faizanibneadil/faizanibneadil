@@ -1,22 +1,19 @@
-import type { CollectionConfig } from "payload";
+import { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import { NavigationGroups } from "@/constants";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
 import { Iconify } from "@/fields/iconify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
-// import { VersionConfig } from "@/utilities/version-config";
 
 export const Achievements: CollectionConfig<'achievements'> = {
     slug: 'achievements',
     labels: { plural: 'Achievements', singular: 'Achievement' },
-    trash: true,
     admin: {
         useAsTitle: 'title',
-        // group: NavigationGroups.portfolio,
-        preview: generatePreview({ collection: 'achievements' })
+        preview: generatePreview({ collection: 'achievements' }),
+        defaultColumns: ['title', 'type', 'createdAt'],
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -34,120 +31,132 @@ export const Achievements: CollectionConfig<'achievements'> = {
                     label: 'Content',
                     fields: [
                         {
-                            type: 'richText',
-                            name: 'description',
-                            label: false,
-                            editor: lexicalEditor(),
-                            admin: {
-                                description: 'Write description.'
-                            }
-                        },
-                        {
-                            type: 'group',
-                            name: 'dates',
-                            label: 'Dates',
-                            fields: [
-                                {
-                                    type: 'row',
-                                    fields: [
-                                        {
-                                            type: 'date',
-                                            name: 'to',
-                                            label: 'TO',
-                                            required: true
-                                        },
-                                        {
-                                            type: 'date',
-                                            name: 'from',
-                                            label: 'FROM',
-                                            required: true
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            type: 'text',
-                            name: 'location',
-                            label: 'Location'
-                        },
-                        {
-                            type: 'array',
-                            name: 'links',
-                            labels: { singular: 'Link', plural: 'Links' },
-                            admin: {
-                                initCollapsed: true
-                            },
-                            fields: [
-                                Iconify(),
-                                {
-                                    type: 'row',
-                                    fields: [
-                                        {
-                                            type: 'text',
-                                            label: 'Lable',
-                                            name: 'label',
-                                            required: true,
-                                            admin: {
-                                                width: '50%'
-                                            }
-                                        },
-                                        {
-                                            type: 'text',
-                                            name: 'link',
-                                            label: 'Link',
-                                            required: true,
-                                            admin: {
-                                                width: '50%'
-                                            }
-                                        }
-                                    ]
-                                }
+                            name: 'type',
+                            type: 'select',
+                            label: 'Achievement Type',
+                            options: [
+                                { label: 'Award', value: 'award' },
+                                { label: 'Honor', value: 'honor' },
+                                { label: 'Speaking Engagement', value: 'speaking-engagement' },
+                                { label: 'Competition Winner', value: 'competition-winner' },
+                                { label: 'Community Contribution', value: 'community-contribution' },
+                                { label: 'Other', value: 'other' },
                             ],
-                            maxRows: 5
+                            admin: {
+                                width: '50%',
+                                description: 'Select the category that best classifies this recognition.'
+                            }
                         },
                         {
                             type: 'upload',
                             relationTo: 'media',
                             name: 'image',
-                            label: 'Avatar',
-                            required: true,
-                            hasMany: false,
+                            label: 'Main Image / Badge',
                             admin: {
-                                position: 'sidebar'
+                                width: '50%',
+                                description: 'Upload a high-quality badge, logo, or certificate photo for visual proof.'
                             }
-                        }
+                        },
+                        {
+                            type: 'richText',
+                            name: 'description',
+                            label: 'Main Description',
+                            editor: lexicalEditor(),
+                            admin: {
+                                description: 'Provide a detailed overview of the achievement and your specific role or contribution.'
+                            }
+                        },
+                        {
+                            type: 'group',
+                            name: 'dates',
+                            label: 'Timeline & Location',
+                            fields: [
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        {
+                                            name: 'from',
+                                            type: 'date',
+                                            label: 'From',
+                                            admin: {
+                                                width: '33.33%',
+                                                description: 'Starting date or date received.'
+                                            }
+                                        },
+                                        {
+                                            name: 'to',
+                                            type: 'date',
+                                            label: 'To (or Received Date)',
+                                            admin: {
+                                                width: '33.33%',
+                                                description: 'End date or leave blank if it is a single-day event.'
+                                            }
+                                        },
+                                        {
+                                            name: 'location',
+                                            type: 'text',
+                                            label: 'Location (e.g. Remote, NYC)',
+                                            admin: {
+                                                width: '33.33%',
+                                                description: 'Physical venue or digital platform where the event took place.'
+                                            }
+                                        },
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type: 'array',
+                            name: 'stats',
+                            label: 'Key Impact Metrics',
+                            labels: { singular: 'Stat', plural: 'Stats' },
+                            admin: {
+                                description: 'Quantify your success with measurable data (e.g., Rank, Growth %, or Scale).'
+                            },
+                            fields: [
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        { name: 'label', type: 'text', label: 'Label', required: true, admin: { placeholder: 'e.g., Global Rank' } },
+                                        { name: 'value', type: 'text', label: 'Value', required: true, admin: { placeholder: 'e.g., Top 1%' } },
+                                    ]
+                                }
+                            ],
+                            maxRows: 4
+                        },
+                        {
+                            type: 'array',
+                            name: 'resources',
+                            labels: { singular: 'External Link', plural: 'External Links' },
+                            admin: {
+                                description: 'Add relevant links to verify this achievement (e.g., News articles, YouTube, or Event sites).'
+                            },
+                            fields: [
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        { name: 'label', type: 'text', label: 'Label', required: true, admin: { width: '50%', placeholder: 'e.g., Watch Talk' } },
+                                        { name: 'link', type: 'text', label: 'URL', required: true, admin: { width: '50%', placeholder: 'https://...' } }
+                                    ]
+                                }
+                            ],
+                            maxRows: 3
+                        },
                     ]
                 },
                 {
                     name: 'meta',
                     label: 'SEO',
                     fields: [
-                        MetaTitleField({
-                            // if the `generateTitle` function is configured
-                            hasGenerateFn: true,
-                        }),
-                        MetaDescriptionField({
-                            // if the `generateDescription` function is configured
-                            hasGenerateFn: true,
-                        }),
-                        MetaImageField({
-                            // the upload collection slug
-                            relationTo: 'media',
-
-                            // if the `generateImage` function is configured
-                            hasGenerateFn: true,
-                        }),
+                        MetaTitleField({ hasGenerateFn: true }),
+                        MetaDescriptionField({ hasGenerateFn: true }),
+                        MetaImageField({ relationTo: 'media', hasGenerateFn: true }),
                         PreviewField({
-                            // if the `generateUrl` function is configured
                             hasGenerateFn: true,
-
-                            // field paths to match the target field for data
                             titlePath: 'meta.title',
                             descriptionPath: 'meta.description',
                         }),
                         OverviewField({
-                            // field paths to match the target field for data
                             titlePath: 'meta.title',
                             descriptionPath: 'meta.description',
                             imagePath: 'meta.image',
@@ -161,5 +170,4 @@ export const Achievements: CollectionConfig<'achievements'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    // versions: VersionConfig(),
 }

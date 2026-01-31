@@ -1,11 +1,8 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { NavigationGroups } from "@/constants";
-import { Iconify } from "@/fields/iconify";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
-// import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
 
@@ -15,8 +12,8 @@ export const Certifications: CollectionConfig<'certifications'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        // group: NavigationGroups.portfolio,
-        preview: generatePreview({ collection: 'certifications' })
+        preview: generatePreview({ collection: 'certifications' }),
+        defaultColumns: ['title', 'issuer', 'isLifetime', 'createdAt'],
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -25,7 +22,7 @@ export const Certifications: CollectionConfig<'certifications'> = {
         update: superAdminOrTenantAdminAccess,
     },
     fields: [
-        TitleField(),
+        TitleField(), // The official name of the certification.
         {
             type: 'tabs',
             tabs: [
@@ -34,120 +31,138 @@ export const Certifications: CollectionConfig<'certifications'> = {
                     label: 'Content',
                     fields: [
                         {
-                            type: 'richText',
-                            name: 'description',
-                            label: false,
-                            editor: lexicalEditor(),
-                            admin: {
-                                description: 'Write description.'
-                            }
-                        },
-                        {
-                            type: 'group',
-                            name: 'dates',
-                            label: 'Dates',
+                            type: 'row',
                             fields: [
                                 {
-                                    type: 'row',
-                                    fields: [
-                                        {
-                                            type: 'date',
-                                            name: 'to',
-                                            label: 'TO',
-                                            required: true
-                                        },
-                                        {
-                                            type: 'date',
-                                            name: 'from',
-                                            label: 'FROM',
-                                            required: true
-                                        }
-                                    ]
-                                }
+                                    name: 'issuer',
+                                    type: 'text',
+                                    label: 'Issuing Organization',
+                                    required: true,
+                                    admin: { 
+                                        width: '50%',
+                                        description: 'The entity that granted this credential (e.g., Cisco, Yale, PMI).' 
+                                    }
+                                },
+                                {
+                                    name: 'credentialId',
+                                    type: 'text',
+                                    label: 'Credential ID',
+                                    admin: { 
+                                        width: '50%',
+                                        description: 'Unique identifier provided by the issuer for verification.' 
+                                    }
+                                },
                             ]
-                        },
-                        {
-                            type: 'text',
-                            name: 'location',
-                            label: 'Location'
-                        },
-                        {
-                            type: 'array',
-                            name: 'links',
-                            labels: { singular: 'Link', plural: 'Links' },
-                            admin: {
-                                initCollapsed: true
-                            },
-                            fields: [
-                                Iconify(),
-                                {
-                                    type: 'row',
-                                    fields: [
-                                        {
-                                            type: 'text',
-                                            label: 'Lable',
-                                            name: 'label',
-                                            required: true,
-                                            admin: {
-                                                width: '50%'
-                                            }
-                                        },
-                                        {
-                                            type: 'text',
-                                            name: 'link',
-                                            label: 'Link',
-                                            required: true,
-                                            admin: {
-                                                width: '50%'
-                                            }
-                                        }
-                                    ]
-                                }
-                            ],
-                            maxRows: 5
                         },
                         {
                             type: 'upload',
                             relationTo: 'media',
                             name: 'image',
-                            label: 'Avatar',
+                            label: 'Certificate Badge / Logo',
                             required: true,
-                            hasMany: false,
                             admin: {
-                                position: 'sidebar'
+                                position: 'sidebar',
+                                description: 'Upload a high-resolution logo of the issuer or the official certification badge.'
                             }
-                        }
+                        },
+                        {
+                            type: 'richText',
+                            name: 'description',
+                            label: 'Certification Details',
+                            editor: lexicalEditor(),
+                            admin: {
+                                description: 'Detail the curriculum, skills mastered, or the exam passed to earn this certificate.'
+                            }
+                        },
+                        {
+                            type: 'group',
+                            name: 'validity',
+                            label: 'Validity & Timeline',
+                            fields: [
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        {
+                                            name: 'issuedDate',
+                                            type: 'date',
+                                            label: 'Issue Date',
+                                            required: true,
+                                            admin: { 
+                                                width: '33.33%',
+                                                description: 'Date when the credential was granted.'
+                                            }
+                                        },
+                                        {
+                                            name: 'expiryDate',
+                                            type: 'date',
+                                            label: 'Expiry Date',
+                                            admin: { 
+                                                width: '33.33%',
+                                                description: 'Date when the credential expires.',
+                                                condition: (data) => !data?.content?.validity?.isLifetime 
+                                            }
+                                        },
+                                        {
+                                            name: 'isLifetime',
+                                            type: 'checkbox',
+                                            label: 'No Expiration',
+                                            defaultValue: false,
+                                            admin: { 
+                                                width: '33.33%',
+                                                style: { marginTop: '35px' },
+                                                description: 'Check if this certification is valid indefinitely.'
+                                            }
+                                        },
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type: 'array',
+                            name: 'resources',
+                            label: 'Resources',
+                            labels: { singular: 'Resource', plural: 'Resources' },
+                            admin: {
+                                description: 'Provide links to official verification portals, online badges, or PDF copies.'
+                            },
+                            fields: [
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        { 
+                                            name: 'label', 
+                                            type: 'text', 
+                                            label: 'Label', 
+                                            required: true, 
+                                            admin: { width: '40%', placeholder: 'e.g., Verify Credential' } 
+                                        },
+                                        { 
+                                            name: 'link', 
+                                            type: 'text', 
+                                            label: 'URL', 
+                                            required: true, 
+                                            admin: { width: '60%', placeholder: 'https://...' } 
+                                        }
+                                    ]
+                                }
+                            ],
+                            maxRows: 3
+                        },
                     ]
                 },
                 {
                     name: 'meta',
                     label: 'SEO',
                     fields: [
-                        MetaTitleField({
-                            // if the `generateTitle` function is configured
-                            hasGenerateFn: true,
-                        }),
-                        MetaDescriptionField({
-                            // if the `generateDescription` function is configured
-                            hasGenerateFn: true,
-                        }),
-                        MetaImageField({
-                            // the upload collection slug
-                            relationTo: 'media',
-
-                            // if the `generateImage` function is configured
-                            hasGenerateFn: true,
-                        }),
+                        MetaTitleField({ hasGenerateFn: true }),
+                        MetaDescriptionField({ hasGenerateFn: true }),
+                        MetaImageField({ relationTo: 'media', hasGenerateFn: true }),
                         PreviewField({
-                            // if the `generateUrl` function is configured
                             hasGenerateFn: true,
-
-                            // field paths to match the target field for data
                             titlePath: 'meta.title',
                             descriptionPath: 'meta.description',
                         }),
                         OverviewField({
-                            // field paths to match the target field for data
                             titlePath: 'meta.title',
                             descriptionPath: 'meta.description',
                             imagePath: 'meta.image',
@@ -161,5 +176,4 @@ export const Certifications: CollectionConfig<'certifications'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    // versions: VersionConfig(),
 }

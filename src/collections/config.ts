@@ -1,5 +1,4 @@
 import { Media } from '@/collections/Media'
-import { Notes } from '@/collections/Notes'
 import { Blogs } from '@/collections/Blogs'
 import { Pages } from '@/collections/Pages'
 import { Projects } from "@/collections/Projects"
@@ -23,7 +22,6 @@ import { PortfolioSettings } from './PortfolioSettings'
 export const collections = [
     Users,
     Media,
-    Notes,
     Blogs,
     Pages,
     Educations,

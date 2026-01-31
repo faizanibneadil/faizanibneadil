@@ -10,6 +10,7 @@ import { setCookieBasedOnDomain } from './hooks/setCookieBasedOnDomain'
 import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
 import { NavigationGroups } from '@/constants'
 import { externalUsersSignUp } from './endpoints/externalUsersSignUp'
+import { RevalidateProfileCache } from './hooks/revalidate-profile-cache'
 
 const defaultTenantArrayField = tenantsArrayField({
   tenantsArrayFieldName: 'tenants',
@@ -51,7 +52,10 @@ export const Users: CollectionConfig<'users'> = {
       name: 'profile',
       relationTo: 'media',
       label: 'Profile Avatar',
-      admin: { position: 'sidebar' }
+      admin: { position: 'sidebar' },
+      hooks: {
+        afterChange: [RevalidateProfileCache()]
+      }
     },
     {
       admin: {

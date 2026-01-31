@@ -10,6 +10,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { isCollection, isLayout } from "@/utilities/getPageMode";
 import { queryPageBySlug } from "@/utilities/QueryPageBySlug";
 import { queryTotalDocsBySlug } from "@/utilities/QueryTotalDocsBySlug";
+import type { Metadata } from "next";
+import { CollectionsRegistries } from "@/registries";
+import { getProfileAvatarByDomain } from "@/utilities/getProfileAvatar";
+import { getServerSideURL } from "@/utilities/getURL";
 
 const BlocksRenderer = dynamic(() => import("@/blocks").then(({ BlocksRenderer }) => ({
   default: BlocksRenderer
@@ -18,6 +22,51 @@ const BlocksRenderer = dynamic(() => import("@/blocks").then(({ BlocksRenderer }
 const CollectionRenderer = dynamic(() => import("@/collections").then(({ CollectionRenderer }) => ({
   default: CollectionRenderer
 })), { ssr: true })
+
+// TODO: add root page laval metadata
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const {
+    params: paramsFromProps,
+  } = props || {}
+
+  const { domain, slug } = await paramsFromProps
+  const page = await queryPageBySlug(slug!, domain!)
+  const __mode = page?.content?.pageMode?.mode
+  const slugFromConfig = page?.content.configurations?.slug as CollectionSlug
+
+
+  if (__mode) {
+    if (isCollection(__mode)) {
+      if (Object.hasOwn(CollectionsRegistries, slugFromConfig)) {
+        const metadata = CollectionsRegistries[slugFromConfig]?.metadata
+        // @ts-expect-error
+        return await metadata({ doc: { ...page } })
+      }
+    }
+    if (isLayout(__mode)) {
+      const avatarUrl = await getProfileAvatarByDomain(domain)
+
+      return {
+        title: page?.meta?.title,
+        description: page?.meta?.description,
+        metadataBase: new URL(getServerSideURL()),
+        ...(avatarUrl && {
+          icons: [{ url: avatarUrl, fetchPriority: 'high' }]
+        }),
+        ...(avatarUrl && {
+          openGraph: {
+            url: avatarUrl,
+            type: 'profile',
+            description: page?.meta?.description ?? '',
+            images: [{ url: avatarUrl }]
+          }
+        })
+      }
+    }
+  }
+
+  return {}
+}
 
 
 

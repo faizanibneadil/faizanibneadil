@@ -1,10 +1,6 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { NavigationGroups } from "@/constants";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
-import { generatePreview } from "@/utilities/generate-preview";
-import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
-// import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
 
@@ -13,9 +9,8 @@ export const Educations: CollectionConfig<'educations'> = {
     labels: { plural: 'Educations', singular: 'Education' },
     trash: true,
     admin: {
-        useAsTitle: 'title',
-        // group: NavigationGroups.resume,
-        preview: generatePreview({ collection: 'educations' })
+        useAsTitle: 'title', // Suggestion: Degree name or Course title
+        defaultColumns: ['title', 'qualification_academy', 'dates_from', 'currentlyStudying'],
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -26,116 +21,135 @@ export const Educations: CollectionConfig<'educations'> = {
     fields: [
         TitleField(),
         {
-            type: 'tabs',
-            tabs: [
+            type: 'row',
+            fields: [
                 {
-                    name: 'content',
-                    label: 'Content',
-                    fields: [
-                        {
-                            type: 'richText',
-                            name: 'description',
-                            label: 'Description',
-                            editor: lexicalEditor()
-                        },
-                        {
-                            type: 'group',
-                            name: 'qualification',
-                            label: 'Qualification',
-                            fields: [
-                                {
-                                    type: 'row',
-                                    fields: [
-                                        {
-                                            type: 'text',
-                                            label: 'Academy',
-                                            name: 'academy',
-                                        },
-                                        {
-                                            type: 'text',
-                                            label: 'Degree',
-                                            name: 'degree',
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            type: 'group',
-                            name: 'dates',
-                            label: 'Dates',
-                            fields: [
-                                {
-                                    type: 'row',
-                                    fields: [
-                                        {
-                                            type: 'date',
-                                            name: 'to',
-                                            label: 'TO'
-                                        },
-                                        {
-                                            type: 'date',
-                                            name: 'from',
-                                            label: 'FROM'
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            type: 'upload',
-                            relationTo: 'media',
-                            name: 'image',
-                            label: 'Avatar',
-                            required: true,
-                            hasMany: false,
-                            admin: {
-                                position: 'sidebar'
-                            }
-                        }
-                    ]
+                    type: 'text',
+                    name: 'academy',
+                    label: 'Institution / University',
+                    admin: {
+                        width: '50%',
+                        description: 'Name of the school, university, or bootcamp.'
+                    }
                 },
                 {
-                    name: 'meta',
-                    label: 'SEO',
+                    type: 'text',
+                    name: 'degree',
+                    label: 'Degree / Field of Study',
+                    admin: {
+                        width: '50%',
+                        description: 'e.g., Computer Science, Graphic Design, etc.'
+                    }
+                }
+            ]
+        },
+        {
+            type: 'upload',
+            relationTo: 'media',
+            name: 'image',
+            label: 'Institution Logo',
+            admin: {
+                description: 'Upload university or school logo.'
+            }
+        },
+        {
+            type: 'richText',
+            name: 'description',
+            label: 'Overview & Achievements',
+            editor: lexicalEditor(),
+            admin: {
+                description: 'Mention key subjects, thesis topics, or academic honors.'
+            }
+        },
+        {
+            type: 'group',
+            name: 'details',
+            label: 'Additional Details',
+            fields: [
+                {
+                    type: 'row',
                     fields: [
-                        MetaTitleField({
-                            // if the `generateTitle` function is configured
-                            hasGenerateFn: true,
-                        }),
-                        MetaDescriptionField({
-                            // if the `generateDescription` function is configured
-                            hasGenerateFn: true,
-                        }),
-                        MetaImageField({
-                            // the upload collection slug
-                            relationTo: 'media',
-
-                            // if the `generateImage` function is configured
-                            hasGenerateFn: true,
-                        }),
-                        PreviewField({
-                            // if the `generateUrl` function is configured
-                            hasGenerateFn: true,
-
-                            // field paths to match the target field for data
-                            titlePath: 'meta.title',
-                            descriptionPath: 'meta.description',
-                        }),
-                        OverviewField({
-                            // field paths to match the target field for data
-                            titlePath: 'meta.title',
-                            descriptionPath: 'meta.description',
-                            imagePath: 'meta.image',
-                        })
+                        {
+                            name: 'grade',
+                            type: 'text',
+                            label: 'Grade / GPA',
+                            admin: {
+                                width: '50%',
+                                placeholder: 'e.g., 3.8/4.0 or Grade A'
+                            }
+                        },
+                        {
+                            name: 'location',
+                            type: 'text',
+                            label: 'Location',
+                            admin: {
+                                width: '50%',
+                                placeholder: 'e.g., London, UK or Remote'
+                            }
+                        }
                     ]
                 }
             ]
         },
+        {
+            type: 'group',
+            name: 'dates',
+            label: 'Timeline',
+            fields: [
+                {
+                    type: 'row',
+                    fields: [
+                        {
+                            name: 'from',
+                            type: 'date',
+                            label: 'Start Date',
+                            admin: { width: '33.33%' }
+                        },
+                        {
+                            name: 'to',
+                            type: 'date',
+                            label: 'End Date',
+                            admin: {
+                                width: '33.33%',
+                                condition: (data) => !data?.content?.dates?.currentlyStudying
+                            }
+                        },
+                        {
+                            name: 'currentlyStudying',
+                            type: 'checkbox',
+                            label: 'Currently Enrolled',
+                            defaultValue: false,
+                            admin: {
+                                width: '33.33%',
+                                style: { marginTop: '35px' }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            type: 'array',
+            name: 'resources',
+            label: 'Resources',
+            labels: { singular: 'Resource', plural: 'Resources' },
+            admin: {
+                description: 'Add links to your thesis, university profile, or digital degree copy.'
+            },
+            fields: [
+                {
+                    type: 'row',
+                    fields: [
+                        { name: 'label', type: 'text', label: 'Label', required: true, admin: { width: '40%' } },
+                        { name: 'link', type: 'text', label: 'URL', required: true, admin: { width: '60%' } }
+                    ]
+                }
+            ],
+            maxRows: 3
+        }
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    // versions: VersionConfig(),
 }
