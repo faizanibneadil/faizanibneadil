@@ -13,6 +13,7 @@ export const Licenses: CollectionConfig<'licenses'> = {
         useAsTitle: 'title',
         defaultColumns: ['title', 'issuingAuthority', 'licenseNumber', 'status'],
         hidden: ({ user }) => {
+            return false
             if (isSuperAdmin(user)) return false;
             // Sirf healthcare ya relevant industries ke liye show hoga
             return user?.industry?.slug !== 'healthcare';

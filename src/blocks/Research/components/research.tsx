@@ -1,8 +1,7 @@
-import { RichText } from '@payloadcms/richtext-lexical/react';
-import { HackathonCard } from "@/components/hackathon-card";
 import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
+import { ResearchCard } from '@/components/research-card';
+import RichText from "@/components/RichText";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Research(props: BlockProps<'research'>) {
@@ -36,9 +35,11 @@ export async function Research(props: BlockProps<'research'>) {
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                                 {heading}
                             </h2>
-                            <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                <RichText data={description as SerializedEditorState} />
-                            </p>
+                            {description && (
+                                <div className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                                    <RichText data={description} params={params} searchParams={searchParams} />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </BlurFade>
@@ -50,8 +51,7 @@ export async function Research(props: BlockProps<'research'>) {
                                     key={research.id}
                                     delay={BLUR_FADE_DELAY * 15 + id * 0.05}
                                 >
-                                    make research card
-                                    {/* <HackathonCard {...research} /> */}
+                                    <ResearchCard params={params} research={research} searchParams={searchParams} />
                                 </BlurFade>
                             )
                         })}

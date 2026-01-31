@@ -1,14 +1,13 @@
-import { RichText } from '@payloadcms/richtext-lexical/react'
 import BlurFade from "@/components/magicui/blur-fade";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import { HackathonCard } from "@/components/hackathon-card";
 import type { BlockProps } from "@/types";
+import { LicenseCard } from '@/components/license-card';
+import RichText from "@/components/RichText";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function License(props: BlockProps<'license'>) {
     const {
         blockProps,
-        params:paramsFromProps,
+        params: paramsFromProps,
         searchParams: searchParamsFromProps
     } = props || {}
 
@@ -17,7 +16,6 @@ export async function License(props: BlockProps<'license'>) {
         heading,
         blockName,
         description,
-        id,
         licenses
     } = blockProps || {}
 
@@ -36,9 +34,11 @@ export async function License(props: BlockProps<'license'>) {
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                                 {heading}
                             </h2>
-                            <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                <RichText data={description as SerializedEditorState} />
-                            </p>
+                            {description && (
+                                <div className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                                    <RichText data={description} params={params} searchParams={searchParams} />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </BlurFade>
@@ -50,8 +50,7 @@ export async function License(props: BlockProps<'license'>) {
                                     key={license.id}
                                     delay={BLUR_FADE_DELAY * 15 + id * 0.05}
                                 >
-                                    make license card
-                                    {/* <HackathonCard {...license} /> */}
+                                    <LicenseCard license={license} params={params} searchParams={searchParams} />
                                 </BlurFade>
                             )
                         })}

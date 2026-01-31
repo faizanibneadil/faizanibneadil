@@ -1,8 +1,7 @@
-import { RichText } from '@payloadcms/richtext-lexical/react'
 import BlurFade from "@/components/magicui/blur-fade";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import { HackathonCard } from "@/components/hackathon-card";
 import type { BlockProps } from "@/types";
+import { CertificateCard } from '@/components/certificate-card';
+import RichText from "@/components/RichText";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Certification(props: BlockProps<'certification'>) {
@@ -36,9 +35,11 @@ export async function Certification(props: BlockProps<'certification'>) {
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                                 {heading}
                             </h2>
-                            <div className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                <RichText data={description as SerializedEditorState} />
-                            </div>
+                            {description && (
+                                <div className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                                    <RichText data={description} params={params} searchParams={searchParams} />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </BlurFade>
@@ -50,8 +51,7 @@ export async function Certification(props: BlockProps<'certification'>) {
                                     key={certification.id}
                                     delay={BLUR_FADE_DELAY * 15 + id * 0.05}
                                 >
-                                    make card for certificate
-                                    {/* <HackathonCard {...certification} /> */}
+                                    <CertificateCard certificate={certification} params={params} searchParams={searchParams} />
                                 </BlurFade>
                             )
                         })}
