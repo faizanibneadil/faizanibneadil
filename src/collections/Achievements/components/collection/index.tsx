@@ -1,3 +1,4 @@
+import { AchievementCard } from "@/components/achievement-card"
 import type { CollectionProps } from "@/types"
 import { generateRoute } from "@/utilities/generateRoute"
 import Link from "next/link"
@@ -32,11 +33,12 @@ export async function Achievements(props: CollectionProps<'achievements'>) {
             docSlug: params.id as string
         })
         return (
-            <div key={doc.id} className="flex flex-col gap-4">
-                <Link href={{ pathname: RouteWithDocSlug }}><h3>{doc.title}</h3></Link>
-                <p>Short Descriptin Of The Skills</p>
+            <div key={doc?.id} className="space-y-12 w-full ">
+                <ul className="mb-4 ml-4 divide-y divide-dashed border-l">
+                    <AchievementCard achievement={doc} params={params} searchParams={searchParams} />
+                </ul>
             </div>
         )
     })
-    return <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">{projects}</div>
+    return projects
 }
