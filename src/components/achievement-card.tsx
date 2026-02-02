@@ -6,6 +6,7 @@ import { Dates } from "./dates";
 import { getMediaUrl } from "@/utilities/getURL";
 import type { BlockParams } from "@/types";
 import RichText from "./RichText";
+import { generateRoute } from "@/utilities/generateRoute";
 
 export async function AchievementCard(props: { achievement: Achievement } & BlockParams) {
   const {
@@ -20,6 +21,12 @@ export async function AchievementCard(props: { achievement: Achievement } & Bloc
   const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
   const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
+  const { RouteWithDocSlug } = generateRoute({
+    domain: params?.domain as string,
+    slug: 'achievements',
+    docSlug: String(achievement?.id)
+  })
+
   return (
     <li className="relative ml-10 py-4">
       <div className="absolute -left-16 top-2 flex items-center justify-center bg-white rounded-full">
@@ -30,7 +37,9 @@ export async function AchievementCard(props: { achievement: Achievement } & Bloc
       </div>
       <div className="flex flex-1 flex-col justify-start gap-1">
         <Dates to={content?.dates?.to} from={content?.dates?.from} />
-        <h2 className="font-semibold leading-none">{title}</h2>
+        <h2 className="font-semibold leading-none">
+          <Link href={{ pathname: RouteWithDocSlug}}>{title}</Link>
+        </h2>
         {content?.dates?.location && (
           <p className="text-sm text-muted-foreground">{content?.dates?.location}</p>
         )}

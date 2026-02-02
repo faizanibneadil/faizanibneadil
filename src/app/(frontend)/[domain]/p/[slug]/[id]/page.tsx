@@ -46,6 +46,7 @@ export default async function Page(props: PageProps) {
 
 const queryEntityById = cache(async (slug: CollectionSlug, domain: string, docSlug: string) => {
     const isNumericDomain = !Number.isNaN(Number(domain))
+    const isNumericDocSlug = !Number.isNaN(Number(docSlug))
     const payload = await getPayloadConfig()
     const entity = await payload.find({
         collection: slug,
@@ -54,23 +55,12 @@ const queryEntityById = cache(async (slug: CollectionSlug, domain: string, docSl
         where: {
             and: [
                 {
-                    or: [
-                        {
-                            'tenant.slug': {
-                                equals: domain
-                            }
-                        },
-                        ...(isNumericDomain
-                            ? [{
-                                'tenant.id': {
-                                    equals: Number(domain),
-                                },
-                            }]
-                            : []),
-                    ]
+                    [`tenant.${isNumericDomain ? 'id' : 'slug'}`]: {
+                        equals: domain
+                    }
                 },
                 {
-                    slug: {
+                    [isNumericDocSlug ? 'id' : 'slug']: {
                         equals: docSlug
                     }
                 },
