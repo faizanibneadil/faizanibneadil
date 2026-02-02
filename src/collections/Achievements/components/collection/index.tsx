@@ -26,19 +26,19 @@ export async function Achievements(props: CollectionProps<'achievements'>) {
     const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
     const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
-    const projects = docs.map(doc => {
+    const achievements = docs.map(doc => {
         const { RouteWithDocSlug } = generateRoute({
             domain: params.domain as string,
             slug: params.slug as string,
             docSlug: params.id as string
         })
-        return (
-            <div key={doc?.id} className="space-y-12 w-full ">
-                <ul className="mb-4 ml-4 divide-y divide-dashed border-l">
-                    <AchievementCard achievement={doc} params={params} searchParams={searchParams} />
-                </ul>
-            </div>
-        )
+        return <AchievementCard key={doc?.id} achievement={doc} params={params} searchParams={searchParams} />
     })
-    return projects
+    return (
+        <div className="space-y-12 w-full ">
+            <ul className="mb-4 ml-4 divide-y divide-dashed border-l">
+                {achievements}
+            </ul>
+        </div>
+    )
 }

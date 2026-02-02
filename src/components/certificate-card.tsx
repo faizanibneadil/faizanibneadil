@@ -6,6 +6,7 @@ import { Dates } from "./dates";
 import { getMediaUrl } from "@/utilities/getURL";
 import type { BlockParams } from "@/types";
 import RichText from "./RichText";
+import { generateRoute } from "@/utilities/generateRoute";
 
 export async function CertificateCard(props: { certificate: Certification } & BlockParams) {
   const {
@@ -23,6 +24,12 @@ export async function CertificateCard(props: { certificate: Certification } & Bl
   const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
   const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
+  const { RouteWithDocSlug } = generateRoute({
+    domain: params?.domain as string,
+    slug: 'certifications',
+    docSlug: String(certificate?.id)
+  })
+
   return (
     <li className="relative ml-10 py-4">
       <div className="absolute -left-16 top-2 flex items-center justify-center bg-white rounded-full">
@@ -33,7 +40,9 @@ export async function CertificateCard(props: { certificate: Certification } & Bl
       </div>
       <div className="flex flex-1 flex-col justify-start gap-1">
         <Dates to={content?.validity?.issuedDate} from={content?.validity?.expiryDate} />
-        <h2 className="font-semibold leading-none">{title}</h2>
+        <h2 className="font-semibold leading-none">
+          <Link href={{ pathname: RouteWithDocSlug }}>{title}</Link>
+        </h2>
         {content?.issuer && (
           <p className="text-sm text-muted-foreground">{content?.issuer}</p>
         )}
