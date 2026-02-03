@@ -9,10 +9,10 @@ type Args = {
 
 export function generateRoute({ domain, slug, id, docSlug }: Args) {
     return {
-        Route: `/${domain}/p/${slug}`,
-        PageRoute: `/${domain}/p/${docSlug}`,
-        RouteWithId: `/${domain}/p/${slug}/${id}`,
-        RouteWithDocSlug: `/${domain}/p/${slug}/${docSlug}`,
+        Route: `/${domain}/${slug}`,
+        PageRoute: `/${domain}/${docSlug}`,
+        RouteWithId: `/${domain}/${slug}/${id}`,
+        RouteWithDocSlug: `/${domain}/${slug}/${docSlug}`,
         RootRoute: `/${domain}`
     };
 }
