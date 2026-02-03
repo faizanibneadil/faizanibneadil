@@ -102,7 +102,7 @@ export async function Menu(props: Omit<BaseParams, 'searchParams'>) {
   const menuToRender = __menu?.menu?.map((menu, idx) => {
 
     const href = menu?.page && typeof menu?.page === 'object' && menu?.page?.slug
-      ? `/${params?.domain}/p/${menu?.page?.slug}`
+      ? `/${params?.domain}/${menu?.page?.slug}`
       : '/'
 
     return (

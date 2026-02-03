@@ -3,7 +3,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { notFound } from "next/navigation";
 import type { CollectionSlug } from "payload";
 import type { Metadata } from 'next';
-import Page, { generateMetadata as PageGenerateMetadata } from "./p/[slug]/page";
+import Page, { generateMetadata as PageGenerateMetadata } from "./[slug]/page";
 import type { PageProps } from "@/types";
 import { queryRootPageByDomain } from "@/utilities/QueryRootPageByDomain";
 import { BlocksRegistries, CollectionsRegistries } from "@/registries";
