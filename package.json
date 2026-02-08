@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "build:vercel": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:status && payload migrate --force-accept-warning && payload migrate:status && next build",
     "build:turbopack": "cross-env NODE_OPTIONS=--no-deprecation next build --turbopack",
@@ -15,25 +16,26 @@
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
-    "ci": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create --skip-empty && payload migrate:status && payload migrate && payload migrate:status && yarn build",
-    "ci:turbopack": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create --skip-empty && payload migrate:status && payload migrate && payload migrate:status && yarn build --turbopack"
+    "ci": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create --skip-empty && payload migrate:status && payload migrate && payload migrate:status && pnpm build",
+    "ci:turbopack": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create --skip-empty && payload migrate:status && payload migrate && payload migrate:status && pnpm build --turbopack"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
-    "@payloadcms/admin-bar": "^3.73.0",
-    "@payloadcms/db-postgres": "^3.73.0",
-    "@payloadcms/email-resend": "^3.73.0",
-    "@payloadcms/live-preview-react": "^3.73.0",
-    "@payloadcms/next": "^3.73.0",
-    "@payloadcms/plugin-form-builder": "^3.73.0",
-    "@payloadcms/plugin-multi-tenant": "^3.73.0",
-    "@payloadcms/plugin-redirects": "^3.73.0",
-    "@payloadcms/plugin-search": "^3.73.0",
-    "@payloadcms/plugin-seo": "^3.73.0",
-    "@payloadcms/richtext-lexical": "^3.73.0",
-    "@payloadcms/sdk": "^3.73.0",
-    "@payloadcms/storage-s3": "^3.73.0",
-    "@payloadcms/storage-uploadthing": "^3.73.0",
+    "@payloadcms/admin-bar": "^3.75.0",
+    "@payloadcms/db-postgres": "^3.75.0",
+    "@payloadcms/email-resend": "^3.75.0",
+    "@payloadcms/live-preview-react": "^3.75.0",
+    "@payloadcms/next": "^3.75.0",
+    "@payloadcms/plugin-form-builder": "^3.75.0",
+    "@payloadcms/plugin-multi-tenant": "^3.75.0",
+    "@payloadcms/plugin-redirects": "^3.75.0",
+    "@payloadcms/plugin-search": "^3.75.0",
+    "@payloadcms/plugin-seo": "^3.75.0",
+    "@payloadcms/richtext-lexical": "^3.75.0",
+    "@payloadcms/sdk": "^3.75.0",
+    "@payloadcms/storage-s3": "^3.75.0",
+    "@payloadcms/storage-uploadthing": "^3.75.0",
+    "@payloadcms/ui": "^3.75.0",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.3.3",
     "@radix-ui/react-dialog": "^1.1.15",
@@ -56,6 +58,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "cross-env": "^7.0.3",
+    "date-fns": "^4.1.0",
     "framer-motion": "^11.2.10",
     "graphql": "^16.11.0",
     "gray-matter": "^4.0.3",
@@ -64,7 +67,7 @@
     "next": "16.1.0",
     "next-themes": "^0.4.6",
     "ogl": "^1.0.11",
-    "payload": "^3.73.0",
+    "payload": "^3.75.0",
     "prism-react-renderer": "^2.4.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -96,5 +99,20 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5",
     "zod": "^4.2.1"
-  }
+  },
+  "engines": {
+    "node": "^18.20.2 || >=20.9.0",
+    "pnpm": "^9 || ^10"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "0.18.20"
+    },
+    "onlyBuiltDependencies": [
+      "sharp",
+      "esbuild",
+      "unrs-resolver"
+    ]
+  },
+  "packageManager": "pnpm@10.29.1"
 }

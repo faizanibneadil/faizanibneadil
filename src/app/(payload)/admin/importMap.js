@@ -33,7 +33,7 @@ import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea
 import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { OverviewComponent as OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
-import { SlugField as SlugField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
+import { SlugField as SlugField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
 import { Collections as Collections_08a3ec38ae16a57bef8dd73840b4dd25 } from '@/collections/Pages/components/collections.tsx'
 import { Description as Description_edbe09833807e9442aeddc602174b6a3 } from '@/fields/iconify/components/description.tsx'
 import { Iconify as Iconify_68e950f21990a0da73a219f82200d91b } from '@/fields/iconify/components/field.tsx'
@@ -45,7 +45,7 @@ import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc056
 import { TenantSelectionProvider as TenantSelectionProvider_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
 import { Visitors as Visitors_72b66f25e816188e5bb68c5553064a23 } from '@/widgets/config.ts'
 import { FormSubmissions as FormSubmissions_72b66f25e816188e5bb68c5553064a23 } from '@/widgets/config.ts'
-import { CollectionCards as CollectionCards_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
+import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
   "@payloadcms/plugin-multi-tenant/client#TenantField": TenantField_1d0591e3cf4f332c83a86da13a0de59a,
@@ -83,7 +83,7 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaImageComponent": MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#OverviewComponent": OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
-  "@payloadcms/ui#SlugField": SlugField_3817bf644402e67bfe6577f60ef982de,
+  "@payloadcms/next/client#SlugField": SlugField_2b8867833a34864a02ddf429b0728a40,
   "@/collections/Pages/components/collections.tsx#Collections": Collections_08a3ec38ae16a57bef8dd73840b4dd25,
   "@/fields/iconify/components/description.tsx#Description": Description_edbe09833807e9442aeddc602174b6a3,
   "@/fields/iconify/components/field.tsx#Iconify": Iconify_68e950f21990a0da73a219f82200d91b,
@@ -95,5 +95,5 @@ export const importMap = {
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelectionProvider": TenantSelectionProvider_d6d5f193a167989e2ee7d14202901e62,
   "@/widgets/config.ts#Visitors": Visitors_72b66f25e816188e5bb68c5553064a23,
   "@/widgets/config.ts#FormSubmissions": FormSubmissions_72b66f25e816188e5bb68c5553064a23,
-  "@payloadcms/ui/rsc#CollectionCards": CollectionCards_ab83ff7e88da8d3530831f296ec4756a
+  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }
