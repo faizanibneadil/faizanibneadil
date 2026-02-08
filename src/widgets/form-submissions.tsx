@@ -22,13 +22,13 @@ function fallbackRender({ error, resetErrorBoundary }: FallbackProps) {
     return (
         <div role="alert">
             <p>Something went wrong:</p>
-            <pre style={{ color: "red" }}>{error.message}</pre>
+            <pre style={{ color: "red" }}>{(error as Error).message}</pre>
             <button onClick={resetErrorBoundary}>Reset</button>
         </div>
     );
 }
 
-const logError = (error: Error, info: ErrorInfo) => {
+const logError = (error: unknown, info: ErrorInfo) => {
     // Do something with the error, e.g. log to an external API
     console.error({ error, info })
 };
