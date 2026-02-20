@@ -20,6 +20,7 @@
     "ci:turbopack": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create --skip-empty && payload migrate:status && payload migrate && payload migrate:status && pnpm build --turbopack"
   },
   "dependencies": {
+    "@google/genai": "^1.42.0",
     "@hookform/resolvers": "^5.2.1",
     "@payloadcms/admin-bar": "^3.75.0",
     "@payloadcms/db-postgres": "^3.75.0",
