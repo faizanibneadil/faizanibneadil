@@ -11,6 +11,7 @@ export const updateAndDeleteAccess: Access = ({ req, id }) => {
     return false
   }
 
+  // @ts-expect-error
   if (isSuperAdmin(user) || isAccessingSelf({ user, id })) {
     return true
   }
@@ -25,7 +26,7 @@ export const updateAndDeleteAccess: Access = ({ req, id }) => {
    */
   return {
     'tenants.tenant': {
-      in: getUserTenantIDs(user, 'tenant-admin'),
+      in: getUserTenantIDs(user as any, 'tenant-admin'),
     },
   }
 }

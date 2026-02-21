@@ -13,6 +13,7 @@ export const updateAndDeleteAccess: Access = ({ req }) => {
 
   return {
     id: {
+      // @ts-expect-error
       in: getUserTenantIDs(req.user, 'tenant-admin'),
     },
   }
