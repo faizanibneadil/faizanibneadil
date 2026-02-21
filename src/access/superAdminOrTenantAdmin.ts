@@ -16,7 +16,7 @@ export const superAdminOrTenantAdminAccess: Access = ({ req }) => {
 
   return {
     tenant: {
-      in: getUserTenantIDs(req.user, 'tenant-admin'),
+      in: getUserTenantIDs(req.user as any, 'tenant-admin'),
     },
   }
 }
