@@ -211,13 +211,11 @@ export const plugins: Plugin[] = [
     s3Storage({
         enabled: true,
         collections: {
-            media: {
-                prefix: 'media'
-            }
+            media: true
         },
         bucket: process.env.S3_BUCKET!,
         config: {
-            forcePathStyle: true, // Important for using Supabase
+            // forcePathStyle: true, // Important for using Supabase
             credentials: {
                 accessKeyId: process.env.S3_ACCESS_KEY_ID!,
                 secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
