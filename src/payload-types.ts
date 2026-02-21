@@ -1750,6 +1750,7 @@ export interface FormSubmission {
  */
 export interface PayloadMcpApiKey {
   id: number;
+  tenant?: (number | null) | Tenant;
   /**
    * The user that the API key is associated with.
    */
@@ -2660,6 +2661,7 @@ export interface FormSubmissionsSelect<T extends boolean = true> {
  * via the `definition` "payload-mcp-api-keys_select".
  */
 export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
+  tenant?: T;
   user?: T;
   label?: T;
   description?: T;

@@ -254,7 +254,8 @@ export const plugins: Plugin[] = [
             menus: { isGlobal: true },
             socials: { isGlobal: true },
             integration: { isGlobal: true },
-            "portfolio-settings": { isGlobal: true }
+            "portfolio-settings": { isGlobal: true },
+            "payload-mcp-api-keys": {},
         },
         tenantField: {
             access: {
