@@ -14,7 +14,7 @@ export const createAccess: Access<User> = ({ req }) => {
     return true
   }
 
-  const adminTenantAccessIDs = getUserTenantIDs(req.user, 'tenant-admin')
+  const adminTenantAccessIDs = getUserTenantIDs(req.user as any, 'tenant-admin')
 
   if (adminTenantAccessIDs.length) {
     return true

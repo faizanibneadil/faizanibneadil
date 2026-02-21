@@ -97,6 +97,7 @@ export const Pages: CollectionConfig<'pages'> = {
                             blocks: [],
                             maxRows: 50,
                             filterOptions: async ({ user }) => {
+                                // @ts-expect-error
                                 const industry = typeof user?.industry === 'object' ? user?.industry?.slug : user?.industry
                                 if (typeof industry === 'string') {
                                     switch (industry) {

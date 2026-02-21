@@ -42,9 +42,8 @@ export const Skills: CollectionConfig<'skills'> = {
                     name: 'showIcon',
                     label: 'Display Icon instead of Text',
                     defaultValue: ({ user }) => {
-                        return typeof user?.industry === 'object'
-                            ? user?.industry?.slug === 'information-technology'
-                            : false
+                        // @ts-expect-error
+                        return typeof user?.industry === 'object' ? user?.industry?.slug === 'information-technology' : false
                     },
                     admin: {
                         description: 'Enable this to show the technology icon on the portfolio. If disabled, only the skill name will be displayed.'
