@@ -1599,6 +1599,22 @@ export interface License {
  */
 export interface User {
   id: number;
+  externalId?: {
+    authStrategies?:
+      | {
+          providerUserId?: string | null;
+          accessToken?: string | null;
+          refreshToken?: string | null;
+          tokenType?: string | null;
+          idToken?: string | null;
+          tokenExpiry?: string | null;
+          refreshTokenExpiry?: string | null;
+          tokenIssuedAt?: string | null;
+          authProvider?: 'google' | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   profile?: (number | null) | Media;
   roles?: TUserRole;
   username?: string | null;
@@ -1943,6 +1959,24 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  externalId?:
+    | T
+    | {
+        authStrategies?:
+          | T
+          | {
+              providerUserId?: T;
+              accessToken?: T;
+              refreshToken?: T;
+              tokenType?: T;
+              idToken?: T;
+              tokenExpiry?: T;
+              refreshTokenExpiry?: T;
+              tokenIssuedAt?: T;
+              authProvider?: T;
+              id?: T;
+            };
+      };
   profile?: T;
   roles?: T;
   username?: T;
