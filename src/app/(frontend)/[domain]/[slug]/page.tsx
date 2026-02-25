@@ -1,4 +1,4 @@
-import { cache, Suspense } from "react";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import dynamic from "next/dynamic";
 import type { Page } from "@/payload-types";
@@ -14,7 +14,6 @@ import type { Metadata } from "next";
 import { CollectionsRegistries } from "@/registries";
 import { getProfileAvatarByDomain } from "@/utilities/getProfileAvatar";
 import { getServerSideURL } from "@/utilities/getURL";
-import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 
 const BlocksRenderer = dynamic(() => import("@/blocks").then(({ BlocksRenderer }) => ({
   default: BlocksRenderer
@@ -69,31 +68,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   return {}
 }
 
-const queryThemeByTenant = cache(async (domain: string | number) => {
-  const isNumericDomain = !Number.isNaN(Number(domain))
-  const payload = await getPayloadConfig()
-  const theme = await payload.find({
-    collection: 'themes',
-    where: {
-      or: [
-        ...(isNumericDomain
-          ? [{
-            'tenant.id': {
-              equals: Number(domain),
-            },
-          }]
-          : []),
-        {
-          'tenant.slug': {
-            equals: domain
-          }
-        },
-      ]
-    },
-  })
 
-  return theme.docs?.at(0)?.theme
-})
 
 export default async function Page(props: PageProps) {
   const {
@@ -102,43 +77,39 @@ export default async function Page(props: PageProps) {
   } = props || {}
   const { slug, domain } = await paramsFromProps
 
-  // const page = await queryPageBySlug(slug!, domain!)
-  const theme = await queryThemeByTenant(domain!)
-  console.log({theme})
+  const page = await queryPageBySlug(slug!, domain!)
 
-  // const slugFromConfig = page?.content.configurations?.slug as CollectionSlug
-  // let getTotalDocsQuery: ReturnType<typeof queryTotalDocsBySlug> = Promise.resolve({ totalDocs: 0 })
-  // if (page && isCollection(page?.content?.pageMode?.mode) && slugFromConfig) {
-  //   getTotalDocsQuery = queryTotalDocsBySlug(slugFromConfig, domain!)
-  // }
+  const slugFromConfig = page?.content.configurations?.slug as CollectionSlug
+  let getTotalDocsQuery: ReturnType<typeof queryTotalDocsBySlug> = Promise.resolve({ totalDocs: 0 })
+  if (page && isCollection(page?.content?.pageMode?.mode) && slugFromConfig) {
+    getTotalDocsQuery = queryTotalDocsBySlug(slugFromConfig, domain!)
+  }
 
-  // if (!page || !domain) {
-  //   return notFound()
-  // }
+  if (!page || !domain) {
+    return notFound()
+  }
 
-  return null
-
-  // return (
-  //   <main className="flex flex-col min-h-[100dvh]">
-  //     {isLayout(page?.content?.pageMode?.mode) && (
-  //       <BlocksRenderer blocks={page?.content.layout} params={paramsFromProps} searchParams={searchParamsFromProps} />
-  //     )}
-  //     {isCollection(page?.content?.pageMode?.mode) && (
-  //       <div className="flex flex-col gap-4">
-  //         {!page.isRootPage && (
-  //           <div className="flex gap-4 items-center">
-  //             <BackButton />
-  //             <div className="flex flex-col items-start gap-">
-  //               <p className="uppercase font-semibold">{page?.content.configurations?.slug}</p>
-  //               <Suspense fallback={<Skeleton className="h-4 w-9" />}>
-  //                 <CollectionCount collectionSlug={slugFromConfig} getTotalDocs={getTotalDocsQuery} />
-  //               </Suspense>
-  //             </div>
-  //           </div>
-  //         )}
-  //         <CollectionRenderer searchParams={searchParamsFromProps} params={paramsFromProps} page={page} />
-  //       </div>
-  //     )}
-  //   </main>
-  // )
+  return (
+    <main className="flex flex-col min-h-[100dvh]">
+      {isLayout(page?.content?.pageMode?.mode) && (
+        <BlocksRenderer blocks={page?.content.layout} params={paramsFromProps} searchParams={searchParamsFromProps} />
+      )}
+      {isCollection(page?.content?.pageMode?.mode) && (
+        <div className="flex flex-col gap-4">
+          {!page.isRootPage && (
+            <div className="flex gap-4 items-center">
+              <BackButton />
+              <div className="flex flex-col items-start gap-">
+                <p className="uppercase font-semibold">{page?.content.configurations?.slug}</p>
+                <Suspense fallback={<Skeleton className="h-4 w-9" />}>
+                  <CollectionCount collectionSlug={slugFromConfig} getTotalDocs={getTotalDocsQuery} />
+                </Suspense>
+              </div>
+            </div>
+          )}
+          <CollectionRenderer searchParams={searchParamsFromProps} params={paramsFromProps} page={page} />
+        </div>
+      )}
+    </main>
+  )
 }

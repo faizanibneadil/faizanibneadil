@@ -122,7 +122,6 @@ export interface Config {
     experiences: Experience;
     integration: Integration;
     'portfolio-settings': PortfolioSetting;
-    themes: Theme;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-mcp-api-keys': PayloadMcpApiKey;
@@ -156,7 +155,6 @@ export interface Config {
     experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
     integration: IntegrationSelect<false> | IntegrationSelect<true>;
     'portfolio-settings': PortfolioSettingsSelect<false> | PortfolioSettingsSelect<true>;
-    themes: ThemesSelect<false> | ThemesSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-mcp-api-keys': PayloadMcpApiKeysSelect<false> | PayloadMcpApiKeysSelect<true>;
@@ -1727,17 +1725,6 @@ export interface PortfolioSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "themes".
- */
-export interface Theme {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  theme?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
@@ -1886,10 +1873,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'portfolio-settings';
         value: number | PortfolioSetting;
-      } | null)
-    | ({
-        relationTo: 'themes';
-        value: number | Theme;
       } | null)
     | ({
         relationTo: 'forms';
@@ -2512,16 +2495,6 @@ export interface IntegrationSelect<T extends boolean = true> {
 export interface PortfolioSettingsSelect<T extends boolean = true> {
   tenant?: T;
   rootPage?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "themes_select".
- */
-export interface ThemesSelect<T extends boolean = true> {
-  tenant?: T;
-  theme?: T;
   updatedAt?: T;
   createdAt?: T;
 }
