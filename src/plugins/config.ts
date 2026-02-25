@@ -254,6 +254,7 @@ export const plugins: Plugin[] = [
             integration: { isGlobal: true },
             "portfolio-settings": { isGlobal: true },
             "payload-mcp-api-keys": {},
+            themes: { isGlobal: true }
         },
         tenantField: {
             access: {
@@ -262,7 +263,7 @@ export const plugins: Plugin[] = [
                     if (isSuperAdmin(req.user)) {
                         return true
                     }
-                    return getUserTenantIDs(req.user as any ,'tenant-admin').length > 0
+                    return getUserTenantIDs(req.user as any, 'tenant-admin').length > 0
                 },
             },
         },
