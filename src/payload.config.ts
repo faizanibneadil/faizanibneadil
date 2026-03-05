@@ -27,13 +27,13 @@ export default buildConfig({
     admin: {
         dashboard: {
             widgets: [{
-                ComponentPath: '@/widgets/config.ts#Visitors',
+                Component: '@/widgets/config.ts#Visitors',
                 slug: 'visitors',
                 label: 'Visitors',
                 maxWidth: 'full',
                 minWidth: 'x-small'
             }, {
-                ComponentPath: '@/widgets/config.ts#FormSubmissions',
+                Component: '@/widgets/config.ts#FormSubmissions',
                 slug: 'formSubmissions',
                 label: 'Form Submissions',
                 maxWidth: 'full',
