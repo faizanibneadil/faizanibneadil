@@ -2,7 +2,6 @@ import type { PageProps } from "@/types"
 import { getPayloadConfig } from "@/utilities/getPayloadConfig"
 import type { CollectionSlug } from "payload"
 import type { Metadata } from "next"
-import { DocRegistries } from "@/registries"
 import { cache } from "react"
 import { queryThemeByDomain } from "@/utilities/QueryThemeByDomain"
 import { themesRegistry } from "@/themes"
@@ -10,20 +9,20 @@ import { themesRegistry } from "@/themes"
 
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
-    const params = await props.params
+    // const params = await props.params
 
-    const slug = params.slug?.split('-')?.at(0) as CollectionSlug
-    const domain = params.domain
-    const docSlug = params.id
-    const doc = await queryEntityById(slug, domain!, docSlug!)
+    // const slug = params.slug?.split('-')?.at(0) as CollectionSlug
+    // const domain = params.domain
+    // const docSlug = params.id
+    // const doc = await queryEntityById(slug, domain!, docSlug!)
 
-    if (Object.hasOwn(DocRegistries, slug)) {
-        const metadata = DocRegistries[slug]?.metadata
-        if (typeof metadata === 'function') {
-            // @ts-expect-error
-            return metadata({ doc })
-        }
-    }
+    // if (Object.hasOwn(DocRegistries, slug)) {
+    //     const metadata = DocRegistries[slug]?.metadata
+    //     if (typeof metadata === 'function') {
+    //         // @ts-expect-error
+    //         return metadata({ doc })
+    //     }
+    // }
 
 
     return {}
