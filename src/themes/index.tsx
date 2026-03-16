@@ -6,6 +6,10 @@ import { SkillShelfBlocksRenderer } from "./SkillShelf/components/BlocksRenderer
 import { MagicBlocksRenderer } from "./Magic/components/BlocksRenderer";
 import { MagicCollectionRenderer } from "./Magic/components/CollectionsRenderer";
 import { SkillShelfCollectionRenderer } from "./SkillShelf/components/CollectionsRenderer";
+import { DataFromCollectionSlug } from "payload";
+import { CollectionSlug } from "payload";
+import { DocRegistries as MagicDocRegistry } from "./Magic/doc-registries";
+import { DocRegistries as SkillShelfDocRegistry } from "./SkillShelf/doc-registries";
 
 export type ThemeID = number
 export const themesRegistry: Record<ThemeID, {
@@ -21,7 +25,8 @@ export const themesRegistry: Record<ThemeID, {
         pageContent: Page | null,
         components: typeof __MagicComponents | typeof __SkillshelfComponents,
         themeID: number,
-    }>
+    }>,
+    DocumentRenderer: React.ComponentType<{ entity: DataFromCollectionSlug<CollectionSlug> | null } & PageProps>
 }> = {
     2: {
         components: __MagicComponents,
@@ -38,6 +43,19 @@ export const themesRegistry: Record<ThemeID, {
                     </ErrorBoundary> */}
                 </div>
             )
+        },
+        DocumentRenderer: async (props) => {
+            const params = await props.params
+
+            const slug = params.slug?.split('-').at(0) as CollectionSlug
+
+            if (Object.hasOwn(MagicDocRegistry, slug)) {
+                const Collection = MagicDocRegistry[slug]?.component
+                // @ts-expect-error
+                return <Collection entity={props.entity} params={params} />
+            }
+
+            return null
         },
         page: ({
             components,
@@ -69,6 +87,19 @@ export const themesRegistry: Record<ThemeID, {
                     {children}
                 </div>
             )
+        },
+        DocumentRenderer: async (props) => {
+            const params = await props.params
+
+            const slug = params.slug?.split('-').at(0) as CollectionSlug
+
+            if (Object.hasOwn(SkillShelfDocRegistry, slug)) {
+                const Collection = SkillShelfDocRegistry[slug]?.component
+                // @ts-expect-error
+                return <Collection entity={props.entity} params={params} />
+            }
+
+            return null
         },
         page: ({
             components,

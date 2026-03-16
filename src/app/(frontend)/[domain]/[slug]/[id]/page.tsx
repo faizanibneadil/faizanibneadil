@@ -4,6 +4,8 @@ import type { CollectionSlug } from "payload"
 import type { Metadata } from "next"
 import { DocRegistries } from "@/registries"
 import { cache } from "react"
+import { queryThemeByDomain } from "@/utilities/QueryThemeByDomain"
+import { themesRegistry } from "@/themes"
 
 
 
@@ -34,11 +36,16 @@ export default async function Page(props: PageProps) {
     const domain = params.domain
     const docSlug = params.id
     const entity = await queryEntityById(slug, domain!, docSlug!)
+// console.log({entity})
+    const themeID = await queryThemeByDomain(domain!)
 
-    if (Object.hasOwn(DocRegistries, slug)) {
-        const Collection = DocRegistries[slug]?.component
-        // @ts-expect-error
-        return <Collection entity={entity} params={params} />
+    if (Object.hasOwn(themesRegistry, themeID)) {
+        const components = themesRegistry[themeID]?.components
+        const DocumentRenderer = themesRegistry[themeID]?.DocumentRenderer
+
+        // console.log({ themeID })
+
+        return <DocumentRenderer entity={entity} params={props.params} searchParams={props.searchParams} />
     }
 
     return null
