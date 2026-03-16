@@ -122,9 +122,12 @@ export interface Config {
     experiences: Experience;
     integration: Integration;
     'portfolio-settings': PortfolioSetting;
+    themes: Theme;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-mcp-api-keys': PayloadMcpApiKey;
+    'payload-kv': PayloadKv;
+    'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -155,9 +158,12 @@ export interface Config {
     experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
     integration: IntegrationSelect<false> | IntegrationSelect<true>;
     'portfolio-settings': PortfolioSettingsSelect<false> | PortfolioSettingsSelect<true>;
+    themes: ThemesSelect<false> | ThemesSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-mcp-api-keys': PayloadMcpApiKeysSelect<false> | PayloadMcpApiKeysSelect<true>;
+    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
+    'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -169,9 +175,20 @@ export interface Config {
   globals: {};
   globalsSelect: {};
   locale: null;
+  widgets: {
+    visitors: VisitorsWidget;
+    formSubmissions: FormSubmissionsWidget;
+    collections: CollectionsWidget;
+  };
   user: User | PayloadMcpApiKey;
   jobs: {
-    tasks: unknown;
+    tasks: {
+      invalidator: TInvalidatorTask;
+      inline: {
+        input: unknown;
+        output: unknown;
+      };
+    };
     workflows: unknown;
   };
 }
@@ -510,23 +527,333 @@ export interface Page {
     };
     layout?:
       | (
-          | IAboutProps
-          | IContactProps
-          | IHeroProps
-          | ISkillProps
-          | TEducationProps
-          | IExperienceProps
-          | IBlogsBlockProps
-          | TFormBlockProps
-          | IAchievementProps
-          | ICertificationProps
-          | IGithubContributionProps
-          | IHackathonProps
-          | IProjectProps
-          | IPublicationProps
-          | IResearchProps
-          | TCodeBlockProps
-          | ILicenseProps
+          | {
+              content?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'about';
+            }
+          | {
+              content?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              form?: (number | null) | Form;
+              enableIntro?: boolean | null;
+              introContent?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'contact';
+            }
+          | {
+              nameOnResume?: string | null;
+              headline?: string | null;
+              profile?: (number | null) | Media;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'hero';
+            }
+          | {
+              heading: string;
+              description?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              /**
+               * Check this to display every skill from your collection. Uncheck to manually select specific skills.
+               */
+              showAllSkills?: boolean | null;
+              /**
+               * Choose specific skills you want to showcase.
+               */
+              userSkills?: (number | Skill)[] | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'skill';
+            }
+          | {
+              educations?: (number | Education)[] | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'education';
+            }
+          | {
+              relatedExperiences?: (number | Experience)[] | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'experience';
+            }
+          | {
+              heading: string;
+              description?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              blogs?: (number | Blog)[] | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'blogs-block';
+            }
+          | {
+              form: number | Form;
+              enableIntro?: boolean | null;
+              introContent?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'formBlock';
+            }
+          | {
+              heading: string;
+              description?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              achievements?: (number | Achievement)[] | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'achievement';
+            }
+          | {
+              heading: string;
+              description?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              certifications?: (number | Certification)[] | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'certification';
+            }
+          | {
+              /**
+               * By default we will use username from social link.
+               */
+              githubContributionGraphConfig: 'useAnotherUsername' | 'useSocialUsername';
+              username?: string | null;
+              hideMonthLabels: boolean;
+              withTooltip: boolean;
+              graphBlockMargin: number;
+              graphBlockSize: number;
+              graphFontSize: number;
+              graphBlockRadius: number;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'github-contributions';
+            }
+          | {
+              heading: string;
+              description?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              hackathons?: (number | Hackathon)[] | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'hackathon';
+            }
+          | {
+              heading: string;
+              description?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              projects?: (number | Project)[] | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'project';
+            }
+          | {
+              heading: string;
+              description?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              publications?: (number | Publication)[] | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'publication';
+            }
+          | {
+              heading: string;
+              description?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              researches?: (number | Research)[] | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'research';
+            }
+          | {
+              language?: ('ts' | 'js') | null;
+              code?: string | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'code-block';
+            }
+          | {
+              heading: string;
+              description?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              licenses?: (number | License)[] | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'license';
+            }
         )[]
       | null;
   };
@@ -551,47 +878,6 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IAboutProps".
- */
-export interface IAboutProps {
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'about';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ISkillProps".
- */
-export interface ISkillProps {
-  /**
-   * Check this to display every skill from your collection. Uncheck to manually select specific skills.
-   */
-  showAllSkills?: boolean | null;
-  /**
-   * Choose specific skills you want to showcase.
-   */
-  userSkills?: (number | Skill)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'skill';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -780,16 +1066,6 @@ export interface Experience {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TEducationProps".
- */
-export interface TEducationProps {
-  educations?: (number | Education)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'education';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "educations".
  */
 export interface Education {
@@ -851,42 +1127,6 @@ export interface Education {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IExperienceProps".
- */
-export interface IExperienceProps {
-  relatedExperiences?: (number | Experience)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'experience';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IBlogsBlockProps".
- */
-export interface IBlogsBlockProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  blogs?: (number | Blog)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'blogs-block';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "blogs".
  */
 export interface Blog {
@@ -945,58 +1185,6 @@ export interface Blog {
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TFormBlockProps".
- */
-export interface TFormBlockProps {
-  form: number | Form;
-  enableIntro?: boolean | null;
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'formBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IAchievementProps".
- */
-export interface IAchievementProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  achievements?: (number | Achievement)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'achievement';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1083,32 +1271,6 @@ export interface Achievement {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ICertificationProps".
- */
-export interface ICertificationProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  certifications?: (number | Certification)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'certification';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "certifications".
  */
 export interface Certification {
@@ -1185,52 +1347,6 @@ export interface Certification {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IGithubContributionProps".
- */
-export interface IGithubContributionProps {
-  /**
-   * By default we will use username from social link.
-   */
-  githubContributionGraphConfig: 'useAnotherUsername' | 'useSocialUsername';
-  username?: string | null;
-  hideMonthLabels: boolean;
-  withTooltip: boolean;
-  graphBlockMargin: number;
-  graphBlockSize: number;
-  graphFontSize: number;
-  graphBlockRadius: number;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'github-contributions';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IHackathonProps".
- */
-export interface IHackathonProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  hackathons?: (number | Hackathon)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'hackathon';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hackathons".
  */
 export interface Hackathon {
@@ -1282,58 +1398,6 @@ export interface Hackathon {
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IProjectProps".
- */
-export interface IProjectProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  projects?: (number | Project)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'project';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IPublicationProps".
- */
-export interface IPublicationProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  publications?: (number | Publication)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'publication';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1407,32 +1471,6 @@ export interface Publication {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IResearchProps".
- */
-export interface IResearchProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  researches?: (number | Research)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'research';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "researches".
  */
 export interface Research {
@@ -1500,43 +1538,6 @@ export interface Research {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TCodeBlockProps".
- */
-export interface TCodeBlockProps {
-  language?: ('ts' | 'js') | null;
-  code?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'code-block';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ILicenseProps".
- */
-export interface ILicenseProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  licenses?: (number | License)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'license';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "licenses".
  */
 export interface License {
@@ -1592,6 +1593,348 @@ export interface License {
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TEducationProps".
+ */
+export interface TEducationProps {
+  educations?: (number | Education)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'education';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IProjectProps".
+ */
+export interface IProjectProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  projects?: (number | Project)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'project';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ISkillProps".
+ */
+export interface ISkillProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Check this to display every skill from your collection. Uncheck to manually select specific skills.
+   */
+  showAllSkills?: boolean | null;
+  /**
+   * Choose specific skills you want to showcase.
+   */
+  userSkills?: (number | Skill)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'skill';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IExperienceProps".
+ */
+export interface IExperienceProps {
+  relatedExperiences?: (number | Experience)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'experience';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IAboutProps".
+ */
+export interface IAboutProps {
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'about';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IHackathonProps".
+ */
+export interface IHackathonProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  hackathons?: (number | Hackathon)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hackathon';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IResearchProps".
+ */
+export interface IResearchProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  researches?: (number | Research)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'research';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IPublicationProps".
+ */
+export interface IPublicationProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  publications?: (number | Publication)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'publication';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ILicenseProps".
+ */
+export interface ILicenseProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  licenses?: (number | License)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'license';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ICertificationProps".
+ */
+export interface ICertificationProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  certifications?: (number | Certification)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'certification';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IAchievementProps".
+ */
+export interface IAchievementProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  achievements?: (number | Achievement)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'achievement';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IGithubContributionProps".
+ */
+export interface IGithubContributionProps {
+  /**
+   * By default we will use username from social link.
+   */
+  githubContributionGraphConfig: 'useAnotherUsername' | 'useSocialUsername';
+  username?: string | null;
+  hideMonthLabels: boolean;
+  withTooltip: boolean;
+  graphBlockMargin: number;
+  graphBlockSize: number;
+  graphFontSize: number;
+  graphBlockRadius: number;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'github-contributions';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IBlogsBlockProps".
+ */
+export interface IBlogsBlockProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  blogs?: (number | Blog)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'blogs-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TFormBlockProps".
+ */
+export interface TFormBlockProps {
+  form: number | Form;
+  enableIntro?: boolean | null;
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'formBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TCodeBlockProps".
+ */
+export interface TCodeBlockProps {
+  language?: ('ts' | 'js') | null;
+  code?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code-block';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1720,8 +2063,36 @@ export interface PortfolioSetting {
    * This field defines the 'Home' or 'Landing Page' for your entire Portfolio. By selecting a page here, you are designating it as the entry point of your website. Note: Changing this selection will automatically mark the selected page as the 'Main Page' and remove the 'Main Page' status from any other page for this portfolio to ensure there is always exactly one root page.
    */
   rootPage: number | Page;
+  theme?: (number | null) | Theme;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "themes".
+ */
+export interface Theme {
+  id: number;
+  title: string;
+  thumbnail?: (number | null) | Media;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1786,6 +2157,115 @@ export interface PayloadMcpApiKey {
   apiKey?: string | null;
   apiKeyIndex?: string | null;
   collection: 'payload-mcp-api-keys';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-kv".
+ */
+export interface PayloadKv {
+  id: number;
+  key: string;
+  data:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs".
+ */
+export interface PayloadJob {
+  id: number;
+  /**
+   * Input data provided to the job
+   */
+  input?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  taskStatus?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  completedAt?: string | null;
+  totalTried?: number | null;
+  /**
+   * If hasError is true this job will not be retried
+   */
+  hasError?: boolean | null;
+  /**
+   * If hasError is true, this is the error that caused it
+   */
+  error?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Task execution log
+   */
+  log?:
+    | {
+        executedAt: string;
+        completedAt: string;
+        taskSlug: 'inline' | 'invalidator';
+        taskID: string;
+        input?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        output?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        state: 'failed' | 'succeeded';
+        error?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  taskSlug?: ('inline' | 'invalidator') | null;
+  queue?: string | null;
+  waitUntil?: string | null;
+  processing?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1873,6 +2353,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'portfolio-settings';
         value: number | PortfolioSetting;
+      } | null)
+    | ({
+        relationTo: 'themes';
+        value: number | Theme;
       } | null)
     | ({
         relationTo: 'forms';
@@ -2495,8 +2979,21 @@ export interface IntegrationSelect<T extends boolean = true> {
 export interface PortfolioSettingsSelect<T extends boolean = true> {
   tenant?: T;
   rootPage?: T;
+  theme?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "themes_select".
+ */
+export interface ThemesSelect<T extends boolean = true> {
+  title?: T;
+  thumbnail?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2679,6 +3176,45 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-kv_select".
+ */
+export interface PayloadKvSelect<T extends boolean = true> {
+  key?: T;
+  data?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs_select".
+ */
+export interface PayloadJobsSelect<T extends boolean = true> {
+  input?: T;
+  taskStatus?: T;
+  completedAt?: T;
+  totalTried?: T;
+  hasError?: T;
+  error?: T;
+  log?:
+    | T
+    | {
+        executedAt?: T;
+        completedAt?: T;
+        taskSlug?: T;
+        taskID?: T;
+        input?: T;
+        output?: T;
+        state?: T;
+        error?: T;
+        id?: T;
+      };
+  taskSlug?: T;
+  queue?: T;
+  waitUntil?: T;
+  processing?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
@@ -2708,6 +3244,51 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "visitors_widget".
+ */
+export interface VisitorsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "formSubmissions_widget".
+ */
+export interface FormSubmissionsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'medium' | 'large' | 'x-large' | 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collections_widget".
+ */
+export interface CollectionsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TInvalidatorTask".
+ */
+export interface TInvalidatorTask {
+  input: {
+    tenant?: (number | null) | Tenant;
+    page?: (number | null) | Page;
+    invalidateRootRoute?: boolean | null;
+    invalidateAllRoutes?: boolean | null;
+  };
+  output: {
+    success?: boolean | null;
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

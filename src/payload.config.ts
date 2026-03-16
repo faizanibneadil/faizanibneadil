@@ -1,21 +1,23 @@
 import path from 'path'
-import { buildConfig, inMemoryKVAdapter } from 'payload'
+import { buildConfig, databaseKVAdapter } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 import { Users } from '@/collections/Users'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { resendAdapter } from '@payloadcms/email-resend'
-import { getServerSideURL } from './utilities/getURL'
+import { getServerSideURL } from '@/utilities/getURL'
 import { blocks } from '@/blocks/config'
 import { collections } from '@/collections/config'
 import { plugins } from '@/plugins/config'
 import { editorConfig } from '@/editor/config'
+import { jobs } from '@/jobs'
+import { endpoints } from '@/endpoints'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-    kv: inMemoryKVAdapter(),
+    kv: databaseKVAdapter(),
     hooks: {
         afterError: [console.log]
     },
@@ -24,6 +26,8 @@ export default buildConfig({
     //         fileSize: 2000
     //     }
     // },
+    endpoints: [...endpoints],
+    jobs: jobs,
     admin: {
         dashboard: {
             widgets: [{
@@ -31,7 +35,7 @@ export default buildConfig({
                 slug: 'visitors',
                 label: 'Visitors',
                 maxWidth: 'full',
-                minWidth: 'x-small'
+                minWidth: 'x-small',
             }, {
                 Component: '@/widgets/config.ts#FormSubmissions',
                 slug: 'formSubmissions',
@@ -64,7 +68,7 @@ export default buildConfig({
             baseDir: path.resolve(dirname),
         },
         components: {
-                        // actions: ['@/components/portfolio-preview.tsx#PortfolioPreview'],
+            // actions: ['@/components/portfolio-preview.tsx#PortfolioPreview'],
             graphics: {
                 Logo: {
                     path: '@/components/branding.tsx',

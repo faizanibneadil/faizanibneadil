@@ -1,0 +1,47 @@
+import React from "react";
+import { RichText } from '@payloadcms/richtext-lexical/react';
+import BlurFade from "@/components/magicui/blur-fade";
+import { ProjectCard } from "@/components/project-card";
+import type { BlockProps } from "@/types";
+import { getProjectById } from "@/utilities/getProjectById";
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
+import { Card } from "@/components/ui/card";
+import { SectionPresentationCard } from "../../components/SectionPresentationCard";
+
+const BLUR_FADE_DELAY = 0.04;
+export async function Project(props: BlockProps<'project'>) {
+    const {
+        blockProps,
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps
+    } = props || {}
+
+    const {
+        blockType,
+        heading,
+        blockName,
+        description,
+        id,
+        projects
+    } = blockProps || {}
+
+    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
+    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
+
+    return (
+        <section id="project" aria-label={blockName ?? blockType} className=" rounded-lg bg-border shadow">
+
+            <SectionPresentationCard heading={heading} label='Projects' description={description} />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 max-w-[800px] mx-auto border">
+                {projects?.map((project, idx) => (
+                    <React.Suspense key={`project-${typeof project === 'number' ? project : project.id}`}>
+                            <ProjectCard params={params} searchParams={searchParams} project={typeof project === 'number' ? getProjectById(project) : project} />
+                    </React.Suspense>
+                ))}
+            </div>
+
+        </section>
+
+    )
+}

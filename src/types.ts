@@ -43,7 +43,7 @@ export type BlockProps<K extends BlockSlug> = {
 
 // collection types
 export type CollectionsRegistryProps = {
-    page: Page
+    page: Page | null
 } & PageProps
 export type CollectionParams = BaseParams
 export type CollectionProps<K extends CollectionSlug> = {

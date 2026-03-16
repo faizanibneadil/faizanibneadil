@@ -14,6 +14,8 @@ import type { Metadata } from "next";
 import { CollectionsRegistries } from "@/registries";
 import { getProfileAvatarByDomain } from "@/utilities/getProfileAvatar";
 import { getServerSideURL } from "@/utilities/getURL";
+import { queryThemeByDomain } from "@/utilities/QueryThemeByDomain";
+import { themesRegistry } from "@/themes";
 
 const BlocksRenderer = dynamic(() => import("@/blocks").then(({ BlocksRenderer }) => ({
   default: BlocksRenderer
@@ -78,38 +80,56 @@ export default async function Page(props: PageProps) {
   const { slug, domain } = await paramsFromProps
 
   const page = await queryPageBySlug(slug!, domain!)
+  const themeID = await queryThemeByDomain(domain!)
 
-  const slugFromConfig = page?.content.configurations?.slug as CollectionSlug
-  let getTotalDocsQuery: ReturnType<typeof queryTotalDocsBySlug> = Promise.resolve({ totalDocs: 0 })
-  if (page && isCollection(page?.content?.pageMode?.mode) && slugFromConfig) {
-    getTotalDocsQuery = queryTotalDocsBySlug(slugFromConfig, domain!)
+  if (Object.hasOwn(themesRegistry, themeID)) {
+    const components = themesRegistry[themeID]?.components
+    const PageToRender = themesRegistry[themeID]?.page
+
+    // console.log({ themeID })
+
+    return <PageToRender
+      components={components}
+      isCollection={isCollection(page?.content?.pageMode?.mode!)}
+      isLayout={isLayout(page?.content?.pageMode?.mode!)}
+      pageContent={page}
+      params={paramsFromProps}
+      searchParams={searchParamsFromProps}
+      themeID={themeID}
+    />
   }
 
-  if (!page || !domain) {
-    return notFound()
-  }
+  // const slugFromConfig = page?.content.configurations?.slug as CollectionSlug
+  // let getTotalDocsQuery: ReturnType<typeof queryTotalDocsBySlug> = Promise.resolve({ totalDocs: 0 })
+  // if (page && isCollection(page?.content?.pageMode?.mode) && slugFromConfig) {
+  //   getTotalDocsQuery = queryTotalDocsBySlug(slugFromConfig, domain!)
+  // }
 
-  return (
-    <main className="flex flex-col min-h-[100dvh]">
-      {isLayout(page?.content?.pageMode?.mode) && (
-        <BlocksRenderer blocks={page?.content.layout} params={paramsFromProps} searchParams={searchParamsFromProps} />
-      )}
-      {isCollection(page?.content?.pageMode?.mode) && (
-        <div className="flex flex-col gap-4">
-          {!page.isRootPage && (
-            <div className="flex gap-4 items-center">
-              <BackButton />
-              <div className="flex flex-col items-start gap-">
-                <p className="uppercase font-semibold">{page?.content.configurations?.slug}</p>
-                <Suspense fallback={<Skeleton className="h-4 w-9" />}>
-                  <CollectionCount collectionSlug={slugFromConfig} getTotalDocs={getTotalDocsQuery} />
-                </Suspense>
-              </div>
-            </div>
-          )}
-          <CollectionRenderer searchParams={searchParamsFromProps} params={paramsFromProps} page={page} />
-        </div>
-      )}
-    </main>
-  )
+  // if (!page || !domain) {
+  //   return notFound()
+  // }
+
+  // return (
+  //   <main className="flex flex-col min-h-[100dvh]">
+  //     {isLayout(page?.content?.pageMode?.mode) && (
+  //       <BlocksRenderer blocks={page?.content.layout} params={paramsFromProps} searchParams={searchParamsFromProps} />
+  //     )}
+  //     {isCollection(page?.content?.pageMode?.mode) && (
+  //       <div className="flex flex-col gap-4">
+  //         {!page.isRootPage && (
+  //           <div className="flex gap-4 items-center">
+  //             <BackButton />
+  //             <div className="flex flex-col items-start gap-">
+  //               <p className="uppercase font-semibold">{page?.content.configurations?.slug}</p>
+  //               <Suspense fallback={<Skeleton className="h-4 w-9" />}>
+  //                 <CollectionCount collectionSlug={slugFromConfig} getTotalDocs={getTotalDocsQuery} />
+  //               </Suspense>
+  //             </div>
+  //           </div>
+  //         )}
+  //         <CollectionRenderer searchParams={searchParamsFromProps} params={paramsFromProps} page={page} />
+  //       </div>
+  //     )}
+  //   </main>
+  // )
 }

@@ -239,7 +239,7 @@ export const Pages: CollectionConfig<'pages'> = {
     hooks: {
         afterChange: [
             SwapRootPage(),
-            RevalidatePageAfterChange({ invalidateRootRoute: true })
+            RevalidatePageAfterChange({ invalidateRootRoute: true }),
         ],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
         beforeDelete: [ProtectRootPage()],

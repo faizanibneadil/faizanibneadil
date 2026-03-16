@@ -13,10 +13,10 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { getNavbarMenuItems, getNavbarSocialMenuItems } from "@/utilities/getNavbarIByDomain";
-import { glimpse } from "./kibo-ui/glimpse/server";
-import { GlimpseLink } from "./kibo-ui/glimpse";
+import { glimpse } from "../../../components/kibo-ui/glimpse/server";
+import { GlimpseLink } from "../../../components/kibo-ui/glimpse";
 import type { BaseParams } from "@/types"
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "../../../components/ui/skeleton";
 
 const FallbackLink = () => (
   <a
