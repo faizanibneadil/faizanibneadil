@@ -11,7 +11,7 @@ import { isCollection, isLayout } from "@/utilities/getPageMode";
 import { queryPageBySlug } from "@/utilities/QueryPageBySlug";
 // import { queryTotalDocsBySlug } from "@/utilities/QueryTotalDocsBySlug";
 import type { Metadata } from "next";
-import { CollectionsRegistries } from "@/registries";
+// import { CollectionsRegistries } from "@/registries";
 import { getProfileAvatarByDomain } from "@/utilities/getProfileAvatar";
 import { getServerSideURL } from "@/utilities/getURL";
 import { queryThemeByDomain } from "@/utilities/QueryThemeByDomain";
@@ -37,35 +37,35 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const slugFromConfig = page?.content.configurations?.slug as CollectionSlug
 
 
-  if (__mode) {
-    if (isCollection(__mode)) {
-      if (Object.hasOwn(CollectionsRegistries, slugFromConfig)) {
-        const metadata = CollectionsRegistries[slugFromConfig]?.metadata
-        // @ts-expect-error
-        return await metadata({ doc: { ...page } })
-      }
-    }
-    if (isLayout(__mode)) {
-      const avatarUrl = await getProfileAvatarByDomain(domain)
+  // if (__mode) {
+  //   if (isCollection(__mode)) {
+  //     if (Object.hasOwn(CollectionsRegistries, slugFromConfig)) {
+  //       const metadata = CollectionsRegistries[slugFromConfig]?.metadata
+  //       // @ts-expect-error
+  //       return await metadata({ doc: { ...page } })
+  //     }
+  //   }
+  //   if (isLayout(__mode)) {
+  //     const avatarUrl = await getProfileAvatarByDomain(domain)
 
-      return {
-        title: page?.meta?.title,
-        description: page?.meta?.description,
-        metadataBase: new URL(getServerSideURL()),
-        ...(avatarUrl && {
-          icons: [{ url: avatarUrl, fetchPriority: 'high' }]
-        }),
-        ...(avatarUrl && {
-          openGraph: {
-            url: avatarUrl,
-            type: 'profile',
-            description: page?.meta?.description ?? '',
-            images: [{ url: avatarUrl }]
-          }
-        })
-      }
-    }
-  }
+  //     return {
+  //       title: page?.meta?.title,
+  //       description: page?.meta?.description,
+  //       metadataBase: new URL(getServerSideURL()),
+  //       ...(avatarUrl && {
+  //         icons: [{ url: avatarUrl, fetchPriority: 'high' }]
+  //       }),
+  //       ...(avatarUrl && {
+  //         openGraph: {
+  //           url: avatarUrl,
+  //           type: 'profile',
+  //           description: page?.meta?.description ?? '',
+  //           images: [{ url: avatarUrl }]
+  //         }
+  //       })
+  //     }
+  //   }
+  // }
 
   return {}
 }

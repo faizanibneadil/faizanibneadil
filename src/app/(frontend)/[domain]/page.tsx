@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 import Page, { generateMetadata as PageGenerateMetadata } from "./[slug]/page";
 import type { PageProps } from "@/types";
 import { queryRootPageByDomain } from "@/utilities/QueryRootPageByDomain";
-import { CollectionsRegistries } from "@/registries";
+// import { CollectionsRegistries } from "@/registries";
 
 // TODO: add root page laval metadata
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
