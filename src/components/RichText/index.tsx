@@ -14,8 +14,8 @@ import {
 import { linkNodeJSXConverter } from './converters/LinkJSXConverter'
 import { paragraphNodeJSXConverter } from './converters/ParagraphJSXConverter'
 import { internalDocToHref } from '@/utilities/internalDocToHref'
-const FormBlock = dynamic(() => import('@/blocks/Form/components/form-block').then(({ FormBlock }) => FormBlock))
-const CodeBlock = dynamic(() => import('@/blocks/Code/components/CodeBlock').then(({ CodeBlock }) => CodeBlock))
+const FormBlock = dynamic(() => import('@/themes/Magic/blocks/Form/form-block').then(({ FormBlock }) => FormBlock))
+const CodeBlock = dynamic(() => import('@/themes/Magic/blocks/Code/CodeBlock').then(({ CodeBlock }) => CodeBlock))
 
 type NodeTypes =
   | DefaultNodeTypes

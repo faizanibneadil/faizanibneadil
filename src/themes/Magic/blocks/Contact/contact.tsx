@@ -4,7 +4,7 @@ import type { IContactProps } from "@/payload-types";
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import type { BlockProps } from "@/types";
-import { FormBlock } from "@/blocks/Form/components/form-block";
+import { FormBlock } from "../Form/form-block";
 
 
 const BLUR_FADE_DELAY = 0.04;

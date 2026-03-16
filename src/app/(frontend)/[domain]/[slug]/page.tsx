@@ -1,15 +1,15 @@
-import { Suspense } from "react";
-import { notFound } from "next/navigation";
-import dynamic from "next/dynamic";
+// import { Suspense } from "react";
+// import { notFound } from "next/navigation";
+// import dynamic from "next/dynamic";
 import type { Page } from "@/payload-types";
 import type { PageProps } from "@/types";
 import type { CollectionSlug } from "payload";
-import { BackButton } from "@/components/BackButton";
-import { CollectionCount } from "@/components/collection-count";
-import { Skeleton } from "@/components/ui/skeleton";
+// import { BackButton } from "@/components/BackButton";
+// import { CollectionCount } from "@/components/collection-count";
+// import { Skeleton } from "@/components/ui/skeleton";
 import { isCollection, isLayout } from "@/utilities/getPageMode";
 import { queryPageBySlug } from "@/utilities/QueryPageBySlug";
-import { queryTotalDocsBySlug } from "@/utilities/QueryTotalDocsBySlug";
+// import { queryTotalDocsBySlug } from "@/utilities/QueryTotalDocsBySlug";
 import type { Metadata } from "next";
 import { CollectionsRegistries } from "@/registries";
 import { getProfileAvatarByDomain } from "@/utilities/getProfileAvatar";
@@ -17,13 +17,13 @@ import { getServerSideURL } from "@/utilities/getURL";
 import { queryThemeByDomain } from "@/utilities/QueryThemeByDomain";
 import { themesRegistry } from "@/themes";
 
-const BlocksRenderer = dynamic(() => import("@/blocks").then(({ BlocksRenderer }) => ({
-  default: BlocksRenderer
-})), { ssr: true })
+// const BlocksRenderer = dynamic(() => import("@/blocks").then(({ BlocksRenderer }) => ({
+//   default: BlocksRenderer
+// })), { ssr: true })
 
-const CollectionRenderer = dynamic(() => import("@/collections").then(({ CollectionRenderer }) => ({
-  default: CollectionRenderer
-})), { ssr: true })
+// const CollectionRenderer = dynamic(() => import("@/collections").then(({ CollectionRenderer }) => ({
+//   default: CollectionRenderer
+// })), { ssr: true })
 
 // TODO: add root page laval metadata
 export async function generateMetadata(props: PageProps): Promise<Metadata> {

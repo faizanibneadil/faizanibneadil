@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 import Page, { generateMetadata as PageGenerateMetadata } from "./[slug]/page";
 import type { PageProps } from "@/types";
 import { queryRootPageByDomain } from "@/utilities/QueryRootPageByDomain";
-import { BlocksRegistries, CollectionsRegistries } from "@/registries";
+import { CollectionsRegistries } from "@/registries";
 
 // TODO: add root page laval metadata
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
@@ -63,22 +63,22 @@ export default async function DomainPage(props: PageProps) {
     }
   })
 
-  let PageSkeletonToRender: React.ComponentType<{}>
-  switch (__mode!) {
-    case 'collection':
-      PageSkeletonToRender = CollectionsRegistries[__rootPageSlugFromConfig]?.skeleton!
-      break;
-    case 'layout':
-      PageSkeletonToRender = PageSkeleton
-      break;
-    default:
-      PageSkeletonToRender = () => <p>Fallback skeleton</p>
-      break;
-  }
+  // let PageSkeletonToRender: React.ComponentType<{}>
+  // switch (__mode!) {
+  //   case 'collection':
+  //     PageSkeletonToRender = CollectionsRegistries[__rootPageSlugFromConfig]?.skeleton!
+  //     break;
+  //   case 'layout':
+  //     PageSkeletonToRender = PageSkeleton
+  //     break;
+  //   default:
+  //     PageSkeletonToRender = () => <p>Fallback skeleton</p>
+  //     break;
+  // }
 
   return (
     <ErrorBoundary fallback={null}>
-      <Suspense fallback={<PageSkeletonToRender />}>
+      <Suspense fallback={null}>
         <Page params={paramsPromise} searchParams={searchParamsFromProps} />
       </Suspense>
     </ErrorBoundary>
@@ -86,26 +86,26 @@ export default async function DomainPage(props: PageProps) {
 
 }
 
-export function PageSkeleton() {
-  const HeroSkeleton = BlocksRegistries.hero?.skeleton
-  const AboutSkeleton = BlocksRegistries.about?.skeleton
-  const GithubContributionsSkeleton = BlocksRegistries["github-contributions"]?.skeleton
-  const ExperienceSkeleton = BlocksRegistries.experience?.skeleton
-  const ProjectSkeleton = BlocksRegistries.project?.skeleton
-  const SkillsSkeleton = BlocksRegistries.skill?.skeleton
-  const ContactSkeleton = BlocksRegistries.contact?.skeleton
-  return (
-    <div className="my-5 first:mt-0">
-      {HeroSkeleton && <HeroSkeleton />}
-      {AboutSkeleton && <AboutSkeleton />}
-      {GithubContributionsSkeleton && <GithubContributionsSkeleton />}
-      {ExperienceSkeleton && <ExperienceSkeleton />}
-      {ProjectSkeleton && <ProjectSkeleton />}
-      {SkillsSkeleton && <SkillsSkeleton />}
-      {ContactSkeleton && <ContactSkeleton />}
-    </div>
-  )
-}
+// export function PageSkeleton() {
+//   const HeroSkeleton = BlocksRegistries.hero?.skeleton
+//   const AboutSkeleton = BlocksRegistries.about?.skeleton
+//   const GithubContributionsSkeleton = BlocksRegistries["github-contributions"]?.skeleton
+//   const ExperienceSkeleton = BlocksRegistries.experience?.skeleton
+//   const ProjectSkeleton = BlocksRegistries.project?.skeleton
+//   const SkillsSkeleton = BlocksRegistries.skill?.skeleton
+//   const ContactSkeleton = BlocksRegistries.contact?.skeleton
+//   return (
+//     <div className="my-5 first:mt-0">
+//       {HeroSkeleton && <HeroSkeleton />}
+//       {AboutSkeleton && <AboutSkeleton />}
+//       {GithubContributionsSkeleton && <GithubContributionsSkeleton />}
+//       {ExperienceSkeleton && <ExperienceSkeleton />}
+//       {ProjectSkeleton && <ProjectSkeleton />}
+//       {SkillsSkeleton && <SkillsSkeleton />}
+//       {ContactSkeleton && <ContactSkeleton />}
+//     </div>
+//   )
+// }
 
 //import { BlocksRenderrer } from "@/blocks";
 //import { Hero } from "@/blocks/Hero/components/hero";
