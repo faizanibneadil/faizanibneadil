@@ -1,6 +1,6 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
-import { LicenseCard } from '@/components/license-card';
+import { LicenseCard } from '@/themes/Magic/blocks/Licenses/license-card';
 import RichText from "@/components/RichText";
 
 const BLUR_FADE_DELAY = 0.04;

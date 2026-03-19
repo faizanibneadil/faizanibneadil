@@ -5,7 +5,43 @@ import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
 import { slugify } from "@/utilities/slugify";
-import { slugField, type CollectionConfig } from "payload";
+import { CollectionSlug, GroupField, slugField, type CollectionConfig } from "payload";
+
+function skillsSettings(collection: CollectionSlug[]): GroupField[] {
+    return collection.map(slug => {
+        const collectionSlug = slug.at(0)?.toUpperCase() + slug.slice(1)
+        return {
+            type: 'group',
+            fields: [
+                {
+                    type: 'checkbox',
+                    name: `enable${collectionSlug}Count`,
+                    label: `Enable ${collectionSlug} Count`,
+                    defaultValue: false,
+                    admin: {
+                        width: '50%',
+                        description: `Display total number of ${collectionSlug} linked to this skill.`
+                    }
+                },
+                {
+                    type: 'join',
+                    name: slug,
+                    collection: slug,
+                    maxDepth: 0,
+                    on: ['educations', 'experiences'].includes(slug) ? 'skills' : 'content.skills',
+                    admin: {
+                        allowCreate: false,
+                        disableListColumn: true,
+                        disableRowTypes: true,
+                        disableListFilter: true,
+                        defaultColumns: ['title'],
+                        condition: fields => Boolean(fields[`enable${collectionSlug}Count`])
+                    }
+                }
+            ]
+        }
+    })
+}
 
 export const Skills: CollectionConfig<'skills'> = {
     slug: 'skills',
@@ -14,7 +50,7 @@ export const Skills: CollectionConfig<'skills'> = {
     admin: {
         useAsTitle: 'title',
         // group: NavigationGroups.resume,
-        defaultColumns: ['title', 'slug', 'techstack.icon'],
+        defaultColumns: ['title', 'slug', 'icon',],
         preview: generatePreview({ collection: 'skills' })
     },
     access: {
@@ -31,46 +67,68 @@ export const Skills: CollectionConfig<'skills'> = {
             admin: {
                 position: 'sidebar',
             },
-        }, {
+        },
+        {
             type: 'group',
-            name: 'techstack',
-            label: 'Tech Stack',
-            // admin: { description: 'If you want to show an icon of the skill instead of skill as name then you have to select an icon from icons collection. REMEMBER: If the icon is available on skill only icon will be display.' },
             fields: [
                 {
                     type: 'checkbox',
-                    name: 'showIcon',
-                    label: 'Display Icon instead of Text',
-                    defaultValue: ({ user }) => {
-                        // @ts-expect-error
-                        return typeof user?.industry === 'object' ? user?.industry?.slug === 'information-technology' : false
-                    },
+                    name: 'enableLabel',
+                    label: 'Enable Label',
+                    defaultValue: false,
                     admin: {
-                        description: 'Enable this to show the technology icon on the portfolio. If disabled, only the skill name will be displayed.'
+                        width: '50%',
+                        description: 'Display the text label/name of the skill.'
                     }
                 },
-                Iconify({
+                {
+                    type: 'text',
+                    name: 'skillCustomLabel',
+                    label: 'Custom Label',
                     admin: {
-                        condition: (data, siblingData) => siblingData?.showIcon === true,
+                        condition: ({ enableLabel }) => Boolean(enableLabel),
+                        description: 'Custom Label'
+                    }
+                }
+            ]
+        },
+        {
+            type: 'group',
+            fields: [
+                {
+                    type: 'checkbox',
+                    name: 'enableIcon',
+                    label: 'Enable Icon',
+                    defaultValue: false,
+                    admin: {
+                        width: '50%',
+                        description: 'Display the graphical icon associated with this skill.'
+                    }
+                },
+                {
+                    type: 'text',
+                    name: 'icon',
+                    label: 'Search Icon',
+                    admin: {
+                        components: {
+                            Field: '@/collections/Skills/components/icon.tsx#Icon'
+                        },
+                        condition: ({ enableIcon }) => Boolean(enableIcon),
                         description: 'Search and select an icon for this skill. Note: This icon will only be visible if "Display Icon" is enabled above.'
                     }
-                })
+                },
             ]
-        }, {
-            type: 'relationship',
-            name: 'projects',
-            relationTo: 'projects',
-            hasMany: true,
-            admin: {
-                description: 'Select those project in which you used this skill.',
-                // appearance: 'drawer'
-            },
-        }, {
-            name: 'relatedExperiences',
-            type: 'join',
-            collection: 'experiences',
-            on: 'relatedSkills',
         },
+        ...skillsSettings([
+            'achievements',
+            'certifications',
+            'educations',
+            'experiences',
+            'hackathons',
+            'projects',
+            'publications',
+            'researches'
+        ]),
         slugField({
             name: 'slug',
             checkboxName: 'lockSlug',

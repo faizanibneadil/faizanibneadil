@@ -39,7 +39,7 @@ export async function Blogs(props: CollectionProps<'blogs'>) {
             docSlug: blog.slug as string
         })
         return (
-            <div className="rounded-lg border bg-background">
+            <div key={`blog-${blog.id}`} className="rounded-lg border bg-background">
                 <Card className="flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full">
                     <Link href={RouteWithDocSlug} className="block cursor-pointer">
                         {blog?.content?.featured_image && (

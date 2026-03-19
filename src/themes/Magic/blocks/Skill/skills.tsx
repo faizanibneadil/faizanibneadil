@@ -1,16 +1,16 @@
 import BlurFade from "@/components/magicui/blur-fade";
-import { Skill as RenderSkill, SkillSkeleton } from "@/components/render-skill";
 import { getSkillById } from "@/utilities/getSkillById";
 import type { BlockProps } from "@/types";
 import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import { Suspense } from "react";
+import { SkillRenderer } from "./SkillRenderer";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Skill(props: BlockProps<'skill'>) {
     const {
         blockProps,
         params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        searchParams: searchParamsFromProps,
     } = props || {}
 
     const {
@@ -64,8 +64,8 @@ export async function Skill(props: BlockProps<'skill'>) {
                 </BlurFade>
                 <div className="flex flex-wrap gap-1">
                     {providedSkills?.map((skill, id) => (
-                        <Suspense key={`skill-${id}`} fallback={<SkillSkeleton />}>
-                            <RenderSkill width='2em' height='2em' skill={typeof skill === 'number' ? getSkillById(skill) : skill} id={id} />
+                        <Suspense key={`skill-${id}`} fallback={null}>
+                            <SkillRenderer width='2em' height='2em' skill={typeof skill === 'number' ? getSkillById(skill) : skill} id={id} />
                         </Suspense>
                     ))}
                 </div>

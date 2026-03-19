@@ -1,21 +1,21 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import type { Research } from "@/payload-types";
-import { Dates } from "./dates";
+import type { Publication } from "@/payload-types";
 import { getMediaUrl } from "@/utilities/getURL";
 import type { BlockParams } from "@/types";
-import RichText from "./RichText";
 import { generateRoute } from "@/utilities/generateRoute";
+import { Dates } from "../../components/Dates";
+import RichText from "../../components/RichText";
 
-export async function ResearchCard(props: { research: Research } & BlockParams) {
+export async function PublicationCard(props: { publication: Publication } & BlockParams) {
   const {
-    research,
+    publication,
     params: paramsFromProps,
     searchParams: searchParamsFromProps
   } = props || {}
 
-  const { content, title } = research
+  const { content, title } = publication
 
 
   const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
@@ -23,8 +23,8 @@ export async function ResearchCard(props: { research: Research } & BlockParams) 
 
   const { RouteWithDocSlug } = generateRoute({
     domain: params?.domain as string,
-    slug: 'researches',
-    docSlug: String(research?.id)
+    slug: 'publications',
+    docSlug: String(publication?.id)
   })
 
   return (
@@ -36,18 +36,18 @@ export async function ResearchCard(props: { research: Research } & BlockParams) 
         </Avatar>
       </div>
       <div className="flex flex-1 flex-col justify-start gap-1">
-        <Dates to={content?.dates?.to} from={content?.dates?.to} />
+        <Dates to={content?.publishedDate} />
         <h2 className="font-semibold leading-none">
           <Link href={{ pathname: RouteWithDocSlug }}>{title}</Link>
         </h2>
-        {content?.dates?.location && (
-          <p className="text-sm text-muted-foreground">{content?.dates?.location}</p>
+        {content?.publisher && (
+          <p className="text-sm text-muted-foreground">{content?.publisher}</p>
         )}
-        {content?.role && (
-          <p className="text-sm text-muted-foreground">{content?.role}</p>
+        {content?.type && (
+          <p className="text-sm text-muted-foreground">{content?.type}</p>
         )}
-        {content?.status && (
-          <p className="text-sm text-muted-foreground">{content?.status}</p>
+        {content?.doi && (
+          <p className="text-sm text-muted-foreground">{content?.doi}</p>
         )}
         {content?.description && (
           <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">

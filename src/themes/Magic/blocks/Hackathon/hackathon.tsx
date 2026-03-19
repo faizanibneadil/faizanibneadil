@@ -1,5 +1,5 @@
 import { RichText } from '@payloadcms/richtext-lexical/react';
-import { HackathonCard } from "@/components/hackathon-card";
+import { HackathonCard } from "@/themes/Magic/blocks/Hackathon/hackathon-card";
 import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';

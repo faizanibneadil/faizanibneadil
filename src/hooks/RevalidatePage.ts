@@ -34,7 +34,7 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
             ? await getDomain(req, doc?.tenant)
             : doc?.tenant?.domain
 
-        const slugFromConfig = doc?.content?.configurations?.slug
+        const slugFromConfig = doc?.content?.configuredCollectionSlug
 
         if (domain) {
             const { RootRoute, Route } = generateRoute({
@@ -69,7 +69,7 @@ export const RevalidatePageAfterDelete: AppCollectionAfterDeleteHook<Page, {
             ? await getDomain(req, doc?.tenant)
             : doc?.tenant?.domain
             
-        const slugFromConfig = doc?.content?.configurations?.slug
+        const slugFromConfig = doc?.content?.configuredCollectionSlug
 
         if (domain) {
             const { RootRoute, Route } = generateRoute({

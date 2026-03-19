@@ -9,21 +9,27 @@ import { themesRegistry } from "@/themes"
 
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
-    // const params = await props.params
+    const params = await props.params
 
-    // const slug = params.slug?.split('-')?.at(0) as CollectionSlug
-    // const domain = params.domain
-    // const docSlug = params.id
-    // const doc = await queryEntityById(slug, domain!, docSlug!)
+    const excludedCollectionSlug = params.slug?.split('-').at(0) as CollectionSlug
+    const domain = params.domain
+    const docSlug = params.id
+    const doc = await queryEntityById(excludedCollectionSlug, domain!, docSlug!)
+    const themeId = await queryThemeByDomain(domain!)
 
-    // if (Object.hasOwn(DocRegistries, slug)) {
-    //     const metadata = DocRegistries[slug]?.metadata
-    //     if (typeof metadata === 'function') {
-    //         // @ts-expect-error
-    //         return metadata({ doc })
-    //     }
-    // }
+    if (Object.hasOwn(themesRegistry, themeId)) {
+        const docMap = themesRegistry[themeId]?.config?.documentConfig?.docMap
 
+        if (Object.hasOwn(docMap, excludedCollectionSlug)) {
+            const metadata = docMap[excludedCollectionSlug]?.metadata
+            if (typeof metadata === 'function') {
+                // @ts-expect-error
+                return await metadata({ doc })
+            }
+
+            return metadata ?? {}
+        }
+    }
 
     return {}
 }
@@ -31,20 +37,25 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 export default async function Page(props: PageProps) {
     const params = await props.params
 
-    const slug = params.slug?.split('-').at(0) as CollectionSlug
+    const excludedCollectionSlug = params.slug?.split('-').at(0) as CollectionSlug
     const domain = params.domain
     const docSlug = params.id
-    const entity = await queryEntityById(slug, domain!, docSlug!)
-// console.log({entity})
-    const themeID = await queryThemeByDomain(domain!)
+    const entity = await queryEntityById(excludedCollectionSlug, domain!, docSlug!)
+    // console.log({ entityFromEntityPage: entity })
+    const themeId = await queryThemeByDomain(domain!)
 
-    if (Object.hasOwn(themesRegistry, themeID)) {
-        const components = themesRegistry[themeID]?.components
-        const DocumentRenderer = themesRegistry[themeID]?.DocumentRenderer
+    if (Object.hasOwn(themesRegistry, themeId)) {
+        const componentsMap = themesRegistry[themeId]?.config?.componentsMap
+        const docMap = themesRegistry[themeId]?.config?.documentConfig?.docMap
+        const DocumentRenderer = themesRegistry[themeId]?.config?.documentConfig?.DocumentRenderer
 
-        // console.log({ themeID })
-
-        return <DocumentRenderer entity={entity} params={props.params} searchParams={props.searchParams} />
+        return <DocumentRenderer pageProps={props} config={{
+            componentsMap,
+            docMap,
+            docSlug,
+            entity,
+            excludedCollectionSlug
+        }} />
     }
 
     return null

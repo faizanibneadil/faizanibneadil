@@ -1,5 +1,5 @@
 import { hasGlimpseNode } from "@/utilities/hasGlimpseNode";
-import { SerializedAutoLinkNode, SerializedLinkNode, SerializedParagraphNode } from "@payloadcms/richtext-lexical";
+import { SerializedParagraphNode } from "@payloadcms/richtext-lexical";
 import { JSXConverters } from "@payloadcms/richtext-lexical/react";
 
 

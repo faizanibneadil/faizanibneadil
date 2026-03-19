@@ -1,6 +1,6 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
-import { ResearchCard } from '@/components/research-card';
+import { ResearchCard } from '@/themes/Magic/blocks/Research/research-card';
 import RichText from "@/components/RichText";
 
 const BLUR_FADE_DELAY = 0.04;

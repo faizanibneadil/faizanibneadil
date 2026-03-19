@@ -1,4 +1,4 @@
-import { AchievementCard } from "@/components/achievement-card"
+import { AchievementCard } from "@/themes/Magic/blocks/Achievement/achievement-card"
 import type { CollectionProps } from "@/types"
 import { generateRoute } from "@/utilities/generateRoute"
 import Link from "next/link"

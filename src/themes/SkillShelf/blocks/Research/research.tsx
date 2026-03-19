@@ -1,9 +1,6 @@
-import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
-import { ResearchCard } from '@/components/research-card';
-import { RichText } from '@payloadcms/richtext-lexical/react';
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 import { SectionPresentationCard } from "../../components/SectionPresentationCard";
+import { ResearchCard } from "./ResearchCard";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Research(props: BlockProps<'research'>) {
@@ -35,9 +32,7 @@ export async function Research(props: BlockProps<'research'>) {
                 <ul className=" divide-y divide-dashed">
                     {researches?.map((research, id) => {
                         return typeof research === 'number' ? null : (
-
                             <ResearchCard key={research.id} params={params} research={research} searchParams={searchParams} />
-
                         )
                     })}
                 </ul>

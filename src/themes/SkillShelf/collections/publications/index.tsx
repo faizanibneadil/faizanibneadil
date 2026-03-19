@@ -1,4 +1,4 @@
-import { PublicationCard } from "@/components/publication-card"
+import { PublicationCard } from "@/themes/Magic/blocks/Publication/publication-card"
 import type { CollectionProps } from "@/types"
 
 export async function Publications(props: CollectionProps<'publications'>) {

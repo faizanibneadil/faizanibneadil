@@ -62,6 +62,13 @@ export const Educations: CollectionConfig<'educations'> = {
             }
         },
         {
+            type: 'relationship',
+            relationTo: 'skills',
+            name: 'skills',
+            label: 'Skills',
+            hasMany: true
+        },
+        {
             type: 'group',
             name: 'details',
             label: 'Additional Details',

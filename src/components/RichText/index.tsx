@@ -11,8 +11,8 @@ import {
   JSXConvertersFunction,
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
-import { linkNodeJSXConverter } from './converters/LinkJSXConverter'
-import { paragraphNodeJSXConverter } from './converters/ParagraphJSXConverter'
+import { linkNodeJSXConverter } from '@/utilities/converters/LinkJSXConverter'
+import { paragraphNodeJSXConverter } from '@/utilities/converters/ParagraphJSXConverter'
 import { internalDocToHref } from '@/utilities/internalDocToHref'
 const FormBlock = dynamic(() => import('@/themes/Magic/blocks/Form/form-block').then(({ FormBlock }) => FormBlock))
 const CodeBlock = dynamic(() => import('@/themes/Magic/blocks/Code/CodeBlock').then(({ CodeBlock }) => CodeBlock))

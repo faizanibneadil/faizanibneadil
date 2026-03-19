@@ -1,6 +1,6 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
-import { PublicationCard } from '@/components/publication-card';
+import { PublicationCard } from '@/themes/Magic/blocks/Publication/publication-card';
 import { RichText } from '@payloadcms/richtext-lexical/react';
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 import { SectionPresentationCard } from "../../components/SectionPresentationCard";

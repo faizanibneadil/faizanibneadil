@@ -1,4 +1,4 @@
-import { AchievementCard } from '@/components/achievement-card';
+import { AchievementCard } from '@/themes/Magic/blocks/Achievement/achievement-card';
 import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';

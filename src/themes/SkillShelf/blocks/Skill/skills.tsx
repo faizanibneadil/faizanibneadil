@@ -1,13 +1,9 @@
-import BlurFade from "@/components/magicui/blur-fade";
-import { Skill as RenderSkill, SkillSkeleton } from "@/components/render-skill";
 import { getSkillById } from "@/utilities/getSkillById";
 import type { BlockProps } from "@/types";
 import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import { Suspense } from "react";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-import { RichText } from '@payloadcms/richtext-lexical/react';
-import { cn } from "@/lib/utils";
 import { SectionPresentationCard } from "../../components/SectionPresentationCard";
+import { SkillRenderer } from "./SkillRenderer";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Skill(props: BlockProps<'skill'>) {
@@ -65,10 +61,10 @@ export async function Skill(props: BlockProps<'skill'>) {
     return (
         <section id="skills" aria-label={blockName ?? blockType} className="rounded-lg bg-border shadow">
             <SectionPresentationCard heading={heading} label='Skills' description={description} />
-            <div className="flex flex-wrap gap-1 rounded-lg border bg-background p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2">
                 {providedSkills?.map((skill, id) => (
-                    <Suspense key={`skill-${id}`} fallback={<SkillSkeleton />}>
-                        <RenderSkill width='2em' height='2em' skill={typeof skill === 'number' ? getSkillById(skill) : skill} id={id} />
+                    <Suspense key={`skill-${id}`} fallback={null}>
+                        <SkillRenderer width='2em' height='2em' skill={typeof skill === 'number' ? getSkillById(skill) : skill} id={id} />
                     </Suspense>
                 ))}
             </div>

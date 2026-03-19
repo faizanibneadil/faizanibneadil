@@ -1,21 +1,24 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import type { Publication } from "@/payload-types";
-import { Dates } from "./dates";
+import { Certification } from "@/payload-types";
 import { getMediaUrl } from "@/utilities/getURL";
 import type { BlockParams } from "@/types";
-import RichText from "./RichText";
 import { generateRoute } from "@/utilities/generateRoute";
+import RichText from "../../components/RichText";
+import { Dates } from "../../components/Dates";
 
-export async function PublicationCard(props: { publication: Publication } & BlockParams) {
+export async function CertificateCard(props: { certificate: Certification } & BlockParams) {
   const {
-    publication,
+    certificate,
     params: paramsFromProps,
     searchParams: searchParamsFromProps
   } = props || {}
 
-  const { content, title } = publication
+  const {
+    content,
+    title,
+  } = certificate
 
 
   const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
@@ -23,8 +26,8 @@ export async function PublicationCard(props: { publication: Publication } & Bloc
 
   const { RouteWithDocSlug } = generateRoute({
     domain: params?.domain as string,
-    slug: 'publications',
-    docSlug: String(publication?.id)
+    slug: 'certifications',
+    docSlug: String(certificate?.id)
   })
 
   return (
@@ -36,18 +39,15 @@ export async function PublicationCard(props: { publication: Publication } & Bloc
         </Avatar>
       </div>
       <div className="flex flex-1 flex-col justify-start gap-1">
-        <Dates to={content?.publishedDate} />
+        <Dates to={content?.validity?.issuedDate} from={content?.validity?.expiryDate} />
         <h2 className="font-semibold leading-none">
           <Link href={{ pathname: RouteWithDocSlug }}>{title}</Link>
         </h2>
-        {content?.publisher && (
-          <p className="text-sm text-muted-foreground">{content?.publisher}</p>
+        {content?.issuer && (
+          <p className="text-sm text-muted-foreground">{content?.issuer}</p>
         )}
-        {content?.type && (
-          <p className="text-sm text-muted-foreground">{content?.type}</p>
-        )}
-        {content?.doi && (
-          <p className="text-sm text-muted-foreground">{content?.doi}</p>
+        {content?.credentialId && (
+          <p className="text-sm text-muted-foreground">{content?.credentialId}</p>
         )}
         {content?.description && (
           <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">

@@ -1,4 +1,4 @@
-import { AchievementCard } from "@/components/achievement-card"
+import { AchievementCard } from "@/themes/Magic/blocks/Achievement/achievement-card"
 import type { CollectionProps } from "@/types"
 
 export async function Certifications(props: CollectionProps<'certifications'>) {

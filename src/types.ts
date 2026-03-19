@@ -9,6 +9,7 @@ import type {
     DataFromCollectionSlug
 } from "payload"
 import type { Page } from "./payload-types"
+import { Metadata } from "next"
 
 export type Config = { invalidateRootRoute?: boolean }
 export type AppCollectionAfterChangeHook<T extends TypeWithID = any, A extends Config = any> = (config: A) => CollectionAfterChangeHook<T>
@@ -34,11 +35,11 @@ export type BaseParams = {
 // Block types
 export type LayoutProps = React.PropsWithChildren<Omit<PageProps, 'searchParams'>>
 export type BlocksRegistryProps = {
-    blocks: Page['content']['layout'][][0],
+    blocks: NonNullable<Page['content']>['layout'][][0],
 } & PageProps
 export type BlockParams = BaseParams
 export type BlockProps<K extends BlockSlug> = {
-    blockProps: Extract<NonNullable<Page['content']['layout']>[number], { blockType: K }>
+    blockProps: Extract<NonNullable<NonNullable<Page['content']>['layout']>[number], { blockType: K }>
 } & BlockParams
 
 // collection types
@@ -59,3 +60,99 @@ export type DocParams = BaseParams
 export type DocProps<K extends CollectionSlug> = {
     entity: DataFromCollectionSlug<K>
 } & CollectionParams
+
+
+// Themes Types
+
+export type ThemeMeta = {
+    name: string,
+    slug: string,
+    description: string
+}
+
+export type BlocksMapType = {
+    [K in BlockSlug]?: {
+        skeleton: React.ComponentType<{}>,
+        component: React.ComponentType<{
+            blockProps: Extract<NonNullable<NonNullable<Page['content']>['layout']>[number], { blockType: K }>,
+        } & PageProps>
+    }
+}
+
+export type CollectionMapType = {
+    [K in CollectionSlug]?: {
+        component: React.ComponentType<{
+            collection: PaginatedDocs<DataFromCollectionSlug<K>>,
+            isRootPage: boolean
+        } & PageProps>,
+        skeleton: React.ComponentType<{}>,
+        metadata: (args: { doc: DataFromCollectionSlug<K> }) => Metadata | Promise<Metadata>,
+        enableDocumentView: boolean
+    }
+}
+
+export type DocMapType = {
+    [K in CollectionSlug]?: {
+        component: React.ComponentType<{ entity: DataFromCollectionSlug<K> } & PageProps>,
+        metadata: (args: { doc: DataFromCollectionSlug<K> }) => Metadata | Promise<Metadata>
+    }
+}
+export type ValidComponent<P = any> =
+    | React.ComponentType<P>
+    | ((props: P) => Promise<React.ReactElement> | React.ReactElement);
+
+export type PageRendererProps<T extends Record<string, ValidComponent<any>>> = {
+    pageProps: PageProps,
+    config: {
+        themeId: number,
+        componentsMap: T,
+        enableCollection: boolean,
+        page: Page | null,
+        blocksMap: BlocksMapType,
+        collectionMap: CollectionMapType
+    }
+}
+
+export type DocumentRendererProps<T extends Record<string, ValidComponent<any>>> = {
+    pageProps: PageProps,
+    config: {
+        entity: DataFromCollectionSlug<CollectionSlug> | null,
+        docMap: DocMapType,
+        componentsMap: T,
+        docSlug: string,
+        excludedCollectionSlug: CollectionSlug
+    }
+}
+
+export type LayoutRendererProps<T extends Record<string, ValidComponent<any>>> = React.PropsWithChildren & {
+    config: {
+        themeId: number,
+        params: Promise<{ domain: string }>
+        componentsMap: T
+    }
+}
+
+export type ThemeConfig<T extends Record<string, ValidComponent<any>> = any> = {
+    themeMeta: ThemeMeta,
+    config: {
+        componentsMap: T,
+        skeleton: React.ComponentType<{
+            docMap: DocMapType,
+            componentsMap: T,
+            blocksMap: BlocksMapType,
+            collectionsMap: CollectionMapType,
+        }>,
+        blocksConfig: {
+            blocksMap: BlocksMapType,
+        },
+        collectionConfig: {
+            collectionsMap: CollectionMapType,
+        },
+        documentConfig: {
+            docMap: DocMapType,
+            DocumentRenderer: React.ComponentType<DocumentRendererProps<T>>,
+        },
+        PageRenderer: React.ComponentType<PageRendererProps<T>>,
+        layout: React.ComponentType<LayoutRendererProps<T>>
+    }
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import { RichText } from '@payloadcms/richtext-lexical/react';
 import BlurFade from "@/components/magicui/blur-fade";
-import { ProjectCard } from "@/components/project-card";
+import { ProjectCard } from "@/themes/Magic/blocks/Project/project-card";
 import type { BlockProps } from "@/types";
 import { getProjectById } from "@/utilities/getProjectById";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';

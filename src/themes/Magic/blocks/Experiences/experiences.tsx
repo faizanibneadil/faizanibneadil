@@ -1,5 +1,5 @@
 import BlurFade from "@/components/magicui/blur-fade";
-import { ResumeCard } from "@/components/resume-card";
+import { ResumeCard } from "@/themes/Magic/components/resume-card";
 import type { BlockProps } from "@/types";
 
 const BLUR_FADE_DELAY = 0.04;

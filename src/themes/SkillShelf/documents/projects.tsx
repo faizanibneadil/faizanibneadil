@@ -13,7 +13,7 @@ export async function ProjectEntity(props: DocProps<'projects'>) {
         params: paramsFromProps,
         searchParams: searchParamsFromProps
     } = props || {}
-
+    
     const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
     const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 

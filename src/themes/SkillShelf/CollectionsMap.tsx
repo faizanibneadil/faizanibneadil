@@ -1,23 +1,11 @@
 import { Skeleton } from "@/components/ui/skeleton"
-import type { PageProps } from "@/types"
+import { CollectionMapType } from "@/types"
 import { getMediaUrl } from "@/utilities/getURL"
-import type { Metadata } from "next"
 import dynamic from "next/dynamic"
-import type { CollectionSlug, DataFromCollectionSlug, PaginatedDocs } from "payload"
 
-export type TCollectionRegistries = {
-    [K in CollectionSlug]?: {
-        component: React.ComponentType<{
-            collection: PaginatedDocs<DataFromCollectionSlug<K>>,
-            isRootPage: boolean
-        } & PageProps>,
-        skeleton: React.ComponentType<{}>,
-        metadata: (args: { doc: DataFromCollectionSlug<K> }) => Metadata | Promise<Metadata>
-    }
-}
-
-export const CollectionsRegistries: TCollectionRegistries = {
+export const __SkillshelfCollectionsMap: CollectionMapType = {
     blogs: {
+        enableDocumentView: true,
         component: dynamic(() => import("@/themes/SkillShelf/collections/blogs").then(({ Blogs }) => ({
             default: Blogs
         })), { ssr: true }),
@@ -61,6 +49,7 @@ export const CollectionsRegistries: TCollectionRegistries = {
         }
     },
     projects: {
+        enableDocumentView: true,
         component: dynamic(() => import("@/themes/SkillShelf/collections/projects").then(({ Projects }) => ({
             default: Projects
         })), { ssr: true }),
@@ -104,6 +93,7 @@ export const CollectionsRegistries: TCollectionRegistries = {
         }
     },
     achievements: {
+        enableDocumentView: true,
         component: dynamic(() => import("@/themes/SkillShelf/collections/achievements").then(({ Achievements }) => ({
             default: Achievements
         })), { ssr: true }),
@@ -117,6 +107,7 @@ export const CollectionsRegistries: TCollectionRegistries = {
         skeleton: () => <p>Display achievements skeleton</p>
     },
     certifications: {
+        enableDocumentView: true,
         component: dynamic(() => import("@/themes/SkillShelf/collections/certifications").then(({ Certifications }) => ({
             default: Certifications
         })), { ssr: true }),
@@ -130,6 +121,7 @@ export const CollectionsRegistries: TCollectionRegistries = {
         skeleton: () => <p>Display certifications skeleton</p>
     },
     hackathons: {
+        enableDocumentView: true,
         component: dynamic(() => import("@/themes/SkillShelf/collections/hackathons").then(({ Hackathons }) => ({
             default: Hackathons
         })), { ssr: true }),
@@ -143,6 +135,7 @@ export const CollectionsRegistries: TCollectionRegistries = {
         skeleton: () => <p>Display hackathon skeleton</p>
     },
     publications: {
+        enableDocumentView: true,
         component: dynamic(() => import("@/themes/SkillShelf/collections/publications").then(({ Publications }) => ({
             default: Publications
         })), { ssr: true }),
@@ -156,6 +149,7 @@ export const CollectionsRegistries: TCollectionRegistries = {
         skeleton: () => <p>Display publications skeleton</p>
     },
     researches: {
+        enableDocumentView: true,
         component: dynamic(() => import("@/themes/SkillShelf/collections/researches").then(({ Researches }) => ({
             default: Researches
         })), { ssr: true }),

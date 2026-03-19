@@ -4,10 +4,9 @@ import Link from "next/link";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { IHackathonProps } from "@/payload-types";
-import { IconRenderer } from "./ui/icon-renderer";
-// import { getClientSideURL } from "@/utilities/getURL";
-import { Dates } from "./dates";
 import { getMediaUrl } from "@/utilities/getURL";
+import { IconRenderer } from "@/components/ui/icon-renderer";
+import { Dates } from "../../components/Dates";
 
 type Props = Exclude<Exclude<IHackathonProps['hackathons'], null | undefined>[0], number>
 

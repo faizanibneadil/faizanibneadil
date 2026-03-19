@@ -1,4 +1,4 @@
-import { ResearchCard } from "@/components/research-card"
+import { ResearchCard } from "@/themes/Magic/blocks/Research/research-card"
 import type { CollectionProps } from "@/types"
 import { generateRoute } from "@/utilities/generateRoute"
 

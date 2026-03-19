@@ -5,11 +5,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Education, Experience } from "@/payload-types";
 import { getMediaUrl } from "@/utilities/getURL";
-import { Dates } from "./dates";
-import { Badge } from "./ui/badge";
 import { cn } from "@/lib/utils";
 import type { BlockParams, PageProps } from "@/types";
-import CMSRichText from "./RichText";
+import CMSRichText from "../../../components/RichText";
+import { Dates } from "./Dates";
+import { Badge } from "@/components/ui/badge";
 
 export const ResumeCard = async (props: { experienceProps?: Experience, educationProps?: Education } & { blockType?: BlockSlug } & BlockParams) => {
   const {

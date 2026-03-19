@@ -1,23 +1,11 @@
-import dynamic from "next/dynamic"
-import type { CollectionSlug, DataFromCollectionSlug } from "payload"
-import { getMediaUrl, getServerSideURL } from "@/utilities/getURL"
-import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintext"
-import type { Metadata } from "next"
-import type { PageProps } from "@/types"
+import { DocMapType } from '@/types'
+import { getMediaUrl } from '@/utilities/getURL'
+import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
+import dynamic from 'next/dynamic'
 
-export const og = (image: Parameters<typeof getMediaUrl>[0]) => getMediaUrl(image)
-export const fallbackOg = () => `${getServerSideURL()}/graphics/favicon.svg`
-
-export type TDocComponents = {
-    [K in CollectionSlug]?: {
-        component: React.ComponentType<{ entity: DataFromCollectionSlug<K> } & PageProps>,
-        metadata: (args: { doc: DataFromCollectionSlug<K> }) => Metadata | Promise<Metadata>
-    }
-}
-
-export const DocRegistries: TDocComponents = {
+export const __MagicDocMap: DocMapType = {
     blogs: {
-        component: dynamic(() => import('@/themes/SkillShelf/documents/blogs').then(({ BlogEntity }) => {
+        component: dynamic(() => import('@/themes/Magic/documents/blogs').then(({ BlogEntity }) => {
             return BlogEntity
         })),
         metadata: ({ doc }) => ({
@@ -27,12 +15,12 @@ export const DocRegistries: TDocComponents = {
                 type: 'article',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image || doc?.content?.featured_image) || fallbackOg() }]
+                images: [{ url: getMediaUrl(doc?.meta?.image || doc?.content?.featured_image) }]
             }
         })
     },
     projects: {
-        component: dynamic(() => import('@/themes/SkillShelf/documents/projects').then(({ ProjectEntity }) => {
+        component: dynamic(() => import('@/themes/Magic/documents/projects').then(({ ProjectEntity }) => {
             return ProjectEntity
         })),
         metadata: ({ doc }) => ({
@@ -42,12 +30,12 @@ export const DocRegistries: TDocComponents = {
                 type: 'website',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image ?? doc?.content?.thumbnail) ?? fallbackOg() }]
+                images: [{ url: getMediaUrl(doc?.meta?.image ?? doc?.content?.thumbnail) }]
             }
         })
     },
     achievements: {
-        component: dynamic(() => import('@/themes/SkillShelf/documents/achievements').then(({ AchievementEntity }) => {
+        component: dynamic(() => import('@/themes/Magic/documents/achievements').then(({ AchievementEntity }) => {
             return AchievementEntity
         })),
         metadata: ({ doc }) => ({
@@ -57,12 +45,12 @@ export const DocRegistries: TDocComponents = {
                 type: 'article',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image || doc?.content?.image) || fallbackOg() }]
+                images: [{ url: getMediaUrl(doc?.meta?.image || doc?.content?.image) }]
             }
         })
     },
     certifications: {
-        component: dynamic(() => import('@/themes/SkillShelf/documents/certifications').then(({ CertificationEntity }) => {
+        component: dynamic(() => import('@/themes/Magic/documents/certifications').then(({ CertificationEntity }) => {
             return CertificationEntity
         })),
         metadata: ({ doc }) => ({
@@ -72,12 +60,12 @@ export const DocRegistries: TDocComponents = {
                 type: 'article',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image || doc?.content?.image) || fallbackOg() }]
+                images: [{ url: getMediaUrl(doc?.meta?.image || doc?.content?.image) }]
             }
         })
     },
     hackathons: {
-        component: dynamic(() => import('@/themes/SkillShelf/documents/hackathons').then(({ HackathonEntity }) => {
+        component: dynamic(() => import('@/themes/Magic/documents/hackathons').then(({ HackathonEntity }) => {
             return HackathonEntity
         })),
         metadata: ({ doc }) => ({
@@ -87,12 +75,12 @@ export const DocRegistries: TDocComponents = {
                 type: 'article',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image ?? doc?.content?.image) || fallbackOg() }]
+                images: [{ url: getMediaUrl(doc?.meta?.image ?? doc?.content?.image) }]
             }
         })
     },
     publications: {
-        component: dynamic(() => import('@/themes/SkillShelf/documents/publications').then(({ PublicationEntity }) => {
+        component: dynamic(() => import('@/themes/Magic/documents/publications').then(({ PublicationEntity }) => {
             return PublicationEntity
         })),
         metadata: ({ doc }) => ({
@@ -102,12 +90,12 @@ export const DocRegistries: TDocComponents = {
                 type: 'article',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image ?? doc?.content?.image) || fallbackOg() }]
+                images: [{ url: getMediaUrl(doc?.meta?.image ?? doc?.content?.image) }]
             }
         })
     },
     researches: {
-        component: dynamic(() => import('@/themes/SkillShelf/documents/researches').then(({ ResearchEntity }) => {
+        component: dynamic(() => import('@/themes/Magic/documents/researches').then(({ ResearchEntity }) => {
             return ResearchEntity
         })),
         metadata: ({ doc }) => ({
@@ -117,7 +105,7 @@ export const DocRegistries: TDocComponents = {
                 type: 'article',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: og(doc?.meta?.image ?? doc?.content?.image) || fallbackOg() }]
+                images: [{ url: getMediaUrl(doc?.meta?.image ?? doc?.content?.image) }]
             }
         })
     },

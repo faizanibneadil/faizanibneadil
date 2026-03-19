@@ -14,11 +14,10 @@ import type { Project } from "@/payload-types";
 import { getSkillById } from "@/utilities/getSkillById";
 import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-import { Dates } from "./dates";
-import { Skill, SkillSkeleton } from "./render-skill";
-import { IconRenderer } from "./ui/icon-renderer";
 import type { BlockParams } from "@/types";
 import { generateRoute } from "@/utilities/generateRoute";
+import { Dates } from "../../components/Dates";
+import { IconRenderer } from "@/components/ui/icon-renderer";
 
 export async function ProjectCard(props: { project: Project | Promise<Project> } & BlockParams) {
   const {
@@ -76,15 +75,15 @@ export async function ProjectCard(props: { project: Project | Promise<Project> }
           </div>
         </div>
       </CardHeader>
-      <CardContent className="mt-auto flex flex-col px-2">
+      {/* <CardContent className="mt-auto flex flex-col px-2">
         <div className="mt-2 flex flex-wrap gap-1">
-          {project?.content?.Skills?.map((skill, idx) => (
+          {project?.content?.skills?.map((skill, idx) => (
             <React.Suspense key={`skill-${idx}`} fallback={<SkillSkeleton />}>
               <Skill id={idx} skill={typeof skill === 'number' ? getSkillById(skill) : skill} />
             </React.Suspense>
           ))}
         </div>
-      </CardContent>
+      </CardContent> */}
       <CardFooter className="px-2 pb-2">
         {project?.content?.links && project?.content?.links.length > 0 && (
           <div className="flex flex-row flex-wrap items-start gap-1">

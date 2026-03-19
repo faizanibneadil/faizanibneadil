@@ -29,7 +29,7 @@ const FallbackLink = () => (
   </a>
 )
 
-export default function Navbar(props: Omit<BaseParams, 'searchParams'>) {
+export function Navbar(props: Omit<BaseParams, 'searchParams'>) {
   // const {
   //   params: paramsFromProps,
   // } = props || {}

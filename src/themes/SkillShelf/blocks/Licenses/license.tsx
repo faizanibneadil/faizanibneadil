@@ -1,9 +1,6 @@
-import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
-import { LicenseCard } from '@/components/license-card';
-import { RichText } from '@payloadcms/richtext-lexical/react';
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 import { SectionPresentationCard } from "../../components/SectionPresentationCard";
+import { LicenseCard } from "./LicenseCard";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function License(props: BlockProps<'license'>) {
@@ -26,22 +23,16 @@ export async function License(props: BlockProps<'license'>) {
 
     return (
         <section id="publications" aria-label={blockName ?? blockType} className=" rounded-lg bg-border shadow">
-
-<SectionPresentationCard heading={heading} label='Licenses' description={description} />
-
+            <SectionPresentationCard heading={heading} label='Licenses' description={description} />
             <div className='rounded-lg border bg-background'>
-
                 <ul className=" divide-y divide-dashed">
-                {licenses?.map((license, id) => {
+                    {licenses?.map((license, id) => {
                         return typeof license === 'number' ? null : (
-
                             <LicenseCard key={license.id} license={license} params={params} searchParams={searchParams} />
-
                         )
                     })}
                 </ul>
             </div>
-
         </section>
     )
 }

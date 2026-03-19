@@ -73,7 +73,7 @@ export const Projects: CollectionConfig<'projects'> = {
                         },
                         {
                             type: 'relationship',
-                            name: 'Skills',
+                            name: 'skills',
                             relationTo: 'skills',
                             hasMany: true,
                             admin: {

@@ -1,6 +1,6 @@
 import BlurFade from "@/components/magicui/blur-fade";
-import { ResumeCard } from "@/components/resume-card";
 import type { BlockProps } from "@/types";
+import { ResumeCard } from "../../components/ResumeCard";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Education(props: BlockProps<'education'>) {

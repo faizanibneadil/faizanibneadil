@@ -2,11 +2,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Achievement } from "@/payload-types";
-import { Dates } from "./dates";
 import { getMediaUrl } from "@/utilities/getURL";
 import type { BlockParams } from "@/types";
-import RichText from "./RichText";
 import { generateRoute } from "@/utilities/generateRoute";
+import { Dates } from "../../components/Dates";
+import RichText from "../../components/RichText";
 
 export async function AchievementCard(props: { achievement: Achievement } & BlockParams) {
   const {

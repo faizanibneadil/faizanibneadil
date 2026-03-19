@@ -6,6 +6,8 @@ import type { Metadata } from 'next';
 import Page, { generateMetadata as PageGenerateMetadata } from "./[slug]/page";
 import type { PageProps } from "@/types";
 import { queryRootPageByDomain } from "@/utilities/QueryRootPageByDomain";
+import { queryThemeByDomain } from "@/utilities/QueryThemeByDomain";
+import { themesRegistry } from "@/themes";
 // import { CollectionsRegistries } from "@/registries";
 
 // TODO: add root page laval metadata
@@ -30,7 +32,9 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
     }
   })
 
-  return PageGenerateMetadata({
+  console.log({ executingFromDomainRoute: true })
+
+  return await PageGenerateMetadata({
     params: paramsPromise,
     searchParams: searchParamsFromProps
   })
@@ -43,10 +47,10 @@ export default async function DomainPage(props: PageProps) {
   } = props || {}
 
   const params = await paramsFromProps
+  const themeId = await queryThemeByDomain(params.domain)
   const __rootPage = await queryRootPageByDomain(params.domain!)
   const __rootPageSlug = __rootPage?.slug as CollectionSlug
-  const __mode = __rootPage?.content?.pageMode?.mode
-  const __rootPageSlugFromConfig = __rootPage?.content?.configurations?.slug as CollectionSlug
+  const __rootPageSlugFromConfig = __rootPage?.content?.configuredCollectionSlug as CollectionSlug
 
   if (!__rootPageSlug) {
     return notFound()
@@ -75,6 +79,24 @@ export default async function DomainPage(props: PageProps) {
   //     PageSkeletonToRender = () => <p>Fallback skeleton</p>
   //     break;
   // }
+
+  if (Object.hasOwn(themesRegistry, themeId)) {
+    const componentsMap = themesRegistry[themeId]?.config?.componentsMap
+    const blocksMap = themesRegistry[themeId]?.config?.blocksConfig?.blocksMap
+    const collectionsMap = themesRegistry[themeId]?.config?.collectionConfig?.collectionsMap
+    const docMap = themesRegistry[themeId]?.config?.documentConfig?.docMap
+    const Skeleton = themesRegistry[themeId]?.config?.skeleton
+
+    console.log({ themeId })
+
+    return (
+      <ErrorBoundary fallback={null}>
+        <Suspense fallback={Skeleton ? <Skeleton blocksMap={blocksMap} collectionsMap={collectionsMap} componentsMap={componentsMap} docMap={docMap} /> : null}>
+          <Page params={paramsPromise} searchParams={searchParamsFromProps} />
+        </Suspense>
+      </ErrorBoundary>
+    )
+  }
 
   return (
     <ErrorBoundary fallback={null}>

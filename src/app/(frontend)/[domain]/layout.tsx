@@ -6,9 +6,7 @@ import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import { themesRegistry } from "@/themes";
 import { queryThemeByDomain } from "@/utilities/QueryThemeByDomain";
 
-const TawkChatBubble = dynamic(() => import("@/collections/Integration/components/tawk-chat-bubbles").then(({ TawkChatBubble }) => ({
-    default: TawkChatBubble
-})));
+
 
 
 export default async function Layout(props: React.PropsWithChildren<{ params: Promise<{ domain: string }> }>) {
@@ -18,16 +16,16 @@ export default async function Layout(props: React.PropsWithChildren<{ params: Pr
     } = props || {}
 
     const params = await paramsFromProps
-    const themeID = await queryThemeByDomain(params.domain)
+    const themeId = await queryThemeByDomain(params.domain)
 
 
-    if (Object.hasOwn(themesRegistry, themeID)) {
-        const components = themesRegistry[themeID]?.components
-        const Layout = themesRegistry[themeID]?.layout
+    if (Object.hasOwn(themesRegistry, themeId)) {
+        const componentsMap = themesRegistry[themeId]?.config?.componentsMap
+        const Layout = themesRegistry[themeId]?.config?.layout
 
-        console.log({ themeID })
+        console.log({ themeId })
 
-        return <Layout {...props} components={components} themeID={themeID} />
+        return <Layout {...props} config={{ componentsMap, params: paramsFromProps, themeId }} />
     }
 
     return 'Theme is not selected'

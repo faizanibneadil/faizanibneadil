@@ -1,27 +1,27 @@
-import { Badge } from "./ui/badge"
-import { IconRenderer } from "./ui/icon-renderer"
 import type { Skill } from "@/payload-types"
-import BlurFade from "./magicui/blur-fade"
 import { cn } from "@/lib/utils"
 import {
     Tooltip,
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { IconRenderer } from "@/components/ui/icon-renderer";
+import { Badge } from "@/components/ui/badge";
+import BlurFade from "@/components/magicui/blur-fade";
 
 export const SkillSkeleton = () => <Badge variant="secondary" className="w-6" />
 
 const BLUR_FADE_DELAY = 0.04;
-export async function Skill(props: { skill: Skill | Promise<Skill>, id: number, width?: string | number, height?: string | number }) {
+export async function SkillRenderer(props: { skill: Skill | Promise<Skill>, id: number, width?: string | number, height?: string | number }) {
     const { skill: skillFromProps, id, height, width } = props || {}
     const skill = skillFromProps instanceof Promise ? await skillFromProps : skillFromProps
 
-    if (skill?.techstack?.showIcon && skill.techstack?.iconify) {
+    if (skill?.enableIcon && skill.icon) {
         return (
             <Tooltip>
                 <TooltipTrigger>
                     <IconRenderer
-                        icon={skill.techstack.iconify}
+                        icon={skill?.icon}
                         width={cn({
                             "1em": Boolean(width) === false,
                             [width || '']: Boolean(width) === true

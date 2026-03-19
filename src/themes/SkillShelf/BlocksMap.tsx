@@ -1,18 +1,7 @@
+import { BlocksMapType } from "@/types";
 import dynamic from "next/dynamic";
-import type { Page } from "@/payload-types";
-import type { PageProps } from "@/types";
-import type { BlockSlug } from "payload";
 
-export type TBlocks = {
-    [K in BlockSlug]?: {
-        skeleton: React.ComponentType<{}>,
-        component: React.ComponentType<{
-            blockProps: Extract<NonNullable<Page['content']['layout']>[number], { blockType: K }>,
-        } & PageProps>
-    }
-}
-
-export const BlocksRegistries: TBlocks = {
+export const __SkillshelfBlocksMap: BlocksMapType = {
     hero: {
         skeleton: dynamic(() => import("@/themes/SkillShelf/blocks/Hero/hero-skeleton").then(({ HeroSkeleton }) => ({
             default: HeroSkeleton

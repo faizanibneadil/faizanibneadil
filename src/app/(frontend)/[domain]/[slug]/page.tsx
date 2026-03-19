@@ -1,74 +1,53 @@
-// import { Suspense } from "react";
-// import { notFound } from "next/navigation";
-// import dynamic from "next/dynamic";
 import type { Page } from "@/payload-types";
 import type { PageProps } from "@/types";
 import type { CollectionSlug } from "payload";
-// import { BackButton } from "@/components/BackButton";
-// import { CollectionCount } from "@/components/collection-count";
-// import { Skeleton } from "@/components/ui/skeleton";
-import { isCollection, isLayout } from "@/utilities/getPageMode";
 import { queryPageBySlug } from "@/utilities/QueryPageBySlug";
-// import { queryTotalDocsBySlug } from "@/utilities/QueryTotalDocsBySlug";
 import type { Metadata } from "next";
-// import { CollectionsRegistries } from "@/registries";
-import { getProfileAvatarByDomain } from "@/utilities/getProfileAvatar";
-import { getServerSideURL } from "@/utilities/getURL";
 import { queryThemeByDomain } from "@/utilities/QueryThemeByDomain";
 import { themesRegistry } from "@/themes";
-
-// const BlocksRenderer = dynamic(() => import("@/blocks").then(({ BlocksRenderer }) => ({
-//   default: BlocksRenderer
-// })), { ssr: true })
-
-// const CollectionRenderer = dynamic(() => import("@/collections").then(({ CollectionRenderer }) => ({
-//   default: CollectionRenderer
-// })), { ssr: true })
+import { getMediaUrl } from "@/utilities/getURL";
 
 // TODO: add root page laval metadata
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const {
     params: paramsFromProps,
+    // searchParams:searchPramsFromProps
   } = props || {}
 
   const { domain, slug } = await paramsFromProps
+  // const searchParams = await searchPramsFromProps
   const page = await queryPageBySlug(slug!, domain!)
-  const __mode = page?.content?.pageMode?.mode
-  const slugFromConfig = page?.content.configurations?.slug as CollectionSlug
 
+  const excludedCollectionSlug = slug?.split('-').at(0) as CollectionSlug
+  const slugFromConfig = excludedCollectionSlug ?? page?.content?.configuredCollectionSlug as CollectionSlug
 
-  // if (__mode) {
-  //   if (isCollection(__mode)) {
-  //     if (Object.hasOwn(CollectionsRegistries, slugFromConfig)) {
-  //       const metadata = CollectionsRegistries[slugFromConfig]?.metadata
-  //       // @ts-expect-error
-  //       return await metadata({ doc: { ...page } })
-  //     }
-  //   }
-  //   if (isLayout(__mode)) {
-  //     const avatarUrl = await getProfileAvatarByDomain(domain)
+  const themeId = await queryThemeByDomain(domain!)
+  if (Object.hasOwn(themesRegistry, themeId)) {
+    const collectionMap = themesRegistry[themeId]?.config?.collectionConfig.collectionsMap
 
-  //     return {
-  //       title: page?.meta?.title,
-  //       description: page?.meta?.description,
-  //       metadataBase: new URL(getServerSideURL()),
-  //       ...(avatarUrl && {
-  //         icons: [{ url: avatarUrl, fetchPriority: 'high' }]
-  //       }),
-  //       ...(avatarUrl && {
-  //         openGraph: {
-  //           url: avatarUrl,
-  //           type: 'profile',
-  //           description: page?.meta?.description ?? '',
-  //           images: [{ url: avatarUrl }]
-  //         }
-  //       })
-  //     }
-  //   }
-  // }
+    if (Object.hasOwn(collectionMap, slugFromConfig)) {
+      const metadata = collectionMap[slugFromConfig]?.metadata
+      if (typeof metadata === 'function') {
+        // @ts-expect-error
+        return await metadata({ doc: { ...page } })
+      }
+
+      return metadata ?? {}
+    }
+
+    return {
+      title: page?.meta?.title ?? page?.title ?? 'No Title',
+      description: page?.meta?.description ?? 'No Description',
+      ...(page?.meta?.image && {
+        icons: [{ url: getMediaUrl(page?.meta?.image), fetchPriority: 'high' }]
+      }),
+    }
+
+  }
 
   return {}
 }
+
 
 
 
@@ -80,23 +59,25 @@ export default async function Page(props: PageProps) {
   const { slug, domain } = await paramsFromProps
 
   const page = await queryPageBySlug(slug!, domain!)
-  const themeID = await queryThemeByDomain(domain!)
+  const themeId = await queryThemeByDomain(domain!)
 
-  if (Object.hasOwn(themesRegistry, themeID)) {
-    const components = themesRegistry[themeID]?.components
-    const PageToRender = themesRegistry[themeID]?.page
+  if (Object.hasOwn(themesRegistry, themeId)) {
+    const componentsMap = themesRegistry[themeId]?.config?.componentsMap
+    const blocksMap = themesRegistry[themeId]?.config?.blocksConfig.blocksMap
+    const collectionMap = themesRegistry[themeId]?.config?.collectionConfig.collectionsMap
+    const PageToRender = themesRegistry[themeId]?.config?.PageRenderer
 
-    // console.log({ themeID })
+    const configProps = {
+      blocksMap,
+      collectionMap,
+      componentsMap,
+      enableCollection: page?.enableCollection!,
+      page,
+      themeId
+    }
+    // console.log({ themeId })
 
-    return <PageToRender
-      components={components}
-      isCollection={isCollection(page?.content?.pageMode?.mode!)}
-      isLayout={isLayout(page?.content?.pageMode?.mode!)}
-      pageContent={page}
-      params={paramsFromProps}
-      searchParams={searchParamsFromProps}
-      themeID={themeID}
-    />
+    return <PageToRender pageProps={props} config={configProps} />
   }
 
   // const slugFromConfig = page?.content.configurations?.slug as CollectionSlug

@@ -1,9 +1,6 @@
-import { AchievementCard } from '@/components/achievement-card';
-import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-import { RichText } from '@payloadcms/richtext-lexical/react';
 import { SectionPresentationCard } from '../../components/SectionPresentationCard';
+import { AchievementCard } from "./AchivementCard";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Achievement(props: BlockProps<'achievement'>) {
@@ -30,7 +27,7 @@ export async function Achievement(props: BlockProps<'achievement'>) {
     return (
         <section id="project" aria-label={blockName ?? blockType} className=" rounded-lg bg-border shadow">
 
-<SectionPresentationCard heading={heading} label='Achievements' description={description} />
+            <SectionPresentationCard heading={heading} label='Achievements' description={description} />
 
             <div className='rounded-lg border bg-background'>
 
