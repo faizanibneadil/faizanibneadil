@@ -1,23 +1,15 @@
 import { ThemeConfig } from "@/types";
-import { __MagicDocMap } from "./DocumentMap";
+import { queryCollectionBySlug } from "@/utilities/queryCollectionBySlug";
+import { CollectionSlug } from "payload";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { __MagicBlocksMap } from "./BlocksMap";
 import { __MagicCollectionsMap } from "./CollectionsMap";
-import { CollectionSlug } from "payload";
-import { queryCollectionBySlug } from "@/utilities/queryCollectionBySlug";
-import { ErrorBoundary } from "react-error-boundary";
-import { Fragment, Suspense } from "react";
-import dynamic from "next/dynamic";
+import { Navbar } from "./components/navbar";
+import { TawkChatBubble } from "./components/tawk-chat-bubbles";
+import { __MagicDocMap } from "./DocumentMap";
 
-export const __MagicComponents = {
-    navbar: dynamic(() => import("@/themes/Magic/components/navbar").then(({ Navbar }) => ({
-        default: Navbar
-    }))),
-    TawkChatBubble: dynamic(() => import("@/themes/Magic/components/tawk-chat-bubbles").then(({ TawkChatBubble }) => ({
-        default: TawkChatBubble
-    })))
-}
-
-export const __MagicThemeConfig: ThemeConfig<typeof __MagicComponents> = {
+export const __MagicThemeConfig: ThemeConfig = {
     themeMeta: {
         description: 'SkillShelf theme is the default theme.',
         name: 'SkillShelf',
@@ -44,10 +36,7 @@ export const __MagicThemeConfig: ThemeConfig<typeof __MagicComponents> = {
                 return null
             }
         },
-        componentsMap: __MagicComponents,
         layout: (props) => {
-            const Navbar = props.config.componentsMap.navbar
-            const TawkChatBubble = props.config?.componentsMap.TawkChatBubble
             return (
                 <div className="min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-10 px-6">
                     {props.children}

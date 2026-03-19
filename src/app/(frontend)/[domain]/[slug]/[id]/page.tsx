@@ -45,12 +45,10 @@ export default async function Page(props: PageProps) {
     const themeId = await queryThemeByDomain(domain!)
 
     if (Object.hasOwn(themesRegistry, themeId)) {
-        const componentsMap = themesRegistry[themeId]?.config?.componentsMap
         const docMap = themesRegistry[themeId]?.config?.documentConfig?.docMap
         const DocumentRenderer = themesRegistry[themeId]?.config?.documentConfig?.DocumentRenderer
 
         return <DocumentRenderer pageProps={props} config={{
-            componentsMap,
             docMap,
             docSlug,
             entity,

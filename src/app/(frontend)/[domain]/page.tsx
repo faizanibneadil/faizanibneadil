@@ -81,7 +81,6 @@ export default async function DomainPage(props: PageProps) {
   // }
 
   if (Object.hasOwn(themesRegistry, themeId)) {
-    const componentsMap = themesRegistry[themeId]?.config?.componentsMap
     const blocksMap = themesRegistry[themeId]?.config?.blocksConfig?.blocksMap
     const collectionsMap = themesRegistry[themeId]?.config?.collectionConfig?.collectionsMap
     const docMap = themesRegistry[themeId]?.config?.documentConfig?.docMap
@@ -91,7 +90,7 @@ export default async function DomainPage(props: PageProps) {
 
     return (
       <ErrorBoundary fallback={null}>
-        <Suspense fallback={Skeleton ? <Skeleton blocksMap={blocksMap} collectionsMap={collectionsMap} componentsMap={componentsMap} docMap={docMap} /> : null}>
+        <Suspense fallback={Skeleton ? <Skeleton blocksMap={blocksMap} collectionsMap={collectionsMap} docMap={docMap} /> : null}>
           <Page params={paramsPromise} searchParams={searchParamsFromProps} />
         </Suspense>
       </ErrorBoundary>

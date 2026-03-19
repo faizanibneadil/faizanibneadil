@@ -62,22 +62,18 @@ export default async function Page(props: PageProps) {
   const themeId = await queryThemeByDomain(domain!)
 
   if (Object.hasOwn(themesRegistry, themeId)) {
-    const componentsMap = themesRegistry[themeId]?.config?.componentsMap
     const blocksMap = themesRegistry[themeId]?.config?.blocksConfig.blocksMap
     const collectionMap = themesRegistry[themeId]?.config?.collectionConfig.collectionsMap
     const PageToRender = themesRegistry[themeId]?.config?.PageRenderer
 
-    const configProps = {
+
+    return <PageToRender pageProps={props} config={{
       blocksMap,
       collectionMap,
-      componentsMap,
       enableCollection: page?.enableCollection!,
       page,
       themeId
-    }
-    // console.log({ themeId })
-
-    return <PageToRender pageProps={props} config={configProps} />
+    }} />
   }
 
   // const slugFromConfig = page?.content.configurations?.slug as CollectionSlug

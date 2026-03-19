@@ -97,15 +97,11 @@ export type DocMapType = {
         metadata: (args: { doc: DataFromCollectionSlug<K> }) => Metadata | Promise<Metadata>
     }
 }
-export type ValidComponent<P = any> =
-    | React.ComponentType<P>
-    | ((props: P) => Promise<React.ReactElement> | React.ReactElement);
 
-export type PageRendererProps<T extends Record<string, ValidComponent<any>>> = {
+export type PageRendererProps = {
     pageProps: PageProps,
     config: {
         themeId: number,
-        componentsMap: T,
         enableCollection: boolean,
         page: Page | null,
         blocksMap: BlocksMapType,
@@ -113,32 +109,28 @@ export type PageRendererProps<T extends Record<string, ValidComponent<any>>> = {
     }
 }
 
-export type DocumentRendererProps<T extends Record<string, ValidComponent<any>>> = {
+export type DocumentRendererProps = {
     pageProps: PageProps,
     config: {
         entity: DataFromCollectionSlug<CollectionSlug> | null,
         docMap: DocMapType,
-        componentsMap: T,
         docSlug: string,
         excludedCollectionSlug: CollectionSlug
     }
 }
 
-export type LayoutRendererProps<T extends Record<string, ValidComponent<any>>> = React.PropsWithChildren & {
+export type LayoutRendererProps = React.PropsWithChildren & {
     config: {
         themeId: number,
         params: Promise<{ domain: string }>
-        componentsMap: T
     }
 }
 
-export type ThemeConfig<T extends Record<string, ValidComponent<any>> = any> = {
+export type ThemeConfig = {
     themeMeta: ThemeMeta,
     config: {
-        componentsMap: T,
         skeleton: React.ComponentType<{
             docMap: DocMapType,
-            componentsMap: T,
             blocksMap: BlocksMapType,
             collectionsMap: CollectionMapType,
         }>,
@@ -150,9 +142,9 @@ export type ThemeConfig<T extends Record<string, ValidComponent<any>> = any> = {
         },
         documentConfig: {
             docMap: DocMapType,
-            DocumentRenderer: React.ComponentType<DocumentRendererProps<T>>,
+            DocumentRenderer: React.ComponentType<DocumentRendererProps>,
         },
-        PageRenderer: React.ComponentType<PageRendererProps<T>>,
-        layout: React.ComponentType<LayoutRendererProps<T>>
+        PageRenderer: React.ComponentType<PageRendererProps>,
+        layout: React.ComponentType<LayoutRendererProps>
     }
 }

@@ -1,5 +1,5 @@
-import { __MagicComponents, __MagicThemeConfig } from "./Magic";
-import { __SkillshelfComponents, __SkillshelfThemeConfig } from "./SkillShelf";
+import { __MagicThemeConfig } from "./Magic";
+import { __SkillshelfThemeConfig } from "./SkillShelf";
 import type { ThemeConfig } from "@/types";
 
 export const themesRegistry: Record<number, ThemeConfig> = {

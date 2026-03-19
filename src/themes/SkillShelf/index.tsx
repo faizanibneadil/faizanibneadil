@@ -8,11 +8,7 @@ import { queryCollectionBySlug } from "@/utilities/queryCollectionBySlug";
 import { ErrorBoundary } from "react-error-boundary";
 import { Fragment, Suspense } from "react";
 
-export const __SkillshelfComponents = {
-    navbar: Navbar
-}
-
-export const __SkillshelfThemeConfig: ThemeConfig<typeof __SkillshelfComponents> = {
+export const __SkillshelfThemeConfig: ThemeConfig = {
     themeMeta: {
         description: 'SkillShelf theme is the default theme.',
         name: 'SkillShelf',
@@ -39,12 +35,10 @@ export const __SkillshelfThemeConfig: ThemeConfig<typeof __SkillshelfComponents>
                 return null
             }
         },
-        componentsMap: __SkillshelfComponents,
         layout: (props) => {
-            const Nav = props.config.componentsMap.navbar
             return (
                 <div className="min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto">
-                    <Nav params={props.config.params as any} />
+                    <Navbar params={props.config.params as any} />
                     {props.children}
                 </div>
             )

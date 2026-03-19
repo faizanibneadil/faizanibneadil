@@ -20,12 +20,11 @@ export default async function Layout(props: React.PropsWithChildren<{ params: Pr
 
 
     if (Object.hasOwn(themesRegistry, themeId)) {
-        const componentsMap = themesRegistry[themeId]?.config?.componentsMap
         const Layout = themesRegistry[themeId]?.config?.layout
 
         console.log({ themeId })
 
-        return <Layout {...props} config={{ componentsMap, params: paramsFromProps, themeId }} />
+        return <Layout {...props} config={{ params: paramsFromProps, themeId }} />
     }
 
     return 'Theme is not selected'
