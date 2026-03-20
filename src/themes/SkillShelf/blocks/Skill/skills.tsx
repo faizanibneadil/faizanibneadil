@@ -60,7 +60,7 @@ export async function Skill(props: BlockProps<'skill'>) {
 
     return (
         <section id="skills" aria-label={blockName ?? blockType} className="rounded-lg bg-border shadow">
-            <SectionPresentationCard heading={heading} label='Skills' description={description} />
+            <SectionPresentationCard params={params} searchParams={searchParams as any} heading={heading} label='Skills' description={description} />
             <div className="grid grid-cols-1 md:grid-cols-2">
                 {providedSkills?.map((skill, id) => (
                     <Suspense key={`skill-${id}`} fallback={null}>

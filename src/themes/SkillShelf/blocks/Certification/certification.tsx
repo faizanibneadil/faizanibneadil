@@ -24,7 +24,7 @@ export async function Certification(props: BlockProps<'certification'>) {
 
     return (
         <section id="project" aria-label={blockName ?? blockType} className=" rounded-lg bg-border shadow">
-            <SectionPresentationCard heading={heading} label='Certifications' description={description} />
+            <SectionPresentationCard params={params} searchParams={searchParams} heading={heading} label='Certifications' description={description} />
             <div className='rounded-lg border bg-background'>
                 <ul className=" divide-y divide-dashed">
                     {certifications?.map((certification, id) => {

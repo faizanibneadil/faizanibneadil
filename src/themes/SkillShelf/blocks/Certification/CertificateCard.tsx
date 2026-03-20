@@ -6,7 +6,7 @@ import { getMediaUrl } from "@/utilities/getURL";
 import type { BlockParams } from "@/types";
 import { generateRoute } from "@/utilities/generateRoute";
 import { Dates } from "../../components/Dates";
-import RichText from "../../components/RichText";
+import { SkillShelfRichText } from "../../components/RichText";
 
 export async function CertificateCard(props: { certificate: Certification } & BlockParams) {
   const {
@@ -49,11 +49,7 @@ export async function CertificateCard(props: { certificate: Certification } & Bl
         {content?.credentialId && (
           <p className="text-sm text-muted-foreground">{content?.credentialId}</p>
         )}
-        {content?.description && (
-          <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
-            <RichText data={content?.description} params={params} searchParams={searchParams} />
-          </div>
-        )}
+        <SkillShelfRichText className="text-xs" data={content?.description} params={params} searchParams={searchParams} />
       </div>
       {content?.resources && content?.resources.length > 0 && (
         <div className="mt-2 flex flex-row flex-wrap items-start gap-2">

@@ -24,12 +24,12 @@ export async function Hackathon(props: BlockProps<'hackathon'>) {
 
     return (
         <section id="hackathons" aria-label={blockName ?? blockType} className=" rounded-lg bg-border shadow">
-            <SectionPresentationCard heading={heading} label='Hackathons' description={description} />
+            <SectionPresentationCard params={params} searchParams={searchParams} heading={heading} label='Hackathons' description={description} />
             <div className='rounded-lg border bg-background'>
                 <ul className=" divide-y divide-dashed">
                     {hackathons?.map((hackathon, id) => {
                         return typeof hackathon === 'number' ? null : (
-                            <HackathonCard key={hackathon.id} {...hackathon} />
+                            <HackathonCard key={hackathon.id} {...hackathon} params={params} searchParams={searchParams} />
                         )
                     })}
                 </ul>

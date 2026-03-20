@@ -20,6 +20,7 @@ import { Dates } from "../../components/Dates";
 import { IconRenderer } from "@/components/ui/icon-renderer";
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { SkillShelfRichText } from "../../components/RichText";
 
 export async function ProjectCard(props: { project: Project | Promise<Project> } & BlockParams) {
     const {
@@ -72,9 +73,7 @@ export async function ProjectCard(props: { project: Project | Promise<Project> }
                         </Link>
                     </CardTitle>
                     <Dates to={project?.content?.dates?.to} from={project?.content?.dates?.from} />
-                    <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
-                        <RichText data={project?.content?.overview as SerializedEditorState} />
-                    </div>
+                    <SkillShelfRichText data={project?.content?.overview} params={params} searchParams={searchParams} />
                 </div>
             </CardHeader>
             <CardContent className="mt-auto flex flex-col px-2">

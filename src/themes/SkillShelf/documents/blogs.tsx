@@ -4,6 +4,7 @@ import type { DocProps } from "@/types"
 import { getMediaUrl } from "@/utilities/getURL"
 import { DefaultTypedEditorState } from "@payloadcms/richtext-lexical"
 import { hasText } from "@payloadcms/richtext-lexical/shared"
+import { SkillShelfRichText } from "../components/RichText"
 
 export async function BlogEntity(props: DocProps<'blogs'>) {
     const {
@@ -23,9 +24,7 @@ export async function BlogEntity(props: DocProps<'blogs'>) {
                 className='rounded-lg border bg-background w-full'
             />
             <h1 className="rounded-lg border bg-background p-4 text-2xl">{entity.title}</h1>
-            {hasText(entity?.content?.content) && (
-                <RichText searchParams={searchParams} params={params} enableGutter={false} data={entity?.content?.content as DefaultTypedEditorState} />
-            )}
+            <SkillShelfRichText enableGutter={false} data={entity?.content?.content} params={params} searchParams={searchParams} />
         </div>
     )
 }

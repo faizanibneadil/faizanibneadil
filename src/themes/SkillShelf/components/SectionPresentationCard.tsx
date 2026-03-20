@@ -1,15 +1,18 @@
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-import { RichText } from '@payloadcms/richtext-lexical/react';
-import { cn } from "@/lib/utils";
+import type { PageProps } from "@/types"
 import BlurFade from '@/components/magicui/blur-fade';
 import { BlockProps } from '@/types';
+import { SkillShelfRichText } from './RichText';
 
 const BLUR_FADE_DELAY = 0.04;
-export function SectionPresentationCard(props: Pick<BlockProps<'skill'>['blockProps'], 'heading' | 'description'> & { label: String }) {
+export function SectionPresentationCard(props: Pick<BlockProps<'skill'>['blockProps'], 'heading' | 'description'> & {
+     label: String, 
+     params: Awaited<PageProps['params']>, searchParams: Awaited<PageProps['searchParams']> }) {
     const {
         description,
         heading,
-        label
+        label,
+        params,
+        searchParams
     } = props || {}
     return (
         <div className="group relative overflow-hidden rounded-lg p-[1px]">
@@ -32,9 +35,10 @@ export function SectionPresentationCard(props: Pick<BlockProps<'skill'>['blockPr
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                                 {heading}
                             </h2>
-                            <div className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                            {/* <div className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                                 <RichText data={description as SerializedEditorState} />
-                            </div>
+                            </div> */}
+                            <SkillShelfRichText data={description} params={params} searchParams={searchParams} />
                         </div>
                     </div>
                 </BlurFade>

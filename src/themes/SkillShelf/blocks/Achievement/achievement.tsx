@@ -27,7 +27,7 @@ export async function Achievement(props: BlockProps<'achievement'>) {
     return (
         <section id="project" aria-label={blockName ?? blockType} className=" rounded-lg bg-border shadow">
 
-            <SectionPresentationCard heading={heading} label='Achievements' description={description} />
+            <SectionPresentationCard params={params} searchParams={searchParams} heading={heading} label='Achievements' description={description} />
 
             <div className='rounded-lg border bg-background'>
 

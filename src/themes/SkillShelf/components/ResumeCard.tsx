@@ -9,7 +9,7 @@ import { Building2, Clock, Home, Link2, MapPin } from "lucide-react";
 import Link from "next/link";
 import type { BlockSlug } from "payload";
 import { Dates } from "./Dates";
-import CMSRichText from "./RichText";
+import { SkillShelfRichText } from "./RichText";
 
 export const ResumeCard = async (props: { experienceProps?: Experience, educationProps?: Education } & { blockType?: BlockSlug } & BlockParams) => {
   const {
@@ -97,13 +97,7 @@ export const ResumeCard = async (props: { experienceProps?: Experience, educatio
             </Badge>
           )}
         </div>
-        {description && params && Boolean(Object.keys(params || {}).length) && (
-          <div className={cn("mt-2 prose max-w-full text-pretty font-sans text-xs text-foreground dark:prose-invert", {
-            "ml-14": searchParams?.vp === 'd'
-          })}>
-            <CMSRichText data={description} params={params} searchParams={searchParams} />
-          </div>
-        )}
+        <SkillShelfRichText className="text-xs" data={description} params={params} searchParams={searchParams} />
 
       </div>
     );
@@ -155,11 +149,7 @@ export const ResumeCard = async (props: { experienceProps?: Experience, educatio
               </div>
               {degree && <div className="font-sans text-xs">{degree}</div>}
             </CardHeader>
-            {description && params && Boolean(Object.keys(params || {}).length) && (
-              <div className="mt-2 prose max-w-full text-pretty font-sans text-xs text-foreground dark:prose-invert">
-                <CMSRichText data={description} params={params} searchParams={searchParams} />
-              </div>
-            )}
+            <SkillShelfRichText data={description} params={params} searchParams={searchParams} />
           </div>
         </Card>
       </Link>

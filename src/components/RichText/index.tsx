@@ -26,12 +26,14 @@ const jsxConverters: (args: {
   params: Awaited<PageProps['params']>,
   searchParams: Awaited<PageProps['searchParams']>
   blocks?: ReturnType<JSXConvertersFunction<NodeTypes>>['blocks']
-}) => JSXConvertersFunction<NodeTypes> = ({ params, searchParams, blocks }) => {
+  inlineBlocks?: ReturnType<JSXConvertersFunction<NodeTypes>>['inlineBlocks']
+}) => JSXConvertersFunction<NodeTypes> = ({ params, searchParams, blocks, inlineBlocks }) => {
   return ({ defaultConverters }) => ({
     ...defaultConverters,
     ...linkNodeJSXConverter({ params, internalDocToHref }),
     ...paragraphNodeJSXConverter(),
     ...(Boolean(Object.keys(blocks || {}).length) && { blocks: { ...blocks } }),
+    ...(Boolean(Object.keys(inlineBlocks || {}).length) && { inlineBlocks: { ...inlineBlocks } }),
   })
 }
 
@@ -40,6 +42,7 @@ type Props = {
   enableGutter?: boolean
   enableProse?: boolean
   blocks?: ReturnType<JSXConvertersFunction<NodeTypes>>['blocks']
+  inlineBlocks?: ReturnType<JSXConvertersFunction<NodeTypes>>['inlineBlocks']
 } & React.HTMLAttributes<HTMLDivElement> & { params: Awaited<PageProps['params']> } & { searchParams: Awaited<PageProps['searchParams']> }
 
 export default function RichText(props: Props) {
@@ -50,11 +53,12 @@ export default function RichText(props: Props) {
     params,
     searchParams,
     blocks,
+    inlineBlocks,
     ...rest
   } = props
   return (
     <ConvertRichText
-      converters={jsxConverters({ params, searchParams })}
+      converters={jsxConverters({ params, searchParams, blocks, inlineBlocks })}
       className={cn('payload-richtext w-full mb-5', {
         container: enableGutter,
         'max-w-none': !enableGutter,

@@ -7,6 +7,7 @@ import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import type { CollectionProps } from "@/types";
 import { generateRoute } from "@/utilities/generateRoute";
 import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
+import { SkillShelfRichText } from "../../components/RichText";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Blogs(props: CollectionProps<'blogs'>) {
@@ -60,9 +61,7 @@ export async function Blogs(props: CollectionProps<'blogs'>) {
                     <CardHeader className="px-2">
                         <div className="space-y-1">
                             <CardTitle className="mt-1 text-base">{blog.title}</CardTitle>
-                            {blog?.content?.description && (<div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
-                                <RichText data={blog?.content?.description as SerializedEditorState} />
-                            </div>)}
+                            <SkillShelfRichText data={blog?.content?.description} params={params} searchParams={searchParams} />
                         </div>
                     </CardHeader>
                     <CardFooter></CardFooter>

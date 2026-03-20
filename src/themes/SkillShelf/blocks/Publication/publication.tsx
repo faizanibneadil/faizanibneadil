@@ -28,7 +28,7 @@ export async function Publication(props: BlockProps<'publication'>) {
     return (
         <section id="publications" aria-label={blockName ?? blockType} className=" rounded-lg bg-border shadow">
 
-<SectionPresentationCard heading={heading} label='Publications' description={description} />
+<SectionPresentationCard params={params} searchParams={searchParams} heading={heading} label='Publications' description={description} />
 
             <div className='rounded-lg border bg-background'>
 

@@ -23,7 +23,7 @@ export async function License(props: BlockProps<'license'>) {
 
     return (
         <section id="publications" aria-label={blockName ?? blockType} className=" rounded-lg bg-border shadow">
-            <SectionPresentationCard heading={heading} label='Licenses' description={description} />
+            <SectionPresentationCard params={params} searchParams={searchParams} heading={heading} label='Licenses' description={description} />
             <div className='rounded-lg border bg-background'>
                 <ul className=" divide-y divide-dashed">
                     {licenses?.map((license, id) => {

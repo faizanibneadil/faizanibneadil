@@ -1,68 +1,36 @@
-import dynamic from 'next/dynamic'
-import { cn } from '@/lib/utils'
-import type { TCodeBlockProps, TFormBlockProps } from '@/payload-types'
+import RichText from '@/components/RichText'
 import type { PageProps } from '@/types'
-import {
-    DefaultNodeTypes,
-    SerializedBlockNode,
-    type DefaultTypedEditorState,
-} from '@payloadcms/richtext-lexical'
-import {
-    JSXConvertersFunction,
-    RichText as ConvertRichText,
-} from '@payloadcms/richtext-lexical/react'
-import { linkNodeJSXConverter } from '@/utilities/converters/LinkJSXConverter'
-import { paragraphNodeJSXConverter } from '@/utilities/converters/ParagraphJSXConverter'
-import { internalDocToHref } from '@/utilities/internalDocToHref'
-const FormBlock = dynamic(() => import('@/themes/SkillShelf/blocks/Form/form-block').then(({ FormBlock }) => FormBlock))
-const CodeBlock = dynamic(() => import('@/themes/SkillShelf/blocks/Code/CodeBlock').then(({ CodeBlock }) => CodeBlock))
+import { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
+import { hasText } from '@payloadcms/richtext-lexical/shared'
+import dynamic from 'next/dynamic'
 
-type NodeTypes =
-    | DefaultNodeTypes
-    | SerializedBlockNode<TFormBlockProps | TCodeBlockProps>
+const CodeBlock = dynamic(() => import('../blocks/Code/CodeBlock').then(({ CodeBlock }) => CodeBlock))
+const FormBlock = dynamic(() => import('../blocks/Form/form-block').then(({ FormBlock }) => FormBlock))
 
-const jsxConverters: (args: {
+export function SkillShelfRichText(props: {
+    data: DefaultTypedEditorState | null | undefined,
     params: Awaited<PageProps['params']>,
-    searchParams: Awaited<PageProps['searchParams']>
-}) => JSXConvertersFunction<NodeTypes> = ({ params, searchParams }) => {
-    return ({ defaultConverters }) => ({
-        ...defaultConverters,
-        ...linkNodeJSXConverter({ params, internalDocToHref }),
-        ...paragraphNodeJSXConverter(),
-        blocks: {
-            formBlock: ({ node }) => <FormBlock blockProps={node.fields} params={params} searchParams={searchParams} />,
-            "code-block": ({ node }) => <CodeBlock blockProps={node.fields} params={params} searchParams={searchParams} />
-        },
-    })
-}
-
-type Props = {
-    data: DefaultTypedEditorState
+    searchParams: Awaited<PageProps['searchParams']>,
     enableGutter?: boolean
-    enableProse?: boolean
-} & React.HTMLAttributes<HTMLDivElement> & { params: Awaited<PageProps['params']> } & { searchParams: Awaited<PageProps['searchParams']> }
+} & React.HTMLAttributes<HTMLDivElement>) {
 
-export default function RichText(props: Props) {
     const {
-        className,
-        enableProse = true,
-        enableGutter = true,
-        params,
-        searchParams,
-        ...rest
-    } = props
-    return (
-        <ConvertRichText
-            converters={jsxConverters({ params, searchParams })}
-            className={cn('payload-richtext w-full mb-5', {
-                container: enableGutter,
-                'max-w-none': !enableGutter,
-                'mx-auto prose md:prose-md dark:prose-invert': enableProse,
-            },
-                className,
-            )}
-            disableContainer={true}
-            {...rest}
-        />
-    )
+        data: editorState,
+        params: paramsFromProps,
+        searchParams: searchParamsFromProps,
+        enableGutter
+    } = props || {}
+
+    if (!editorState) {
+        return null
+    }
+
+    if (!hasText(editorState)) {
+        return null
+    }
+
+    return <RichText {...props} enableGutter={enableGutter} data={editorState} params={paramsFromProps} searchParams={searchParamsFromProps} blocks={{
+        "code-block": ({ node }) => <CodeBlock blockProps={node.fields} params={props.params} searchParams={props.searchParams} />,
+        formBlock: ({ node }) => <FormBlock blockProps={node.fields} params={props.params} searchParams={props.searchParams} />
+    }} />
 }

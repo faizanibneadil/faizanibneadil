@@ -31,7 +31,7 @@ export async function Project(props: BlockProps<'project'>) {
     return (
         <section id="project" aria-label={blockName ?? blockType} className=" rounded-lg bg-border shadow">
 
-            <SectionPresentationCard heading={heading} label='Projects' description={description} />
+            <SectionPresentationCard params={params} searchParams={searchParams} heading={heading} label='Projects' description={description} />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 max-w-[800px] mx-auto border">
                 {projects?.map((project, idx) => (

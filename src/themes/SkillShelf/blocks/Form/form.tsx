@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import BlurFade from "@/components/magicui/blur-fade"
 import { getClientSideURL } from "@/utilities/getURL"
 import { Width } from "./fields/Width"
+import { SkillShelfRichText } from "../../components/RichText"
 
 type Form = Exclude<BlockParams<'formBlock'>['blockProps']['form'], number>
 type BlockProps = Omit<BlockParams<'formBlock'>['blockProps'], 'form'> & { form: Form | Promise<Form> }
@@ -129,7 +130,7 @@ export function Form(props: { blockProps: BlockProps } & Omit<BlockParams<'formB
                     {enableIntro && introContent && !hasSubmitted && (
                         <BlurFade delay={BLUR_FADE_DELAY * 16}>
                             <div className="mx-auto w-full text-foreground md:text-sm lg:text-sm xl:text-sm">
-                                <RichText className="text-balance text-center text-muted-foreground text-sm md:text-base" searchParams={searchParams} params={params} data={introContent} enableGutter={false} />
+                            <SkillShelfRichText className="text-xs" data={introContent} enableGutter={false} params={params} searchParams={searchParams} />
                             </div>
                         </BlurFade>
                     )}
