@@ -1,10 +1,10 @@
 import React from "react";
-import { RichText } from '@payloadcms/richtext-lexical/react';
 import BlurFade from "@/components/magicui/blur-fade";
 import { ProjectCard } from "@/themes/Magic/blocks/Project/project-card";
 import type { BlockProps } from "@/types";
 import { getProjectById } from "@/utilities/getProjectById";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
+import { MagicRichText } from "../../components/RichText";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Project(props: BlockProps<'project'>) {
@@ -38,9 +38,8 @@ export async function Project(props: BlockProps<'project'>) {
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                                 {heading}
                             </h2>
-                            <div className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                <RichText data={description as SerializedEditorState} />
-                            </div>
+                            <MagicRichText className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed" data={description} params={params} searchParams={searchParams} />
+                            
                         </div>
                     </div>
                 </BlurFade>

@@ -5,7 +5,7 @@ import { Certification } from "@/payload-types";
 import { getMediaUrl } from "@/utilities/getURL";
 import type { BlockParams } from "@/types";
 import { generateRoute } from "@/utilities/generateRoute";
-import RichText from "../../components/RichText";
+import { MagicRichText } from "../../components/RichText";
 import { Dates } from "../../components/Dates";
 
 export async function CertificateCard(props: { certificate: Certification } & BlockParams) {
@@ -49,11 +49,7 @@ export async function CertificateCard(props: { certificate: Certification } & Bl
         {content?.credentialId && (
           <p className="text-sm text-muted-foreground">{content?.credentialId}</p>
         )}
-        {content?.description && (
-          <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
-            <RichText data={content?.description} params={params} searchParams={searchParams} />
-          </div>
-        )}
+        <MagicRichText className="text-xs" data={content.description} params={params} searchParams={searchParams} />
       </div>
       {content?.resources && content?.resources.length > 0 && (
         <div className="mt-2 flex flex-row flex-wrap items-start gap-2">

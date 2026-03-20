@@ -2,6 +2,7 @@ import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
 import { CertificateCard } from '@/themes/Magic/blocks/Certification/certificate-card';
 import RichText from "@/components/RichText";
+import { MagicRichText } from "../../components/RichText";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Certification(props: BlockProps<'certification'>) {
@@ -35,11 +36,7 @@ export async function Certification(props: BlockProps<'certification'>) {
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                                 {heading}
                             </h2>
-                            {description && (
-                                <div className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                    <RichText data={description} params={params} searchParams={searchParams} />
-                                </div>
-                            )}
+                            <MagicRichText data={description} params={params} searchParams={searchParams} />
                         </div>
                     </div>
                 </BlurFade>

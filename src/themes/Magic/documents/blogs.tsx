@@ -4,6 +4,7 @@ import type { DocProps } from "@/types"
 import { getMediaUrl } from "@/utilities/getURL"
 import { DefaultTypedEditorState } from "@payloadcms/richtext-lexical"
 import { hasText } from "@payloadcms/richtext-lexical/shared"
+import { MagicRichText } from "../components/RichText"
 
 export async function BlogEntity(props: DocProps<'blogs'>) {
     const {
@@ -28,9 +29,8 @@ export async function BlogEntity(props: DocProps<'blogs'>) {
                     alt={entity?.title}
                 />
                 <h1>{entity.title}</h1>
-                {hasText(entity?.content?.content) && (
-                    <RichText searchParams={searchParams} params={params} enableGutter={false} data={entity?.content?.content as DefaultTypedEditorState} />
-                )}
+                <MagicRichText className="text-xs" data={entity?.content?.description} params={params} searchParams={searchParams} />
+                
             </div>
         </div>
     )

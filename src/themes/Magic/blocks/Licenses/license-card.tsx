@@ -5,7 +5,7 @@ import type { License } from "@/payload-types";
 import { getMediaUrl } from "@/utilities/getURL";
 import type { BlockParams } from "@/types";
 import { Dates } from "../../components/Dates";
-import RichText from "../../components/RichText";
+import { MagicRichText } from "../../components/RichText";
 
 export async function LicenseCard(props: { license: License } & BlockParams) {
   const {
@@ -49,11 +49,7 @@ export async function LicenseCard(props: { license: License } & BlockParams) {
         {licenseNumber && (
           <p className="text-sm text-muted-foreground">{licenseNumber}</p>
         )}
-        {description && (
-          <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
-            <RichText data={description} params={params} searchParams={searchParams} />
-          </div>
-        )}
+        <MagicRichText data={description} params={params} searchParams={searchParams} />
       </div>
       {resources && resources.length > 0 && (
         <div className="mt-2 flex flex-row flex-wrap items-start gap-2">

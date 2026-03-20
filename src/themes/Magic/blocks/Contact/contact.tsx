@@ -5,6 +5,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import type { BlockProps } from "@/types";
 import { FormBlock } from "../Form/form-block";
+import { MagicRichText } from "../../components/RichText";
 
 
 const BLUR_FADE_DELAY = 0.04;
@@ -39,9 +40,7 @@ export async function Contact(props: BlockProps<'contact'>) {
                         <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                             Get in Touch
                         </h2>
-                        <div className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                            <RichText data={content as SerializedEditorState} />
-                        </div>
+                        <MagicRichText data={introContent} params={params} searchParams={searchParams} />
                         {/* <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                             Want to chat? Just shoot me a dm{" "}
                             <Link href="#" className="text-blue-500 hover:underline">

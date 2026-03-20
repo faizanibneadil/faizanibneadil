@@ -1,10 +1,10 @@
-import RichText from "@/components/RichText";
 import { Dates } from "@/components/dates";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import type { DocProps } from "@/types"
 import { getMediaUrl } from "@/utilities/getURL";
 import Link from "next/link";
+import { MagicRichText } from "../components/RichText";
 
 export async function AchievementEntity(props: DocProps<'achievements'>) {
     const {
@@ -30,11 +30,7 @@ export async function AchievementEntity(props: DocProps<'achievements'>) {
                 {entity?.content?.dates?.location && (
                     <p className="text-sm text-muted-foreground">{entity?.content?.dates?.location}</p>
                 )}
-                {entity?.content?.description && (
-                    <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
-                        <RichText data={entity?.content?.description} params={params} searchParams={searchParams} />
-                    </div>
-                )}
+                <MagicRichText className="text-xs" data={entity?.content?.description} params={params} searchParams={searchParams} />
             </div>
             {entity?.content?.resources && entity?.content?.resources.length > 0 && (
                 <div className="mt-2 flex flex-row flex-wrap items-start gap-2">

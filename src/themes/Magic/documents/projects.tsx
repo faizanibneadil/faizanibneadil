@@ -6,6 +6,7 @@ import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
 import { hasText } from '@payloadcms/richtext-lexical/shared';
 import { BackButton } from "@/components/BackButton";
 import RichText from "@/components/RichText"
+import { MagicRichText } from "../components/RichText";
 
 export async function ProjectEntity(props: DocProps<'projects'>) {
     const {
@@ -56,11 +57,7 @@ export async function ProjectEntity(props: DocProps<'projects'>) {
             )}
 
             <h1 className="font-medium text-3xl">{entity?.title}</h1>
-            {hasText(entity?.content.detailedOverview) && params && Boolean(Object.keys(params || {}).length) && (
-                <div className="mt-2 prose max-w-full text-pretty font-sans text-foreground dark:prose-invert">
-                    <RichText searchParams={searchParams} data={entity?.content?.detailedOverview!} params={params} />
-                </div>
-            )}
+            <MagicRichText className="text-xs" data={entity?.content?.detailedOverview} params={params} searchParams={searchParams} />
 
 
         </div>

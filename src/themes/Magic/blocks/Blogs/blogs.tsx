@@ -2,6 +2,7 @@ import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 import { RichText } from '@payloadcms/richtext-lexical/react';
+import { MagicRichText } from "../../components/RichText";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function BlogsBlock(props: BlockProps<'blogs-block'>) {
@@ -35,9 +36,7 @@ export async function BlogsBlock(props: BlockProps<'blogs-block'>) {
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                                 {heading}
                             </h2>
-                            {/* <p className=""> */}
-                                <RichText className='text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed' data={description as SerializedEditorState} />
-                            {/* </p> */}
+                            <MagicRichText data={description} params={params} searchParams={searchParams} />
                         </div>
                     </div>
                 </BlurFade>

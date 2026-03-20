@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import BlurFade from "@/components/magicui/blur-fade"
 import { getClientSideURL } from "@/utilities/getURL"
 import { Width } from "./fields/Width"
+import { MagicRichText } from "../../components/RichText"
 
 type Form = Exclude<BlockParams<'formBlock'>['blockProps']['form'], number>
 type BlockProps = Omit<BlockParams<'formBlock'>['blockProps'], 'form'> & { form: Form | Promise<Form> }
@@ -125,14 +126,14 @@ export function Form(props: { blockProps: BlockProps } & Omit<BlockParams<'formB
                 {enableIntro && introContent && !hasSubmitted && (
                     <BlurFade delay={BLUR_FADE_DELAY * 16}>
                         <div className="mx-auto w-full text-foreground md:text-sm lg:text-sm xl:text-sm">
-                            <RichText className="text-balance text-center text-muted-foreground text-sm md:text-base" searchParams={searchParams} params={params} data={introContent} enableGutter={false} />
+                            <MagicRichText className="text-balance text-center text-muted-foreground text-sm md:text-base" data={introContent} enableGutter={false} params={params} searchParams={searchParams} />
                         </div>
                     </BlurFade>
                 )}
             </div>
             <FormProvider {...form}>
                 {!isLoading && hasSubmitted && formConfig?.confirmationType === 'message' && formConfig?.confirmationMessage && (
-                    <RichText searchParams={searchParams} params={params} data={formConfig?.confirmationMessage!} />
+                    <MagicRichText searchParams={searchParams} params={params} data={formConfig?.confirmationMessage!} />
                 )}
                 {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
                 {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
@@ -140,9 +141,9 @@ export function Form(props: { blockProps: BlockProps } & Omit<BlockParams<'formB
                     <form id={formConfig?.id?.toString()} onSubmit={onSubmit}>
                         <div className="flex flex-wrap -mx-2 w-[calc(100%+1rem)] justify-start items-end">
                             {formConfig?.fields?.map((field, index) => {
-                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                const Field: React.FC<any> = formFields?.[field.blockType as keyof typeof formFields]
-                                if (Field) {
+                                if (Object.hasOwn(formFields, field.blockType)) {
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                    const Field: React.FC<any> = formFields?.[field.blockType as keyof typeof formFields]
                                     return (
                                         <Field
                                             key={`${field.blockType}-${index}`}
@@ -156,6 +157,7 @@ export function Form(props: { blockProps: BlockProps } & Omit<BlockParams<'formB
                                         />
                                     )
                                 }
+
                                 return null
                             })}
                             <Width width={formConfig?.submitButtonWidth as number} className="space-y-2">

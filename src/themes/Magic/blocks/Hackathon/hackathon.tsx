@@ -3,6 +3,7 @@ import { HackathonCard } from "@/themes/Magic/blocks/Hackathon/hackathon-card";
 import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
+import { MagicRichText } from '../../components/RichText';
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Hackathon(props: BlockProps<'hackathon'>) {
@@ -36,9 +37,8 @@ export async function Hackathon(props: BlockProps<'hackathon'>) {
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                                 {heading}
                             </h2>
-                            <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                <RichText data={description as SerializedEditorState} />
-                            </p>
+                            <MagicRichText className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed" data={description} params={params} searchParams={searchParams} />
+
                         </div>
                     </div>
                 </BlurFade>
@@ -50,7 +50,7 @@ export async function Hackathon(props: BlockProps<'hackathon'>) {
                                     key={hackathon.id}
                                     delay={BLUR_FADE_DELAY * 15 + id * 0.05}
                                 >
-                                    <HackathonCard {...hackathon} />
+                                    <HackathonCard {...hackathon} params={params} searchParams={searchParams} />
                                 </BlurFade>
                             )
                         })}

@@ -2,6 +2,7 @@ import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
 import { LicenseCard } from '@/themes/Magic/blocks/Licenses/license-card';
 import RichText from "@/components/RichText";
+import { MagicRichText } from "../../components/RichText";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function License(props: BlockProps<'license'>) {
@@ -34,11 +35,8 @@ export async function License(props: BlockProps<'license'>) {
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                                 {heading}
                             </h2>
-                            {description && (
-                                <div className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                    <RichText data={description} params={params} searchParams={searchParams} />
-                                </div>
-                            )}
+                            <MagicRichText className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed" data={description} params={params} searchParams={searchParams} />
+                            
                         </div>
                     </div>
                 </BlurFade>

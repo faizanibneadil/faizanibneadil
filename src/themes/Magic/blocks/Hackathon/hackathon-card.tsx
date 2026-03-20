@@ -1,14 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import { RichText } from '@payloadcms/richtext-lexical/react'
 import { IHackathonProps } from "@/payload-types";
 import { getMediaUrl } from "@/utilities/getURL";
 import { Dates } from "../../components/Dates";
 import { IconRenderer } from "@/components/ui/icon-renderer";
+import { MagicRichText } from "../../components/RichText";
+import type {PageProps} from '@/types'
 
-type Props = Exclude<Exclude<IHackathonProps['hackathons'], null | undefined>[0], number>
+type Props = Exclude<Exclude<IHackathonProps['hackathons'], null | undefined>[0], number> & {
+  params: Awaited<PageProps['params']>
+  searchParams: Awaited<PageProps['searchParams']>
+}
 
 export function HackathonCard({
   id,
@@ -23,7 +26,9 @@ export function HackathonCard({
   createdAt,
   updatedAt,
   deletedAt,
-  tenant
+  tenant,
+  params,
+  searchParams
 }: Props) {
   return (
     <li className="relative ml-10 py-4">
@@ -39,11 +44,7 @@ export function HackathonCard({
         {location && (
           <p className="text-sm text-muted-foreground">{location}</p>
         )}
-        {description && (
-          <span className="prose dark:prose-invert text-sm text-muted-foreground">
-            <RichText data={description as SerializedEditorState} />
-          </span>
-        )}
+        <MagicRichText className="text-sm" data={description} params={params} searchParams={searchParams} />
       </div>
       {links && links.length > 0 && (
         <div className="mt-2 flex flex-row flex-wrap items-start gap-2">

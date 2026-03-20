@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import type { DocProps } from "@/types"
 import { getMediaUrl } from "@/utilities/getURL"
 import Link from "next/link"
+import { MagicRichText } from "../components/RichText"
 
 export async function PublicationEntity(props: DocProps<'publications'>) {
     const {
@@ -36,11 +37,7 @@ export async function PublicationEntity(props: DocProps<'publications'>) {
                 {entity?.content?.doi && (
                     <p className="text-sm text-muted-foreground">{entity?.content?.doi}</p>
                 )}
-                {entity?.content?.description && (
-                    <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
-                        <RichText data={entity?.content?.description} params={params} searchParams={searchParams} />
-                    </div>
-                )}
+                <MagicRichText className="text-xs" data={entity?.content?.description} params={params} searchParams={searchParams} />
             </div>
             {entity?.content?.resources && entity?.content?.resources.length > 0 && (
                 <div className="mt-2 flex flex-row flex-wrap items-start gap-2">
