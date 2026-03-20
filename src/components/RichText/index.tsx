@@ -56,6 +56,7 @@ export default function RichText(props: Props) {
     inlineBlocks,
     ...rest
   } = props
+  
   return (
     <ConvertRichText
       converters={jsxConverters({ params, searchParams, blocks, inlineBlocks })}

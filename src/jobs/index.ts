@@ -1,5 +1,4 @@
 import type { JobsConfig } from "payload";
-import { Invalidator } from '@/jobs/tasks/Invalidator'
 
 export const jobs: JobsConfig = {
     jobsCollectionOverrides: ({ defaultJobsCollection }) => ({
@@ -9,6 +8,6 @@ export const jobs: JobsConfig = {
             hidden: false,
         },
     }),
-    autoRun: [{ queue: 'invalidator' }],
-    tasks: [Invalidator]
+    autoRun: [],
+    tasks: []
 }

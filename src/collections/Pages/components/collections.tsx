@@ -22,7 +22,6 @@ const excludeCollection: CollectionSlug[] = [
     "integration",
     "portfolio-settings",
     "payload-mcp-api-keys",
-    "payload-jobs",
     "payload-kv",
     "themes",
 ]

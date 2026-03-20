@@ -1,12 +1,8 @@
-import React from "react";
-import { RichText } from '@payloadcms/richtext-lexical/react';
-import BlurFade from "@/components/magicui/blur-fade";
-import { ProjectCard } from "@/themes/Magic/blocks/Project/project-card";
 import type { BlockProps } from "@/types";
 import { getProjectById } from "@/utilities/getProjectById";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-import { Card } from "@/components/ui/card";
+import React from "react";
 import { SectionPresentationCard } from "../../components/SectionPresentationCard";
+import { ProjectCard } from "./ProjectCard";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Project(props: BlockProps<'project'>) {

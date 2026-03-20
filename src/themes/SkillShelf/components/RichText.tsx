@@ -12,13 +12,16 @@ export function SkillShelfRichText(props: {
     params: Awaited<PageProps['params']>,
     searchParams: Awaited<PageProps['searchParams']>,
     enableGutter?: boolean
+    enableProse?: boolean
 } & React.HTMLAttributes<HTMLDivElement>) {
 
     const {
         data: editorState,
         params: paramsFromProps,
         searchParams: searchParamsFromProps,
-        enableGutter
+        enableGutter,
+        enableProse,
+        className
     } = props || {}
 
     if (!editorState) {
@@ -29,8 +32,15 @@ export function SkillShelfRichText(props: {
         return null
     }
 
-    return <RichText {...props} enableGutter={enableGutter} data={editorState} params={paramsFromProps} searchParams={searchParamsFromProps} blocks={{
-        "code-block": ({ node }) => <CodeBlock blockProps={node.fields} params={props.params} searchParams={props.searchParams} />,
-        formBlock: ({ node }) => <FormBlock blockProps={node.fields} params={props.params} searchParams={props.searchParams} />
-    }} />
+    return <RichText {...props}
+        className={className}
+        enableGutter={enableGutter}
+        data={editorState}
+        params={paramsFromProps}
+        searchParams={searchParamsFromProps}
+        enableProse={enableProse}
+        blocks={{
+            "code-block": ({ node }) => <CodeBlock blockProps={node.fields} params={props.params} searchParams={props.searchParams} />,
+            formBlock: ({ node }) => <FormBlock blockProps={node.fields} params={props.params} searchParams={props.searchParams} />
+        }} />
 }

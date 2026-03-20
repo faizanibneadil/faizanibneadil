@@ -71,7 +71,9 @@ export async function ProjectCard(props: { project: Project | Promise<Project> }
             </Link>
           </CardTitle>
           <Dates to={project?.content?.dates?.to} from={project?.content?.dates?.from} />
-          <MagicRichText data={project.content.overview} params={params} searchParams={searchParams} />
+          <div className="prose prose-xs dark:prose-invert w-full text-xs">
+            <MagicRichText data={project.content.overview} params={params} searchParams={searchParams} />
+          </div>
         </div>
       </CardHeader>
       {/* <CardContent className="mt-auto flex flex-col px-2">

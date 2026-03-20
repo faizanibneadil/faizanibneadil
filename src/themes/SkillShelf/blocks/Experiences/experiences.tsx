@@ -1,6 +1,6 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
-import { ResumeCard } from "../../components/ResumeCard";
+import { ExperienceCard } from "./ExperenceCard";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Experience(props: BlockProps<'experience'>) {
@@ -29,7 +29,7 @@ export async function Experience(props: BlockProps<'experience'>) {
                 {experiences?.map((work, id) => {
                     return typeof work === 'number' ? null : (
                         <BlurFade key={work.id} delay={BLUR_FADE_DELAY * 6 + id * 0.05}>
-                            <ResumeCard key={work.id} experienceProps={work} blockType="experience" params={paramsFromProps} searchParams={searchParams} />
+                            <ExperienceCard experience={work} params={paramsFromProps} searchParams={searchParams} />
                         </BlurFade>
                     )
                 })}

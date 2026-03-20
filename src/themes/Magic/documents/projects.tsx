@@ -27,11 +27,11 @@ export async function ProjectEntity(props: DocProps<'projects'>) {
                 <p className="capitalize font-semibold line-clamp-2">{entity?.title}</p>
             </div>
             <Image
-                height={height as number}
-                width={width as number}
+                height={400}
+                width={800}
                 fetchPriority="high"
                 loading="lazy"
-                alt={entity?.title}
+                alt={entity?.title ?? ''}
                 src={getMediaUrl(entity?.content?.thumbnail)}
                 placeholder="blur"
                 blurDataURL={placeholderBlur}

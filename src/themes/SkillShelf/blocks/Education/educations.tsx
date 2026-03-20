@@ -1,6 +1,6 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import type { BlockProps } from "@/types";
-import { ResumeCard } from "../../components/ResumeCard";
+import { EducationCard } from "./EducationCard";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Education(props: BlockProps<'education'>) {
@@ -29,7 +29,7 @@ export async function Education(props: BlockProps<'education'>) {
                 {educations?.map((education, id) => {
                     return typeof education === 'number' ? null : (
                         <BlurFade key={education?.id} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
-                            <ResumeCard blockType="education" key={education?.id} params={paramsFromProps} searchParams={searchParamsFromProps} educationProps={education} />
+                            <EducationCard education={education} params={paramsFromProps} searchParams={searchParamsFromProps} />
                         </BlurFade>
                     )
                 })}

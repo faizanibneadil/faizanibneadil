@@ -32,8 +32,6 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
     }
   })
 
-  console.log({ executingFromDomainRoute: true })
-
   return await PageGenerateMetadata({
     params: paramsPromise,
     searchParams: searchParamsFromProps

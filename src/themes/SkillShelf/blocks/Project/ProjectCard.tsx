@@ -1,7 +1,3 @@
-import React, { use } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { RichText } from '@payloadcms/richtext-lexical/react';
 import { Badge } from "@/components/ui/badge";
 import {
     Card,
@@ -10,16 +6,18 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import type { Project, Skill } from "@/payload-types";
-import { getSkillById } from "@/utilities/getSkillById";
-import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-import type { BlockParams } from "@/types";
-import { generateRoute } from "@/utilities/generateRoute";
-import { Dates } from "../../components/Dates";
 import { IconRenderer } from "@/components/ui/icon-renderer";
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import type { Project, Skill } from "@/payload-types";
+import type { BlockParams } from "@/types";
+import { generateRoute } from "@/utilities/generateRoute";
+import { getSkillById } from "@/utilities/getSkillById";
+import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
+import Image from "next/image";
+import Link from "next/link";
+import React, { use } from "react";
+import { Dates } from "../../components/Dates";
 import { SkillShelfRichText } from "../../components/RichText";
 
 export async function ProjectCard(props: { project: Project | Promise<Project> } & BlockParams) {
@@ -73,7 +71,9 @@ export async function ProjectCard(props: { project: Project | Promise<Project> }
                         </Link>
                     </CardTitle>
                     <Dates to={project?.content?.dates?.to} from={project?.content?.dates?.from} />
-                    <SkillShelfRichText data={project?.content?.overview} params={params} searchParams={searchParams} />
+                    <div className="prose prose-xs dark:prose-invert w-full text-xs">
+                        <SkillShelfRichText data={project?.content?.overview} params={params} searchParams={searchParams} />
+                    </div>
                 </div>
             </CardHeader>
             <CardContent className="mt-auto flex flex-col px-2">

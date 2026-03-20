@@ -43,15 +43,15 @@ export async function Hero(props: BlockProps<'hero'>) {
                         />
                     </div>
                     <BlurFade delay={BLUR_FADE_DELAY}>
-                        <Avatar className="size-28 border">
+                        <Avatar className="size-28 border rounded-lg">
                             <AvatarImage
                                 alt={nameOnResume as string}
                                 src={getMediaUrl(profile)}
-                                className="object-cover object-top aspect-auto"
+                                className="object-cover object-top aspect-auto rounded-lg"
                                 fetchPriority="high"
                                 loading="lazy"
                             />
-                            <AvatarFallback>{DATA.initials}</AvatarFallback>
+                            <AvatarFallback className="rounded-lg">{DATA.initials}</AvatarFallback>
                         </Avatar>
                     </BlurFade>
                 </div>
