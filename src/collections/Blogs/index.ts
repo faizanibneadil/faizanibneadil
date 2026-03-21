@@ -68,7 +68,7 @@ export const Blogs: CollectionConfig<'blogs'> = {
                             label: 'Featured Image',
                             relationTo: 'media',
                             hasMany: false,
-                            required: true,
+                            // required: true,
                             admin: {
                                 position: 'sidebar'
                             },

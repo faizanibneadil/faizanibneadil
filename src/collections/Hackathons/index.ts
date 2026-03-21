@@ -52,6 +52,13 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
                         }
                     },
                     {
+                        type: 'relationship',
+                        relationTo: 'skills',
+                        name: 'skills',
+                        label: 'Skills',
+                        hasMany: true
+                    },
+                    {
                         type: 'group',
                         name: 'dates',
                         label: 'Dates',

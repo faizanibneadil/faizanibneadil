@@ -39,13 +39,9 @@ export const queryPageModeBySlug = (slug: CollectionSlug, domain: string) =>
                     ],
                 },
                 select: {
+                    enableCollection: true,
                     content: {
-                        pageMode: {
-                            mode: true
-                        },
-                        configurations: {
-                            slug: true
-                        }
+                        configuredCollectionSlug: true
                     }
                 }
             })

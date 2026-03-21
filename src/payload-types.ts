@@ -122,16 +122,25 @@ export interface Config {
     experiences: Experience;
     integration: Integration;
     'portfolio-settings': PortfolioSetting;
+    themes: Theme;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-mcp-api-keys': PayloadMcpApiKey;
+    'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {
     skills: {
-      relatedExperiences: 'experiences';
+      achievements: 'achievements';
+      certifications: 'certifications';
+      educations: 'educations';
+      experiences: 'experiences';
+      hackathons: 'hackathons';
+      projects: 'projects';
+      publications: 'publications';
+      researches: 'researches';
     };
   };
   collectionsSelect: {
@@ -155,9 +164,11 @@ export interface Config {
     experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
     integration: IntegrationSelect<false> | IntegrationSelect<true>;
     'portfolio-settings': PortfolioSettingsSelect<false> | PortfolioSettingsSelect<true>;
+    themes: ThemesSelect<false> | ThemesSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-mcp-api-keys': PayloadMcpApiKeysSelect<false> | PayloadMcpApiKeysSelect<true>;
+    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -169,6 +180,11 @@ export interface Config {
   globals: {};
   globalsSelect: {};
   locale: null;
+  widgets: {
+    visitors: VisitorsWidget;
+    formSubmissions: FormSubmissionsWidget;
+    collections: CollectionsWidget;
+  };
   user: User | PayloadMcpApiKey;
   jobs: {
     tasks: unknown;
@@ -498,16 +514,8 @@ export interface Page {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
-    /**
-     * If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change Page Mode into collection.
-     */
-    pageMode: {
-      mode: 'layout' | 'collection';
-    };
-    configurations?: {
-      slug?: string | null;
-    };
+  content?: {
+    configuredCollectionSlug?: string | null;
     layout?:
       | (
           | IAboutProps
@@ -542,6 +550,10 @@ export interface Page {
    * Set this page as your portfolio's primary Home Page. Only one page can be active as the Main Page at a time.
    */
   isRootPage: boolean;
+  /**
+   * If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change collection.
+   */
+  enableCollection: boolean;
   publishedAt?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -581,6 +593,22 @@ export interface IAboutProps {
  * via the `definition` "ISkillProps".
  */
 export interface ISkillProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   /**
    * Check this to display every skill from your collection. Uncheck to manually select specific skills.
    */
@@ -602,22 +630,91 @@ export interface Skill {
   tenant?: (number | null) | Tenant;
   title: string;
   publishedAt?: string | null;
-  techstack?: {
-    /**
-     * Enable this to show the technology icon on the portfolio. If disabled, only the skill name will be displayed.
-     */
-    showIcon?: boolean | null;
-    /**
-     * Search and select an icon for this skill. Note: This icon will only be visible if "Display Icon" is enabled above.
-     */
-    iconify?: string | null;
+  /**
+   * Display the text label/name of the skill.
+   */
+  enableLabel?: boolean | null;
+  /**
+   * Custom Label
+   */
+  skillCustomLabel?: string | null;
+  /**
+   * Display the graphical icon associated with this skill.
+   */
+  enableIcon?: boolean | null;
+  /**
+   * Search and select an icon for this skill. Note: This icon will only be visible if "Display Icon" is enabled above.
+   */
+  icon?: string | null;
+  /**
+   * Display total number of Achievements linked to this skill.
+   */
+  enableAchievementsCount?: boolean | null;
+  achievements?: {
+    docs?: (number | Achievement)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
   };
   /**
-   * Select those project in which you used this skill.
+   * Display total number of Certifications linked to this skill.
    */
-  projects?: (number | Project)[] | null;
-  relatedExperiences?: {
+  enableCertificationsCount?: boolean | null;
+  certifications?: {
+    docs?: (number | Certification)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Display total number of Educations linked to this skill.
+   */
+  enableEducationsCount?: boolean | null;
+  educations?: {
+    docs?: (number | Education)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Display total number of Experiences linked to this skill.
+   */
+  enableExperiencesCount?: boolean | null;
+  experiences?: {
     docs?: (number | Experience)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Display total number of Hackathons linked to this skill.
+   */
+  enableHackathonsCount?: boolean | null;
+  hackathons?: {
+    docs?: (number | Hackathon)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Display total number of Projects linked to this skill.
+   */
+  enableProjectsCount?: boolean | null;
+  projects?: {
+    docs?: (number | Project)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Display total number of Publications linked to this skill.
+   */
+  enablePublicationsCount?: boolean | null;
+  publications?: {
+    docs?: (number | Publication)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Display total number of Researches linked to this skill.
+   */
+  enableResearchesCount?: boolean | null;
+  researches?: {
+    docs?: (number | Research)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -626,6 +723,343 @@ export interface Skill {
    */
   lockSlug?: boolean | null;
   slug: string;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements".
+ */
+export interface Achievement {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  content?: {
+    /**
+     * Select the category that best classifies this recognition.
+     */
+    type?:
+      | ('award' | 'honor' | 'speaking-engagement' | 'competition-winner' | 'community-contribution' | 'other')
+      | null;
+    /**
+     * Upload a high-quality badge, logo, or certificate photo for visual proof.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Provide a detailed overview of the achievement and your specific role or contribution.
+     */
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    skills?: (number | Skill)[] | null;
+    dates?: {
+      /**
+       * Starting date or date received.
+       */
+      from?: string | null;
+      /**
+       * End date or leave blank if it is a single-day event.
+       */
+      to?: string | null;
+      /**
+       * Physical venue or digital platform where the event took place.
+       */
+      location?: string | null;
+    };
+    /**
+     * Quantify your success with measurable data (e.g., Rank, Growth %, or Scale).
+     */
+    stats?:
+      | {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Add relevant links to verify this achievement (e.g., News articles, YouTube, or Event sites).
+     */
+    resources?:
+      | {
+          label: string;
+          link: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "certifications".
+ */
+export interface Certification {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  content: {
+    /**
+     * The entity that granted this credential (e.g., Cisco, Yale, PMI).
+     */
+    issuer: string;
+    /**
+     * Unique identifier provided by the issuer for verification.
+     */
+    credentialId?: string | null;
+    /**
+     * Upload a high-resolution logo of the issuer or the official certification badge.
+     */
+    image: number | Media;
+    /**
+     * Detail the curriculum, skills mastered, or the exam passed to earn this certificate.
+     */
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    skills?: (number | Skill)[] | null;
+    validity: {
+      /**
+       * Date when the credential was granted.
+       */
+      issuedDate: string;
+      /**
+       * Date when the credential expires.
+       */
+      expiryDate?: string | null;
+      /**
+       * Check if this certification is valid indefinitely.
+       */
+      isLifetime?: boolean | null;
+    };
+    /**
+     * Provide links to official verification portals, online badges, or PDF copies.
+     */
+    resources?:
+      | {
+          label: string;
+          link: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "educations".
+ */
+export interface Education {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Name of the school, university, or bootcamp.
+   */
+  academy?: string | null;
+  /**
+   * e.g., Computer Science, Graphic Design, etc.
+   */
+  degree?: string | null;
+  /**
+   * Upload university or school logo.
+   */
+  image?: (number | null) | Media;
+  /**
+   * Mention key subjects, thesis topics, or academic honors.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  skills?: (number | Skill)[] | null;
+  details?: {
+    grade?: string | null;
+    location?: string | null;
+  };
+  dates?: {
+    from?: string | null;
+    to?: string | null;
+    currentlyStudying?: boolean | null;
+  };
+  /**
+   * Add links to your thesis, university profile, or digital degree copy.
+   */
+  resources?:
+    | {
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experiences".
+ */
+export interface Experience {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  /**
+   * Job title. eg: (Frontend, Backend, DevOps, QA, ...) etc
+   */
+  title: string;
+  /**
+   * Type of employment
+   */
+  employmentType?: ('full-time' | 'part-time' | 'contract' | 'freelance' | 'internship') | null;
+  /**
+   * Choose whether this job is office-based, remote, or a mix (Hybrid).
+   */
+  jobType?: ('on-site' | 'remote' | 'hybrid') | null;
+  company?: string | null;
+  /**
+   * Employment date / Joining Date
+   */
+  start?: string | null;
+  /**
+   * End date of employment. If you are skill employee of the company then leave it. We will show the present text like this (Present)
+   */
+  end?: string | null;
+  /**
+   * Company website URL
+   */
+  website?: string | null;
+  /**
+   * Location (e.g., "NY - USA", "Remote")
+   */
+  location?: string | null;
+  /**
+   * Company logo
+   */
+  logo?: (number | null) | Media;
+  skills?: (number | Skill)[] | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hackathons".
+ */
+export interface Hackathon {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  content: {
+    /**
+     * Write description.
+     */
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    skills?: (number | Skill)[] | null;
+    dates: {
+      to: string;
+      from: string;
+    };
+    location?: string | null;
+    links?:
+      | {
+          iconify?: string | null;
+          label: string;
+          link: string;
+          id?: string | null;
+        }[]
+      | null;
+    image: number | Media;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -677,7 +1111,7 @@ export interface Project {
     /**
      * Provide list of skills. You used to build this project
      */
-    Skills?: (number | Skill)[] | null;
+    skills?: (number | Skill)[] | null;
     dates?: {
       to?: string | null;
       from?: string | null;
@@ -721,62 +1155,142 @@ export interface Project {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "experiences".
+ * via the `definition` "publications".
  */
-export interface Experience {
+export interface Publication {
   id: number;
   tenant?: (number | null) | Tenant;
-  /**
-   * Job title. eg: (Frontend, Backend, DevOps, QA, ...) etc
-   */
   title: string;
-  /**
-   * Type of employment
-   */
-  employmentType?: ('full-time' | 'part-time' | 'contract' | 'freelance' | 'internship') | null;
-  /**
-   * Choose whether this job is office-based, remote, or a mix (Hybrid).
-   */
-  jobType?: ('on-site' | 'remote' | 'hybrid') | null;
-  company?: string | null;
-  /**
-   * Employment date / Joining Date
-   */
-  start?: string | null;
-  /**
-   * End date of employment. If you are skill employee of the company then leave it. We will show the present text like this (Present)
-   */
-  end?: string | null;
-  /**
-   * Company website URL
-   */
-  website?: string | null;
-  /**
-   * Location (e.g., "NY - USA", "Remote")
-   */
-  location?: string | null;
-  /**
-   * Company logo
-   */
-  logo?: (number | null) | Media;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
+  content: {
+    /**
+     * Select the formal category of this work.
+     */
+    type: 'research_paper' | 'book' | 'conference' | 'patent' | 'white_paper';
+    /**
+     * e.g., IEEE, Springer, Oxford University Press.
+     */
+    publisher: string;
+    /**
+     * Upload a book cover or a preview image of the paper.
+     */
+    image: number | Media;
+    /**
+     * Provide a formal abstract or high-level summary of the work.
+     */
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
         version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  relatedSkills?: (number | Skill)[] | null;
+      };
+      [k: string]: unknown;
+    } | null;
+    skills?: (number | Skill)[] | null;
+    /**
+     * The official date of release or filing.
+     */
+    publishedDate: string;
+    /**
+     * Formal identification number for citation.
+     */
+    doi?: string | null;
+    /**
+     * Add links to the full text, library record, or digital PDF.
+     */
+    resources?:
+      | {
+          label: string;
+          link: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "researches".
+ */
+export interface Research {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  content: {
+    /**
+     * Current progress of the research.
+     */
+    status: 'ongoing' | 'completed' | 'on_hold' | 'under_review';
+    /**
+     * State your position in this study.
+     */
+    role?: string | null;
+    /**
+     * An image representing the research or the project poster.
+     */
+    image: number | Media;
+    /**
+     * Detail your hypothesis, research methodology, and findings.
+     */
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    skills?: (number | Skill)[] | null;
+    dates: {
+      from: string;
+      to?: string | null;
+      location?: string | null;
+    };
+    /**
+     * Links to dataset, methodology papers, or whitepapers.
+     */
+    resources?:
+      | {
+          label: string;
+          link: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -787,67 +1301,6 @@ export interface TEducationProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'education';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "educations".
- */
-export interface Education {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  /**
-   * Name of the school, university, or bootcamp.
-   */
-  academy?: string | null;
-  /**
-   * e.g., Computer Science, Graphic Design, etc.
-   */
-  degree?: string | null;
-  /**
-   * Upload university or school logo.
-   */
-  image?: (number | null) | Media;
-  /**
-   * Mention key subjects, thesis topics, or academic honors.
-   */
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  details?: {
-    grade?: string | null;
-    location?: string | null;
-  };
-  dates?: {
-    from?: string | null;
-    to?: string | null;
-    currentlyStudying?: boolean | null;
-  };
-  /**
-   * Add links to your thesis, university profile, or digital degree copy.
-   */
-  resources?:
-    | {
-        label: string;
-        link: string;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -893,7 +1346,7 @@ export interface Blog {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
+  content?: {
     content?: {
       root: {
         type: string;
@@ -927,7 +1380,7 @@ export interface Blog {
       };
       [k: string]: unknown;
     } | null;
-    featured_image: number | Media;
+    featured_image?: (number | null) | Media;
   };
   meta?: {
     title?: string | null;
@@ -1000,89 +1453,6 @@ export interface IAchievementProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "achievements".
- */
-export interface Achievement {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  content?: {
-    /**
-     * Select the category that best classifies this recognition.
-     */
-    type?:
-      | ('award' | 'honor' | 'speaking-engagement' | 'competition-winner' | 'community-contribution' | 'other')
-      | null;
-    /**
-     * Upload a high-quality badge, logo, or certificate photo for visual proof.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Provide a detailed overview of the achievement and your specific role or contribution.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    dates?: {
-      /**
-       * Starting date or date received.
-       */
-      from?: string | null;
-      /**
-       * End date or leave blank if it is a single-day event.
-       */
-      to?: string | null;
-      /**
-       * Physical venue or digital platform where the event took place.
-       */
-      location?: string | null;
-    };
-    /**
-     * Quantify your success with measurable data (e.g., Rank, Growth %, or Scale).
-     */
-    stats?:
-      | {
-          label: string;
-          value: string;
-          id?: string | null;
-        }[]
-      | null;
-    /**
-     * Add relevant links to verify this achievement (e.g., News articles, YouTube, or Event sites).
-     */
-    resources?:
-      | {
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ICertificationProps".
  */
 export interface ICertificationProps {
@@ -1106,82 +1476,6 @@ export interface ICertificationProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'certification';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "certifications".
- */
-export interface Certification {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  content: {
-    /**
-     * The entity that granted this credential (e.g., Cisco, Yale, PMI).
-     */
-    issuer: string;
-    /**
-     * Unique identifier provided by the issuer for verification.
-     */
-    credentialId?: string | null;
-    /**
-     * Upload a high-resolution logo of the issuer or the official certification badge.
-     */
-    image: number | Media;
-    /**
-     * Detail the curriculum, skills mastered, or the exam passed to earn this certificate.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    validity: {
-      /**
-       * Date when the credential was granted.
-       */
-      issuedDate: string;
-      /**
-       * Date when the credential expires.
-       */
-      expiryDate?: string | null;
-      /**
-       * Check if this certification is valid indefinitely.
-       */
-      isLifetime?: boolean | null;
-    };
-    /**
-     * Provide links to official verification portals, online badges, or PDF copies.
-     */
-    resources?:
-      | {
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1228,60 +1522,6 @@ export interface IHackathonProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'hackathon';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "hackathons".
- */
-export interface Hackathon {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  content: {
-    /**
-     * Write description.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    dates: {
-      to: string;
-      from: string;
-    };
-    location?: string | null;
-    links?:
-      | {
-          iconify?: string | null;
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
-    image: number | Media;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1337,76 +1577,6 @@ export interface IPublicationProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "publications".
- */
-export interface Publication {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  content: {
-    /**
-     * Select the formal category of this work.
-     */
-    type: 'research_paper' | 'book' | 'conference' | 'patent' | 'white_paper';
-    /**
-     * e.g., IEEE, Springer, Oxford University Press.
-     */
-    publisher: string;
-    /**
-     * Upload a book cover or a preview image of the paper.
-     */
-    image: number | Media;
-    /**
-     * Provide a formal abstract or high-level summary of the work.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    /**
-     * The official date of release or filing.
-     */
-    publishedDate: string;
-    /**
-     * Formal identification number for citation.
-     */
-    doi?: string | null;
-    /**
-     * Add links to the full text, library record, or digital PDF.
-     */
-    resources?:
-      | {
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "IResearchProps".
  */
 export interface IResearchProps {
@@ -1430,73 +1600,6 @@ export interface IResearchProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'research';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "researches".
- */
-export interface Research {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  content: {
-    /**
-     * Current progress of the research.
-     */
-    status: 'ongoing' | 'completed' | 'on_hold' | 'under_review';
-    /**
-     * State your position in this study.
-     */
-    role?: string | null;
-    /**
-     * An image representing the research or the project poster.
-     */
-    image: number | Media;
-    /**
-     * Detail your hypothesis, research methodology, and findings.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    dates: {
-      from: string;
-      to?: string | null;
-      location?: string | null;
-    };
-    /**
-     * Links to dataset, methodology papers, or whitepapers.
-     */
-    resources?:
-      | {
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1720,8 +1823,36 @@ export interface PortfolioSetting {
    * This field defines the 'Home' or 'Landing Page' for your entire Portfolio. By selecting a page here, you are designating it as the entry point of your website. Note: Changing this selection will automatically mark the selected page as the 'Main Page' and remove the 'Main Page' status from any other page for this portfolio to ensure there is always exactly one root page.
    */
   rootPage: number | Page;
+  theme?: (number | null) | Theme;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "themes".
+ */
+export interface Theme {
+  id: number;
+  title: string;
+  thumbnail?: (number | null) | Media;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1786,6 +1917,23 @@ export interface PayloadMcpApiKey {
   apiKey?: string | null;
   apiKeyIndex?: string | null;
   collection: 'payload-mcp-api-keys';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-kv".
+ */
+export interface PayloadKv {
+  id: number;
+  key: string;
+  data:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1873,6 +2021,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'portfolio-settings';
         value: number | PortfolioSetting;
+      } | null)
+    | ({
+        relationTo: 'themes';
+        value: number | Theme;
       } | null)
     | ({
         relationTo: 'forms';
@@ -2032,16 +2184,7 @@ export interface PagesSelect<T extends boolean = true> {
   content?:
     | T
     | {
-        pageMode?:
-          | T
-          | {
-              mode?: T;
-            };
-        configurations?:
-          | T
-          | {
-              slug?: T;
-            };
+        configuredCollectionSlug?: T;
         layout?: T | {};
       };
   meta?:
@@ -2052,6 +2195,7 @@ export interface PagesSelect<T extends boolean = true> {
         image?: T;
       };
   isRootPage?: T;
+  enableCollection?: T;
   publishedAt?: T;
   lockSlug?: T;
   slug?: T;
@@ -2070,6 +2214,7 @@ export interface EducationsSelect<T extends boolean = true> {
   degree?: T;
   image?: T;
   description?: T;
+  skills?: T;
   details?:
     | T
     | {
@@ -2108,7 +2253,7 @@ export interface ProjectsSelect<T extends boolean = true> {
         overview?: T;
         detailedOverview?: T;
         publishedAt?: T;
-        Skills?: T;
+        skills?: T;
         dates?:
           | T
           | {
@@ -2198,14 +2343,26 @@ export interface SkillsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
   publishedAt?: T;
-  techstack?:
-    | T
-    | {
-        showIcon?: T;
-        iconify?: T;
-      };
+  enableLabel?: T;
+  skillCustomLabel?: T;
+  enableIcon?: T;
+  icon?: T;
+  enableAchievementsCount?: T;
+  achievements?: T;
+  enableCertificationsCount?: T;
+  certifications?: T;
+  enableEducationsCount?: T;
+  educations?: T;
+  enableExperiencesCount?: T;
+  experiences?: T;
+  enableHackathonsCount?: T;
+  hackathons?: T;
+  enableProjectsCount?: T;
   projects?: T;
-  relatedExperiences?: T;
+  enablePublicationsCount?: T;
+  publications?: T;
+  enableResearchesCount?: T;
+  researches?: T;
   lockSlug?: T;
   slug?: T;
   updatedAt?: T;
@@ -2223,6 +2380,7 @@ export interface HackathonsSelect<T extends boolean = true> {
     | T
     | {
         description?: T;
+        skills?: T;
         dates?:
           | T
           | {
@@ -2265,6 +2423,7 @@ export interface ResearchesSelect<T extends boolean = true> {
         role?: T;
         image?: T;
         description?: T;
+        skills?: T;
         dates?:
           | T
           | {
@@ -2304,6 +2463,7 @@ export interface AchievementsSelect<T extends boolean = true> {
         type?: T;
         image?: T;
         description?: T;
+        skills?: T;
         dates?:
           | T
           | {
@@ -2350,6 +2510,7 @@ export interface CertificationsSelect<T extends boolean = true> {
         credentialId?: T;
         image?: T;
         description?: T;
+        skills?: T;
         validity?:
           | T
           | {
@@ -2390,6 +2551,7 @@ export interface PublicationsSelect<T extends boolean = true> {
         publisher?: T;
         image?: T;
         description?: T;
+        skills?: T;
         publishedDate?: T;
         doi?: T;
         resources?:
@@ -2469,8 +2631,8 @@ export interface ExperiencesSelect<T extends boolean = true> {
   website?: T;
   location?: T;
   logo?: T;
+  skills?: T;
   description?: T;
-  relatedSkills?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2495,8 +2657,21 @@ export interface IntegrationSelect<T extends boolean = true> {
 export interface PortfolioSettingsSelect<T extends boolean = true> {
   tenant?: T;
   rootPage?: T;
+  theme?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "themes_select".
+ */
+export interface ThemesSelect<T extends boolean = true> {
+  title?: T;
+  thumbnail?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  deletedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2679,6 +2854,14 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-kv_select".
+ */
+export interface PayloadKvSelect<T extends boolean = true> {
+  key?: T;
+  data?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
@@ -2708,6 +2891,36 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "visitors_widget".
+ */
+export interface VisitorsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "formSubmissions_widget".
+ */
+export interface FormSubmissionsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'medium' | 'large' | 'x-large' | 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collections_widget".
+ */
+export interface CollectionsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

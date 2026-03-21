@@ -14,8 +14,9 @@ import {
 import { linkNodeJSXConverter } from './converters/LinkJSXConverter'
 import { paragraphNodeJSXConverter } from './converters/ParagraphJSXConverter'
 import { internalDocToHref } from '@/utilities/internalDocToHref'
-const FormBlock = dynamic(() => import('@/blocks/Form/components/form-block').then(({ FormBlock }) => FormBlock))
-const CodeBlock = dynamic(() => import('@/blocks/Code/components/CodeBlock').then(({ CodeBlock }) => CodeBlock))
+
+const FormBlock = dynamic(() => import('@/themes/Magic/blocks/Form/form-block').then(({ FormBlock }) => FormBlock))
+const CodeBlock = dynamic(() => import('@/themes/Magic/blocks/Code/CodeBlock').then(({ CodeBlock }) => CodeBlock))
 
 type NodeTypes =
   | DefaultNodeTypes
@@ -24,15 +25,15 @@ type NodeTypes =
 const jsxConverters: (args: {
   params: Awaited<PageProps['params']>,
   searchParams: Awaited<PageProps['searchParams']>
-}) => JSXConvertersFunction<NodeTypes> = ({ params, searchParams }) => {
+  blocks?: ReturnType<JSXConvertersFunction<NodeTypes>>['blocks']
+  inlineBlocks?: ReturnType<JSXConvertersFunction<NodeTypes>>['inlineBlocks']
+}) => JSXConvertersFunction<NodeTypes> = ({ params, searchParams, blocks, inlineBlocks }) => {
   return ({ defaultConverters }) => ({
     ...defaultConverters,
     ...linkNodeJSXConverter({ params, internalDocToHref }),
     ...paragraphNodeJSXConverter(),
-    blocks: {
-      formBlock: ({ node }) => <FormBlock blockProps={node.fields} params={params} searchParams={searchParams} />,
-      "code-block": ({ node }) => <CodeBlock blockProps={node.fields} params={params} searchParams={searchParams} />
-    },
+    ...(Boolean(Object.keys(blocks || {}).length) && { blocks: { ...blocks } }),
+    ...(Boolean(Object.keys(inlineBlocks || {}).length) && { inlineBlocks: { ...inlineBlocks } }),
   })
 }
 
@@ -40,6 +41,8 @@ type Props = {
   data: DefaultTypedEditorState
   enableGutter?: boolean
   enableProse?: boolean
+  blocks?: ReturnType<JSXConvertersFunction<NodeTypes>>['blocks']
+  inlineBlocks?: ReturnType<JSXConvertersFunction<NodeTypes>>['inlineBlocks']
 } & React.HTMLAttributes<HTMLDivElement> & { params: Awaited<PageProps['params']> } & { searchParams: Awaited<PageProps['searchParams']> }
 
 export default function RichText(props: Props) {
@@ -49,11 +52,14 @@ export default function RichText(props: Props) {
     enableGutter = true,
     params,
     searchParams,
+    blocks,
+    inlineBlocks,
     ...rest
   } = props
+  
   return (
     <ConvertRichText
-      converters={jsxConverters({ params, searchParams })}
+      converters={jsxConverters({ params, searchParams, blocks, inlineBlocks })}
       className={cn('payload-richtext w-full mb-5', {
         container: enableGutter,
         'max-w-none': !enableGutter,

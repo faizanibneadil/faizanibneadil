@@ -67,6 +67,13 @@ export const Achievements: CollectionConfig<'achievements'> = {
                             }
                         },
                         {
+                            type: 'relationship',
+                            relationTo: 'skills',
+                            name: 'skills',
+                            label: 'Skills',
+                            hasMany: true
+                        },
+                        {
                             type: 'group',
                             name: 'dates',
                             label: 'Timeline & Location',

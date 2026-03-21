@@ -1,21 +1,24 @@
 import path from 'path'
-import { buildConfig, inMemoryKVAdapter } from 'payload'
+import { buildConfig, databaseKVAdapter } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 import { Users } from '@/collections/Users'
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { resendAdapter } from '@payloadcms/email-resend'
-import { getServerSideURL } from './utilities/getURL'
+import { getServerSideURL } from '@/utilities/getURL'
 import { blocks } from '@/blocks/config'
 import { collections } from '@/collections/config'
 import { plugins } from '@/plugins/config'
 import { editorConfig } from '@/editor/config'
+import { jobs } from '@/jobs'
+import { endpoints } from '@/endpoints'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-    kv: inMemoryKVAdapter(),
+    kv: databaseKVAdapter(),
     hooks: {
         afterError: [console.log]
     },
@@ -24,6 +27,8 @@ export default buildConfig({
     //         fileSize: 2000
     //     }
     // },
+    endpoints: [...endpoints],
+    jobs: jobs,
     admin: {
         dashboard: {
             widgets: [{
@@ -31,7 +36,7 @@ export default buildConfig({
                 slug: 'visitors',
                 label: 'Visitors',
                 maxWidth: 'full',
-                minWidth: 'x-small'
+                minWidth: 'x-small',
             }, {
                 Component: '@/widgets/config.ts#FormSubmissions',
                 slug: 'formSubmissions',
@@ -64,7 +69,7 @@ export default buildConfig({
             baseDir: path.resolve(dirname),
         },
         components: {
-                        // actions: ['@/components/portfolio-preview.tsx#PortfolioPreview'],
+            // actions: ['@/components/portfolio-preview.tsx#PortfolioPreview'],
             graphics: {
                 Logo: {
                     path: '@/components/branding.tsx',
@@ -124,7 +129,12 @@ export default buildConfig({
         apiKey: process.env.RESEND_API_KEY!,
     }),
     // database-adapter-config-start
-    db: postgresAdapter({
+    db: process.env.OFFLINE === 'true' ? sqliteAdapter({
+        blocksAsJSON: true,
+        client: {
+          url: process.env.OFFLINE_DATABASE || '',
+        },
+      }) :  postgresAdapter({
         blocksAsJSON: true,
         readReplicas: [process.env.NEON_READ_REPLICA_URI_1!, process.env.NEON_READ_REPLICA_URI_2!],
         pool: {

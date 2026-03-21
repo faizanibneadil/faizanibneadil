@@ -26,6 +26,7 @@ export const Pages: CollectionConfig<'pages'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
+        defaultColumns: ['title', 'enableCollection']
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -43,52 +44,17 @@ export const Pages: CollectionConfig<'pages'> = {
                     label: 'Content',
                     fields: [
                         {
-                            type: 'group',
-                            name: 'pageMode',
-                            label: 'Page Mode',
+                            type: 'text',
+                            name: 'configuredCollectionSlug',
                             admin: {
-                                description: 'If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change Page Mode into collection.',
+                                condition: ({ enableCollection }) => Boolean(enableCollection) === true,
+                                components: {
+                                    Field: '@/collections/Pages/components/collections.tsx#Collections'
+                                },
                             },
                             hooks: {
-                                afterChange: [RevalidatePageModeQuery()]
+                                afterChange: [RevalidatePageCollectionSlugQuery()]
                             },
-                            fields: [
-                                {
-                                    type: 'radio',
-                                    name: 'mode',
-                                    label: 'Mode',
-                                    defaultValue: 'layout',
-                                    required: true,
-                                    options: [
-                                        { label: 'Layout', value: 'layout' },
-                                        { label: 'Collection', value: 'collection' }
-                                    ],
-                                }
-                            ]
-                        },
-                        {
-                            type: 'group',
-                            name: 'configurations',
-                            label: 'Configurations',
-                            admin: {
-                                condition: (fields, siblings_blocks, ctx) => {
-                                    return fields?.content?.pageMode?.mode === 'collection'
-                                },
-                            },
-                            fields: [
-                                {
-                                    type: 'text',
-                                    name: 'slug',
-                                    admin: {
-                                        components: {
-                                            Field: '@/collections/Pages/components/collections.tsx#Collections'
-                                        }
-                                    },
-                                    hooks: {
-                                        afterChange: [RevalidatePageCollectionSlugQuery()]
-                                    }
-                                },
-                            ]
                         },
                         {
                             type: 'blocks',
@@ -121,9 +87,7 @@ export const Pages: CollectionConfig<'pages'> = {
                             ])),
                             admin: {
                                 initCollapsed: true,
-                                condition: (fields, siblings_blocks, ctx) => {
-                                    return fields?.content?.pageMode?.mode === 'layout'
-                                }
+                                condition: ({ enableCollection }) => Boolean(enableCollection) === false,
                             }
                         },
                     ]
@@ -209,6 +173,20 @@ export const Pages: CollectionConfig<'pages'> = {
             },
         },
         {
+            type: 'checkbox',
+            name: 'enableCollection',
+            label: 'Enable Collection',
+            admin: {
+                position: 'sidebar',
+                description: 'If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change collection.',
+            },
+            hooks: {
+                afterChange: [RevalidatePageModeQuery()]
+            },
+            required: true,
+            defaultValue: false
+        },
+        {
             name: 'publishedAt',
             type: 'date',
             admin: {
@@ -223,11 +201,11 @@ export const Pages: CollectionConfig<'pages'> = {
                 const fieldToSlug = slugify(valueToSlugify)
                 let prefix = ''
 
-                if (data?.content?.pageMode?.mode === 'collection') {
-                    prefix = data?.content?.configurations?.slug
+                if (data?.enableCollection === true) {
+                    prefix = data?.content?.configuredCollectionSlug
                 }
 
-                if (data?.content?.pageMode?.mode === 'layout') {
+                if (data?.enableCollection === false) {
                     prefix = 'pages'
                 }
 
@@ -239,7 +217,7 @@ export const Pages: CollectionConfig<'pages'> = {
     hooks: {
         afterChange: [
             SwapRootPage(),
-            RevalidatePageAfterChange({ invalidateRootRoute: true })
+            RevalidatePageAfterChange({ invalidateRootRoute: true }),
         ],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
         beforeDelete: [ProtectRootPage()],

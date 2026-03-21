@@ -37,13 +37,9 @@ export const queryRootPageByDomain = (domain: string) =>
                 depth: 0,
                 select: {
                     slug: true,
+                    enableCollection: true,
                     content: {
-                        pageMode: {
-                            mode: true
-                        },
-                        configurations:{
-                            slug: true
-                        }
+                        configuredCollectionSlug: true
                     }
                 }
             })

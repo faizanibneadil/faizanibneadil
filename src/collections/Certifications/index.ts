@@ -38,18 +38,18 @@ export const Certifications: CollectionConfig<'certifications'> = {
                                     type: 'text',
                                     label: 'Issuing Organization',
                                     required: true,
-                                    admin: { 
+                                    admin: {
                                         width: '50%',
-                                        description: 'The entity that granted this credential (e.g., Cisco, Yale, PMI).' 
+                                        description: 'The entity that granted this credential (e.g., Cisco, Yale, PMI).'
                                     }
                                 },
                                 {
                                     name: 'credentialId',
                                     type: 'text',
                                     label: 'Credential ID',
-                                    admin: { 
+                                    admin: {
                                         width: '50%',
-                                        description: 'Unique identifier provided by the issuer for verification.' 
+                                        description: 'Unique identifier provided by the issuer for verification.'
                                     }
                                 },
                             ]
@@ -75,6 +75,13 @@ export const Certifications: CollectionConfig<'certifications'> = {
                             }
                         },
                         {
+                            type: 'relationship',
+                            relationTo: 'skills',
+                            name: 'skills',
+                            label: 'Skills',
+                            hasMany: true
+                        },
+                        {
                             type: 'group',
                             name: 'validity',
                             label: 'Validity & Timeline',
@@ -87,7 +94,7 @@ export const Certifications: CollectionConfig<'certifications'> = {
                                             type: 'date',
                                             label: 'Issue Date',
                                             required: true,
-                                            admin: { 
+                                            admin: {
                                                 width: '33.33%',
                                                 description: 'Date when the credential was granted.'
                                             }
@@ -96,10 +103,10 @@ export const Certifications: CollectionConfig<'certifications'> = {
                                             name: 'expiryDate',
                                             type: 'date',
                                             label: 'Expiry Date',
-                                            admin: { 
+                                            admin: {
                                                 width: '33.33%',
                                                 description: 'Date when the credential expires.',
-                                                condition: (data) => !data?.content?.validity?.isLifetime 
+                                                condition: (data) => !data?.content?.validity?.isLifetime
                                             }
                                         },
                                         {
@@ -107,7 +114,7 @@ export const Certifications: CollectionConfig<'certifications'> = {
                                             type: 'checkbox',
                                             label: 'No Expiration',
                                             defaultValue: false,
-                                            admin: { 
+                                            admin: {
                                                 width: '33.33%',
                                                 style: { marginTop: '35px' },
                                                 description: 'Check if this certification is valid indefinitely.'
@@ -129,19 +136,19 @@ export const Certifications: CollectionConfig<'certifications'> = {
                                 {
                                     type: 'row',
                                     fields: [
-                                        { 
-                                            name: 'label', 
-                                            type: 'text', 
-                                            label: 'Label', 
-                                            required: true, 
-                                            admin: { width: '40%', placeholder: 'e.g., Verify Credential' } 
+                                        {
+                                            name: 'label',
+                                            type: 'text',
+                                            label: 'Label',
+                                            required: true,
+                                            admin: { width: '40%', placeholder: 'e.g., Verify Credential' }
                                         },
-                                        { 
-                                            name: 'link', 
-                                            type: 'text', 
-                                            label: 'URL', 
-                                            required: true, 
-                                            admin: { width: '60%', placeholder: 'https://...' } 
+                                        {
+                                            name: 'link',
+                                            type: 'text',
+                                            label: 'URL',
+                                            required: true,
+                                            admin: { width: '60%', placeholder: 'https://...' }
                                         }
                                     ]
                                 }

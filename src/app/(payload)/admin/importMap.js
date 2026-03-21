@@ -38,6 +38,7 @@ import { Collections as Collections_08a3ec38ae16a57bef8dd73840b4dd25 } from '@/c
 import { Description as Description_edbe09833807e9442aeddc602174b6a3 } from '@/fields/iconify/components/description.tsx'
 import { Iconify as Iconify_68e950f21990a0da73a219f82200d91b } from '@/fields/iconify/components/field.tsx'
 import { WatchTenantCollection as WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a } from '@payloadcms/plugin-multi-tenant/client'
+import { Icon as Icon_1b466f7edac2061553d32a637a1af489 } from '@/collections/Skills/components/icon.tsx'
 import { Branding as Branding_35efad1771fa9db75baa88a976c0c6bd } from '@/components/branding.tsx'
 import { GlobalViewRedirect as GlobalViewRedirect_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
 import { TenantSelector as TenantSelector_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
@@ -88,6 +89,7 @@ export const importMap = {
   "@/fields/iconify/components/description.tsx#Description": Description_edbe09833807e9442aeddc602174b6a3,
   "@/fields/iconify/components/field.tsx#Iconify": Iconify_68e950f21990a0da73a219f82200d91b,
   "@payloadcms/plugin-multi-tenant/client#WatchTenantCollection": WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a,
+  "@/collections/Skills/components/icon.tsx#Icon": Icon_1b466f7edac2061553d32a637a1af489,
   "@/components/branding.tsx#Branding": Branding_35efad1771fa9db75baa88a976c0c6bd,
   "@payloadcms/plugin-multi-tenant/rsc#GlobalViewRedirect": GlobalViewRedirect_d6d5f193a167989e2ee7d14202901e62,
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelector": TenantSelector_d6d5f193a167989e2ee7d14202901e62,

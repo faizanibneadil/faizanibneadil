@@ -104,6 +104,13 @@ export const Experiences: CollectionConfig<'experiences'> = {
             },
         },
         {
+            type: 'relationship',
+            relationTo: 'skills',
+            name: 'skills',
+            label: 'Skills',
+            hasMany: true
+        },
+        {
             type: 'richText',
             editor: lexicalEditor({
                 features({ defaultFeatures, rootFeatures, }) {
@@ -112,13 +119,6 @@ export const Experiences: CollectionConfig<'experiences'> = {
             }),
             name: 'description',
             label: 'Description'
-        },
-        {
-            type: 'relationship',
-            relationTo: 'skills',
-            name: 'relatedSkills',
-            label: 'Related Skills / Tech Stack',
-            hasMany: true,
         },
     ]
 }

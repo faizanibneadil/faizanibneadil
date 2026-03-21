@@ -80,6 +80,13 @@ export const Publications: CollectionConfig<'publications'> = {
                             }
                         },
                         {
+                            type: 'relationship',
+                            relationTo: 'skills',
+                            name: 'skills',
+                            label: 'Skills',
+                            hasMany: true
+                        },
+                        {
                             type: 'row',
                             fields: [
                                 {
