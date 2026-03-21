@@ -4,6 +4,7 @@ import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 import { Users } from '@/collections/Users'
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { resendAdapter } from '@payloadcms/email-resend'
 import { getServerSideURL } from '@/utilities/getURL'
 import { blocks } from '@/blocks/config'
@@ -128,7 +129,12 @@ export default buildConfig({
         apiKey: process.env.RESEND_API_KEY!,
     }),
     // database-adapter-config-start
-    db: postgresAdapter({
+    db: process.env.OFFLINE === 'true' ? sqliteAdapter({
+        blocksAsJSON: true,
+        client: {
+          url: process.env.OFFLINE_DATABASE || '',
+        },
+      }) :  postgresAdapter({
         blocksAsJSON: true,
         readReplicas: [process.env.NEON_READ_REPLICA_URI_1!, process.env.NEON_READ_REPLICA_URI_2!],
         pool: {

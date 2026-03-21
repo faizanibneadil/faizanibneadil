@@ -1,23 +1,20 @@
-import Image from "next/image";
-import Link from "next/link";
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
-import { RichText } from "@payloadcms/richtext-lexical/react";
-import BlurFade from "@/components/magicui/blur-fade";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import type { CollectionProps } from "@/types";
 import { generateRoute } from "@/utilities/generateRoute";
 import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
+import Image from "next/image";
+import Link from "next/link";
 import { SkillShelfRichText } from "../../components/RichText";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Blogs(props: CollectionProps<'blogs'>) {
-    const { 
-        collection, 
-        params:paramsFromProps,
+    const {
+        collection,
+        params: paramsFromProps,
         searchParams: searchParamsFromProps
     } = props || {}
 
-    const { 
+    const {
         docs,
         hasNextPage,
         hasPrevPage,
@@ -60,7 +57,11 @@ export async function Blogs(props: CollectionProps<'blogs'>) {
                     </Link>
                     <CardHeader className="px-2">
                         <div className="space-y-1">
-                            <CardTitle className="mt-1 text-base">{blog.title}</CardTitle>
+                            <CardTitle className="mt-1 text-base">
+                                <Link href={RouteWithDocSlug} className="block cursor-pointer">
+                                    {blog.title}
+                                </Link>
+                            </CardTitle>
                             <SkillShelfRichText data={blog?.content?.description} params={params} searchParams={searchParams} />
                         </div>
                     </CardHeader>

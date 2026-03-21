@@ -29,7 +29,7 @@ export function SectionPresentationCard(props: Pick<BlockProps<'skill'>['blockPr
                 <BlurFade delay={BLUR_FADE_DELAY * 11}>
                     <div className="flex flex-col items-center justify-center text-center py-12">
                         <div className="space-y-2 px-4"> {/* Side padding added for safety */}
-                            <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
+                            <div className="inline-block rounded-lg bg-foreground px-3 py-1 font-bold uppercase text-sm bg-[linear-gradient(to_right,#6366f1,#ec4899,#6366f1)] bg-[length:200%_auto] bg-clip-text text-transparent">
                                 {label}
                             </div>
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">

@@ -1346,7 +1346,7 @@ export interface Blog {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
+  content?: {
     content?: {
       root: {
         type: string;
@@ -1380,7 +1380,7 @@ export interface Blog {
       };
       [k: string]: unknown;
     } | null;
-    featured_image: number | Media;
+    featured_image?: (number | null) | Media;
   };
   meta?: {
     title?: string | null;

@@ -24,7 +24,7 @@ export async function About(props: BlockProps<'about'>) {
 
     return (
         <section id="about" aria-label={blockName ?? blockType} className="rounded-lg bg-border shadow">
-            <div className='rounded-lg border bg-background p-4'>
+            <div className='rounded-lg border bg-background p-4' data-type='block'>
                 <BlurFade delay={BLUR_FADE_DELAY * 3}>
                     <h2 className="text-xl font-bold">About</h2>
                 </BlurFade>

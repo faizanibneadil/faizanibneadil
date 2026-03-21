@@ -24,7 +24,14 @@ export async function BlogEntity(props: DocProps<'blogs'>) {
                 className='rounded-lg border bg-background w-full'
             />
             <h1 className="rounded-lg border bg-background p-4 text-2xl">{entity.title}</h1>
-            <SkillShelfRichText enableGutter={false} data={entity?.content?.content} params={params} searchParams={searchParams} />
+            <div className="[&>*:not([data-type='block'])]:rounded-lg
+    [&>*:not([data-type='block'])]:border
+    [&>*:not([data-type='block'])]:bg-background
+    [&>*:not([data-type='block'])]:p-4
+    [&>br]:hidden">
+
+                <SkillShelfRichText enableGutter={false} data={entity?.content?.content} params={params} searchParams={searchParams} />
+            </div>
         </div>
     )
 }

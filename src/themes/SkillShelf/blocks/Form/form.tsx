@@ -116,7 +116,7 @@ export function Form(props: { blockProps: BlockProps } & Omit<BlockParams<'formB
     })
 
     return (
-        <section id="contact" aria-label={blockName ?? blockType} className="rounded-lg bg-border shadow">
+        <section id="contact" aria-label={blockName ?? blockType} className="rounded-lg bg-border shadow" data-type='block'>
             {/* <div className="-translate-x-1/2 -top-px pointer-events-none absolute left-1/2 w-screen border-t" /> */}
             {/* <div className="grid items-center justify-start gap-4 text-center w-full"> */}
             <div className="rounded-lg border bg-background p-4">
