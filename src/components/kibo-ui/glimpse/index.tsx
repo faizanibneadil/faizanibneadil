@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/hover-card";
 import { cn } from "@/lib/utils";
 
-export { GlimpseLink } from "./glimpse-link"
 
 export type GlimpseProps = ComponentProps<typeof HoverCard>;
 
@@ -28,22 +27,22 @@ export const GlimpseTrigger = (props: GlimpseTriggerProps) => (
   <HoverCardTrigger {...props} />
 );
 
-export type GlimpseTitleProps = ComponentProps<"p">;
+export type GlimpseTitleProps = ComponentProps<"span">;
 
 export const GlimpseTitle = ({ className, ...props }: GlimpseTitleProps) => {
   return (
-    <p className={cn("truncate font-semibold text-sm", className)} {...props} />
+    <span className={cn("inline-block max-w-full truncate font-semibold text-sm", className)} {...props} />
   );
 };
 
-export type GlimpseDescriptionProps = ComponentProps<"p">;
+export type GlimpseDescriptionProps = ComponentProps<"span">;
 
 export const GlimpseDescription = ({
   className,
   ...props
 }: GlimpseDescriptionProps) => {
   return (
-    <p
+    <span
       className={cn("line-clamp-2 text-muted-foreground text-sm", className)}
       {...props}
     />

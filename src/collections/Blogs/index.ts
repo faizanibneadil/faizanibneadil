@@ -44,6 +44,7 @@ export const Blogs: CollectionConfig<'blogs'> = {
                                         RichTextLinkFeature(),
                                         BlocksFeature({
                                             blocks: ['formBlock', 'project', 'code-block'],
+                                            inlineBlocks: ['linkBadge','glimpseLink']
                                         }),
                                     ]
                                 },

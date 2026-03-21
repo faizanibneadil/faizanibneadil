@@ -4,8 +4,19 @@ import { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import { hasText } from '@payloadcms/richtext-lexical/shared'
 import dynamic from 'next/dynamic'
 
-const CodeBlock = dynamic(() => import('../blocks/Code/CodeBlock').then(({ CodeBlock }) => CodeBlock))
-const FormBlock = dynamic(() => import('../blocks/Form/form-block').then(({ FormBlock }) => FormBlock))
+
+const CodeBlock = dynamic(() => import('../blocks/Code/CodeBlock').then(({ CodeBlock }) => ({
+    default: CodeBlock
+})))
+const FormBlock = dynamic(() => import('../blocks/Form/form-block').then(({ FormBlock }) => ({
+    default: FormBlock
+})))
+const LinkBadge = dynamic(() => import('../inlineBlocks/LinkBadge').then(({ LinkBadge }) => ({
+    default: LinkBadge
+})))
+const GlimpseLink = dynamic(() => import('../inlineBlocks/glimpseLink').then(({ GlimpseLink }) => ({
+    default: GlimpseLink
+})))
 
 export function SkillShelfRichText(props: {
     data: DefaultTypedEditorState | null | undefined,
@@ -32,7 +43,8 @@ export function SkillShelfRichText(props: {
         return null
     }
 
-    return <RichText {...props}
+    return <RichText
+        {...props}
         className={className}
         enableGutter={enableGutter}
         data={editorState}
@@ -42,5 +54,10 @@ export function SkillShelfRichText(props: {
         blocks={{
             "code-block": ({ node }) => <CodeBlock blockProps={node.fields} params={props.params} searchParams={props.searchParams} />,
             formBlock: ({ node }) => <FormBlock blockProps={node.fields} params={props.params} searchParams={props.searchParams} />
-        }} />
+        }}
+        inlineBlocks={{
+            linkBadge: ({ node }) => <LinkBadge params={props.params} searchParams={props.searchParams} blockProps={node.fields} />,
+            glimpseLink: ({ node }) => <GlimpseLink params={props.params} searchParams={props.searchParams} blockProps={node.fields} />
+        }}
+    />
 }

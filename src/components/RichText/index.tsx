@@ -1,17 +1,18 @@
 import dynamic from 'next/dynamic'
 import { cn } from '@/lib/utils'
-import type { TCodeBlockProps, TFormBlockProps } from '@/payload-types'
+import type { TCodeBlockProps, TFormBlockProps, TLinkBadge, TGlimpseLink } from '@/payload-types'
 import type { PageProps } from '@/types'
 import {
   DefaultNodeTypes,
   SerializedBlockNode,
+  SerializedInlineBlockNode,
   type DefaultTypedEditorState,
 } from '@payloadcms/richtext-lexical'
 import {
   JSXConvertersFunction,
   RichText as ConvertRichText,
+  LinkJSXConverter
 } from '@payloadcms/richtext-lexical/react'
-import { linkNodeJSXConverter } from './converters/LinkJSXConverter'
 import { paragraphNodeJSXConverter } from './converters/ParagraphJSXConverter'
 import { internalDocToHref } from '@/utilities/internalDocToHref'
 
@@ -21,6 +22,7 @@ const CodeBlock = dynamic(() => import('@/themes/Magic/blocks/Code/CodeBlock').t
 type NodeTypes =
   | DefaultNodeTypes
   | SerializedBlockNode<TFormBlockProps | TCodeBlockProps>
+  | SerializedInlineBlockNode<TLinkBadge | TGlimpseLink>
 
 const jsxConverters: (args: {
   params: Awaited<PageProps['params']>,
@@ -30,7 +32,7 @@ const jsxConverters: (args: {
 }) => JSXConvertersFunction<NodeTypes> = ({ params, searchParams, blocks, inlineBlocks }) => {
   return ({ defaultConverters }) => ({
     ...defaultConverters,
-    ...linkNodeJSXConverter({ params, internalDocToHref }),
+    ...LinkJSXConverter({ internalDocToHref }),
     ...paragraphNodeJSXConverter(),
     ...(Boolean(Object.keys(blocks || {}).length) && { blocks: { ...blocks } }),
     ...(Boolean(Object.keys(inlineBlocks || {}).length) && { inlineBlocks: { ...inlineBlocks } }),
@@ -56,7 +58,7 @@ export default function RichText(props: Props) {
     inlineBlocks,
     ...rest
   } = props
-  
+
   return (
     <ConvertRichText
       converters={jsxConverters({ params, searchParams, blocks, inlineBlocks })}
