@@ -98,32 +98,24 @@ export type DocMapType = {
     }
 }
 
-export type PageRendererProps = {
-    pageProps: PageProps,
-    config: {
-        themeId: number,
-        enableCollection: boolean,
-        page: Page | null,
-        blocksMap: BlocksMapType,
-        collectionMap: CollectionMapType
-    }
+export type PageRendererProps = PageProps & {
+    themeId: number,
+    enableCollection: boolean,
+    page: Page | null,
+    blocksMap: BlocksMapType,
+    collectionMap: CollectionMapType
 }
 
-export type DocumentRendererProps = {
-    pageProps: PageProps,
-    config: {
-        entity: DataFromCollectionSlug<CollectionSlug> | null,
-        docMap: DocMapType,
-        docSlug: string,
-        excludedCollectionSlug: CollectionSlug
-    }
+export type DocumentRendererProps = PageProps & {
+    entity: DataFromCollectionSlug<CollectionSlug> | null,
+    docMap: DocMapType,
+    docSlug: string,
+    excludedCollectionSlug: CollectionSlug
 }
 
 export type LayoutRendererProps = React.PropsWithChildren & {
-    config: {
-        themeId: number,
-        params: Promise<{ domain: string }>
-    }
+    themeId: number,
+    params: Promise<{ domain: string }>
 }
 
 export type ThemeConfig = {

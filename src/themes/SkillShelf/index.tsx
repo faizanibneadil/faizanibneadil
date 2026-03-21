@@ -24,12 +24,12 @@ export const __SkillshelfThemeConfig: ThemeConfig = {
         documentConfig: {
             docMap: __SkillshelfDocMap,
             DocumentRenderer: async (props) => {
-                const params = await props.pageProps.params
+                const params = await props.params
 
-                if (Object.hasOwn(props.config.docMap, props.config.excludedCollectionSlug)) {
-                    const Collection = props.config.docMap[props.config.excludedCollectionSlug]?.component
+                if (Object.hasOwn(props.docMap, props.excludedCollectionSlug)) {
+                    const Collection = props.docMap[props.excludedCollectionSlug]?.component
                     // @ts-expect-error
-                    return <Collection entity={props?.config?.entity} params={params} />
+                    return <Collection entity={props?.entity} params={params} />
                 }
 
                 return null
@@ -38,29 +38,29 @@ export const __SkillshelfThemeConfig: ThemeConfig = {
         layout: (props) => {
             return (
                 <div className="min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto">
-                    <Navbar params={props.config.params as any} />
+                    <Navbar params={props.params as any} />
                     {props.children}
                 </div>
             )
         },
         PageRenderer: async (props) => {
-            const params = await props.pageProps.params
-            const searchParams = await props.pageProps.searchParams
+            const params = await props.params
+            const searchParams = await props.searchParams
 
-            if (props.config.enableCollection) {
-                const slugFromConfig = props.config.page?.content?.configuredCollectionSlug as CollectionSlug
+            if (props.enableCollection) {
+                const slugFromConfig = props.page?.content?.configuredCollectionSlug as CollectionSlug
                 const domain = params.domain
 
                 const collectionToRenderProps = await queryCollectionBySlug(slugFromConfig, domain!)
-                if (Object.hasOwn(props.config.collectionMap, slugFromConfig) && collectionToRenderProps) {
-                    const CollectionToRender = props.config.collectionMap[slugFromConfig]?.component!
-                    const Skeleton = props.config.collectionMap[slugFromConfig]?.skeleton!
+                if (Object.hasOwn(props.collectionMap, slugFromConfig) && collectionToRenderProps) {
+                    const CollectionToRender = props.collectionMap[slugFromConfig]?.component!
+                    const Skeleton = props.collectionMap[slugFromConfig]?.skeleton!
 
                     return (
                         <ErrorBoundary fallback={null}>
                             <Suspense fallback={<Skeleton />}>
                                 {/* @ts-expect-error */}
-                                <CollectionToRender collection={collectionToRenderProps} searchParams={props.pageProps.searchParams} params={props.pageProps.params} />
+                                <CollectionToRender collection={collectionToRenderProps} searchParams={props.searchParams} params={props.params} />
                             </Suspense>
                         </ErrorBoundary>
                     )
@@ -68,7 +68,7 @@ export const __SkillshelfThemeConfig: ThemeConfig = {
                 return null
             }
 
-            const blocks = props?.config?.page?.content?.layout
+            const blocks = props?.page?.content?.layout
             const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
             if (hasBlocks) {
@@ -77,9 +77,9 @@ export const __SkillshelfThemeConfig: ThemeConfig = {
                         {blocks.map((block, index) => {
                             const { blockType } = block
 
-                            if (Object.hasOwn(props.config.blocksMap, blockType)) {
-                                const Block = props.config.blocksMap[blockType]?.component
-                                const Skeleton = props.config.blocksMap[blockType]?.skeleton!
+                            if (Object.hasOwn(props.blocksMap, blockType)) {
+                                const Block = props.blocksMap[blockType]?.component
+                                const Skeleton = props.blocksMap[blockType]?.skeleton!
 
                                 if (Block) {
                                     return (

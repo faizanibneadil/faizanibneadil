@@ -67,13 +67,14 @@ export default async function Page(props: PageProps) {
     const PageToRender = themesRegistry[themeId]?.config?.PageRenderer
 
 
-    return <PageToRender pageProps={props} config={{
-      blocksMap,
-      collectionMap,
-      enableCollection: page?.enableCollection!,
-      page,
-      themeId
-    }} />
+    return <PageToRender
+      {...props}
+      blocksMap={blocksMap}
+      collectionMap={collectionMap}
+      enableCollection={page?.enableCollection!}
+      page={page}
+      themeId={themeId}
+    />
   }
 
   // const slugFromConfig = page?.content.configurations?.slug as CollectionSlug

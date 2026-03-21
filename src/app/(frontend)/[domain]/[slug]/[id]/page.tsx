@@ -48,12 +48,13 @@ export default async function Page(props: PageProps) {
         const docMap = themesRegistry[themeId]?.config?.documentConfig?.docMap
         const DocumentRenderer = themesRegistry[themeId]?.config?.documentConfig?.DocumentRenderer
 
-        return <DocumentRenderer pageProps={props} config={{
-            docMap,
-            docSlug,
-            entity,
-            excludedCollectionSlug
-        }} />
+        return <DocumentRenderer
+            {...props}
+            docMap={docMap}
+            docSlug={docSlug}
+            entity={entity}
+            excludedCollectionSlug={excludedCollectionSlug}
+        />
     }
 
     return null

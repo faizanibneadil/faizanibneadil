@@ -24,7 +24,7 @@ export default async function Layout(props: React.PropsWithChildren<{ params: Pr
 
         console.log({ themeId })
 
-        return <Layout {...props} config={{ params: paramsFromProps, themeId }} />
+        return <Layout {...props} params={paramsFromProps} themeId={themeId}  />
     }
 
     return 'Theme is not selected'
