@@ -2,8 +2,8 @@ import type { SerializedLinkNode } from "@payloadcms/richtext-lexical"
 import { generateRoute } from "./generateRoute"
 import type { CollectionSlug } from "payload"
 
-export function internalDocToHref({ node }: { node: SerializedLinkNode }) {
-    const { value: doc, relationTo } = node.fields.doc!
+export function internalDocToHref({ linkNode }: { linkNode: SerializedLinkNode }) {
+    const { value: doc, relationTo } = linkNode.fields.doc!
     if (typeof doc !== 'object') {
       throw new Error('Expected value to be an object')
     }

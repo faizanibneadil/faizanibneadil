@@ -13,6 +13,7 @@ import { plugins } from '@/plugins/config'
 import { editorConfig } from '@/editor/config'
 import { jobs } from '@/jobs'
 import { endpoints } from '@/endpoints'
+import { inlineBlock } from '@/inlineBlocks'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -115,7 +116,7 @@ export default buildConfig({
     cors: [process.env.NEXT_PUBLIC_SERVER_URL!].filter(Boolean),
     csrf: [process.env.NEXT_PUBLIC_SERVER_URL!].filter(Boolean),
     collections: [...collections],
-    blocks: [...blocks],
+    blocks: [...blocks, ...inlineBlock],
     globals: [],
     editor: editorConfig,
     secret: process.env.PAYLOAD_SECRET!,
@@ -132,9 +133,9 @@ export default buildConfig({
     db: process.env.OFFLINE === 'true' ? sqliteAdapter({
         blocksAsJSON: true,
         client: {
-          url: process.env.OFFLINE_DATABASE || '',
+            url: process.env.OFFLINE_DATABASE || '',
         },
-      }) :  postgresAdapter({
+    }) : postgresAdapter({
         blocksAsJSON: true,
         readReplicas: [process.env.NEON_READ_REPLICA_URI_1!, process.env.NEON_READ_REPLICA_URI_2!],
         pool: {
