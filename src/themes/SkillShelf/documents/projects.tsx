@@ -52,7 +52,13 @@ export async function ProjectEntity(props: DocProps<'projects'>) {
             )}
 
             <h1 className="font-medium text-2xl rounded-lg border bg-background p-4">{entity?.title}</h1>
+            <div className="[&>*:not([data-type='block'])]:rounded-lg
+    [&>*:not([data-type='block'])]:border
+    [&>*:not([data-type='block'])]:bg-background
+    [&>*:not([data-type='block'])]:p-4
+    [&>br]:hidden">
             <SkillShelfRichText data={entity?.content?.detailedOverview} params={params} searchParams={searchParams} />
+    </div>
 
 
         </div>
