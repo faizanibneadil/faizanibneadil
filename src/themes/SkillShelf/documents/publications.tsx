@@ -37,7 +37,13 @@ export async function PublicationEntity(props: DocProps<'publications'>) {
                 {entity?.content?.doi && (
                     <p className="text-sm text-muted-foreground">{entity?.content?.doi}</p>
                 )}
+                <div className="[&>*:not([data-type='block'])]:rounded-lg
+    [&>*:not([data-type='block'])]:border
+    [&>*:not([data-type='block'])]:bg-background
+    [&>*:not([data-type='block'])]:p-4
+    [&>br]:hidden">
                 <SkillShelfRichText data={entity?.content?.description} params={params} searchParams={searchParams} />
+    </div>
             </div>
             {entity?.content?.resources && entity?.content?.resources.length > 0 && (
                 <div className="mt-2 flex flex-row flex-wrap items-start gap-2">
