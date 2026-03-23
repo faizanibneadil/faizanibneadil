@@ -100,6 +100,8 @@ export interface Config {
     'blogs-block': IBlogsBlockProps;
     formBlock: TFormBlockProps;
     'code-block': TCodeBlockProps;
+    linkBadge: TLinkBadge;
+    glimpseLink: TGlimpseLink;
   };
   collections: {
     users: User;
@@ -1695,6 +1697,28 @@ export interface License {
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TLinkBadge".
+ */
+export interface TLinkBadge {
+  url?: string | null;
+  label?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'linkBadge';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TGlimpseLink".
+ */
+export interface TGlimpseLink {
+  url?: string | null;
+  label?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'glimpseLink';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
