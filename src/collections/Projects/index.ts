@@ -110,7 +110,6 @@ export const Projects: CollectionConfig<'projects'> = {
                             admin: {
                                 description: 'Provide credential for testing.',
                                 condition: (field, siblings, ctx) => {
-                                    // @ts-expect-error
                                     return typeof ctx?.user?.industry === 'object' ? ctx?.user?.industry?.slug === 'game-development' || ctx?.user?.industry?.slug === 'data-scienceanalytics' || ctx?.user?.industry?.slug === 'web-and-software-development' : false
                                 }
                             },

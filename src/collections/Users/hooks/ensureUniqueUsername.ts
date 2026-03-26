@@ -45,7 +45,7 @@ export const ensureUniqueUsername: FieldHook = async ({ data, originalDoc, req, 
     const tenantIDs = getUserTenantIDs(req.user as any)
     // if the user is an admin or has access to more than 1 tenant
     // provide a more specific error message
-    // @ts-expect-error
+    
     if (req.user.roles?.includes('super-admin') || tenantIDs.length > 1) {
       const attemptedTenantChange = await req.payload.findByID({
         // @ts-ignore - selectedTenant will match DB ID type
