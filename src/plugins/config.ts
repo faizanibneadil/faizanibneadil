@@ -224,14 +224,14 @@ export const plugins: Plugin[] = [
             endpoint: process.env.S3_ENDPOINT,
         },
     }),
-    mcpPlugin({
-        userCollection: 'users',
-        collections: {
-            blogs: {
-                enabled: true
-            },
-        },
-    }),
+    // mcpPlugin({
+    //     userCollection: 'users',
+    //     collections: {
+    //         blogs: {
+    //             enabled: true
+    //         },
+    //     },
+    // }),
     multiTenantPlugin<Config>({
         collections: {
             pages: {},
@@ -253,7 +253,6 @@ export const plugins: Plugin[] = [
             socials: { isGlobal: true },
             integration: { isGlobal: true },
             "portfolio-settings": { isGlobal: true },
-            "payload-mcp-api-keys": {},
         },
         tenantField: {
             access: {
