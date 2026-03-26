@@ -26,11 +26,7 @@ export const canMutateTenant: Access = ({ req }) => {
 
   return {
     id: {
-      in:
-      // @ts-expect-error
-      req.user?.tenants
-      // @ts-expect-error
-          ?.map(({ roles, tenant }) =>
+      in: req.user?.tenants?.map(({ roles, tenant }) =>
             roles?.includes('tenant-admin')
               ? tenant && (typeof tenant === 'object' ? tenant.id : tenant)
               : null,

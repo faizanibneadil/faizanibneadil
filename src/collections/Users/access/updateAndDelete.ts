@@ -11,7 +11,6 @@ export const updateAndDeleteAccess: Access = ({ req, id }) => {
     return false
   }
 
-  // @ts-expect-error
   if (isSuperAdmin(user) || isAccessingSelf({ user, id })) {
     return true
   }

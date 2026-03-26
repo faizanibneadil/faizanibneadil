@@ -12,7 +12,6 @@ export const readAccess: Access<User> = ({ req, id }) => {
     return false
   }
 
-  // @ts-expect-error
   if (isAccessingSelf({ id, user: req.user })) {
     return true
   }
