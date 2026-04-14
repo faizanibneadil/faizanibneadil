@@ -177,4 +177,5 @@ export const Achievements: CollectionConfig<'achievements'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
+    versions: true
 }

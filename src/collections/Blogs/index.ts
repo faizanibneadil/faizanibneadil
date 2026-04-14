@@ -125,5 +125,5 @@ export const Blogs: CollectionConfig<'blogs'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    // versions: VersionConfig(),
+    versions: true
 }

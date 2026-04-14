@@ -32,6 +32,11 @@ export type BaseParams = {
     searchParams: PageProps['searchParams'] | Awaited<PageProps['searchParams']>
 }
 
+export type AwaitedBaseParams = {
+    params: Awaited<PageProps['params']>,
+    searchParams:Awaited<PageProps['searchParams']>
+}
+
 // Block types
 export type LayoutProps = React.PropsWithChildren<Omit<PageProps, 'searchParams'>>
 export type BlocksRegistryProps = {
@@ -139,4 +144,22 @@ export type ThemeConfig = {
         PageRenderer: React.ComponentType<PageRendererProps>,
         layout: React.ComponentType<LayoutRendererProps>
     }
+}
+
+/**
+ * 
+ * after routes updates types
+ */
+
+export type AppPageProps = {
+    searchParams: Promise<{
+        vp: 'd' | 'm' | 't'
+    } & {
+        [key: string]: string | string[] | undefined
+    }>
+    params: Promise<{
+        domain: string,
+        collectionSlug: CollectionSlug,
+        slug: string
+    }>
 }
