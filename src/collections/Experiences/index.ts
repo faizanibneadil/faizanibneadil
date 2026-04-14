@@ -120,5 +120,6 @@ export const Experiences: CollectionConfig<'experiences'> = {
             name: 'description',
             label: 'Description'
         },
-    ]
+    ],
+    versions: true
 }

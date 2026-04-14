@@ -14,12 +14,15 @@ import { editorConfig } from '@/editor/config'
 import { jobs } from '@/jobs'
 import { endpoints } from '@/endpoints'
 import { inlineBlock } from '@/inlineBlocks'
+import { redisKVAdapter } from '@payloadcms/kv-redis'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-    kv: databaseKVAdapter(),
+    kv: redisKVAdapter({
+        redisURL: 'rediss://default:AVNS_z8Za9Si2vD_wkoGAMxI@valkey-1817065b-easypeasy.e.aivencloud.com:10172'
+    }),
     hooks: {
         afterError: [console.log]
     },
@@ -145,8 +148,13 @@ export default buildConfig({
     // database-adapter-config-end
     sharp,
     onInit: async (payload) => {
+        await payload.kv.set('test-kv', {
+            isWorking: true
+        })
         payload.logger.info('App is initialized ...')
         payload.logger.info('Finding home page in pages collection...')
+        const result = await payload.kv.get('test-kv')
+        console.log({result})
 
     },
     plugins: [...plugins],

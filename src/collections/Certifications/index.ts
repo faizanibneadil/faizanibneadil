@@ -183,4 +183,5 @@ export const Certifications: CollectionConfig<'certifications'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
+    versions: true
 }

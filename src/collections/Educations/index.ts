@@ -159,4 +159,5 @@ export const Educations: CollectionConfig<'educations'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
+    versions: true
 }

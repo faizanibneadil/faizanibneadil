@@ -214,5 +214,5 @@ export const Projects: CollectionConfig<'projects'> = {
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
         beforeChange: [populatePublishedAt],
     },
-    // versions: VersionConfig(),
+    versions: true
 }

@@ -143,5 +143,5 @@ export const Skills: CollectionConfig<'skills'> = {
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
         beforeChange: [populatePublishedAt],
     },
-    // versions: VersionConfig(),
+    versions: true
 }

@@ -225,4 +225,5 @@ export const Pages: CollectionConfig<'pages'> = {
             ProtectRootPageFromTrash()
         ],
     },
+    versions: true
 }

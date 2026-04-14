@@ -176,5 +176,5 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    // versions: VersionConfig(),
+    versions: true
 }
