@@ -1,4 +1,4 @@
-import { CollectionConfig } from "payload";
+import { CollectionConfig, slugField } from "payload";
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
@@ -6,6 +6,7 @@ import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/Re
 import { generatePreview } from "@/utilities/generate-preview";
 import { Iconify } from "@/fields/iconify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
+import { slugify } from "@/utilities/slugify";
 
 export const Achievements: CollectionConfig<'achievements'> = {
     slug: 'achievements',
@@ -27,7 +28,6 @@ export const Achievements: CollectionConfig<'achievements'> = {
             type: 'tabs',
             tabs: [
                 {
-                    name: 'content',
                     label: 'Content',
                     fields: [
                         {
@@ -171,7 +171,15 @@ export const Achievements: CollectionConfig<'achievements'> = {
                     ]
                 }
             ]
-        }
+        },
+        slugField({
+            name: 'slug',
+            checkboxName: 'lockSlug',
+            slugify: ({ valueToSlugify, data }) => {
+                const fieldToSlug = slugify(valueToSlugify)
+                return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
+            },
+        }),
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],

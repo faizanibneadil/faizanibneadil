@@ -5,10 +5,11 @@ import { Iconify } from "@/fields/iconify";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
+import { slugify } from "@/utilities/slugify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 // import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import { CollectionConfig } from "payload";
+import { CollectionConfig, slugField } from "payload";
 
 export const Hackathons: CollectionConfig<'hackathons'> = {
     slug: 'hackathons',
@@ -40,7 +41,6 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
             type: 'tabs',
             tabs: [
                 {
-                    name: 'content',
                     label: 'Content',
                     fields: [{
                         type: 'richText',
@@ -171,6 +171,14 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
                 }
             ]
         },
+        slugField({
+            name: 'slug',
+            checkboxName: 'lockSlug',
+            slugify: ({ valueToSlugify, data }) => {
+                const fieldToSlug = slugify(valueToSlugify)
+                return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
+            },
+        }),
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],

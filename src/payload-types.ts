@@ -617,71 +617,67 @@ export interface Achievement {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content?: {
-    /**
-     * Select the category that best classifies this recognition.
-     */
-    type?:
-      | ('award' | 'honor' | 'speaking-engagement' | 'competition-winner' | 'community-contribution' | 'other')
-      | null;
-    /**
-     * Upload a high-quality badge, logo, or certificate photo for visual proof.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Provide a detailed overview of the achievement and your specific role or contribution.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+  /**
+   * Select the category that best classifies this recognition.
+   */
+  type?: ('award' | 'honor' | 'speaking-engagement' | 'competition-winner' | 'community-contribution' | 'other') | null;
+  /**
+   * Upload a high-quality badge, logo, or certificate photo for visual proof.
+   */
+  image?: (number | null) | Media;
+  /**
+   * Provide a detailed overview of the achievement and your specific role or contribution.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    skills?: (number | Skill)[] | null;
-    dates?: {
-      /**
-       * Starting date or date received.
-       */
-      from?: string | null;
-      /**
-       * End date or leave blank if it is a single-day event.
-       */
-      to?: string | null;
-      /**
-       * Physical venue or digital platform where the event took place.
-       */
-      location?: string | null;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
+    [k: string]: unknown;
+  } | null;
+  skills?: (number | Skill)[] | null;
+  dates?: {
     /**
-     * Quantify your success with measurable data (e.g., Rank, Growth %, or Scale).
+     * Starting date or date received.
      */
-    stats?:
-      | {
-          label: string;
-          value: string;
-          id?: string | null;
-        }[]
-      | null;
+    from?: string | null;
     /**
-     * Add relevant links to verify this achievement (e.g., News articles, YouTube, or Event sites).
+     * End date or leave blank if it is a single-day event.
      */
-    resources?:
-      | {
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
+    to?: string | null;
+    /**
+     * Physical venue or digital platform where the event took place.
+     */
+    location?: string | null;
   };
+  /**
+   * Quantify your success with measurable data (e.g., Rank, Growth %, or Scale).
+   */
+  stats?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Add relevant links to verify this achievement (e.g., News articles, YouTube, or Event sites).
+   */
+  resources?:
+    | {
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -690,6 +686,11 @@ export interface Achievement {
      */
     image?: (number | null) | Media;
   };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -807,63 +808,61 @@ export interface Certification {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
-    /**
-     * The entity that granted this credential (e.g., Cisco, Yale, PMI).
-     */
-    issuer: string;
-    /**
-     * Unique identifier provided by the issuer for verification.
-     */
-    credentialId?: string | null;
-    /**
-     * Upload a high-resolution logo of the issuer or the official certification badge.
-     */
-    image: number | Media;
-    /**
-     * Detail the curriculum, skills mastered, or the exam passed to earn this certificate.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+  /**
+   * The entity that granted this credential (e.g., Cisco, Yale, PMI).
+   */
+  issuer: string;
+  /**
+   * Unique identifier provided by the issuer for verification.
+   */
+  credentialId?: string | null;
+  /**
+   * Upload a high-resolution logo of the issuer or the official certification badge.
+   */
+  image: number | Media;
+  /**
+   * Detail the curriculum, skills mastered, or the exam passed to earn this certificate.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    skills?: (number | Skill)[] | null;
-    validity: {
-      /**
-       * Date when the credential was granted.
-       */
-      issuedDate: string;
-      /**
-       * Date when the credential expires.
-       */
-      expiryDate?: string | null;
-      /**
-       * Check if this certification is valid indefinitely.
-       */
-      isLifetime?: boolean | null;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
+    [k: string]: unknown;
+  } | null;
+  skills?: (number | Skill)[] | null;
+  validity: {
     /**
-     * Provide links to official verification portals, online badges, or PDF copies.
+     * Date when the credential was granted.
      */
-    resources?:
-      | {
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
+    issuedDate: string;
+    /**
+     * Date when the credential expires.
+     */
+    expiryDate?: string | null;
+    /**
+     * Check if this certification is valid indefinitely.
+     */
+    isLifetime?: boolean | null;
   };
+  /**
+   * Provide links to official verification portals, online badges, or PDF copies.
+   */
+  resources?:
+    | {
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -872,6 +871,11 @@ export interface Certification {
      */
     image?: (number | null) | Media;
   };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1005,41 +1009,39 @@ export interface Hackathon {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
-    /**
-     * Write description.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+  /**
+   * Write description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    skills?: (number | Skill)[] | null;
-    dates: {
-      to: string;
-      from: string;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
-    location?: string | null;
-    links?:
-      | {
-          iconify?: string | null;
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
-    image: number | Media;
+    [k: string]: unknown;
+  } | null;
+  skills?: (number | Skill)[] | null;
+  dates: {
+    to: string;
+    from: string;
   };
+  location?: string | null;
+  links?:
+    | {
+        iconify?: string | null;
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1048,6 +1050,11 @@ export interface Hackathon {
      */
     image?: (number | null) | Media;
   };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1060,70 +1067,68 @@ export interface Project {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
-    /**
-     * Provide project thumbnail.
-     */
-    thumbnail: number | Media;
-    overview?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+  /**
+   * Provide project thumbnail.
+   */
+  thumbnail: number | Media;
+  overview?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    detailedOverview?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  detailedOverview?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    publishedAt?: string | null;
-    /**
-     * Provide list of skills. You used to build this project
-     */
-    skills?: (number | Skill)[] | null;
-    dates?: {
-      to?: string | null;
-      from?: string | null;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
-    /**
-     * Provide credential for testing.
-     */
-    credential?: {
-      credential_email?: string | null;
-      credential_password?: string | null;
-      /**
-       * If you handled your authentication with username then provide otherwize leave it.
-       */
-      credential_username?: string | null;
-    };
-    links?:
-      | {
-          iconify?: string | null;
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
+    [k: string]: unknown;
+  } | null;
+  publishedAt?: string | null;
+  /**
+   * Provide list of skills. You used to build this project
+   */
+  skills?: (number | Skill)[] | null;
+  dates?: {
+    to?: string | null;
+    from?: string | null;
   };
+  /**
+   * Provide credential for testing.
+   */
+  credential?: {
+    credential_email?: string | null;
+    credential_password?: string | null;
+    /**
+     * If you handled your authentication with username then provide otherwize leave it.
+     */
+    credential_username?: string | null;
+  };
+  links?:
+    | {
+        iconify?: string | null;
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1149,57 +1154,55 @@ export interface Publication {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
-    /**
-     * Select the formal category of this work.
-     */
-    type: 'research_paper' | 'book' | 'conference' | 'patent' | 'white_paper';
-    /**
-     * e.g., IEEE, Springer, Oxford University Press.
-     */
-    publisher: string;
-    /**
-     * Upload a book cover or a preview image of the paper.
-     */
-    image: number | Media;
-    /**
-     * Provide a formal abstract or high-level summary of the work.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+  /**
+   * Select the formal category of this work.
+   */
+  type: 'research_paper' | 'book' | 'conference' | 'patent' | 'white_paper';
+  /**
+   * e.g., IEEE, Springer, Oxford University Press.
+   */
+  publisher: string;
+  /**
+   * Upload a book cover or a preview image of the paper.
+   */
+  image: number | Media;
+  /**
+   * Provide a formal abstract or high-level summary of the work.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    skills?: (number | Skill)[] | null;
-    /**
-     * The official date of release or filing.
-     */
-    publishedDate: string;
-    /**
-     * Formal identification number for citation.
-     */
-    doi?: string | null;
-    /**
-     * Add links to the full text, library record, or digital PDF.
-     */
-    resources?:
-      | {
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  skills?: (number | Skill)[] | null;
+  /**
+   * The official date of release or filing.
+   */
+  publishedDate: string;
+  /**
+   * Formal identification number for citation.
+   */
+  doi?: string | null;
+  /**
+   * Add links to the full text, library record, or digital PDF.
+   */
+  resources?:
+    | {
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1208,6 +1211,11 @@ export interface Publication {
      */
     image?: (number | null) | Media;
   };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1220,54 +1228,52 @@ export interface Research {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
-    /**
-     * Current progress of the research.
-     */
-    status: 'ongoing' | 'completed' | 'on_hold' | 'under_review';
-    /**
-     * State your position in this study.
-     */
-    role?: string | null;
-    /**
-     * An image representing the research or the project poster.
-     */
-    image: number | Media;
-    /**
-     * Detail your hypothesis, research methodology, and findings.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+  /**
+   * Current progress of the research.
+   */
+  status: 'ongoing' | 'completed' | 'on_hold' | 'under_review';
+  /**
+   * State your position in this study.
+   */
+  role?: string | null;
+  /**
+   * An image representing the research or the project poster.
+   */
+  image: number | Media;
+  /**
+   * Detail your hypothesis, research methodology, and findings.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    skills?: (number | Skill)[] | null;
-    dates: {
-      from: string;
-      to?: string | null;
-      location?: string | null;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
-    /**
-     * Links to dataset, methodology papers, or whitepapers.
-     */
-    resources?:
-      | {
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
+    [k: string]: unknown;
+  } | null;
+  skills?: (number | Skill)[] | null;
+  dates: {
+    from: string;
+    to?: string | null;
+    location?: string | null;
   };
+  /**
+   * Links to dataset, methodology papers, or whitepapers.
+   */
+  resources?:
+    | {
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1276,6 +1282,11 @@ export interface Research {
      */
     image?: (number | null) | Media;
   };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -2197,35 +2208,31 @@ export interface EducationsSelect<T extends boolean = true> {
 export interface ProjectsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  thumbnail?: T;
+  overview?: T;
+  detailedOverview?: T;
+  publishedAt?: T;
+  skills?: T;
+  dates?:
     | T
     | {
-        thumbnail?: T;
-        overview?: T;
-        detailedOverview?: T;
-        publishedAt?: T;
-        skills?: T;
-        dates?:
-          | T
-          | {
-              to?: T;
-              from?: T;
-            };
-        credential?:
-          | T
-          | {
-              credential_email?: T;
-              credential_password?: T;
-              credential_username?: T;
-            };
-        links?:
-          | T
-          | {
-              iconify?: T;
-              label?: T;
-              link?: T;
-              id?: T;
-            };
+        to?: T;
+        from?: T;
+      };
+  credential?:
+    | T
+    | {
+        credential_email?: T;
+        credential_password?: T;
+        credential_username?: T;
+      };
+  links?:
+    | T
+    | {
+        iconify?: T;
+        label?: T;
+        link?: T;
+        id?: T;
       };
   meta?:
     | T
@@ -2333,28 +2340,24 @@ export interface SkillsSelect<T extends boolean = true> {
 export interface HackathonsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  description?: T;
+  skills?: T;
+  dates?:
     | T
     | {
-        description?: T;
-        skills?: T;
-        dates?:
-          | T
-          | {
-              to?: T;
-              from?: T;
-            };
-        location?: T;
-        links?:
-          | T
-          | {
-              iconify?: T;
-              label?: T;
-              link?: T;
-              id?: T;
-            };
-        image?: T;
+        to?: T;
+        from?: T;
       };
+  location?: T;
+  links?:
+    | T
+    | {
+        iconify?: T;
+        label?: T;
+        link?: T;
+        id?: T;
+      };
+  image?: T;
   meta?:
     | T
     | {
@@ -2362,6 +2365,8 @@ export interface HackathonsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  lockSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -2373,28 +2378,24 @@ export interface HackathonsSelect<T extends boolean = true> {
 export interface ResearchesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  status?: T;
+  role?: T;
+  image?: T;
+  description?: T;
+  skills?: T;
+  dates?:
     | T
     | {
-        status?: T;
-        role?: T;
-        image?: T;
-        description?: T;
-        skills?: T;
-        dates?:
-          | T
-          | {
-              from?: T;
-              to?: T;
-              location?: T;
-            };
-        resources?:
-          | T
-          | {
-              label?: T;
-              link?: T;
-              id?: T;
-            };
+        from?: T;
+        to?: T;
+        location?: T;
+      };
+  resources?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        id?: T;
       };
   meta?:
     | T
@@ -2403,6 +2404,8 @@ export interface ResearchesSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  lockSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -2414,34 +2417,30 @@ export interface ResearchesSelect<T extends boolean = true> {
 export interface AchievementsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  type?: T;
+  image?: T;
+  description?: T;
+  skills?: T;
+  dates?:
     | T
     | {
-        type?: T;
-        image?: T;
-        description?: T;
-        skills?: T;
-        dates?:
-          | T
-          | {
-              from?: T;
-              to?: T;
-              location?: T;
-            };
-        stats?:
-          | T
-          | {
-              label?: T;
-              value?: T;
-              id?: T;
-            };
-        resources?:
-          | T
-          | {
-              label?: T;
-              link?: T;
-              id?: T;
-            };
+        from?: T;
+        to?: T;
+        location?: T;
+      };
+  stats?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  resources?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        id?: T;
       };
   meta?:
     | T
@@ -2450,6 +2449,8 @@ export interface AchievementsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  lockSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2460,28 +2461,24 @@ export interface AchievementsSelect<T extends boolean = true> {
 export interface CertificationsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  issuer?: T;
+  credentialId?: T;
+  image?: T;
+  description?: T;
+  skills?: T;
+  validity?:
     | T
     | {
-        issuer?: T;
-        credentialId?: T;
-        image?: T;
-        description?: T;
-        skills?: T;
-        validity?:
-          | T
-          | {
-              issuedDate?: T;
-              expiryDate?: T;
-              isLifetime?: T;
-            };
-        resources?:
-          | T
-          | {
-              label?: T;
-              link?: T;
-              id?: T;
-            };
+        issuedDate?: T;
+        expiryDate?: T;
+        isLifetime?: T;
+      };
+  resources?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        id?: T;
       };
   meta?:
     | T
@@ -2490,6 +2487,8 @@ export interface CertificationsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  lockSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -2501,23 +2500,19 @@ export interface CertificationsSelect<T extends boolean = true> {
 export interface PublicationsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  type?: T;
+  publisher?: T;
+  image?: T;
+  description?: T;
+  skills?: T;
+  publishedDate?: T;
+  doi?: T;
+  resources?:
     | T
     | {
-        type?: T;
-        publisher?: T;
-        image?: T;
-        description?: T;
-        skills?: T;
-        publishedDate?: T;
-        doi?: T;
-        resources?:
-          | T
-          | {
-              label?: T;
-              link?: T;
-              id?: T;
-            };
+        label?: T;
+        link?: T;
+        id?: T;
       };
   meta?:
     | T
@@ -2526,6 +2521,8 @@ export interface PublicationsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  lockSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;

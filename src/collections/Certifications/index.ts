@@ -2,9 +2,10 @@ import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin"
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
+import { slugify } from "@/utilities/slugify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import type { CollectionConfig } from "payload";
+import { slugField, type CollectionConfig } from "payload";
 
 export const Certifications: CollectionConfig<'certifications'> = {
     slug: 'certifications',
@@ -27,7 +28,6 @@ export const Certifications: CollectionConfig<'certifications'> = {
             type: 'tabs',
             tabs: [
                 {
-                    name: 'content',
                     label: 'Content',
                     fields: [
                         {
@@ -178,6 +178,14 @@ export const Certifications: CollectionConfig<'certifications'> = {
                 }
             ]
         },
+        slugField({
+            name: 'slug',
+            checkboxName: 'lockSlug',
+            slugify: ({ valueToSlugify, data }) => {
+                const fieldToSlug = slugify(valueToSlugify)
+                return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
+            },
+        }),
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],

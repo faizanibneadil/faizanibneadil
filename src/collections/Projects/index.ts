@@ -30,7 +30,6 @@ export const Projects: CollectionConfig<'projects'> = {
             type: 'tabs',
             tabs: [
                 {
-                    name: 'content',
                     label: 'Content',
                     fields: [
                         {
@@ -203,9 +202,9 @@ export const Projects: CollectionConfig<'projects'> = {
         slugField({
             name: 'slug',
             checkboxName: 'lockSlug',
-            slugify: ({ valueToSlugify }) => {
-                const slug = slugify(valueToSlugify)
-                return `${slug}-${Date.now()}`
+            slugify: ({ valueToSlugify, data }) => {
+                const fieldToSlug = slugify(valueToSlugify)
+                return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),
     ],

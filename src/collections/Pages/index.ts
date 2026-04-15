@@ -187,7 +187,6 @@ export const Pages: CollectionConfig<'pages'> = {
                 position: 'sidebar',
             },
         },
-        // TODO: use custom solution for this field
         slugField({
             name: 'slug',
             checkboxName: 'lockSlug',

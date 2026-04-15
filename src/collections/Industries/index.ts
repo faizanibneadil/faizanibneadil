@@ -36,8 +36,9 @@ export const Industries: CollectionConfig<'industries'> = {
         slugField({
             name: 'slug',
             checkboxName: 'lockSlug',
-            slugify: ({ valueToSlugify }) => {
-                return slugify(valueToSlugify)
+            slugify: ({ valueToSlugify, data }) => {
+                const fieldToSlug = slugify(valueToSlugify)
+                return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),
     ],
