@@ -1899,6 +1899,7 @@ export interface FormSubmission {
  */
 export interface Redirect {
   id: number;
+  tenant?: (number | null) | Tenant;
   from: string;
   to?: {
     type?: ('reference' | 'custom') | null;
@@ -2788,6 +2789,7 @@ export interface FormSubmissionsSelect<T extends boolean = true> {
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
+  tenant?: T;
   from?: T;
   to?:
     | T

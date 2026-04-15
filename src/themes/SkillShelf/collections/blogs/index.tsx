@@ -33,7 +33,7 @@ export async function Blogs(props: CollectionProps<'blogs'>) {
     const blogs = docs?.map((blog, id) => {
         const { RouteWithDocSlug } = generateRoute({
             domain: params.domain as string,
-            slug: params.slug as string,
+            slug: params.collectionSlug as string,
             docSlug: blog.slug as string
         })
         return (

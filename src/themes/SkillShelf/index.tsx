@@ -19,20 +19,43 @@ export const __SkillshelfThemeConfig: ThemeConfig = {
             blocksMap: __SkillshelfBlocksMap
         },
         collectionConfig: {
-            collectionsMap: __SkillshelfCollectionsMap
-        },
-        documentConfig: {
-            docMap: __SkillshelfDocMap,
-            DocumentRenderer: async (props) => {
-                const params = await props.params
+            collectionsMap: __SkillshelfCollectionsMap,
+            RenderCollection: ({
+                collection,
+                collectionSlug,
+                collectionsMap,
+                params,
+                searchParams
+            }) => {
+                if (Object.hasOwn(collectionsMap, collectionSlug)) {
+                    const Collection = collectionsMap[collectionSlug]?.component
 
-                if (Object.hasOwn(props.docMap, props.excludedCollectionSlug)) {
-                    const Collection = props.docMap[props.excludedCollectionSlug]?.component
                     // @ts-expect-error
-                    return <Collection entity={props?.entity} params={params} />
+                    return <Collection collection={collection} params={params} searchParams={searchParams} />
                 }
 
                 return null
+            }
+        },
+        documentConfig: {
+            docMap: __SkillshelfDocMap,
+            RenderDocumentView: async ({
+                docMap,
+                collectionSlug,
+                params,
+                searchParams,
+                doc
+            }) => {
+
+                if (Object.hasOwn(docMap, collectionSlug)) {
+                    const Collection = docMap[collectionSlug]?.component
+                    // @ts-expect-error
+                    return <Collection entity={doc} params={params} />
+                }
+
+                return null
+
+                return '404 - Document not found'
             }
         },
         layout: (props) => {
@@ -43,43 +66,22 @@ export const __SkillshelfThemeConfig: ThemeConfig = {
                 </div>
             )
         },
-        PageRenderer: async (props) => {
-            const params = await props.params
-            const searchParams = await props.searchParams
-
-            if (props.enableCollection) {
-                const slugFromConfig = props.page?.content?.configuredCollectionSlug as CollectionSlug
-                const domain = params.domain
-
-                const collectionToRenderProps = await queryCollectionBySlug(slugFromConfig, domain!)
-                if (Object.hasOwn(props.collectionMap, slugFromConfig) && collectionToRenderProps) {
-                    const CollectionToRender = props.collectionMap[slugFromConfig]?.component!
-                    const Skeleton = props.collectionMap[slugFromConfig]?.skeleton!
-
-                    return (
-                        <ErrorBoundary fallback={null}>
-                            <Suspense fallback={<Skeleton />}>
-                                {/* @ts-expect-error */}
-                                <CollectionToRender collection={collectionToRenderProps} searchParams={props.searchParams} params={props.params} />
-                            </Suspense>
-                        </ErrorBoundary>
-                    )
-                }
-                return null
-            }
-
-            const blocks = props?.page?.content?.layout
+        RenderBlocks: ({
+            blocks,
+            params,
+            searchParams,
+            blocksMap
+        }) => {
             const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
-
             if (hasBlocks) {
                 return (
                     <div className="bg-border rounded-lg">
                         {blocks.map((block, index) => {
                             const { blockType } = block
 
-                            if (Object.hasOwn(props.blocksMap, blockType)) {
-                                const Block = props.blocksMap[blockType]?.component
-                                const Skeleton = props.blocksMap[blockType]?.skeleton!
+                            if (Object.hasOwn(blocksMap, blockType)) {
+                                const Block = blocksMap[blockType]?.component
+                                const Skeleton = blocksMap[blockType]?.skeleton!
 
                                 if (Block) {
                                     return (

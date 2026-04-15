@@ -15,9 +15,6 @@ export async function PublicationCard(props: { publication: Publication } & Bloc
         searchParams: searchParamsFromProps
     } = props || {}
 
-    const { content, title } = publication
-
-
     const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
     const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
@@ -31,29 +28,29 @@ export async function PublicationCard(props: { publication: Publication } & Bloc
         <li className="relative ml-10 py-4">
             <div className="absolute -left-16 top-2 flex items-center justify-center bg-white rounded-full">
                 <Avatar className="border size-12 m-auto">
-                    <AvatarImage fetchPriority="high" loading="lazy" src={getMediaUrl(content?.image)} alt={title} className="object-contain" />
-                    <AvatarFallback>{title[0]}</AvatarFallback>
+                    <AvatarImage fetchPriority="high" loading="lazy" src={getMediaUrl(publication?.image)} alt={publication?.title} className="object-contain" />
+                    <AvatarFallback>{publication?.title[0]}</AvatarFallback>
                 </Avatar>
             </div>
             <div className="flex flex-1 flex-col justify-start gap-1">
-                <Dates to={content?.publishedDate} />
+                <Dates to={publication?.publishedDate} />
                 <h2 className="font-semibold leading-none">
-                    <Link href={{ pathname: RouteWithDocSlug }}>{title}</Link>
+                    <Link href={{ pathname: RouteWithDocSlug }}>{publication?.title}</Link>
                 </h2>
-                {content?.publisher && (
-                    <p className="text-sm text-muted-foreground">{content?.publisher}</p>
+                {publication?.publisher && (
+                    <p className="text-sm text-muted-foreground">{publication?.publisher}</p>
                 )}
-                {content?.type && (
-                    <p className="text-sm text-muted-foreground">{content?.type}</p>
+                {publication?.type && (
+                    <p className="text-sm text-muted-foreground">{publication?.type}</p>
                 )}
-                {content?.doi && (
-                    <p className="text-sm text-muted-foreground">{content?.doi}</p>
+                {publication?.doi && (
+                    <p className="text-sm text-muted-foreground">{publication?.doi}</p>
                 )}
-                <SkillShelfRichText className="text-xs" data={content?.description} params={params} searchParams={searchParams} />
+                <SkillShelfRichText className="text-xs" data={publication?.description} params={params} searchParams={searchParams} />
             </div>
-            {content?.resources && content?.resources.length > 0 && (
+            {publication?.resources && publication?.resources.length > 0 && (
                 <div className="mt-2 flex flex-row flex-wrap items-start gap-2">
-                    {content?.resources?.map((link, idx) => (
+                    {publication?.resources?.map((link, idx) => (
                         <Link href={link.link} key={idx}>
                             <Badge key={idx} title={link.label} className="flex gap-2">
                                 {link.label}

@@ -15,9 +15,6 @@ export async function ResearchCard(props: { research: Research } & BlockParams) 
         searchParams: searchParamsFromProps
     } = props || {}
 
-    const { content, title } = research
-
-
     const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
     const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
@@ -31,29 +28,29 @@ export async function ResearchCard(props: { research: Research } & BlockParams) 
         <li className="relative ml-10 py-4">
             <div className="absolute -left-16 top-2 flex items-center justify-center bg-white rounded-full">
                 <Avatar className="border size-12 m-auto">
-                    <AvatarImage fetchPriority="high" loading="lazy" src={getMediaUrl(content?.image)} alt={title} className="object-contain" />
-                    <AvatarFallback>{title[0]}</AvatarFallback>
+                    <AvatarImage fetchPriority="high" loading="lazy" src={getMediaUrl(research?.image)} alt={research?.title} className="object-contain" />
+                    <AvatarFallback>{research?.title[0]}</AvatarFallback>
                 </Avatar>
             </div>
             <div className="flex flex-1 flex-col justify-start gap-1">
-                <Dates to={content?.dates?.to} from={content?.dates?.to} />
+                <Dates to={research?.dates?.to} from={research?.dates?.to} />
                 <h2 className="font-semibold leading-none">
-                    <Link href={{ pathname: RouteWithDocSlug }}>{title}</Link>
+                    <Link href={{ pathname: RouteWithDocSlug }}>{research?.title}</Link>
                 </h2>
-                {content?.dates?.location && (
-                    <p className="text-sm text-muted-foreground">{content?.dates?.location}</p>
+                {research?.dates?.location && (
+                    <p className="text-sm text-muted-foreground">{research?.dates?.location}</p>
                 )}
-                {content?.role && (
-                    <p className="text-sm text-muted-foreground">{content?.role}</p>
+                {research?.role && (
+                    <p className="text-sm text-muted-foreground">{research?.role}</p>
                 )}
-                {content?.status && (
-                    <p className="text-sm text-muted-foreground">{content?.status}</p>
+                {research?.status && (
+                    <p className="text-sm text-muted-foreground">{research?.status}</p>
                 )}
-                <SkillShelfRichText className="text-xs" data={content?.description} params={params} searchParams={searchParams} />
+                <SkillShelfRichText className="text-xs" data={research?.description} params={params} searchParams={searchParams} />
             </div>
-            {content?.resources && content?.resources.length > 0 && (
+            {research?.resources && research?.resources.length > 0 && (
                 <div className="mt-2 flex flex-row flex-wrap items-start gap-2">
-                    {content?.resources?.map((link, idx) => (
+                    {research?.resources?.map((link, idx) => (
                         <Link href={link.link} key={idx}>
                             <Badge key={idx} title={link.label} className="flex gap-2">
                                 {link.label}

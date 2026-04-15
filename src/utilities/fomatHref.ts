@@ -5,7 +5,6 @@ export const formatHref = (args: {
 }): string => {
     const { domain, item } = args
 
-
     let url: NonNullable<TMenuItemsPropsType>[number]['url'] = ''
 
     if (item.type === 'external') {

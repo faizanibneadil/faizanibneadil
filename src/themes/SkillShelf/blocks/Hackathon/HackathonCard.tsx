@@ -14,15 +14,21 @@ type Props = Exclude<Exclude<IHackathonProps['hackathons'], null | undefined>[0]
 }
 
 export function HackathonCard({
+  createdAt,
+  dates,
   id,
-  content: {
-    dates,
-    image,
-    description,
-    links,
-    location
-  },
+  image,
+  slug,
   title,
+  updatedAt,
+  deletedAt,
+  description,
+  links,
+  location,
+  lockSlug,
+  meta,
+  skills,
+  tenant,
   params,
   searchParams
 }: Props) {

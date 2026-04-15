@@ -1,40 +1,27 @@
 import { unstable_cache } from "next/cache"
 import { getPayloadConfig } from "./getPayloadConfig"
 import { ONE_MONTH_CACHE_TIME } from "../../constants"
+import config from '@payload-config'
+import { getPayload } from "payload"
+import { isNumber } from "payload/shared"
 
-export const queryThemeByDomain = (domain: string) =>
-    unstable_cache(
-        async () => {
-            const isNumericDomain = !Number.isNaN(Number(domain))
-            const payload = await getPayloadConfig()
-            const themeConfig = await payload.find({
-                collection: 'portfolio-settings',
-                select: {
-                    theme: true
-                },
-                where: {
-                    or: [
-                        ...(isNumericDomain
-                            ? [{
-                                'tenant.id': {
-                                    equals: Number(domain),
-                                },
-                            }]
-                            : []),
-                        {
-                            'tenant.slug': {
-                                equals: domain
-                            }
-                        },
-                    ]
-                },
-                depth: 0,
-            })
-
-            const theme = themeConfig?.docs?.at(0)?.theme as number
-
-            return theme ?? 3
+export const queryThemeByDomain = async ({ domain }: { domain: string }) => {
+    const payload = await getPayload({ config })
+    const themeConfig = await payload.find({
+        collection: 'portfolio-settings',
+        select: {
+            theme: true
         },
-        [`query-theme-by-${domain}`],
-        { revalidate: ONE_MONTH_CACHE_TIME }, // Cache for 1 month
-    )()
+        where: {
+            [`tenant.${isNumber(domain) ? 'id' : 'slug'}`]: {
+                equals: Number(domain),
+            },
+        },
+        depth: 0,
+    })
+
+    const theme = themeConfig?.docs?.at(0)
+    const themeID = typeof theme === 'object' ? theme.id : theme
+
+    return themeID ?? 1
+}

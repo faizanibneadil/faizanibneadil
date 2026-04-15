@@ -47,10 +47,10 @@ export async function ProjectCard(props: { project: Project | Promise<Project> }
             className="pointer-events-none mx-auto h-40 w-full object-cover object-top" // needed because random black line at bottom of video
           />
         )} */}
-      {project?.content?.thumbnail && (
+      {project?.thumbnail && (
         <Link href={RouteWithDocSlug}>
           <Image
-            src={getMediaUrl(project?.content?.thumbnail)}
+            src={getMediaUrl(project?.thumbnail)}
             placeholder="blur"
             blurDataURL={placeholderBlur}
             alt={project?.title}
@@ -70,15 +70,15 @@ export async function ProjectCard(props: { project: Project | Promise<Project> }
               {project?.title}
             </Link>
           </CardTitle>
-          <Dates to={project?.content?.dates?.to} from={project?.content?.dates?.from} />
+          <Dates to={project?.dates?.to} from={project?.dates?.from} />
           <div className="prose prose-xs dark:prose-invert w-full text-xs">
-            <MagicRichText data={project.content.overview} params={params} searchParams={searchParams} />
+            <MagicRichText data={project?.overview} params={params} searchParams={searchParams} />
           </div>
         </div>
       </CardHeader>
       {/* <CardContent className="mt-auto flex flex-col px-2">
         <div className="mt-2 flex flex-wrap gap-1">
-          {project?.content?.skills?.map((skill, idx) => (
+          {project?.skills?.map((skill, idx) => (
             <React.Suspense key={`skill-${idx}`} fallback={<SkillSkeleton />}>
               <Skill id={idx} skill={typeof skill === 'number' ? getSkillById(skill) : skill} />
             </React.Suspense>
@@ -86,9 +86,9 @@ export async function ProjectCard(props: { project: Project | Promise<Project> }
         </div>
       </CardContent> */}
       <CardFooter className="px-2 pb-2">
-        {project?.content?.links && project?.content?.links.length > 0 && (
+        {project?.links && project?.links.length > 0 && (
           <div className="flex flex-row flex-wrap items-start gap-1">
-            {project?.content?.links?.map((link, idx) => (
+            {project?.links?.map((link, idx) => (
               <Link href={link?.link} key={idx} target="_blank">
                 <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
                   {link?.iconify && (
