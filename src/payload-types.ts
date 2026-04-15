@@ -23,6 +23,24 @@ export type TUserTenants =
     }[]
   | null;
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TMenuItemsPropsType".
+ */
+export type TMenuItemsPropsType =
+  | {
+      iconify?: string | null;
+      type?: ('internal' | 'external') | null;
+      newTab?: boolean | null;
+      page?: {
+        relationTo: 'pages';
+        value: number | Page;
+      } | null;
+      url?: string | null;
+      label?: string | null;
+      id?: string | null;
+    }[]
+  | null;
+/**
  * Supported timezones in IANA format.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -192,20 +210,18 @@ export interface Config {
 }
 export interface UserAuthOperations {
   forgotPassword: {
-    email: string;
-    password: string;
+    username: string;
   };
   login: {
-    email: string;
     password: string;
+    username: string;
   };
   registerFirstUser: {
-    email: string;
     password: string;
+    username: string;
   };
   unlock: {
-    email: string;
-    password: string;
+    username: string;
   };
 }
 /**
@@ -495,30 +511,28 @@ export interface Page {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content?: {
-    configuredCollectionSlug?: string | null;
-    layout?:
-      | (
-          | IAboutProps
-          | IContactProps
-          | IHeroProps
-          | ISkillProps
-          | TEducationProps
-          | IExperienceProps
-          | IBlogsBlockProps
-          | TFormBlockProps
-          | IAchievementProps
-          | ICertificationProps
-          | IGithubContributionProps
-          | IHackathonProps
-          | IProjectProps
-          | IPublicationProps
-          | IResearchProps
-          | TCodeBlockProps
-          | ILicenseProps
-        )[]
-      | null;
-  };
+  configuredCollectionSlug?: string | null;
+  layout?:
+    | (
+        | IAboutProps
+        | IAchievementProps
+        | IBlogsBlockProps
+        | ICertificationProps
+        | TCodeBlockProps
+        | IContactProps
+        | TEducationProps
+        | IExperienceProps
+        | TFormBlockProps
+        | IGithubContributionProps
+        | IHackathonProps
+        | IHeroProps
+        | ILicenseProps
+        | IProjectProps
+        | IPublicationProps
+        | IResearchProps
+        | ISkillProps
+      )[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -571,9 +585,9 @@ export interface IAboutProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ISkillProps".
+ * via the `definition` "IAchievementProps".
  */
-export interface ISkillProps {
+export interface IAchievementProps {
   heading: string;
   description?: {
     root: {
@@ -590,17 +604,94 @@ export interface ISkillProps {
     };
     [k: string]: unknown;
   } | null;
-  /**
-   * Check this to display every skill from your collection. Uncheck to manually select specific skills.
-   */
-  showAllSkills?: boolean | null;
-  /**
-   * Choose specific skills you want to showcase.
-   */
-  userSkills?: (number | Skill)[] | null;
+  achievements?: (number | Achievement)[] | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'skill';
+  blockType: 'achievement';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements".
+ */
+export interface Achievement {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  content?: {
+    /**
+     * Select the category that best classifies this recognition.
+     */
+    type?:
+      | ('award' | 'honor' | 'speaking-engagement' | 'competition-winner' | 'community-contribution' | 'other')
+      | null;
+    /**
+     * Upload a high-quality badge, logo, or certificate photo for visual proof.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Provide a detailed overview of the achievement and your specific role or contribution.
+     */
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    skills?: (number | Skill)[] | null;
+    dates?: {
+      /**
+       * Starting date or date received.
+       */
+      from?: string | null;
+      /**
+       * End date or leave blank if it is a single-day event.
+       */
+      to?: string | null;
+      /**
+       * Physical venue or digital platform where the event took place.
+       */
+      location?: string | null;
+    };
+    /**
+     * Quantify your success with measurable data (e.g., Rank, Growth %, or Scale).
+     */
+    stats?:
+      | {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Add relevant links to verify this achievement (e.g., News articles, YouTube, or Event sites).
+     */
+    resources?:
+      | {
+          label: string;
+          link: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -707,90 +798,6 @@ export interface Skill {
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "achievements".
- */
-export interface Achievement {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  content?: {
-    /**
-     * Select the category that best classifies this recognition.
-     */
-    type?:
-      | ('award' | 'honor' | 'speaking-engagement' | 'competition-winner' | 'community-contribution' | 'other')
-      | null;
-    /**
-     * Upload a high-quality badge, logo, or certificate photo for visual proof.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Provide a detailed overview of the achievement and your specific role or contribution.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    skills?: (number | Skill)[] | null;
-    dates?: {
-      /**
-       * Starting date or date received.
-       */
-      from?: string | null;
-      /**
-       * End date or leave blank if it is a single-day event.
-       */
-      to?: string | null;
-      /**
-       * Physical venue or digital platform where the event took place.
-       */
-      location?: string | null;
-    };
-    /**
-     * Quantify your success with measurable data (e.g., Rank, Growth %, or Scale).
-     */
-    stats?:
-      | {
-          label: string;
-          value: string;
-          id?: string | null;
-        }[]
-      | null;
-    /**
-     * Add relevant links to verify this achievement (e.g., News articles, YouTube, or Event sites).
-     */
-    resources?:
-      | {
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1275,26 +1282,6 @@ export interface Research {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TEducationProps".
- */
-export interface TEducationProps {
-  educations?: (number | Education)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'education';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IExperienceProps".
- */
-export interface IExperienceProps {
-  relatedExperiences?: (number | Experience)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'experience';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "IBlogsBlockProps".
  */
 export interface IBlogsBlockProps {
@@ -1382,58 +1369,6 @@ export interface Blog {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TFormBlockProps".
- */
-export interface TFormBlockProps {
-  form: number | Form;
-  enableIntro?: boolean | null;
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'formBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IAchievementProps".
- */
-export interface IAchievementProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  achievements?: (number | Achievement)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'achievement';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ICertificationProps".
  */
 export interface ICertificationProps {
@@ -1457,6 +1392,63 @@ export interface ICertificationProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'certification';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TCodeBlockProps".
+ */
+export interface TCodeBlockProps {
+  language?: ('ts' | 'js') | null;
+  code?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TEducationProps".
+ */
+export interface TEducationProps {
+  educations?: (number | Education)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'education';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IExperienceProps".
+ */
+export interface IExperienceProps {
+  relatedExperiences?: (number | Experience)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'experience';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TFormBlockProps".
+ */
+export interface TFormBlockProps {
+  form: number | Form;
+  enableIntro?: boolean | null;
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'formBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1503,95 +1495,6 @@ export interface IHackathonProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'hackathon';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IProjectProps".
- */
-export interface IProjectProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  projects?: (number | Project)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'project';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IPublicationProps".
- */
-export interface IPublicationProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  publications?: (number | Publication)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'publication';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IResearchProps".
- */
-export interface IResearchProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  researches?: (number | Research)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'research';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TCodeBlockProps".
- */
-export interface TCodeBlockProps {
-  language?: ('ts' | 'js') | null;
-  code?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'code-block';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1679,6 +1582,117 @@ export interface License {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IProjectProps".
+ */
+export interface IProjectProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  projects?: (number | Project)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'project';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IPublicationProps".
+ */
+export interface IPublicationProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  publications?: (number | Publication)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'publication';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IResearchProps".
+ */
+export interface IResearchProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  researches?: (number | Research)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'research';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ISkillProps".
+ */
+export interface ISkillProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Check this to display every skill from your collection. Uncheck to manually select specific skills.
+   */
+  showAllSkills?: boolean | null;
+  /**
+   * Choose specific skills you want to showcase.
+   */
+  userSkills?: (number | Skill)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'skill';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TLinkBadge".
  */
 export interface TLinkBadge {
@@ -1707,13 +1721,13 @@ export interface User {
   id: number;
   profile?: (number | null) | Media;
   roles?: TUserRole;
-  username?: string | null;
   tenants?: TUserTenants;
   industry?: (number | null) | Industry;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
-  email: string;
+  email?: string | null;
+  username: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
   salt?: string | null;
@@ -1771,14 +1785,7 @@ export interface Industry {
 export interface Menu {
   id: number;
   tenant?: (number | null) | Tenant;
-  menu?:
-    | {
-        iconify?: string | null;
-        label: string;
-        page?: (number | null) | Page;
-        id?: string | null;
-      }[]
-    | null;
+  menu?: TMenuItemsPropsType;
   updatedAt: string;
   createdAt: string;
 }
@@ -2045,13 +2052,13 @@ export interface PayloadMigration {
 export interface UsersSelect<T extends boolean = true> {
   profile?: T;
   roles?: T;
-  username?: T;
   tenants?: T | TUserTenantsSelect<T>;
   industry?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
   email?: T;
+  username?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
   salt?: T;
@@ -2129,12 +2136,8 @@ export interface BlogsSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
-    | T
-    | {
-        configuredCollectionSlug?: T;
-        layout?: T | {};
-      };
+  configuredCollectionSlug?: T;
+  layout?: T | {};
   meta?:
     | T
     | {
@@ -2255,16 +2258,22 @@ export interface TenantsSelect<T extends boolean = true> {
  */
 export interface MenusSelect<T extends boolean = true> {
   tenant?: T;
-  menu?:
-    | T
-    | {
-        iconify?: T;
-        label?: T;
-        page?: T;
-        id?: T;
-      };
+  menu?: T | TMenuItemsPropsTypeSelect<T>;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TMenuItemsPropsType_select".
+ */
+export interface TMenuItemsPropsTypeSelect<T extends boolean = true> {
+  iconify?: T;
+  type?: T;
+  newTab?: T;
+  page?: T;
+  url?: T;
+  label?: T;
+  id?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

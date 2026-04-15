@@ -44,7 +44,9 @@ export const Users: CollectionConfig<'users'> = {
     useAsTitle: 'email',
     // group: NavigationGroups.management,
   },
-  auth: true,
+  auth: {
+    loginWithUsername: true
+  },
   endpoints: [externalUsersLogin, externalUsersSignUp],
   fields: [
     {

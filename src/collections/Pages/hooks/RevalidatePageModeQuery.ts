@@ -2,7 +2,7 @@ import { Page } from "@/payload-types";
 import { revalidateTag } from "next/cache";
 import { FieldHook } from "payload";
 
-export type PageModeQueryFieldHook = () => FieldHook<Page, Page['enableCollection'], Page['content']>
+export type PageModeQueryFieldHook = () => FieldHook<Page, Page['enableCollection'], Page>
 export const RevalidatePageModeQuery: PageModeQueryFieldHook = () => {
     return ({ value, previousValue, originalDoc, req: { payload } }) => {
         const domain = typeof originalDoc?.tenant === 'object'

@@ -1,5 +1,4 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { defaultBlocks, digitalArtistSpecificBlocks, itSpecificBlock, pharmaSpecificBlocks } from "@/blocks/config";
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { ProtectRootPage } from "@/collections/Pages/hooks/ProtectRootPage";
@@ -40,7 +39,6 @@ export const Pages: CollectionConfig<'pages'> = {
             type: 'tabs',
             tabs: [
                 {
-                    name: 'content',
                     label: 'Content',
                     fields: [
                         {
@@ -62,28 +60,25 @@ export const Pages: CollectionConfig<'pages'> = {
                             label: 'Design You\'r Page',
                             blocks: [],
                             maxRows: 50,
-                            filterOptions: async ({ user }) => {
-                                const industry = typeof user?.industry === 'object' ? user?.industry?.slug : user?.industry
-                                if (typeof industry === 'string') {
-                                    switch (industry) {
-                                        case 'information-technolegy':
-                                            return [...itSpecificBlock, ...defaultBlocks]
-                                        case 'pharma':
-                                            return [...pharmaSpecificBlocks, ...defaultBlocks]
-                                        case 'digital-artist':
-                                            return [...digitalArtistSpecificBlocks, ...defaultBlocks]
-                                        default:
-                                            return true
-                                    }
-                                }
-                                return true
-                            },
-                            blockReferences: Array.from(new Set([
-                                ...defaultBlocks,
-                                ...itSpecificBlock,
-                                ...pharmaSpecificBlocks,
-                                ...digitalArtistSpecificBlocks
-                            ])),
+                            blockReferences: [
+                                'about',
+                                'achievement',
+                                'blogs-block',
+                                'certification',
+                                'code-block',
+                                'contact',
+                                'education',
+                                'experience',
+                                'formBlock',
+                                'github-contributions',
+                                'hackathon',
+                                'hero',
+                                'license',
+                                'project',
+                                'publication',
+                                'research',
+                                'skill'
+                            ],
                             admin: {
                                 initCollapsed: true,
                                 condition: ({ enableCollection }) => Boolean(enableCollection) === false,
@@ -198,18 +193,7 @@ export const Pages: CollectionConfig<'pages'> = {
             checkboxName: 'lockSlug',
             slugify: ({ valueToSlugify, data }) => {
                 const fieldToSlug = slugify(valueToSlugify)
-                let prefix = ''
-
-                if (data?.enableCollection === true) {
-                    prefix = data?.content?.configuredCollectionSlug
-                }
-
-                if (data?.enableCollection === false) {
-                    prefix = 'pages'
-                }
-
-                return `${prefix}-${fieldToSlug}-${Date.now()}`
-
+                return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),
     ],

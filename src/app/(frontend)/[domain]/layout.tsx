@@ -1,8 +1,3 @@
-// import { Suspense } from "react";
-// import { ErrorBoundary } from "react-error-boundary";
-// import Navbar from "@/themes/Magic/components/navbar";
-import dynamic from "next/dynamic";
-import { getPayloadConfig } from "@/utilities/getPayloadConfig";
 import { themesRegistry } from "@/themes";
 import { queryThemeByDomain } from "@/utilities/QueryThemeByDomain";
 
@@ -17,12 +12,10 @@ export default async function Layout(props: React.PropsWithChildren<{ params: Pr
 
     const params = await paramsFromProps
     const themeId = await queryThemeByDomain(params.domain)
-
+console.log({themeId})
 
     if (Object.hasOwn(themesRegistry, themeId)) {
         const Layout = themesRegistry[themeId]?.config?.layout
-
-        console.log({ themeId })
 
         return <Layout {...props} params={paramsFromProps} themeId={themeId}  />
     }
