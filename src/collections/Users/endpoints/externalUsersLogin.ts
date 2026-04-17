@@ -80,7 +80,7 @@ export const externalUsersLogin: Endpoint = {
         const loginAttempt = await req.payload.login({
           collection: 'users',
           data: {
-            email: foundUser.docs[0].email,
+            username: foundUser.docs[0].username,
             password,
           },
           req,

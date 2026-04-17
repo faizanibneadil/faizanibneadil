@@ -7,6 +7,7 @@ import type { BlockParams } from "@/types";
 import { generateRoute } from "@/utilities/generateRoute";
 import { Dates } from "../../components/Dates";
 import { MagicRichText } from "../../components/RichText";
+import { formatHref } from "@/utilities/fomatHref";
 
 export async function AchievementCard(props: { achievement: Achievement } & BlockParams) {
   const {
@@ -42,8 +43,8 @@ export async function AchievementCard(props: { achievement: Achievement } & Bloc
       {achievement?.resources && achievement?.resources.length > 0 && (
         <div className="mt-2 flex flex-row flex-wrap items-start gap-2">
           {achievement?.resources?.map((link, idx) => (
-            <Link href={link.link} key={idx}>
-              <Badge key={idx} title={link.label} className="flex gap-2">
+            <Link href={formatHref({domain:params.domain, item:link})} key={idx}>
+              <Badge key={idx} title={link?.label ?? ''} className="flex gap-2">
                 {link.label}
               </Badge>
             </Link>

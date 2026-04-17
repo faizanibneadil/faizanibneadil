@@ -38,7 +38,7 @@ export async function Blogs(props: CollectionProps<'blogs'>) {
             <div key={`blog-${blog.id}`} className="rounded-lg border bg-background">
                 <Card className="flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full">
                     <Link href={RouteWithDocSlug} className="block cursor-pointer">
-                        {blog?.content?.featured_image && (
+                        {blog?.featured_image && (
                             <Image
                                 src={getMediaUrl(blog?.featured_image)}
                                 placeholder="blur"

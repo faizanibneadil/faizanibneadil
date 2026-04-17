@@ -10,13 +10,13 @@ import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Blogs(props: CollectionProps<'blogs'>) {
-    const { 
-        collection, 
+    const {
+        collection,
         params,
         searchParams
     } = props || {}
 
-    const { 
+    const {
         docs,
         hasNextPage,
         hasPrevPage,
@@ -42,9 +42,9 @@ export async function Blogs(props: CollectionProps<'blogs'>) {
             >
                 <Card className="flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full">
                     <Link href={RouteWithDocSlug} className="block cursor-pointer">
-                        {blog?.content?.featured_image && (
+                        {blog?.featured_image && (
                             <Image
-                                src={getMediaUrl(blog?.content.featured_image)}
+                                src={getMediaUrl(blog?.featured_image)}
                                 placeholder="blur"
                                 blurDataURL={placeholderBlur}
                                 alt={blog.slug as string}
@@ -60,8 +60,8 @@ export async function Blogs(props: CollectionProps<'blogs'>) {
                     <CardHeader className="px-2">
                         <div className="space-y-1">
                             <CardTitle className="mt-1 text-base">{blog.title}</CardTitle>
-                            {blog?.content?.description && (<div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
-                                <RichText data={blog?.content?.description as SerializedEditorState} />
+                            {blog?.description && (<div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
+                                <RichText data={blog?.description as SerializedEditorState} />
                             </div>)}
                         </div>
                     </CardHeader>

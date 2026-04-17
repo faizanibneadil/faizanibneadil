@@ -33,6 +33,7 @@ export const PayloadRedirects: React.FC<Props> = async ({
                 const collectionSlug = redirectItem?.to?.reference?.relationTo
                 const slug = redirectItem?.to?.reference?.value as unknown as string
                 const document = (await getCachedDocument(domainFromProps, collectionSlug, slug)()) as Page
+                // @ts-expect-error
                 url = `/${redirectItem?.tenant?.slug}/${redirectItem?.to?.reference?.relationTo}/${document?.slug}`
             } catch (error) {
                 console.error('Something went wrong to fetch redirect document.')
@@ -40,6 +41,7 @@ export const PayloadRedirects: React.FC<Props> = async ({
         }
 
         if (typeof redirectItem?.to?.reference?.value === 'object') {
+            // @ts-expect-error
             url = `/${redirectItem?.tenant?.slug}/${redirectItem?.to?.reference?.relationTo}/${redirectItem?.to?.reference?.value?.slug}`
         }
 
