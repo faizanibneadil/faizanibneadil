@@ -14,12 +14,9 @@ import { Badge } from "@/components/ui/badge";
 export const ResumeCard = async (props: { experienceProps?: Experience, educationProps?: Education } & { blockType?: BlockSlug } & BlockParams) => {
   const {
     blockType,
-    searchParams: searchParamsFromProps,
-    params: paramsFromProps
+    searchParams,
+    params
   } = props || {}
-
-  const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
-  const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
 
   if (blockType === 'experience') {
     const {

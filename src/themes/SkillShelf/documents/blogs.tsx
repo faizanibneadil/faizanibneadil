@@ -9,17 +9,14 @@ import { SkillShelfRichText } from "../components/RichText"
 export async function BlogEntity(props: DocProps<'blogs'>) {
     const {
         entity,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     return (
         <div className="rounded-lg bg-border shadow">
             <img
-                src={getMediaUrl(entity?.content?.featured_image)}
+                src={getMediaUrl(entity?.featured_image)}
                 alt={entity?.title}
                 className='rounded-lg border bg-background w-full'
             />
@@ -30,7 +27,7 @@ export async function BlogEntity(props: DocProps<'blogs'>) {
     [&>*:not([data-type='block'])]:p-4
     [&>br]:hidden">
 
-                <SkillShelfRichText enableGutter={false} data={entity?.content?.content} params={params} searchParams={searchParams} />
+                <SkillShelfRichText enableGutter={false} data={entity?.content} params={params} searchParams={searchParams} />
             </div>
         </div>
     )

@@ -1,12 +1,10 @@
-import type { PageProps } from "@/types"
+import type { AwaitedBaseParams, PageProps } from "@/types"
 import BlurFade from '@/components/magicui/blur-fade';
 import { BlockProps } from '@/types';
 import { SkillShelfRichText } from './RichText';
 
 const BLUR_FADE_DELAY = 0.04;
-export function SectionPresentationCard(props: Pick<BlockProps<'skill'>['blockProps'], 'heading' | 'description'> & {
-     label: String, 
-     params: Awaited<PageProps['params']>, searchParams: Awaited<PageProps['searchParams']> }) {
+export function SectionPresentationCard(props: Pick<BlockProps<'skill'>['blockProps'], 'heading' | 'description'> & { label: String } & AwaitedBaseParams) {
     const {
         description,
         heading,

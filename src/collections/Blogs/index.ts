@@ -30,7 +30,6 @@ export const Blogs: CollectionConfig<'blogs'> = {
             type: 'tabs',
             tabs: [
                 {
-                    name: 'content',
                     label: 'Content',
                     fields: [
                         {

@@ -6,8 +6,8 @@ const BLUR_FADE_DELAY = 0.04;
 export async function Hackathon(props: BlockProps<'hackathon'>) {
     const {
         blockProps,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -18,9 +18,6 @@ export async function Hackathon(props: BlockProps<'hackathon'>) {
         hackathons,
         id
     } = blockProps || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     return (
         <section id="hackathons" aria-label={blockName ?? blockType} className=" rounded-lg bg-border shadow">

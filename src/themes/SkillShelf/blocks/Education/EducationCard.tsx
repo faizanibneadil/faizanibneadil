@@ -10,8 +10,8 @@ import { SkillShelfRichText } from "../../components/RichText";
 export async function EducationCard(props: { education: Education } & Omit<BlockProps<'experience'>, 'blockProps'>) {
     const {
         education,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -30,10 +30,6 @@ export async function EducationCard(props: { education: Education } & Omit<Block
         skills,
         tenant
     } = education || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
-
 
     return <Link href="#" className="block cursor-pointer">
         <Card className="flex">

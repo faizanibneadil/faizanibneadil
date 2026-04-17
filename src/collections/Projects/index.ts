@@ -77,7 +77,6 @@ export const Projects: CollectionConfig<'projects'> = {
                             hasMany: true,
                             admin: {
                                 description: 'Provide list of skills. You used to build this project',
-                                // appearance: 'drawer'
                             }
                         },
                         {
@@ -125,9 +124,10 @@ export const Projects: CollectionConfig<'projects'> = {
                                 }
                             ]
                         },
+                        // TODO: resources can be internal or external
                         {
                             type: 'array',
-                            name: 'links',
+                            name: 'resources',
                             labels: { singular: 'Link', plural: 'Links' },
                             admin: {
                                 initCollapsed: true

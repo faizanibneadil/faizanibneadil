@@ -24,9 +24,6 @@ export const BlogsBlock: Block = {
             name: 'blogs',
             label: 'Blogs',
             hasMany: true,
-            admin: {
-                appearance: 'drawer',
-            }
         }
     ]
 }

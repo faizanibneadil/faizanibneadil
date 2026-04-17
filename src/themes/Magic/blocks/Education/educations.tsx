@@ -6,8 +6,8 @@ const BLUR_FADE_DELAY = 0.04;
 export async function Education(props: BlockProps<'education'>) {
     const {
         blockProps,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -16,9 +16,6 @@ export async function Education(props: BlockProps<'education'>) {
         educations,
         id
     } = blockProps || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     return (
         <section id="education" aria-label={blockName ?? blockType}>
@@ -29,7 +26,7 @@ export async function Education(props: BlockProps<'education'>) {
                 {educations?.map((education, id) => {
                     return typeof education === 'number' ? null : (
                         <BlurFade key={education?.id} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
-                            <ResumeCard blockType="education" key={education?.id} params={paramsFromProps} searchParams={searchParamsFromProps} educationProps={education}/>
+                            <ResumeCard blockType="education" key={education?.id} params={params} searchParams={searchParams} educationProps={education}/>
                         </BlurFade>
                     )
                 })}

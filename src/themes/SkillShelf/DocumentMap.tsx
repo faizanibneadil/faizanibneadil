@@ -10,12 +10,12 @@ export const __SkillshelfDocMap: DocMapType = {
         })),
         metadata: ({ doc }) => ({
             title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content?.content! }),
+            description: doc?.meta?.description || doc?.title,
             openGraph: {
                 type: 'article',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: getMediaUrl(doc?.meta?.image || doc?.content?.featured_image) }]
+                images: [{ url: getMediaUrl(doc?.meta?.image) }]
             }
         })
     },
@@ -25,12 +25,12 @@ export const __SkillshelfDocMap: DocMapType = {
         })),
         metadata: ({ doc }) => ({
             title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content?.overview! }),
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.overview! }),
             openGraph: {
                 type: 'website',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: getMediaUrl(doc?.meta?.image ?? doc?.content?.thumbnail) }]
+                images: [{ url: getMediaUrl(doc?.meta?.image ?? doc?.thumbnail) }]
             }
         })
     },
@@ -40,12 +40,12 @@ export const __SkillshelfDocMap: DocMapType = {
         })),
         metadata: ({ doc }) => ({
             title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
             openGraph: {
                 type: 'article',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: getMediaUrl(doc?.meta?.image || doc?.content?.image) }]
+                images: [{ url: getMediaUrl(doc?.meta?.image || doc?.image) }]
             }
         })
     },
@@ -55,12 +55,12 @@ export const __SkillshelfDocMap: DocMapType = {
         })),
         metadata: ({ doc }) => ({
             title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
             openGraph: {
                 type: 'article',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: getMediaUrl(doc?.meta?.image || doc?.content?.image) }]
+                images: [{ url: getMediaUrl(doc?.meta?.image || doc?.image) }]
             }
         })
     },
@@ -70,12 +70,12 @@ export const __SkillshelfDocMap: DocMapType = {
         })),
         metadata: ({ doc }) => ({
             title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
             openGraph: {
                 type: 'article',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: getMediaUrl(doc?.meta?.image ?? doc?.content?.image) }]
+                images: [{ url: getMediaUrl(doc?.meta?.image ?? doc?.image) }]
             }
         })
     },
@@ -85,12 +85,12 @@ export const __SkillshelfDocMap: DocMapType = {
         })),
         metadata: ({ doc }) => ({
             title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
             openGraph: {
                 type: 'article',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: getMediaUrl(doc?.meta?.image ?? doc?.content?.image) }]
+                images: [{ url: getMediaUrl(doc?.meta?.image ?? doc?.image) }]
             }
         })
     },
@@ -100,12 +100,12 @@ export const __SkillshelfDocMap: DocMapType = {
         })),
         metadata: ({ doc }) => ({
             title: doc?.meta?.title || doc?.title,
-            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.content?.description! }),
+            description: doc?.meta?.description || convertLexicalToPlaintext({ data: doc?.description! }),
             openGraph: {
                 type: 'article',
                 title: doc?.meta?.title || '',
                 description: doc?.meta?.description || '',
-                images: [{ url: getMediaUrl(doc?.meta?.image ?? doc?.content?.image) }]
+                images: [{ url: getMediaUrl(doc?.meta?.image ?? doc?.image) }]
             }
         })
     },

@@ -8,8 +8,8 @@ const BLUR_FADE_DELAY = 0.04;
 export async function Achievement(props: BlockProps<'achievement'>) {
     const {
         blockProps,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -20,11 +20,6 @@ export async function Achievement(props: BlockProps<'achievement'>) {
         description,
         id
     } = blockProps || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
-
-
 
     return (
         <section id="researches" aria-label={blockName ?? blockType}>
@@ -53,7 +48,7 @@ export async function Achievement(props: BlockProps<'achievement'>) {
                                     key={achievement.id}
                                     delay={BLUR_FADE_DELAY * 15 + id * 0.05}
                                 >
-                                    <AchievementCard achievement={achievement} params={paramsFromProps} searchParams={searchParamsFromProps} />
+                                    <AchievementCard achievement={achievement} params={params} searchParams={searchParams} />
                                 </BlurFade>
                             )
                         })}

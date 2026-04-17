@@ -10,44 +10,41 @@ import { SkillShelfRichText } from "../components/RichText"
 export async function PublicationEntity(props: DocProps<'publications'>) {
     const {
         entity,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     return (
         <div className="relative ml-10 py-4">
             <div className="absolute -left-16 top-2 flex items-center justify-center bg-white rounded-full">
                 <Avatar className="border size-12 m-auto">
-                    <AvatarImage fetchPriority="high" loading="lazy" src={getMediaUrl(entity?.content?.image)} alt={entity?.title} className="object-contain" />
+                    <AvatarImage fetchPriority="high" loading="lazy" src={getMediaUrl(entity?.image)} alt={entity?.title} className="object-contain" />
                     <AvatarFallback>{entity?.title[0]}</AvatarFallback>
                 </Avatar>
             </div>
             <div className="flex flex-1 flex-col justify-start gap-1">
-                <Dates to={entity?.content?.publishedDate} />
+                <Dates to={entity?.publishedDate} />
                 <h2 className="font-semibold leading-none">{entity?.title}</h2>
-                {entity?.content?.publisher && (
-                    <p className="text-sm text-muted-foreground">{entity?.content?.publisher}</p>
+                {entity?.publisher && (
+                    <p className="text-sm text-muted-foreground">{entity?.publisher}</p>
                 )}
-                {entity?.content?.type && (
-                    <p className="text-sm text-muted-foreground">{entity?.content?.type}</p>
+                {entity?.type && (
+                    <p className="text-sm text-muted-foreground">{entity?.type}</p>
                 )}
-                {entity?.content?.doi && (
-                    <p className="text-sm text-muted-foreground">{entity?.content?.doi}</p>
+                {entity?.doi && (
+                    <p className="text-sm text-muted-foreground">{entity?.doi}</p>
                 )}
                 <div className="[&>*:not([data-type='block'])]:rounded-lg
     [&>*:not([data-type='block'])]:border
     [&>*:not([data-type='block'])]:bg-background
     [&>*:not([data-type='block'])]:p-4
     [&>br]:hidden">
-                <SkillShelfRichText data={entity?.content?.description} params={params} searchParams={searchParams} />
+                <SkillShelfRichText data={entity?.description} params={params} searchParams={searchParams} />
     </div>
             </div>
-            {entity?.content?.resources && entity?.content?.resources.length > 0 && (
+            {entity?.resources && entity?.resources.length > 0 && (
                 <div className="mt-2 flex flex-row flex-wrap items-start gap-2">
-                    {entity?.content?.resources?.map((link, idx) => (
+                    {entity?.resources?.map((link, idx) => (
                         <Link href={link.link} key={idx}>
                             <Badge key={idx} title={link.label} className="flex gap-2">
                                 {link.label}

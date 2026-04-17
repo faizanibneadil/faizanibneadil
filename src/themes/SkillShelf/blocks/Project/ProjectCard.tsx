@@ -23,12 +23,10 @@ import { SkillShelfRichText } from "../../components/RichText";
 export async function ProjectCard(props: { project: Project | Promise<Project> } & BlockParams) {
     const {
         project: projectFromProps,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
     const project = projectFromProps instanceof Promise ? await projectFromProps : projectFromProps
 
     const { RouteWithDocSlug } = generateRoute({

@@ -23,11 +23,10 @@ import { MagicRichText } from "../../components/RichText";
 export async function ProjectCard(props: { project: Project | Promise<Project> } & BlockParams) {
   const {
     project: projectFromProps,
-    params: paramsFromProps,
-    searchParams: searchParamsFromProps
+    params,
+    searchParams
   } = props || {}
-  const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-  const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
+
   const project = projectFromProps instanceof Promise ? await projectFromProps : projectFromProps
   const { RouteWithDocSlug } = generateRoute({
     domain: params?.domain as string,
@@ -86,9 +85,9 @@ export async function ProjectCard(props: { project: Project | Promise<Project> }
         </div>
       </CardContent> */}
       <CardFooter className="px-2 pb-2">
-        {project?.links && project?.links.length > 0 && (
+        {project?.resources && project?.resources.length > 0 && (
           <div className="flex flex-row flex-wrap items-start gap-1">
-            {project?.links?.map((link, idx) => (
+            {project?.resources?.map((link, idx) => (
               <Link href={link?.link} key={idx} target="_blank">
                 <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
                   {link?.iconify && (

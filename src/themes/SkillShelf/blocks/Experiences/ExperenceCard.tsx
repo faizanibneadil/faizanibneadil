@@ -12,8 +12,8 @@ import { SkillShelfRichText } from "../../components/RichText";
 export async function ExperienceCard(props: { experience: Experience } & Omit<BlockProps<'experience'>, 'blockProps'>) {
     const {
         experience,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -33,10 +33,6 @@ export async function ExperienceCard(props: { experience: Experience } & Omit<Bl
         tenant,
         website
     } = experience || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
-
 
     const jobTypeIconMap: Record<NonNullable<typeof jobType>, () => React.ReactNode> = {
         "on-site": () => <Building2 className="size-3" />,

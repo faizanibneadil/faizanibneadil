@@ -11,13 +11,10 @@ import { Dates } from "../../components/Dates";
 export async function CertificateCard(props: { certificate: Certification } & BlockParams) {
   const {
     certificate,
-    params: paramsFromProps,
-    searchParams: searchParamsFromProps
+    params,
+    searchParams
   } = props || {}
 
-
-  const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-  const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
   const { RouteWithDocSlug } = generateRoute({
     domain: params?.domain as string,

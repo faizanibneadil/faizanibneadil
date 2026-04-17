@@ -6,8 +6,8 @@ import Link from "next/link"
 export async function Achievements(props: CollectionProps<'achievements'>) {
     const {
         collection,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -23,14 +23,11 @@ export async function Achievements(props: CollectionProps<'achievements'>) {
         prevPage
     } = collection || {}
 
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
-
     const achievements = docs.map(doc => {
         const { RouteWithDocSlug } = generateRoute({
             domain: params.domain as string,
-            slug: params.slug as string,
-            docSlug: params.id as string
+            slug: params.collectionSlug as string,
+            docSlug: params.slug as string
         })
         return <AchievementCard key={doc?.id} achievement={doc} params={params} searchParams={searchParams} />
     })

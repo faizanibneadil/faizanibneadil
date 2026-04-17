@@ -9,12 +9,9 @@ import { MagicRichText } from "../components/RichText"
 export async function BlogEntity(props: DocProps<'blogs'>) {
     const {
         entity,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     return (
         <div className="space-y-2">
@@ -25,11 +22,11 @@ export async function BlogEntity(props: DocProps<'blogs'>) {
             <div className='w-full flex flex-col gap-4'>
                 <img
                     className='w-full'
-                    src={getMediaUrl(entity?.content?.featured_image)}
+                    src={getMediaUrl(entity?.featured_image)}
                     alt={entity?.title}
                 />
                 <h1>{entity.title}</h1>
-                <MagicRichText className="text-xs" data={entity?.content?.description} params={params} searchParams={searchParams} />
+                <MagicRichText className="text-xs" data={entity?.content} params={params} searchParams={searchParams} />
                 
             </div>
         </div>

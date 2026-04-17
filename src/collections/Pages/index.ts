@@ -1,11 +1,8 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
-import { ProtectRootPage } from "@/collections/Pages/hooks/ProtectRootPage";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
-import { SwapRootPage } from "@/collections/Pages/hooks/SwapRootPage";
 import { slugify } from "@/utilities/slugify";
-import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
 import {
     MetaDescriptionField,
     MetaImageField,
@@ -14,10 +11,6 @@ import {
     PreviewField,
 } from '@payloadcms/plugin-seo/fields';
 import { slugField, type CollectionConfig, APIError } from "payload";
-import { ProtectRootPageFromTrash } from "./hooks/ProtectRootPageFromTrash";
-import { RevalidateRootPageQuery } from "./hooks/RevalidateRootPageQuery";
-import { RevalidatePageModeQuery } from "./hooks/RevalidatePageModeQuery";
-import { RevalidatePageCollectionSlugQuery } from "./hooks/RevalidatePageCollectionSlugQuery";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
@@ -49,9 +42,6 @@ export const Pages: CollectionConfig<'pages'> = {
                                 components: {
                                     Field: '@/collections/Pages/components/collections.tsx#Collections'
                                 },
-                            },
-                            hooks: {
-                                afterChange: [RevalidatePageCollectionSlugQuery()]
                             },
                         },
                         {
@@ -125,57 +115,11 @@ export const Pages: CollectionConfig<'pages'> = {
         },
         {
             type: 'checkbox',
-            name: 'isRootPage',
-            label: 'Set as Main page',
-            admin: {
-                position: 'sidebar',
-                description: "Set this page as your portfolio's primary Home Page. Only one page can be active as the Main Page at a time."
-            },
-            required: true,
-            hooks: {
-                afterChange: [RevalidateRootPageQuery()]
-            },
-            validate: async (value, { req }) => {
-                // TODO: get tenant from doc
-                const selectedTenantId = getTenantFromCookie(req.headers, 'number')
-                if (value === false) {
-                    try {
-                        const pages = await req.payload.count({
-                            collection: 'pages',
-                            where: {
-                                and: [
-                                    { tenant: { equals: selectedTenantId } },
-                                    { isRootPage: { equals: true } }
-                                ]
-                            },
-                            req
-                        });
-
-                        if (pages.totalDocs === 0) {
-                            return "At least one landing page is required.";
-                        }
-                    } catch (error) {
-                        if (error instanceof APIError) {
-                            req.payload.logger.error({ error }, 'Payload Error')
-                            return error.message
-                        }
-                        req.payload.logger.error({ error }, 'Internal Server Error')
-                        return 'Internal Server Error'
-                    }
-                }
-                return true
-            },
-        },
-        {
-            type: 'checkbox',
             name: 'enableCollection',
             label: 'Enable Collection',
             admin: {
                 position: 'sidebar',
                 description: 'If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change collection.',
-            },
-            hooks: {
-                afterChange: [RevalidatePageModeQuery()]
             },
             required: true,
             defaultValue: false
@@ -197,16 +141,9 @@ export const Pages: CollectionConfig<'pages'> = {
         }),
     ],
     hooks: {
-        afterChange: [
-            SwapRootPage(),
-            RevalidatePageAfterChange({ invalidateRootRoute: true }),
-        ],
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
-        beforeDelete: [ProtectRootPage()],
-        beforeChange: [
-            populatePublishedAt,
-            ProtectRootPageFromTrash()
-        ],
+        beforeChange: [populatePublishedAt],
     },
     versions: true
 }

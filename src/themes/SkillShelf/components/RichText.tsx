@@ -1,5 +1,5 @@
 import RichText from '@/components/RichText'
-import type { PageProps } from '@/types'
+import type { AwaitedBaseParams, PageProps } from '@/types'
 import { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import { hasText } from '@payloadcms/richtext-lexical/shared'
 import dynamic from 'next/dynamic'
@@ -20,11 +20,9 @@ const GlimpseLink = dynamic(() => import('../inlineBlocks/glimpseLink').then(({ 
 
 export function SkillShelfRichText(props: {
     data: DefaultTypedEditorState | null | undefined,
-    params: Awaited<PageProps['params']>,
-    searchParams: Awaited<PageProps['searchParams']>,
     enableGutter?: boolean
     enableProse?: boolean
-} & React.HTMLAttributes<HTMLDivElement>) {
+} & React.HTMLAttributes<HTMLDivElement> & AwaitedBaseParams) {
 
     const {
         data: editorState,

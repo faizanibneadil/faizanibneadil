@@ -10,9 +10,6 @@ export const Education: Block = {
             name: 'educations',
             label: 'Educations',
             hasMany: true,
-            admin: {
-                appearance: 'drawer',
-            }
         }
     ]
 }

@@ -9,8 +9,8 @@ const BLUR_FADE_DELAY = 0.04;
 export async function Skill(props: BlockProps<'skill'>) {
     const {
         blockProps,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps,
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -20,9 +20,6 @@ export async function Skill(props: BlockProps<'skill'>) {
         showAllSkills,
         userSkills
     } = blockProps || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = paramsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
     
     let providedSkills = userSkills
     if (showAllSkills === true) {

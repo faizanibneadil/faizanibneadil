@@ -6,8 +6,8 @@ const BLUR_FADE_DELAY = 0.04;
 export async function Projects(props: CollectionProps<'projects'>) {
     const {
         collection,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps,
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -22,9 +22,6 @@ export async function Projects(props: CollectionProps<'projects'>) {
         page,
         prevPage,
     } = collection || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     const projects = docs.map((project, id) => (
         <div className="rounded-lg border bg-background" key={project.title}>

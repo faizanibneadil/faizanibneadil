@@ -8,8 +8,8 @@ import { useTheme } from 'next-themes'
 export function CodeBlockClient(props: BlockProps<'code-block'>) {
     const {
         blockProps,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -19,11 +19,6 @@ export function CodeBlockClient(props: BlockProps<'code-block'>) {
         id,
         language
     } = blockProps || {}
-
-
-    const params = paramsFromProps instanceof Promise ? use(paramsFromProps) : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? use(searchParamsFromProps) : searchParamsFromProps
-
 
     const { theme, systemTheme } = useTheme()
 

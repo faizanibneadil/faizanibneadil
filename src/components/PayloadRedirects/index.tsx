@@ -33,14 +33,14 @@ export const PayloadRedirects: React.FC<Props> = async ({
                 const collectionSlug = redirectItem?.to?.reference?.relationTo
                 const slug = redirectItem?.to?.reference?.value as unknown as string
                 const document = (await getCachedDocument(domainFromProps, collectionSlug, slug)()) as Page
-                url = `/${redirectItem?.to?.reference?.relationTo}/${document?.slug}`
+                url = `/${redirectItem?.tenant?.slug}/${redirectItem?.to?.reference?.relationTo}/${document?.slug}`
             } catch (error) {
                 console.error('Something went wrong to fetch redirect document.')
             }
         }
 
         if (typeof redirectItem?.to?.reference?.value === 'object') {
-            url = `/${redirectItem?.to?.reference?.relationTo}/${redirectItem?.to?.reference?.value?.slug}`
+            url = `/${redirectItem?.tenant?.slug}/${redirectItem?.to?.reference?.relationTo}/${redirectItem?.to?.reference?.value?.slug}`
         }
 
         if (url) {

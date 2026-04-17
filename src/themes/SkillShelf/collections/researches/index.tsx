@@ -5,8 +5,8 @@ import { generateRoute } from "@/utilities/generateRoute"
 export async function Researches(props: CollectionProps<'researches'>) {
     const {
         collection,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -22,14 +22,11 @@ export async function Researches(props: CollectionProps<'researches'>) {
         prevPage
     } = collection || {}
 
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
-
     const researches = docs.map(doc => {
         const { RouteWithDocSlug } = generateRoute({
             domain: params.domain as string,
-            slug: params.slug as string,
-            docSlug: params.id as string
+            slug: params.collectionSlug as string,
+            docSlug: params.slug as string
         })
         return <ResearchCard key={doc?.id} research={doc} params={params} searchParams={searchParams} />
     })

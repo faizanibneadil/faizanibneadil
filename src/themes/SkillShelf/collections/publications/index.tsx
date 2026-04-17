@@ -4,8 +4,8 @@ import type { CollectionProps } from "@/types"
 export async function Publications(props: CollectionProps<'publications'>) {
     const {
         collection,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -20,9 +20,6 @@ export async function Publications(props: CollectionProps<'publications'>) {
         page,
         prevPage
     } = collection || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     const publications = docs.map(doc => {
         return <PublicationCard key={doc?.id} publication={doc} params={params} searchParams={searchParams} />

@@ -11,12 +11,9 @@ import { SkillShelfRichText } from "../../components/RichText";
 export async function AchievementCard(props: { achievement: Achievement } & BlockParams) {
     const {
         achievement,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     const { RouteWithDocSlug } = generateRoute({
         domain: params?.domain as string,

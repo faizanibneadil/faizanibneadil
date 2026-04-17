@@ -5,13 +5,14 @@ import { getMediaUrl, placeholderBlur } from "@/utilities/getURL";
 import Image from "next/image";
 import Link from "next/link";
 import { SkillShelfRichText } from "../../components/RichText";
+import { DefaultTypedEditorState } from "@payloadcms/richtext-lexical";
 
 const BLUR_FADE_DELAY = 0.04;
 export async function Blogs(props: CollectionProps<'blogs'>) {
     const {
         collection,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -27,9 +28,6 @@ export async function Blogs(props: CollectionProps<'blogs'>) {
         prevPage
     } = collection || {}
 
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
-
     const blogs = docs?.map((blog, id) => {
         const { RouteWithDocSlug } = generateRoute({
             domain: params.domain as string,
@@ -42,7 +40,7 @@ export async function Blogs(props: CollectionProps<'blogs'>) {
                     <Link href={RouteWithDocSlug} className="block cursor-pointer">
                         {blog?.content?.featured_image && (
                             <Image
-                                src={getMediaUrl(blog?.content.featured_image)}
+                                src={getMediaUrl(blog?.featured_image)}
                                 placeholder="blur"
                                 blurDataURL={placeholderBlur}
                                 alt={blog.slug as string}
@@ -62,7 +60,7 @@ export async function Blogs(props: CollectionProps<'blogs'>) {
                                     {blog.title}
                                 </Link>
                             </CardTitle>
-                            <SkillShelfRichText data={blog?.content?.description} params={params} searchParams={searchParams} />
+                            <SkillShelfRichText data={blog?.content?.description as DefaultTypedEditorState} params={params} searchParams={searchParams} />
                         </div>
                     </CardHeader>
                     <CardFooter></CardFooter>

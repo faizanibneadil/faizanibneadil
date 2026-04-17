@@ -1,5 +1,5 @@
 import RichText from '@/components/RichText'
-import type { PageProps } from '@/types'
+import type { AwaitedBaseParams, PageProps } from '@/types'
 import { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import { hasText } from '@payloadcms/richtext-lexical/shared'
 import dynamic from 'next/dynamic'
@@ -9,10 +9,8 @@ const FormBlock = dynamic(() => import('../blocks/Form/form-block').then(({ Form
 
 export function MagicRichText(props: {
     data: DefaultTypedEditorState | null | undefined,
-    params: Awaited<PageProps['params']>,
-    searchParams: Awaited<PageProps['searchParams']>,
     enableGutter?: boolean
-} & React.HTMLAttributes<HTMLDivElement>) {
+} & React.HTMLAttributes<HTMLDivElement> & AwaitedBaseParams) {
 
     const {
         data: editorState,

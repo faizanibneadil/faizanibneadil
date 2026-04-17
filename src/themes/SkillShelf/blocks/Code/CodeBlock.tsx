@@ -4,8 +4,8 @@ import { CodeBlockClient } from './CodeBlockClient'
 export async function CodeBlock(props: BlockProps<'code-block'>) {
   const {
     blockProps,
-    params: paramsFromProps,
-    searchParams: searchParamsFromProps
+    params,
+    searchParams
   } = props || {}
 
   const {
@@ -15,9 +15,6 @@ export async function CodeBlock(props: BlockProps<'code-block'>) {
     id,
     language
   } = blockProps || {}
-
-  const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-  const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
   
   if (!code || !language) {
     return null

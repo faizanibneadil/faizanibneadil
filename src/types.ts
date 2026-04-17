@@ -42,7 +42,7 @@ export type LayoutProps = React.PropsWithChildren<Omit<PageProps, 'searchParams'
 export type BlocksRegistryProps = {
     blocks: NonNullable<Page>['layout'][][0],
 } & PageProps
-export type BlockParams = BaseParams
+export type BlockParams = AwaitedBaseParams
 export type BlockProps<K extends BlockSlug> = {
     blockProps: Extract<NonNullable<NonNullable<Page>['layout']>[number], { blockType: K }>
 } & BlockParams
@@ -51,7 +51,7 @@ export type BlockProps<K extends BlockSlug> = {
 export type CollectionsRegistryProps = {
     page: Page | null
 } & PageProps
-export type CollectionParams = BaseParams
+export type CollectionParams = AwaitedBaseParams
 export type CollectionProps<K extends CollectionSlug> = {
     collection: PaginatedDocs<DataFromCollectionSlug<K>>
 } & CollectionParams
@@ -80,7 +80,7 @@ export type BlocksMapType = {
         skeleton: React.ComponentType<{}>,
         component: React.ComponentType<{
             blockProps: Extract<NonNullable<NonNullable<Page>['layout']>[number], { blockType: K }>,
-        } & PageProps>
+        } & AwaitedBaseParams>
     }
 }
 
@@ -89,21 +89,21 @@ export type CollectionMapType = {
         component: React.ComponentType<{
             collection: PaginatedDocs<DataFromCollectionSlug<K>>,
             isRootPage: boolean
-        } & PageProps>,
+        } & AwaitedBaseParams>,
         skeleton: React.ComponentType<{}>,
-        metadata: (args: { doc: DataFromCollectionSlug<K> }) => Metadata | Promise<Metadata>,
+        metadata: (args: { doc: Page }) => Metadata | Promise<Metadata>,
         enableDocumentView: boolean
     }
 }
 
 export type DocMapType = {
     [K in CollectionSlug]?: {
-        component: React.ComponentType<{ entity: DataFromCollectionSlug<K> } & PageProps>,
+        component: React.ComponentType<{ entity: DataFromCollectionSlug<K> } & AwaitedBaseParams>,
         metadata: (args: { doc: DataFromCollectionSlug<K> }) => Metadata | Promise<Metadata>
     }
 }
 
-export type RenderPageProps = PageProps & {
+export type RenderPageProps = AwaitedBaseParams & {
     themeId: number,
     enableCollection: boolean,
     page: Page | null,
@@ -138,7 +138,6 @@ export type ThemeConfig = {
             RenderCollection: React.ComponentType<AwaitedBaseParams & {
                 collection: PaginatedDocs<DataFromCollectionSlug<CollectionSlug>>,
                 collectionsMap: CollectionMapType,
-                collectionSlug: CollectionSlug
             }>
         },
         documentConfig: {

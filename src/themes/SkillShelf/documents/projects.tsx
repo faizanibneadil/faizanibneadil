@@ -10,15 +10,12 @@ import { SkillShelfRichText } from "../components/RichText";
 export async function ProjectEntity(props: DocProps<'projects'>) {
     const {
         entity,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
     
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
-
-    const height = typeof entity?.content?.thumbnail === 'object' && entity?.content?.thumbnail?.height as number
-    const width = typeof entity?.content?.thumbnail === 'object' && entity?.content?.thumbnail?.width as number
+    const height = typeof entity?.thumbnail === 'object' && entity?.thumbnail?.height as number
+    const width = typeof entity?.thumbnail === 'object' && entity?.thumbnail?.width as number
     return (
         <div className="rounded-lg bg-border shadow">
             <Image
@@ -27,17 +24,17 @@ export async function ProjectEntity(props: DocProps<'projects'>) {
                 fetchPriority="high"
                 loading="lazy"
                 alt={entity?.title}
-                src={getMediaUrl(entity?.content?.thumbnail)}
+                src={getMediaUrl(entity?.thumbnail)}
                 placeholder="blur"
                 blurDataURL={placeholderBlur}
                 unoptimized
                 className='rounded-lg border bg-background'
             />
-            {Boolean(entity?.content?.links?.length) && (
+            {Boolean(entity?.resources?.length) && (
                 <div className="relative mx-auto flex w-full max-w-3xl flex-col justify-between gap-y-6 border-x bg-secondary/80 px-2 py-4 md:px-4 dark:bg-secondary/40">
                     <div className="-translate-x-1/2 -top-px pointer-events-none absolute left-1/2 w-screen border-t" />
                     <div className="flex items-center gap-4">
-                        {entity?.content?.links?.map(link => (
+                        {entity?.resources?.map(link => (
                             <Link href={link.link} className="flex gap-1 items-center " key={`resource-${link.id}`}>
                                 {/* {typeof link.icon === 'number' && <span>ICON</span>} */}
                                 {link.iconify && (
@@ -57,7 +54,7 @@ export async function ProjectEntity(props: DocProps<'projects'>) {
     [&>*:not([data-type='block'])]:bg-background
     [&>*:not([data-type='block'])]:p-4
     [&>br]:hidden">
-            <SkillShelfRichText data={entity?.content?.detailedOverview} params={params} searchParams={searchParams} />
+            <SkillShelfRichText data={entity?.detailedOverview} params={params} searchParams={searchParams} />
     </div>
 
 

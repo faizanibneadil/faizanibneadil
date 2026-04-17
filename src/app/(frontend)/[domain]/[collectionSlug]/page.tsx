@@ -1,65 +1,78 @@
-import type { Page } from "@/payload-types";
-import type { PageProps } from "@/types";
-import type { CollectionSlug } from "payload";
-import { queryPageBySlug } from "@/utilities/QueryPageBySlug";
-import type { Metadata } from "next";
-import { queryThemeByDomain } from "@/utilities/QueryThemeByDomain";
+import { PayloadRedirects } from "@/components/PayloadRedirects";
 import { themesRegistry } from "@/themes";
-import { getMediaUrl } from "@/utilities/getURL";
-import { queryCollectionByCollectionSlug } from "@/utilities/queryCollectionByCollectionSlug";
+import type { PageProps } from "@/types";
+import { queryCollectionBySlug } from "@/utilities/queries/queryCollectionBySlug";
+import { queryCollectionCountBySlug } from "@/utilities/queries/queryCollectionCountBySlug";
+import { queryPageByConfiguredCollection } from "@/utilities/queries/queryPageByConfiguiredCollection";
+import { queryPortfolioSettings } from "@/utilities/queries/queryPortfolioSettings";
+import type { Metadata } from "next";
+import { Suspense } from "react";
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const [params, searchParams] = await Promise.all([props.params, props.searchParams])
-
-  const collection = await queryCollectionByCollectionSlug({
-    collectionSlug: params.collectionSlug,
+  const settings = await queryPortfolioSettings({
     domain: params.domain
   })
 
+  const themeID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
 
+  if (Object.hasOwn(themesRegistry, themeID!)) {
+    const collectionsMap = themesRegistry?.[themeID!]?.config?.collectionConfig?.collectionsMap
 
-  const themeId = await queryThemeByDomain({
-    domain: params.domain
-  })
-  if (Object.hasOwn(themesRegistry, themeId)) {
-    const collectionMap = themesRegistry[themeId]?.config?.collectionConfig.collectionsMap
-
-    if (Object.hasOwn(collectionMap, params.collectionSlug)) {
-      const metadata = collectionMap[params.collectionSlug]?.metadata
-      if (typeof metadata === 'function') {
-        // @ts-expect-error
-        return await metadata({ doc: collection })
+    if (!Object.keys(collectionsMap).includes(params.collectionSlug)) {
+      return {
+        title: '404 - Not Found.',
+        description: 'Page Not Found.'
       }
+    }
 
+    const page = await queryPageByConfiguredCollection({
+      collectionSlug: params.collectionSlug,
+      domain: params.domain
+    })
+
+    const metadata = collectionsMap[params.collectionSlug]?.metadata
+
+    if (typeof metadata === 'function') {
+      return await metadata({ doc: page! })
+    } else {
       return metadata ?? {}
     }
 
+  } else {
+    return {
+      title: 'No Theme Configured'
+    }
   }
-
-  return {}
 }
 
 
-
-
 export default async function Page(props: PageProps) {
-  const [params,searchPrams] = await Promise.all([props.params, props.searchParams])
+  const [params, searchParams] = await Promise.all([props.params, props.searchParams])
+  // const queryCount = await queryCollectionCountBySlug({
+  //   collectionSlug: params.collectionSlug,
+  //   domain: params.domain
+  // })
+  const settings = await queryPortfolioSettings({
+    domain: params.domain
+  })
 
-  const collection = await queryCollectionByCollectionSlug({
+  const themeID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
+
+  const themeConfig = themesRegistry?.[themeID!]
+  const collectionsMap = themeConfig?.config?.collectionConfig?.collectionsMap
+  const RenderCollection = themeConfig?.config?.collectionConfig?.RenderCollection
+
+  const collection = await queryCollectionBySlug({
     collectionSlug: params.collectionSlug,
     domain: params.domain
   })
 
-  const themeId = await queryThemeByDomain({
-    domain: params.domain
-  })
 
-  
-  if (Object.hasOwn(themesRegistry, themeId)) {
-    const blocksMap = themesRegistry[themeId]?.config?.blocksConfig.blocksMap
-    const collectionMap = themesRegistry[themeId]?.config?.collectionConfig.collectionsMap
-    const RenderCollection = themesRegistry[themeId]?.config?.collectionConfig?.RenderCollection
-
-    return <RenderCollection params={params} searchParams={searchPrams} collection={collection} collectionsMap={collectionMap} collectionSlug={params.collectionSlug} />
-  }
+  return (
+    <Suspense fallback='loading ...'>
+      <PayloadRedirects domain={params.domain} url={`/${params.collectionSlug}`} />
+      <RenderCollection collection={collection} collectionsMap={collectionsMap} params={params} searchParams={searchParams} />
+    </Suspense>
+  )
 }

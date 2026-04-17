@@ -542,10 +542,6 @@ export interface Page {
     image?: (number | null) | Media;
   };
   /**
-   * Set this page as your portfolio's primary Home Page. Only one page can be active as the Main Page at a time.
-   */
-  isRootPage: boolean;
-  /**
    * If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change collection.
    */
   enableCollection: boolean;
@@ -1121,7 +1117,7 @@ export interface Project {
      */
     credential_username?: string | null;
   };
-  links?:
+  resources?:
     | {
         iconify?: string | null;
         label: string;
@@ -1326,41 +1322,39 @@ export interface Blog {
   tenant?: (number | null) | Tenant;
   title: string;
   content?: {
-    content?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    /**
-     * Blog short description.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Blog short description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    featured_image?: (number | null) | Media;
-  };
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  featured_image?: (number | null) | Media;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1840,10 +1834,6 @@ export interface Integration {
 export interface PortfolioSetting {
   id: number;
   tenant?: (number | null) | Tenant;
-  /**
-   * This field defines the 'Home' or 'Landing Page' for your entire Portfolio. By selecting a page here, you are designating it as the entry point of your website. Note: Changing this selection will automatically mark the selected page as the 'Main Page' and remove the 'Main Page' status from any other page for this portfolio to ensure there is always exactly one root page.
-   */
-  rootPage: number | Page;
   theme?: (number | null) | Theme;
   updatedAt: string;
   createdAt: string;
@@ -2121,13 +2111,9 @@ export interface MediaSelect<T extends boolean = true> {
 export interface BlogsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
-    | T
-    | {
-        content?: T;
-        description?: T;
-        featured_image?: T;
-      };
+  content?: T;
+  description?: T;
+  featured_image?: T;
   meta?:
     | T
     | {
@@ -2157,7 +2143,6 @@ export interface PagesSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
-  isRootPage?: T;
   enableCollection?: T;
   publishedAt?: T;
   lockSlug?: T;
@@ -2227,7 +2212,7 @@ export interface ProjectsSelect<T extends boolean = true> {
         credential_password?: T;
         credential_username?: T;
       };
-  links?:
+  resources?:
     | T
     | {
         iconify?: T;
@@ -2611,7 +2596,6 @@ export interface IntegrationSelect<T extends boolean = true> {
  */
 export interface PortfolioSettingsSelect<T extends boolean = true> {
   tenant?: T;
-  rootPage?: T;
   theme?: T;
   updatedAt?: T;
   createdAt?: T;

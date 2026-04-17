@@ -12,8 +12,8 @@ const BLUR_FADE_DELAY = 0.04;
 export async function Blogs(props: CollectionProps<'blogs'>) {
     const { 
         collection, 
-        params:paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const { 
@@ -29,13 +29,10 @@ export async function Blogs(props: CollectionProps<'blogs'>) {
         prevPage
     } = collection || {}
 
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
-
     const blogs = docs?.map((blog, id) => {
         const { RouteWithDocSlug } = generateRoute({
             domain: params.domain as string,
-            slug: params.slug as string,
+            slug: params.collectionSlug as string,
             docSlug: blog.slug as string
         })
         return (

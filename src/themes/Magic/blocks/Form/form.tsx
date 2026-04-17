@@ -26,12 +26,10 @@ export function Form(props: { blockProps: BlockProps } & Omit<BlockParams<'formB
             id,
             introContent
         },
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
-    const params = paramsFromProps instanceof Promise ? React.use(paramsFromProps) : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? React.use(searchParamsFromProps) : searchParamsFromProps
     const formConfig = fromFromProps instanceof Promise ? React.use(fromFromProps) : fromFromProps
 
     const [isLoading, setIsLoading] = React.useState(false)

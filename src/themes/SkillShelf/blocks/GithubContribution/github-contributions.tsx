@@ -7,8 +7,8 @@ import { getPayloadConfig } from '@/utilities/getPayloadConfig'
 export async function GitHubContributionBlock(props: BlockProps<'github-contributions'>) {
   const {
     blockProps,
-    params: paramsFromProps,
-    searchParams: searchParamsFromProps
+    params,
+    searchParams
   } = props || {}
 
   const {
@@ -24,9 +24,6 @@ export async function GitHubContributionBlock(props: BlockProps<'github-contribu
     id,
     username: usernameFromProps
   } = blockProps || {}
-
-  const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-  const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
   let username = usernameFromProps
   let contributions: ReturnType<typeof getGitHubContributions> = Promise.resolve([])

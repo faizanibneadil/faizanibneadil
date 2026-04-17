@@ -13,10 +13,11 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { getNavbarMenuItems, getNavbarSocialMenuItems } from "@/utilities/getNavbarIByDomain";
-import type { BaseParams } from "@/types"
+import type { AwaitedBaseParams, BaseParams } from "@/types"
 import { Skeleton } from "../../../components/ui/skeleton";
 import { getLinkInfo } from "@/utilities/getLinkInfo";
 import { Glimpse, GlimpseContent, GlimpseDescription, GlimpseImage, GlimpseTitle, GlimpseTrigger } from "@/components/kibo-ui/glimpse";
+import { formatHref } from "@/utilities/fomatHref";
 
 const FallbackLink = () => (
   <a
@@ -29,10 +30,10 @@ const FallbackLink = () => (
   </a>
 )
 
-export async function Navbar(props: Omit<BaseParams, 'searchParams'>) {
-  // const {
-  //   params: paramsFromProps,
-  // } = props || {}
+export async function Navbar(props: Omit<AwaitedBaseParams, 'searchParams'>) {
+  const {
+    params
+  } = props || {}
 
   // const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
 
@@ -90,20 +91,19 @@ export async function Navbar(props: Omit<BaseParams, 'searchParams'>) {
   );
 }
 
-export async function Menu(props: Omit<BaseParams, 'searchParams'>) {
+export async function Menu(props: Omit<AwaitedBaseParams, 'searchParams'>) {
   const {
-    params: paramsFromProps,
+    params
   } = props || {}
-
-  const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
 
   const __menu = await getNavbarMenuItems(params.domain)
 
   const menuToRender = __menu?.menu?.map((menu, idx) => {
 
-    const href = menu?.page && typeof menu?.page === 'object' && menu?.page?.slug
-      ? `/${params?.domain}/${menu?.page?.slug}`
-      : '/'
+    const href = formatHref({
+      item: menu,
+      domain: params.domain
+    })
 
     return (
       <DockIcon key={`${menu?.id}-${idx}`}>
@@ -126,12 +126,10 @@ export async function Menu(props: Omit<BaseParams, 'searchParams'>) {
   return menuToRender
 }
 
-export async function Socials(props: Omit<BaseParams, 'searchParams'>) {
+export async function Socials(props: Omit<AwaitedBaseParams, 'searchParams'>) {
   const {
-    params: paramsFromProps,
+    params
   } = props || {}
-
-  const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
 
   const __socials = await getNavbarSocialMenuItems(params?.domain)
 

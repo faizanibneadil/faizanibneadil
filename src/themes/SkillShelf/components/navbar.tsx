@@ -1,7 +1,7 @@
 import { IconRenderer } from "@/components/ui/icon-renderer";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { BaseParams } from "@/types";
+import { AwaitedBaseParams, BaseParams } from "@/types";
 import { getNavbarMenuItems, getNavbarSocialMenuItems } from "@/utilities/getNavbarIByDomain";
 import Link from "next/link";
 import { NavbarClient } from "./navbar.client";
@@ -9,12 +9,10 @@ import { NavLabel } from "./NavLabel.client";
 import { ModeToggle } from "@/components/mode-toggle";
 import { formatHref } from "@/utilities/fomatHref";
 
-export async function Navbar(props: Omit<BaseParams, 'searchParams'>) {
+export async function Navbar(props: Omit<AwaitedBaseParams, 'searchParams'>) {
   const {
-    params: paramsFromProps
+    params
   } = props || {}
-
-  const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
 
   const __menu = await getNavbarMenuItems(params.domain)
   const __socials = await getNavbarSocialMenuItems(params?.domain)

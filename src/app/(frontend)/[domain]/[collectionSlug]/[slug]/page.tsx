@@ -1,105 +1,116 @@
-import type { PageProps } from "@/types"
-import { getPayloadConfig } from "@/utilities/getPayloadConfig"
-import type { CollectionSlug } from "payload"
-import type { Metadata } from "next"
-import { cache } from "react"
-import { queryThemeByDomain } from "@/utilities/QueryThemeByDomain"
-import { themesRegistry } from "@/themes"
-import { queryPageBySlug } from "@/utilities/QueryPageBySlug"
 import RenderCollection from '@/app/(frontend)/[domain]/[collectionSlug]/page'
-import { isNumber } from "payload/shared"
-
+import { PayloadRedirects } from "@/components/PayloadRedirects"
+import { themesRegistry } from "@/themes"
+import type { PageProps } from "@/types"
+import { queryCollectionViewBySlug } from '@/utilities/queries/queryCollectionViewBySlug'
+import { queryPageBySlug } from '@/utilities/queries/queryPageBySlug'
+import { queryPortfolioSettings } from '@/utilities/queries/queryPortfolioSettings'
+import { LexicalEditorViewMap } from '@payloadcms/richtext-lexical'
+import type { Metadata } from "next"
+import { CollectionSlug } from 'payload'
+import { Suspense } from "react"
 
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
-    // const params = await props.params
+    const [params, searchParams] = await Promise.all([props.params, props.searchParams])
 
-    // const excludedCollectionSlug = params.slug?.split('-').at(0) as CollectionSlug
-    // const domain = params.domain
-    // const docSlug = params.id
-    // const doc = await queryEntityById(excludedCollectionSlug, domain!, docSlug!)
-    // const themeId = await queryThemeByDomain(domain!)
+    let page = await queryPageBySlug({
+        slug: params.slug,
+        domain: params.domain
+    })
 
-    // if (Object.hasOwn(themesRegistry, themeId)) {
-    //     const docMap = themesRegistry[themeId]?.config?.documentConfig?.docMap
+    if (!page && !params.slug && !params.collectionSlug && !params.domain) {
+        return {
+            title: 'Not Found'
+        }
+    }
 
-    //     if (Object.hasOwn(docMap, excludedCollectionSlug)) {
-    //         const metadata = docMap[excludedCollectionSlug]?.metadata
-    //         if (typeof metadata === 'function') {
-    //             // @ts-expect-error
-    //             return await metadata({ doc })
-    //         }
+    if (page?.enableCollection && page?.configuredCollectionSlug) {
+        page = await queryPageBySlug({
+            slug: page?.configuredCollectionSlug as CollectionSlug,
+            domain: params.domain
+        })
+    }
 
-    //         return metadata ?? {}
-    //     }
-    // }
+    const settings = await queryPortfolioSettings({
+        domain: params.domain
+    })
 
-    return {}
+    const themeID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
+
+    if (Object.hasOwn(themesRegistry, themeID!)) {
+        const docMap = themesRegistry[themeID!].config.documentConfig.docMap
+        if (!page && Object.hasOwn(docMap, params.collectionSlug)) {
+            const doc = await queryCollectionViewBySlug({
+                collectionSlug: params.collectionSlug,
+                domain: params.domain,
+                slug: params.slug
+            })
+            const metadata = docMap?.[params?.collectionSlug]?.metadata
+
+            if (typeof metadata === 'function') {
+                // @ts-expect-error
+                return await metadata({ doc })
+            }
+            return metadata ?? {}
+        }
+    }
+
+    // Fallback Page Metadata
+    return {
+        title: page?.meta?.title || page?.title,
+        description: page?.meta?.description || page?.title,
+    }
 }
 
 export default async function Page(props: PageProps) {
     const [params, searchParams] = await Promise.all([props.params, props.searchParams])
+
     const page = await queryPageBySlug({
         domain: params.domain,
         slug: params.slug
     })
 
-
-    if (!page && !params.domain && !params.collectionSlug && !params.slug) {
-        return '404 - Page not found'
-    }
-
     if (page?.enableCollection) {
-        return <RenderCollection params={Promise.resolve({ ...params })} searchParams={Promise.resolve({ ...searchParams })} />
+        return (
+            <Suspense fallback={null}>
+                <PayloadRedirects domain={params.domain} url={`/${params.collectionSlug}/${params.slug}`} />
+                <RenderCollection params={Promise.resolve({ ...params, collectionSlug: page?.configuredCollectionSlug as CollectionSlug })} searchParams={Promise.resolve({ ...searchParams })} />
+            </Suspense>
+        )
     }
-    
-    const doc = await queryEntityById({
-        docSlug: params.slug,
-        domain: params.domain,
-        collectionSlug: params.collectionSlug
-    })
 
-    const themeId = await queryThemeByDomain({
+    const settings = await queryPortfolioSettings({
         domain: params.domain
     })
 
+    const themeID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
 
-    if (Object.hasOwn(themesRegistry, themeId)) {
-        if (params.collectionSlug === 'pages') {
-            const blocksMap = themesRegistry[themeId]?.config?.blocksConfig.blocksMap
-            const RenderBlocks = themesRegistry[themeId]?.config?.RenderBlocks
-            return <RenderBlocks blocks={page?.layout} blocksMap={blocksMap} params={params} searchParams={searchParams} />
-        } else {
-            const docMap = themesRegistry[themeId]?.config?.documentConfig?.docMap
-            const RenderDocumentView = themesRegistry[themeId]?.config?.documentConfig?.RenderDocumentView
-
-            return <RenderDocumentView collectionSlug={params.collectionSlug} doc={doc} docMap={docMap} params={params} searchParams={searchParams} />
-        }
+    if (!Object.hasOwn(themesRegistry, themeID!)) {
+        return 'Theme not found'
     }
 
-    return null
-}
+    const themeConfig = themesRegistry?.[themeID!]
+    const blocksMap = themeConfig?.config?.blocksConfig.blocksMap
+    const RenderBlocks = themeConfig?.config?.RenderBlocks
+    const docMap = themeConfig?.config?.documentConfig?.docMap
+    const RenderDocumentView = themeConfig?.config?.documentConfig?.RenderDocumentView
 
-const queryEntityById = async ({ docSlug, domain, collectionSlug }: { collectionSlug: CollectionSlug, domain: string, docSlug: string }) => {
-    const payload = await getPayloadConfig()
-    const entity = await payload.find({
-        collection: collectionSlug,
-        limit: 1,
-        pagination: false,
-        where: {
-            and: [
-                {
-                    [`tenant.${isNumber(domain) ? 'id' : 'slug'}`]: {
-                        equals: domain
-                    }
-                },
-                {
-                    [isNumber(docSlug) ? 'id' : 'slug']: {
-                        equals: docSlug
-                    }
-                },
-            ],
-        },
+
+    if (Boolean(page?.layout?.length)) {
+        return <RenderBlocks blocks={page?.layout} blocksMap={blocksMap} params={params} searchParams={searchParams} />
+    }
+
+    const doc = await queryCollectionViewBySlug({
+        collectionSlug: params.collectionSlug,
+        domain: params.domain,
+        slug: params.slug
     })
-    return entity?.docs?.at(0) || null
+
+    return (
+        <Suspense fallback='Redirecting ...'>
+            <PayloadRedirects domain={params?.domain} url={`/${params?.domain}/${params?.collectionSlug}/${params?.slug}`} />
+            <RenderDocumentView collectionSlug={params?.collectionSlug} doc={doc} docMap={docMap} params={params} searchParams={searchParams} />
+        </Suspense>
+    )
 }

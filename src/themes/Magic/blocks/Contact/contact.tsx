@@ -12,8 +12,8 @@ const BLUR_FADE_DELAY = 0.04;
 export async function Contact(props: BlockProps<'contact'>) {
     const {
         blockProps,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -25,9 +25,6 @@ export async function Contact(props: BlockProps<'contact'>) {
         id,
         introContent
     } = blockProps || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     return (
         <section id="contact" aria-label={blockName ?? blockType}>
@@ -52,8 +49,8 @@ export async function Contact(props: BlockProps<'contact'>) {
                     </div>
                 </BlurFade>
                 <FormBlock
-                    searchParams={searchParamsFromProps}
-                    params={paramsFromProps}
+                    searchParams={searchParams}
+                    params={params}
                     blockProps={{
                         blockType: 'formBlock',
                         form: formFromProps as NonNullable<IContactProps['form']>,

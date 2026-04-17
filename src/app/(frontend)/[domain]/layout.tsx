@@ -10,7 +10,6 @@ export default async function Layout(props: React.PropsWithChildren<{
     const themeId = await queryThemeByDomain({
         domain: params.domain
     })
-    // console.log({ themeId })
 
     if (Object.hasOwn(themesRegistry, themeId)) {
         const Layout = themesRegistry[themeId]?.config?.layout

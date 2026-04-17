@@ -48,6 +48,7 @@ import { Visitors as Visitors_72b66f25e816188e5bb68c5553064a23 } from '@/widgets
 import { FormSubmissions as FormSubmissions_72b66f25e816188e5bb68c5553064a23 } from '@/widgets/config.ts'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
+/** @type import('payload').ImportMap */
 export const importMap = {
   "@payloadcms/plugin-multi-tenant/client#TenantField": TenantField_1d0591e3cf4f332c83a86da13a0de59a,
   "@payloadcms/plugin-multi-tenant/client#AssignTenantFieldTrigger": AssignTenantFieldTrigger_1d0591e3cf4f332c83a86da13a0de59a,

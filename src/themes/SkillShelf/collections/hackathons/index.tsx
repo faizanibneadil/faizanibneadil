@@ -5,8 +5,8 @@ import Link from "next/link"
 export async function Hackathons(props: CollectionProps<'hackathons'>) {
     const {
         collection,
-        params:paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -22,14 +22,11 @@ export async function Hackathons(props: CollectionProps<'hackathons'>) {
         prevPage
     } = collection || {}
 
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
-
     const projects = docs.map(doc => {
         const { RouteWithDocSlug } = generateRoute({
             domain: params.domain as string,
-            slug: params.slug as string,
-            docSlug: params.id as string
+            slug: params.collectionSlug as string,
+            docSlug: params.slug as string
         })
         return (
             <div key={doc.id} className="flex flex-col gap-4">

@@ -10,8 +10,8 @@ import { MagicRichText } from "../../components/RichText";
 export async function LicenseCard(props: { license: License } & BlockParams) {
   const {
     license,
-    params: paramsFromProps,
-    searchParams: searchParamsFromProps
+    params,
+    searchParams
   } = props || {}
 
   const {
@@ -25,9 +25,6 @@ export async function LicenseCard(props: { license: License } & BlockParams) {
     resources
   } = license
 
-
-  const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-  const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
   return (
     <li className="relative ml-10 py-4">

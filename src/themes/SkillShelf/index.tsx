@@ -1,12 +1,9 @@
 import type { ThemeConfig } from "@/types";
-import { Navbar } from "./components/navbar";
+import { Suspense } from "react";
 import { __SkillshelfBlocksMap } from "./BlocksMap";
 import { __SkillshelfCollectionsMap } from "./CollectionsMap";
+import { Navbar } from "./components/navbar";
 import { __SkillshelfDocMap } from "./DocumentMap";
-import { CollectionSlug } from "payload";
-import { queryCollectionBySlug } from "@/utilities/queryCollectionBySlug";
-import { ErrorBoundary } from "react-error-boundary";
-import { Fragment, Suspense } from "react";
 
 export const __SkillshelfThemeConfig: ThemeConfig = {
     themeMeta: {
@@ -22,13 +19,12 @@ export const __SkillshelfThemeConfig: ThemeConfig = {
             collectionsMap: __SkillshelfCollectionsMap,
             RenderCollection: ({
                 collection,
-                collectionSlug,
                 collectionsMap,
                 params,
                 searchParams
             }) => {
-                if (Object.hasOwn(collectionsMap, collectionSlug)) {
-                    const Collection = collectionsMap[collectionSlug]?.component
+                if (Object.hasOwn(collectionsMap, params.collectionSlug)) {
+                    const Collection = collectionsMap[params.collectionSlug]?.component
 
                     // @ts-expect-error
                     return <Collection collection={collection} params={params} searchParams={searchParams} />
@@ -52,8 +48,6 @@ export const __SkillshelfThemeConfig: ThemeConfig = {
                     // @ts-expect-error
                     return <Collection entity={doc} params={params} />
                 }
-
-                return null
 
                 return '404 - Document not found'
             }

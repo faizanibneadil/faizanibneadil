@@ -6,12 +6,9 @@ import { getMediaUrl } from "@/utilities/getURL";
 import { Dates } from "../../components/Dates";
 import { IconRenderer } from "@/components/ui/icon-renderer";
 import { MagicRichText } from "../../components/RichText";
-import type {PageProps} from '@/types'
+import type {AwaitedBaseParams, PageProps} from '@/types'
 
-type Props = Exclude<Exclude<IHackathonProps['hackathons'], null | undefined>[0], number> & {
-  params: Awaited<PageProps['params']>
-  searchParams: Awaited<PageProps['searchParams']>
-}
+type Props = Exclude<Exclude<IHackathonProps['hackathons'], null | undefined>[0], number> & AwaitedBaseParams
 
 export function HackathonCard({
   id,

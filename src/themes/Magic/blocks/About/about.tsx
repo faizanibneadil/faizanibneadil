@@ -8,8 +8,8 @@ const BLUR_FADE_DELAY = 0.04;
 export async function About(props: BlockProps<'about'>) {
     const {
         blockProps,
-        params: paramsFromProps,
-        searchParams: searchParamsFromProps
+        params,
+        searchParams
     } = props || {}
 
     const {
@@ -18,9 +18,6 @@ export async function About(props: BlockProps<'about'>) {
         content,
         id
     } = blockProps || {}
-
-    const params = paramsFromProps instanceof Promise ? await paramsFromProps : paramsFromProps
-    const searchParams = searchParamsFromProps instanceof Promise ? await searchParamsFromProps : searchParamsFromProps
 
     return (
         <section id="about" aria-label={blockName ?? blockType}>
