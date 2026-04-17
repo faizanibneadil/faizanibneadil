@@ -1,8 +1,7 @@
 import { PayloadRedirects } from "@/components/PayloadRedirects";
-import { themesRegistry } from "@/themes";
+import { ShelvesMaps } from "@/shelves";
 import type { PageProps } from "@/types";
 import { queryCollectionBySlug } from "@/utilities/queries/queryCollectionBySlug";
-import { queryCollectionCountBySlug } from "@/utilities/queries/queryCollectionCountBySlug";
 import { queryPageByConfiguredCollection } from "@/utilities/queries/queryPageByConfiguiredCollection";
 import { queryPortfolioSettings } from "@/utilities/queries/queryPortfolioSettings";
 import type { Metadata } from "next";
@@ -14,10 +13,10 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
     domain: params.domain
   })
 
-  const themeID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
+  const shelfID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
 
-  if (Object.hasOwn(themesRegistry, themeID!)) {
-    const collectionsMap = themesRegistry?.[themeID!]?.config?.collectionConfig?.collectionsMap
+  if (Object.hasOwn(ShelvesMaps, shelfID!)) {
+    const collectionsMap = ShelvesMaps?.[shelfID!]?.config?.collectionConfig?.collectionsMap
 
     if (!Object.keys(collectionsMap).includes(params.collectionSlug)) {
       return {
@@ -57,9 +56,9 @@ export default async function Page(props: PageProps) {
     domain: params.domain
   })
 
-  const themeID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
+  const shelfID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
 
-  const themeConfig = themesRegistry?.[themeID!]
+  const themeConfig = ShelvesMaps?.[shelfID!]
   const collectionsMap = themeConfig?.config?.collectionConfig?.collectionsMap
   const RenderCollection = themeConfig?.config?.collectionConfig?.RenderCollection
 

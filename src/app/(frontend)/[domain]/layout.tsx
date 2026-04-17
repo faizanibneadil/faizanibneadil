@@ -1,5 +1,6 @@
-import { themesRegistry } from "@/themes";
-import { queryThemeByDomain } from "@/utilities/QueryThemeByDomain";
+import { ShelvesMaps } from "@/shelves";
+import { queryPortfolioSettings } from "@/utilities/queries/queryPortfolioSettings";
+import { queryShelfByDomain } from "@/utilities/QueryThemeByDomain";
 
 export default async function Layout(props: React.PropsWithChildren<{
     params: Promise<{
@@ -7,14 +8,16 @@ export default async function Layout(props: React.PropsWithChildren<{
     }>
 }>) {
     const params = await props.params
-    const themeId = await queryThemeByDomain({
+    const settings = await queryPortfolioSettings({
         domain: params.domain
     })
 
-    if (Object.hasOwn(themesRegistry, themeId)) {
-        const Layout = themesRegistry[themeId]?.config?.layout
+    const shelfID = typeof settings?.theme === 'object' ? settings.theme?.id : settings?.theme
 
-        return <Layout {...props} params={params} themeId={themeId} />
+    if (Object.hasOwn(ShelvesMaps, shelfID!)) {
+        const Layout = ShelvesMaps[shelfID!]?.config?.layout
+
+        return <Layout {...props} params={params} themeId={shelfID!} />
     }
 
     return 'Theme is not selected'

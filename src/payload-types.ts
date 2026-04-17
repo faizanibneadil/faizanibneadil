@@ -669,8 +669,14 @@ export interface Achievement {
    */
   resources?:
     | {
-        label: string;
-        link: string;
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -854,8 +860,14 @@ export interface Certification {
    */
   resources?:
     | {
-        label: string;
-        link: string;
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -929,8 +941,14 @@ export interface Education {
    */
   resources?:
     | {
-        label: string;
-        link: string;
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1029,11 +1047,19 @@ export interface Hackathon {
     from: string;
   };
   location?: string | null;
-  links?:
+  /**
+   * Add links to your thesis, university profile, or digital degree copy.
+   */
+  resources?:
     | {
-        iconify?: string | null;
-        label: string;
-        link: string;
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1119,9 +1145,14 @@ export interface Project {
   };
   resources?:
     | {
-        iconify?: string | null;
-        label: string;
-        link: string;
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1194,8 +1225,14 @@ export interface Publication {
    */
   resources?:
     | {
-        label: string;
-        link: string;
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1265,8 +1302,14 @@ export interface Research {
    */
   resources?:
     | {
-        label: string;
-        link: string;
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1576,8 +1619,14 @@ export interface License {
    */
   resources?:
     | {
-        label: string;
-        link: string;
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -2179,8 +2228,11 @@ export interface EducationsSelect<T extends boolean = true> {
   resources?:
     | T
     | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
         label?: T;
-        link?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -2215,9 +2267,11 @@ export interface ProjectsSelect<T extends boolean = true> {
   resources?:
     | T
     | {
-        iconify?: T;
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
         label?: T;
-        link?: T;
         id?: T;
       };
   meta?:
@@ -2335,12 +2389,14 @@ export interface HackathonsSelect<T extends boolean = true> {
         from?: T;
       };
   location?: T;
-  links?:
+  resources?:
     | T
     | {
-        iconify?: T;
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
         label?: T;
-        link?: T;
         id?: T;
       };
   image?: T;
@@ -2379,8 +2435,11 @@ export interface ResearchesSelect<T extends boolean = true> {
   resources?:
     | T
     | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
         label?: T;
-        link?: T;
         id?: T;
       };
   meta?:
@@ -2424,8 +2483,11 @@ export interface AchievementsSelect<T extends boolean = true> {
   resources?:
     | T
     | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
         label?: T;
-        link?: T;
         id?: T;
       };
   meta?:
@@ -2462,8 +2524,11 @@ export interface CertificationsSelect<T extends boolean = true> {
   resources?:
     | T
     | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
         label?: T;
-        link?: T;
         id?: T;
       };
   meta?:
@@ -2496,8 +2561,11 @@ export interface PublicationsSelect<T extends boolean = true> {
   resources?:
     | T
     | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
         label?: T;
-        link?: T;
         id?: T;
       };
   meta?:
@@ -2535,8 +2603,11 @@ export interface LicensesSelect<T extends boolean = true> {
   resources?:
     | T
     | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
         label?: T;
-        link?: T;
         id?: T;
       };
   updatedAt?: T;

@@ -122,7 +122,7 @@ export type LayoutRendererProps = React.PropsWithChildren & {
     params: { domain: string }
 }
 
-export type ThemeConfig = {
+export type ShelfConfig = {
     themeMeta: ThemeMeta,
     config: {
         skeleton: React.ComponentType<{

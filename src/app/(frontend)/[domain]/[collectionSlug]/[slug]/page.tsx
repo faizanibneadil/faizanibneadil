@@ -1,6 +1,6 @@
 import RenderCollection from '@/app/(frontend)/[domain]/[collectionSlug]/page'
 import { PayloadRedirects } from "@/components/PayloadRedirects"
-import { themesRegistry } from "@/themes"
+import { ShelvesMaps } from "@/shelves"
 import type { PageProps } from "@/types"
 import { queryCollectionViewBySlug } from '@/utilities/queries/queryCollectionViewBySlug'
 import { queryPageBySlug } from '@/utilities/queries/queryPageBySlug'
@@ -36,10 +36,10 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
         domain: params.domain
     })
 
-    const themeID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
+    const shelfID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
 
-    if (Object.hasOwn(themesRegistry, themeID!)) {
-        const docMap = themesRegistry[themeID!].config.documentConfig.docMap
+    if (Object.hasOwn(ShelvesMaps, shelfID!)) {
+        const docMap = ShelvesMaps[shelfID!].config.documentConfig.docMap
         if (!page && Object.hasOwn(docMap, params.collectionSlug)) {
             const doc = await queryCollectionViewBySlug({
                 collectionSlug: params.collectionSlug,
@@ -84,13 +84,13 @@ export default async function Page(props: PageProps) {
         domain: params.domain
     })
 
-    const themeID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
+    const shelfID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
 
-    if (!Object.hasOwn(themesRegistry, themeID!)) {
+    if (!Object.hasOwn(ShelvesMaps, shelfID!)) {
         return 'Theme not found'
     }
 
-    const themeConfig = themesRegistry?.[themeID!]
+    const themeConfig = ShelvesMaps?.[shelfID!]
     const blocksMap = themeConfig?.config?.blocksConfig.blocksMap
     const RenderBlocks = themeConfig?.config?.RenderBlocks
     const docMap = themeConfig?.config?.documentConfig?.docMap
