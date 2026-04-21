@@ -21,7 +21,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
     kv: redisKVAdapter({
-        redisURL: 'rediss://default:AVNS_z8Za9Si2vD_wkoGAMxI@valkey-1817065b-easypeasy.e.aivencloud.com:10172'
+        redisURL: process.env.REDIS_URL
     }),
     hooks: {
         afterError: [console.log]
@@ -154,7 +154,7 @@ export default buildConfig({
         payload.logger.info('App is initialized ...')
         payload.logger.info('Finding home page in pages collection...')
         const result = await payload.kv.get('test-kv')
-        console.log({result})
+        console.log({ result })
 
     },
     plugins: [...plugins],

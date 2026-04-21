@@ -23,9 +23,6 @@ export const License: Block = {
             name: 'licenses',
             label: 'Licenses',
             hasMany: true,
-            admin:{
-                appearance:'drawer',
-            }
         }
     ]
 }

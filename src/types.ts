@@ -8,7 +8,7 @@ import type {
     PaginatedDocs,
     DataFromCollectionSlug
 } from "payload"
-import type { Page } from "./payload-types"
+import type { Page, Config as PayloadConfig } from "./payload-types"
 import { Metadata } from "next"
 
 export type Config = { invalidateRootRoute?: boolean }
@@ -18,8 +18,8 @@ export type AppGeneratePreview = (config: { collection: CollectionSlug }) => Gen
 export type PageProps = {
     params: Promise<{
         domain: string,
-        id: string,
-        slug: CollectionSlug
+        slug: string,
+        collectionSlug: CollectionSlug
     }>,
     searchParams: Promise<{
         vp: 'd' | 'm' | 't'
@@ -34,24 +34,24 @@ export type BaseParams = {
 
 export type AwaitedBaseParams = {
     params: Awaited<PageProps['params']>,
-    searchParams:Awaited<PageProps['searchParams']>
+    searchParams: Awaited<PageProps['searchParams']>
 }
 
 // Block types
 export type LayoutProps = React.PropsWithChildren<Omit<PageProps, 'searchParams'>>
 export type BlocksRegistryProps = {
-    blocks: NonNullable<Page['content']>['layout'][][0],
+    blocks: NonNullable<Page>['layout'][][0],
 } & PageProps
-export type BlockParams = BaseParams
+export type BlockParams = AwaitedBaseParams
 export type BlockProps<K extends BlockSlug> = {
-    blockProps: Extract<NonNullable<NonNullable<Page['content']>['layout']>[number], { blockType: K }>
+    blockProps: Extract<NonNullable<NonNullable<Page>['layout']>[number], { blockType: K }>
 } & BlockParams
 
 // collection types
 export type CollectionsRegistryProps = {
     page: Page | null
 } & PageProps
-export type CollectionParams = BaseParams
+export type CollectionParams = AwaitedBaseParams
 export type CollectionProps<K extends CollectionSlug> = {
     collection: PaginatedDocs<DataFromCollectionSlug<K>>
 } & CollectionParams
@@ -79,8 +79,8 @@ export type BlocksMapType = {
     [K in BlockSlug]?: {
         skeleton: React.ComponentType<{}>,
         component: React.ComponentType<{
-            blockProps: Extract<NonNullable<NonNullable<Page['content']>['layout']>[number], { blockType: K }>,
-        } & PageProps>
+            blockProps: Extract<NonNullable<NonNullable<Page>['layout']>[number], { blockType: K }>,
+        } & AwaitedBaseParams>
     }
 }
 
@@ -89,21 +89,21 @@ export type CollectionMapType = {
         component: React.ComponentType<{
             collection: PaginatedDocs<DataFromCollectionSlug<K>>,
             isRootPage: boolean
-        } & PageProps>,
+        } & AwaitedBaseParams>,
         skeleton: React.ComponentType<{}>,
-        metadata: (args: { doc: DataFromCollectionSlug<K> }) => Metadata | Promise<Metadata>,
+        metadata: (args: { doc: Page }) => Metadata | Promise<Metadata>,
         enableDocumentView: boolean
     }
 }
 
 export type DocMapType = {
     [K in CollectionSlug]?: {
-        component: React.ComponentType<{ entity: DataFromCollectionSlug<K> } & PageProps>,
+        component: React.ComponentType<{ entity: DataFromCollectionSlug<K> } & AwaitedBaseParams>,
         metadata: (args: { doc: DataFromCollectionSlug<K> }) => Metadata | Promise<Metadata>
     }
 }
 
-export type PageRendererProps = PageProps & {
+export type RenderPageProps = AwaitedBaseParams & {
     themeId: number,
     enableCollection: boolean,
     page: Page | null,
@@ -111,19 +111,18 @@ export type PageRendererProps = PageProps & {
     collectionMap: CollectionMapType
 }
 
-export type DocumentRendererProps = PageProps & {
-    entity: DataFromCollectionSlug<CollectionSlug> | null,
+export type RenderDocumentViewProps = AwaitedBaseParams & {
+    doc: DataFromCollectionSlug<CollectionSlug> | null,
     docMap: DocMapType,
-    docSlug: string,
-    excludedCollectionSlug: CollectionSlug
+    collectionSlug: CollectionSlug
 }
 
 export type LayoutRendererProps = React.PropsWithChildren & {
     themeId: number,
-    params: Promise<{ domain: string }>
+    params: { domain: string }
 }
 
-export type ThemeConfig = {
+export type ShelfConfig = {
     themeMeta: ThemeMeta,
     config: {
         skeleton: React.ComponentType<{
@@ -136,30 +135,19 @@ export type ThemeConfig = {
         },
         collectionConfig: {
             collectionsMap: CollectionMapType,
+            RenderCollection: React.ComponentType<AwaitedBaseParams & {
+                collection: PaginatedDocs<DataFromCollectionSlug<CollectionSlug>>,
+                collectionsMap: CollectionMapType,
+            }>
         },
         documentConfig: {
             docMap: DocMapType,
-            DocumentRenderer: React.ComponentType<DocumentRendererProps>,
+            RenderDocumentView: React.ComponentType<RenderDocumentViewProps>,
         },
-        PageRenderer: React.ComponentType<PageRendererProps>,
-        layout: React.ComponentType<LayoutRendererProps>
+        layout: React.ComponentType<LayoutRendererProps>,
+        RenderBlocks: React.ComponentType<AwaitedBaseParams & {
+            blocks: PayloadConfig['blocks'][keyof PayloadConfig['blocks']][] | null | undefined,
+            blocksMap: BlocksMapType
+        }>
     }
-}
-
-/**
- * 
- * after routes updates types
- */
-
-export type AppPageProps = {
-    searchParams: Promise<{
-        vp: 'd' | 'm' | 't'
-    } & {
-        [key: string]: string | string[] | undefined
-    }>
-    params: Promise<{
-        domain: string,
-        collectionSlug: CollectionSlug,
-        slug: string
-    }>
 }

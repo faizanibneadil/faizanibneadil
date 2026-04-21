@@ -249,6 +249,7 @@ export const plugins: Plugin[] = [
             socials: { isGlobal: true },
             integration: { isGlobal: true },
             "portfolio-settings": { isGlobal: true },
+            redirects: {},
         },
         tenantField: {
             access: {

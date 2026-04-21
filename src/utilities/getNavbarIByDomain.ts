@@ -1,67 +1,32 @@
-import { cache } from "react"
+import { isNumber } from "payload/shared"
 import { getPayloadConfig } from "./getPayloadConfig"
-import type { Menu, Social } from "@/payload-types"
 
 // TODO: wrap into next unstable cache for better performance
-export const getNavbarMenuItems = cache(async (domain: string) => {
-    try {
-        const isNumericDomain = !Number.isNaN(Number(domain))
-        const payload = await getPayloadConfig()
-        const menu = await payload.find({
-            collection: 'menus',
-            limit: 1,
-            where: {
-                or: [
-                    {
-                        'tenant.slug': {
-                            equals: domain
-                        }
-                    },
-                    ...(isNumericDomain
-                        ? [{
-                            'tenant.id': {
-                                equals: Number(domain),
-                            },
-                        }]
-                        : []),
-                ]
+export const getNavbarMenuItems = async ({ domain }: { domain: string }) => {
+    const payload = await getPayloadConfig()
+    const menu = await payload.find({
+        collection: 'menus',
+        limit: 1,
+        where: {
+            [`tenant.${isNumber(domain) ? 'id' : 'slug'}`]: {
+                equals: domain
             }
-        })
-        return menu?.docs?.at(0)
-    } catch (error) {
-        console.error("Something went wrong to fetch navbar menu items", error)
-        return {} as Menu
-    }
-})
+        }
+    })
+    return menu?.docs?.at(0)
+}
 
 // TODO: wrap into next unstable cache for better performance
-export const getNavbarSocialMenuItems = cache(async (domain: string) => {
-    try {
-        const isNumericDomain = !Number.isNaN(Number(domain))
-        const payload = await getPayloadConfig()
-        const socials = (await payload.find({
-            collection: 'socials',
-            limit: 1,
-            where: {
-                or: [
-                    {
-                        'tenant.slug': {
-                            equals: domain
-                        }
-                    },
-                    ...(isNumericDomain
-                        ? [{
-                            'tenant.id': {
-                                equals: Number(domain),
-                            },
-                        }]
-                        : []),
-                ]
+export const getNavbarSocialMenuItems = async ({ domain }: { domain: string }) => {
+    const payload = await getPayloadConfig()
+    const socials = (await payload.find({
+        collection: 'socials',
+        limit: 1,
+        where: {
+            [`tenant.${isNumber(domain) ? 'id' : 'slug'}`]: {
+                equals: domain
             }
-        }))?.docs?.at(0)
-        return socials
-    } catch (error) {
-        console.error("Something went wrong to fetch navbar social items", error)
-        return {} as Social
-    }
-})
+        }
+    }))?.docs?.at(0)
+    return socials
+}

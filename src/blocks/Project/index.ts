@@ -23,9 +23,6 @@ export const Project: Block = {
             name: 'projects',
             label: 'Projects',
             hasMany: true,
-            admin: {
-                appearance: 'drawer',
-            }
         }
     ]
 }

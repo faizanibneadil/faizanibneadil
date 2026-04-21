@@ -2,9 +2,10 @@ import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin"
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
+import { slugify } from "@/utilities/slugify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import type { CollectionConfig } from "payload";
+import { slugField, type CollectionConfig } from "payload";
 
 export const Certifications: CollectionConfig<'certifications'> = {
     slug: 'certifications',
@@ -27,7 +28,6 @@ export const Certifications: CollectionConfig<'certifications'> = {
             type: 'tabs',
             tabs: [
                 {
-                    name: 'content',
                     label: 'Content',
                     fields: [
                         {
@@ -137,23 +137,81 @@ export const Certifications: CollectionConfig<'certifications'> = {
                                     type: 'row',
                                     fields: [
                                         {
-                                            name: 'label',
-                                            type: 'text',
-                                            label: 'Label',
-                                            required: true,
-                                            admin: { width: '40%', placeholder: 'e.g., Verify Credential' }
+                                            name: 'type',
+                                            type: 'radio',
+                                            admin: {
+                                                layout: 'horizontal',
+                                                width: '50%',
+                                            },
+                                            defaultValue: 'internal',
+                                            options: [
+                                                {
+                                                    label: 'Internal link',
+                                                    value: 'internal',
+                                                },
+                                                {
+                                                    label: 'External URL',
+                                                    value: 'external',
+                                                },
+                                            ],
                                         },
                                         {
-                                            name: 'link',
+                                            name: 'newTab',
+                                            type: 'checkbox',
+                                            admin: {
+                                                style: {
+                                                    alignSelf: 'flex-end',
+                                                },
+                                                width: '50%',
+                                            },
+                                            label: 'Open in new tab',
+                                        },
+                                    ],
+                                },
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        {
+                                            type: 'relationship',
+                                            relationTo: ['pages'],
+                                            name: 'page',
+                                            label: 'Page',
+                                            admin: {
+                                                condition: (_, { type }) => type === 'internal',
+                                                width: '50%'
+                                            }
+                                        },
+                                        {
                                             type: 'text',
+                                            name: 'url',
                                             label: 'URL',
-                                            required: true,
-                                            admin: { width: '60%', placeholder: 'https://...' }
+                                            validate: (url: string | undefined | null) => {
+                                                try {
+                                                    if (!url) {
+                                                        return 'URL is required.'
+                                                    }
+                                                    new URL(url)
+                                                    return true
+                                                } catch (error) {
+                                                    return 'Invalid URL'
+                                                }
+                                            },
+                                            admin: {
+                                                condition: (_, { type }) => type === 'external',
+                                                width: '50%'
+                                            }
+                                        },
+                                        {
+                                            type: 'text',
+                                            name: 'label',
+                                            label: 'Label',
+                                            admin: {
+                                                width: '50%'
+                                            }
                                         }
                                     ]
                                 }
-                            ],
-                            maxRows: 3
+                            ]
                         },
                     ]
                 },
@@ -178,6 +236,14 @@ export const Certifications: CollectionConfig<'certifications'> = {
                 }
             ]
         },
+        slugField({
+            name: 'slug',
+            checkboxName: 'lockSlug',
+            slugify: ({ valueToSlugify, data }) => {
+                const fieldToSlug = slugify(valueToSlugify)
+                return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
+            },
+        }),
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],

@@ -5,10 +5,11 @@ import { Iconify } from "@/fields/iconify";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
+import { slugify } from "@/utilities/slugify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 // import { VersionConfig } from "@/utilities/version-config";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import { CollectionConfig } from "payload";
+import { CollectionConfig, slugField } from "payload";
 
 export const Hackathons: CollectionConfig<'hackathons'> = {
     slug: 'hackathons',
@@ -40,7 +41,6 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
             type: 'tabs',
             tabs: [
                 {
-                    name: 'content',
                     label: 'Content',
                     fields: [{
                         type: 'richText',
@@ -89,38 +89,92 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
                     },
                     {
                         type: 'array',
-                        name: 'links',
-                        labels: { singular: 'Link', plural: 'Links' },
+                        name: 'resources',
+                        label: 'Resources',
+                        labels: { singular: 'Resource', plural: 'Resources' },
                         admin: {
-                            initCollapsed: true
+                            description: 'Add links to your thesis, university profile, or digital degree copy.'
                         },
                         fields: [
-                            Iconify(),
                             {
                                 type: 'row',
                                 fields: [
                                     {
-                                        type: 'text',
-                                        label: 'Lable',
-                                        name: 'label',
-                                        required: true,
+                                        name: 'type',
+                                        type: 'radio',
                                         admin: {
+                                            layout: 'horizontal',
+                                            width: '50%',
+                                        },
+                                        defaultValue: 'internal',
+                                        options: [
+                                            {
+                                                label: 'Internal link',
+                                                value: 'internal',
+                                            },
+                                            {
+                                                label: 'External URL',
+                                                value: 'external',
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        name: 'newTab',
+                                        type: 'checkbox',
+                                        admin: {
+                                            style: {
+                                                alignSelf: 'flex-end',
+                                            },
+                                            width: '50%',
+                                        },
+                                        label: 'Open in new tab',
+                                    },
+                                ],
+                            },
+                            {
+                                type: 'row',
+                                fields: [
+                                    {
+                                        type: 'relationship',
+                                        relationTo: ['pages'],
+                                        name: 'page',
+                                        label: 'Page',
+                                        admin: {
+                                            condition: (_, { type }) => type === 'internal',
                                             width: '50%'
                                         }
                                     },
                                     {
                                         type: 'text',
-                                        name: 'link',
-                                        label: 'Link',
-                                        required: true,
+                                        name: 'url',
+                                        label: 'URL',
+                                        validate: (url: string | undefined | null) => {
+                                            try {
+                                                if (!url) {
+                                                    return 'URL is required.'
+                                                }
+                                                new URL(url)
+                                                return true
+                                            } catch (error) {
+                                                return 'Invalid URL'
+                                            }
+                                        },
+                                        admin: {
+                                            condition: (_, { type }) => type === 'external',
+                                            width: '50%'
+                                        }
+                                    },
+                                    {
+                                        type: 'text',
+                                        name: 'label',
+                                        label: 'Label',
                                         admin: {
                                             width: '50%'
                                         }
                                     }
                                 ]
                             }
-                        ],
-                        maxRows: 5
+                        ]
                     },
                     {
                         type: 'upload',
@@ -171,6 +225,14 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
                 }
             ]
         },
+        slugField({
+            name: 'slug',
+            checkboxName: 'lockSlug',
+            slugify: ({ valueToSlugify, data }) => {
+                const fieldToSlug = slugify(valueToSlugify)
+                return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
+            },
+        }),
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],

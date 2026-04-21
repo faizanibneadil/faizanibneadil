@@ -23,9 +23,6 @@ export const Hackathon: Block = {
             name: 'hackathons',
             label: 'Hackathons',
             hasMany: true,
-            admin:{
-                appearance:'drawer',
-            }
         }
     ]
 }

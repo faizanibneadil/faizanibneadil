@@ -23,6 +23,24 @@ export type TUserTenants =
     }[]
   | null;
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TMenuItemsPropsType".
+ */
+export type TMenuItemsPropsType =
+  | {
+      iconify?: string | null;
+      type?: ('internal' | 'external') | null;
+      newTab?: boolean | null;
+      page?: {
+        relationTo: 'pages';
+        value: number | Page;
+      } | null;
+      url?: string | null;
+      label?: string | null;
+      id?: string | null;
+    }[]
+  | null;
+/**
  * Supported timezones in IANA format.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -192,20 +210,18 @@ export interface Config {
 }
 export interface UserAuthOperations {
   forgotPassword: {
-    email: string;
-    password: string;
+    username: string;
   };
   login: {
-    email: string;
     password: string;
+    username: string;
   };
   registerFirstUser: {
-    email: string;
     password: string;
+    username: string;
   };
   unlock: {
-    email: string;
-    password: string;
+    username: string;
   };
 }
 /**
@@ -495,30 +511,28 @@ export interface Page {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content?: {
-    configuredCollectionSlug?: string | null;
-    layout?:
-      | (
-          | IAboutProps
-          | IContactProps
-          | IHeroProps
-          | ISkillProps
-          | TEducationProps
-          | IExperienceProps
-          | IBlogsBlockProps
-          | TFormBlockProps
-          | IAchievementProps
-          | ICertificationProps
-          | IGithubContributionProps
-          | IHackathonProps
-          | IProjectProps
-          | IPublicationProps
-          | IResearchProps
-          | TCodeBlockProps
-          | ILicenseProps
-        )[]
-      | null;
-  };
+  configuredCollectionSlug?: string | null;
+  layout?:
+    | (
+        | IAboutProps
+        | IAchievementProps
+        | IBlogsBlockProps
+        | ICertificationProps
+        | TCodeBlockProps
+        | IContactProps
+        | TEducationProps
+        | IExperienceProps
+        | TFormBlockProps
+        | IGithubContributionProps
+        | IHackathonProps
+        | IHeroProps
+        | ILicenseProps
+        | IProjectProps
+        | IPublicationProps
+        | IResearchProps
+        | ISkillProps
+      )[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -527,10 +541,6 @@ export interface Page {
      */
     image?: (number | null) | Media;
   };
-  /**
-   * Set this page as your portfolio's primary Home Page. Only one page can be active as the Main Page at a time.
-   */
-  isRootPage: boolean;
   /**
    * If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change collection.
    */
@@ -571,9 +581,9 @@ export interface IAboutProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ISkillProps".
+ * via the `definition` "IAchievementProps".
  */
-export interface ISkillProps {
+export interface IAchievementProps {
   heading: string;
   description?: {
     root: {
@@ -590,17 +600,101 @@ export interface ISkillProps {
     };
     [k: string]: unknown;
   } | null;
-  /**
-   * Check this to display every skill from your collection. Uncheck to manually select specific skills.
-   */
-  showAllSkills?: boolean | null;
-  /**
-   * Choose specific skills you want to showcase.
-   */
-  userSkills?: (number | Skill)[] | null;
+  achievements?: (number | Achievement)[] | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'skill';
+  blockType: 'achievement';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements".
+ */
+export interface Achievement {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Select the category that best classifies this recognition.
+   */
+  type?: ('award' | 'honor' | 'speaking-engagement' | 'competition-winner' | 'community-contribution' | 'other') | null;
+  /**
+   * Upload a high-quality badge, logo, or certificate photo for visual proof.
+   */
+  image?: (number | null) | Media;
+  /**
+   * Provide a detailed overview of the achievement and your specific role or contribution.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  skills?: (number | Skill)[] | null;
+  dates?: {
+    /**
+     * Starting date or date received.
+     */
+    from?: string | null;
+    /**
+     * End date or leave blank if it is a single-day event.
+     */
+    to?: string | null;
+    /**
+     * Physical venue or digital platform where the event took place.
+     */
+    location?: string | null;
+  };
+  /**
+   * Quantify your success with measurable data (e.g., Rank, Growth %, or Scale).
+   */
+  stats?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Add relevant links to verify this achievement (e.g., News articles, YouTube, or Event sites).
+   */
+  resources?:
+    | {
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -710,153 +804,73 @@ export interface Skill {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "achievements".
- */
-export interface Achievement {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  content?: {
-    /**
-     * Select the category that best classifies this recognition.
-     */
-    type?:
-      | ('award' | 'honor' | 'speaking-engagement' | 'competition-winner' | 'community-contribution' | 'other')
-      | null;
-    /**
-     * Upload a high-quality badge, logo, or certificate photo for visual proof.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Provide a detailed overview of the achievement and your specific role or contribution.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    skills?: (number | Skill)[] | null;
-    dates?: {
-      /**
-       * Starting date or date received.
-       */
-      from?: string | null;
-      /**
-       * End date or leave blank if it is a single-day event.
-       */
-      to?: string | null;
-      /**
-       * Physical venue or digital platform where the event took place.
-       */
-      location?: string | null;
-    };
-    /**
-     * Quantify your success with measurable data (e.g., Rank, Growth %, or Scale).
-     */
-    stats?:
-      | {
-          label: string;
-          value: string;
-          id?: string | null;
-        }[]
-      | null;
-    /**
-     * Add relevant links to verify this achievement (e.g., News articles, YouTube, or Event sites).
-     */
-    resources?:
-      | {
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "certifications".
  */
 export interface Certification {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
-    /**
-     * The entity that granted this credential (e.g., Cisco, Yale, PMI).
-     */
-    issuer: string;
-    /**
-     * Unique identifier provided by the issuer for verification.
-     */
-    credentialId?: string | null;
-    /**
-     * Upload a high-resolution logo of the issuer or the official certification badge.
-     */
-    image: number | Media;
-    /**
-     * Detail the curriculum, skills mastered, or the exam passed to earn this certificate.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+  /**
+   * The entity that granted this credential (e.g., Cisco, Yale, PMI).
+   */
+  issuer: string;
+  /**
+   * Unique identifier provided by the issuer for verification.
+   */
+  credentialId?: string | null;
+  /**
+   * Upload a high-resolution logo of the issuer or the official certification badge.
+   */
+  image: number | Media;
+  /**
+   * Detail the curriculum, skills mastered, or the exam passed to earn this certificate.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    skills?: (number | Skill)[] | null;
-    validity: {
-      /**
-       * Date when the credential was granted.
-       */
-      issuedDate: string;
-      /**
-       * Date when the credential expires.
-       */
-      expiryDate?: string | null;
-      /**
-       * Check if this certification is valid indefinitely.
-       */
-      isLifetime?: boolean | null;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
+    [k: string]: unknown;
+  } | null;
+  skills?: (number | Skill)[] | null;
+  validity: {
     /**
-     * Provide links to official verification portals, online badges, or PDF copies.
+     * Date when the credential was granted.
      */
-    resources?:
-      | {
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
+    issuedDate: string;
+    /**
+     * Date when the credential expires.
+     */
+    expiryDate?: string | null;
+    /**
+     * Check if this certification is valid indefinitely.
+     */
+    isLifetime?: boolean | null;
   };
+  /**
+   * Provide links to official verification portals, online badges, or PDF copies.
+   */
+  resources?:
+    | {
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -865,6 +879,11 @@ export interface Certification {
      */
     image?: (number | null) | Media;
   };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -922,8 +941,14 @@ export interface Education {
    */
   resources?:
     | {
-        label: string;
-        link: string;
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -998,41 +1023,47 @@ export interface Hackathon {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
-    /**
-     * Write description.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+  /**
+   * Write description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    skills?: (number | Skill)[] | null;
-    dates: {
-      to: string;
-      from: string;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
-    location?: string | null;
-    links?:
-      | {
-          iconify?: string | null;
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
-    image: number | Media;
+    [k: string]: unknown;
+  } | null;
+  skills?: (number | Skill)[] | null;
+  dates: {
+    to: string;
+    from: string;
   };
+  location?: string | null;
+  /**
+   * Add links to your thesis, university profile, or digital degree copy.
+   */
+  resources?:
+    | {
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1041,6 +1072,11 @@ export interface Hackathon {
      */
     image?: (number | null) | Media;
   };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1053,70 +1089,73 @@ export interface Project {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
-    /**
-     * Provide project thumbnail.
-     */
-    thumbnail: number | Media;
-    overview?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+  /**
+   * Provide project thumbnail.
+   */
+  thumbnail: number | Media;
+  overview?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    detailedOverview?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  detailedOverview?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    publishedAt?: string | null;
-    /**
-     * Provide list of skills. You used to build this project
-     */
-    skills?: (number | Skill)[] | null;
-    dates?: {
-      to?: string | null;
-      from?: string | null;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
-    /**
-     * Provide credential for testing.
-     */
-    credential?: {
-      credential_email?: string | null;
-      credential_password?: string | null;
-      /**
-       * If you handled your authentication with username then provide otherwize leave it.
-       */
-      credential_username?: string | null;
-    };
-    links?:
-      | {
-          iconify?: string | null;
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
+    [k: string]: unknown;
+  } | null;
+  publishedAt?: string | null;
+  /**
+   * Provide list of skills. You used to build this project
+   */
+  skills?: (number | Skill)[] | null;
+  dates?: {
+    to?: string | null;
+    from?: string | null;
   };
+  /**
+   * Provide credential for testing.
+   */
+  credential?: {
+    credential_email?: string | null;
+    credential_password?: string | null;
+    /**
+     * If you handled your authentication with username then provide otherwize leave it.
+     */
+    credential_username?: string | null;
+  };
+  resources?:
+    | {
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1142,57 +1181,61 @@ export interface Publication {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
-    /**
-     * Select the formal category of this work.
-     */
-    type: 'research_paper' | 'book' | 'conference' | 'patent' | 'white_paper';
-    /**
-     * e.g., IEEE, Springer, Oxford University Press.
-     */
-    publisher: string;
-    /**
-     * Upload a book cover or a preview image of the paper.
-     */
-    image: number | Media;
-    /**
-     * Provide a formal abstract or high-level summary of the work.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+  /**
+   * Select the formal category of this work.
+   */
+  type: 'research_paper' | 'book' | 'conference' | 'patent' | 'white_paper';
+  /**
+   * e.g., IEEE, Springer, Oxford University Press.
+   */
+  publisher: string;
+  /**
+   * Upload a book cover or a preview image of the paper.
+   */
+  image: number | Media;
+  /**
+   * Provide a formal abstract or high-level summary of the work.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    skills?: (number | Skill)[] | null;
-    /**
-     * The official date of release or filing.
-     */
-    publishedDate: string;
-    /**
-     * Formal identification number for citation.
-     */
-    doi?: string | null;
-    /**
-     * Add links to the full text, library record, or digital PDF.
-     */
-    resources?:
-      | {
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  skills?: (number | Skill)[] | null;
+  /**
+   * The official date of release or filing.
+   */
+  publishedDate: string;
+  /**
+   * Formal identification number for citation.
+   */
+  doi?: string | null;
+  /**
+   * Add links to the full text, library record, or digital PDF.
+   */
+  resources?:
+    | {
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1201,6 +1244,11 @@ export interface Publication {
      */
     image?: (number | null) | Media;
   };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1213,54 +1261,58 @@ export interface Research {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
-  content: {
-    /**
-     * Current progress of the research.
-     */
-    status: 'ongoing' | 'completed' | 'on_hold' | 'under_review';
-    /**
-     * State your position in this study.
-     */
-    role?: string | null;
-    /**
-     * An image representing the research or the project poster.
-     */
-    image: number | Media;
-    /**
-     * Detail your hypothesis, research methodology, and findings.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+  /**
+   * Current progress of the research.
+   */
+  status: 'ongoing' | 'completed' | 'on_hold' | 'under_review';
+  /**
+   * State your position in this study.
+   */
+  role?: string | null;
+  /**
+   * An image representing the research or the project poster.
+   */
+  image: number | Media;
+  /**
+   * Detail your hypothesis, research methodology, and findings.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    skills?: (number | Skill)[] | null;
-    dates: {
-      from: string;
-      to?: string | null;
-      location?: string | null;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
-    /**
-     * Links to dataset, methodology papers, or whitepapers.
-     */
-    resources?:
-      | {
-          label: string;
-          link: string;
-          id?: string | null;
-        }[]
-      | null;
+    [k: string]: unknown;
+  } | null;
+  skills?: (number | Skill)[] | null;
+  dates: {
+    from: string;
+    to?: string | null;
+    location?: string | null;
   };
+  /**
+   * Links to dataset, methodology papers, or whitepapers.
+   */
+  resources?:
+    | {
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1269,29 +1321,14 @@ export interface Research {
      */
     image?: (number | null) | Media;
   };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TEducationProps".
- */
-export interface TEducationProps {
-  educations?: (number | Education)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'education';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IExperienceProps".
- */
-export interface IExperienceProps {
-  relatedExperiences?: (number | Experience)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'experience';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1328,41 +1365,39 @@ export interface Blog {
   tenant?: (number | null) | Tenant;
   title: string;
   content?: {
-    content?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    /**
-     * Blog short description.
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Blog short description.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    featured_image?: (number | null) | Media;
-  };
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  featured_image?: (number | null) | Media;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1379,58 +1414,6 @@ export interface Blog {
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TFormBlockProps".
- */
-export interface TFormBlockProps {
-  form: number | Form;
-  enableIntro?: boolean | null;
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'formBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IAchievementProps".
- */
-export interface IAchievementProps {
-  heading: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  achievements?: (number | Achievement)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'achievement';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1457,6 +1440,63 @@ export interface ICertificationProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'certification';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TCodeBlockProps".
+ */
+export interface TCodeBlockProps {
+  language?: ('ts' | 'js') | null;
+  code?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TEducationProps".
+ */
+export interface TEducationProps {
+  educations?: (number | Education)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'education';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IExperienceProps".
+ */
+export interface IExperienceProps {
+  relatedExperiences?: (number | Experience)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'experience';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TFormBlockProps".
+ */
+export interface TFormBlockProps {
+  form: number | Form;
+  enableIntro?: boolean | null;
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'formBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1503,6 +1543,96 @@ export interface IHackathonProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'hackathon';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ILicenseProps".
+ */
+export interface ILicenseProps {
+  heading: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  licenses?: (number | License)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'license';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "licenses".
+ */
+export interface License {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * e.g., Pakistan Medical Commission, State Bar, etc.
+   */
+  issuingAuthority: string;
+  /**
+   * The official unique ID of your license.
+   */
+  licenseNumber: string;
+  /**
+   * Upload the logo of the issuing board or a scan of the license.
+   */
+  image: number | Media;
+  /**
+   * Briefly describe the professional activities this license permits.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  validity: {
+    issuedDate: string;
+    expiryDate: string;
+    status?: ('active' | 'expired' | 'renewal' | 'inactive') | null;
+  };
+  location?: string | null;
+  /**
+   * Links to online registries or downloadable license copies.
+   */
+  resources?:
+    | {
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1584,20 +1714,9 @@ export interface IResearchProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TCodeBlockProps".
+ * via the `definition` "ISkillProps".
  */
-export interface TCodeBlockProps {
-  language?: ('ts' | 'js') | null;
-  code?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'code-block';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ILicenseProps".
- */
-export interface ILicenseProps {
+export interface ISkillProps {
   heading: string;
   description?: {
     root: {
@@ -1614,68 +1733,17 @@ export interface ILicenseProps {
     };
     [k: string]: unknown;
   } | null;
-  licenses?: (number | License)[] | null;
+  /**
+   * Check this to display every skill from your collection. Uncheck to manually select specific skills.
+   */
+  showAllSkills?: boolean | null;
+  /**
+   * Choose specific skills you want to showcase.
+   */
+  userSkills?: (number | Skill)[] | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'license';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "licenses".
- */
-export interface License {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  /**
-   * e.g., Pakistan Medical Commission, State Bar, etc.
-   */
-  issuingAuthority: string;
-  /**
-   * The official unique ID of your license.
-   */
-  licenseNumber: string;
-  /**
-   * Upload the logo of the issuing board or a scan of the license.
-   */
-  image: number | Media;
-  /**
-   * Briefly describe the professional activities this license permits.
-   */
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  validity: {
-    issuedDate: string;
-    expiryDate: string;
-    status?: ('active' | 'expired' | 'renewal' | 'inactive') | null;
-  };
-  location?: string | null;
-  /**
-   * Links to online registries or downloadable license copies.
-   */
-  resources?:
-    | {
-        label: string;
-        link: string;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
+  blockType: 'skill';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1707,13 +1775,13 @@ export interface User {
   id: number;
   profile?: (number | null) | Media;
   roles?: TUserRole;
-  username?: string | null;
   tenants?: TUserTenants;
   industry?: (number | null) | Industry;
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
-  email: string;
+  email?: string | null;
+  username: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
   salt?: string | null;
@@ -1771,14 +1839,7 @@ export interface Industry {
 export interface Menu {
   id: number;
   tenant?: (number | null) | Tenant;
-  menu?:
-    | {
-        iconify?: string | null;
-        label: string;
-        page?: (number | null) | Page;
-        id?: string | null;
-      }[]
-    | null;
+  menu?: TMenuItemsPropsType;
   updatedAt: string;
   createdAt: string;
 }
@@ -1822,10 +1883,6 @@ export interface Integration {
 export interface PortfolioSetting {
   id: number;
   tenant?: (number | null) | Tenant;
-  /**
-   * This field defines the 'Home' or 'Landing Page' for your entire Portfolio. By selecting a page here, you are designating it as the entry point of your website. Note: Changing this selection will automatically mark the selected page as the 'Main Page' and remove the 'Main Page' status from any other page for this portfolio to ensure there is always exactly one root page.
-   */
-  rootPage: number | Page;
   theme?: (number | null) | Theme;
   updatedAt: string;
   createdAt: string;
@@ -1881,6 +1938,7 @@ export interface FormSubmission {
  */
 export interface Redirect {
   id: number;
+  tenant?: (number | null) | Tenant;
   from: string;
   to?: {
     type?: ('reference' | 'custom') | null;
@@ -2045,13 +2103,13 @@ export interface PayloadMigration {
 export interface UsersSelect<T extends boolean = true> {
   profile?: T;
   roles?: T;
-  username?: T;
   tenants?: T | TUserTenantsSelect<T>;
   industry?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
   email?: T;
+  username?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
   salt?: T;
@@ -2102,13 +2160,9 @@ export interface MediaSelect<T extends boolean = true> {
 export interface BlogsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
-    | T
-    | {
-        content?: T;
-        description?: T;
-        featured_image?: T;
-      };
+  content?: T;
+  description?: T;
+  featured_image?: T;
   meta?:
     | T
     | {
@@ -2129,12 +2183,8 @@ export interface BlogsSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
-    | T
-    | {
-        configuredCollectionSlug?: T;
-        layout?: T | {};
-      };
+  configuredCollectionSlug?: T;
+  layout?: T | {};
   meta?:
     | T
     | {
@@ -2142,7 +2192,6 @@ export interface PagesSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
-  isRootPage?: T;
   enableCollection?: T;
   publishedAt?: T;
   lockSlug?: T;
@@ -2179,8 +2228,11 @@ export interface EducationsSelect<T extends boolean = true> {
   resources?:
     | T
     | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
         label?: T;
-        link?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -2194,35 +2246,33 @@ export interface EducationsSelect<T extends boolean = true> {
 export interface ProjectsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  thumbnail?: T;
+  overview?: T;
+  detailedOverview?: T;
+  publishedAt?: T;
+  skills?: T;
+  dates?:
     | T
     | {
-        thumbnail?: T;
-        overview?: T;
-        detailedOverview?: T;
-        publishedAt?: T;
-        skills?: T;
-        dates?:
-          | T
-          | {
-              to?: T;
-              from?: T;
-            };
-        credential?:
-          | T
-          | {
-              credential_email?: T;
-              credential_password?: T;
-              credential_username?: T;
-            };
-        links?:
-          | T
-          | {
-              iconify?: T;
-              label?: T;
-              link?: T;
-              id?: T;
-            };
+        to?: T;
+        from?: T;
+      };
+  credential?:
+    | T
+    | {
+        credential_email?: T;
+        credential_password?: T;
+        credential_username?: T;
+      };
+  resources?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
+        label?: T;
+        id?: T;
       };
   meta?:
     | T
@@ -2255,16 +2305,22 @@ export interface TenantsSelect<T extends boolean = true> {
  */
 export interface MenusSelect<T extends boolean = true> {
   tenant?: T;
-  menu?:
-    | T
-    | {
-        iconify?: T;
-        label?: T;
-        page?: T;
-        id?: T;
-      };
+  menu?: T | TMenuItemsPropsTypeSelect<T>;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TMenuItemsPropsType_select".
+ */
+export interface TMenuItemsPropsTypeSelect<T extends boolean = true> {
+  iconify?: T;
+  type?: T;
+  newTab?: T;
+  page?: T;
+  url?: T;
+  label?: T;
+  id?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2324,28 +2380,26 @@ export interface SkillsSelect<T extends boolean = true> {
 export interface HackathonsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  description?: T;
+  skills?: T;
+  dates?:
     | T
     | {
-        description?: T;
-        skills?: T;
-        dates?:
-          | T
-          | {
-              to?: T;
-              from?: T;
-            };
-        location?: T;
-        links?:
-          | T
-          | {
-              iconify?: T;
-              label?: T;
-              link?: T;
-              id?: T;
-            };
-        image?: T;
+        to?: T;
+        from?: T;
       };
+  location?: T;
+  resources?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  image?: T;
   meta?:
     | T
     | {
@@ -2353,6 +2407,8 @@ export interface HackathonsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  lockSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -2364,28 +2420,27 @@ export interface HackathonsSelect<T extends boolean = true> {
 export interface ResearchesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  status?: T;
+  role?: T;
+  image?: T;
+  description?: T;
+  skills?: T;
+  dates?:
     | T
     | {
-        status?: T;
-        role?: T;
-        image?: T;
-        description?: T;
-        skills?: T;
-        dates?:
-          | T
-          | {
-              from?: T;
-              to?: T;
-              location?: T;
-            };
-        resources?:
-          | T
-          | {
-              label?: T;
-              link?: T;
-              id?: T;
-            };
+        from?: T;
+        to?: T;
+        location?: T;
+      };
+  resources?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
+        label?: T;
+        id?: T;
       };
   meta?:
     | T
@@ -2394,6 +2449,8 @@ export interface ResearchesSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  lockSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -2405,34 +2462,33 @@ export interface ResearchesSelect<T extends boolean = true> {
 export interface AchievementsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  type?: T;
+  image?: T;
+  description?: T;
+  skills?: T;
+  dates?:
+    | T
+    | {
+        from?: T;
+        to?: T;
+        location?: T;
+      };
+  stats?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  resources?:
     | T
     | {
         type?: T;
-        image?: T;
-        description?: T;
-        skills?: T;
-        dates?:
-          | T
-          | {
-              from?: T;
-              to?: T;
-              location?: T;
-            };
-        stats?:
-          | T
-          | {
-              label?: T;
-              value?: T;
-              id?: T;
-            };
-        resources?:
-          | T
-          | {
-              label?: T;
-              link?: T;
-              id?: T;
-            };
+        newTab?: T;
+        page?: T;
+        url?: T;
+        label?: T;
+        id?: T;
       };
   meta?:
     | T
@@ -2441,6 +2497,8 @@ export interface AchievementsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  lockSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2451,28 +2509,27 @@ export interface AchievementsSelect<T extends boolean = true> {
 export interface CertificationsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  issuer?: T;
+  credentialId?: T;
+  image?: T;
+  description?: T;
+  skills?: T;
+  validity?:
     | T
     | {
-        issuer?: T;
-        credentialId?: T;
-        image?: T;
-        description?: T;
-        skills?: T;
-        validity?:
-          | T
-          | {
-              issuedDate?: T;
-              expiryDate?: T;
-              isLifetime?: T;
-            };
-        resources?:
-          | T
-          | {
-              label?: T;
-              link?: T;
-              id?: T;
-            };
+        issuedDate?: T;
+        expiryDate?: T;
+        isLifetime?: T;
+      };
+  resources?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
+        label?: T;
+        id?: T;
       };
   meta?:
     | T
@@ -2481,6 +2538,8 @@ export interface CertificationsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  lockSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -2492,23 +2551,22 @@ export interface CertificationsSelect<T extends boolean = true> {
 export interface PublicationsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
-  content?:
+  type?: T;
+  publisher?: T;
+  image?: T;
+  description?: T;
+  skills?: T;
+  publishedDate?: T;
+  doi?: T;
+  resources?:
     | T
     | {
         type?: T;
-        publisher?: T;
-        image?: T;
-        description?: T;
-        skills?: T;
-        publishedDate?: T;
-        doi?: T;
-        resources?:
-          | T
-          | {
-              label?: T;
-              link?: T;
-              id?: T;
-            };
+        newTab?: T;
+        page?: T;
+        url?: T;
+        label?: T;
+        id?: T;
       };
   meta?:
     | T
@@ -2517,6 +2575,8 @@ export interface PublicationsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  lockSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -2543,8 +2603,11 @@ export interface LicensesSelect<T extends boolean = true> {
   resources?:
     | T
     | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
         label?: T;
-        link?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -2604,7 +2667,6 @@ export interface IntegrationSelect<T extends boolean = true> {
  */
 export interface PortfolioSettingsSelect<T extends boolean = true> {
   tenant?: T;
-  rootPage?: T;
   theme?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2782,6 +2844,7 @@ export interface FormSubmissionsSelect<T extends boolean = true> {
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
+  tenant?: T;
   from?: T;
   to?:
     | T
