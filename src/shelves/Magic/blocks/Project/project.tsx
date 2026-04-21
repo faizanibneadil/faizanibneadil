@@ -44,7 +44,7 @@ export async function Project(props: BlockProps<'project'>) {
                     {projects?.map((project, idx) => (
                         <React.Suspense key={`project-${typeof project === 'number' ? project : project.id}`}>
                             <BlurFade delay={BLUR_FADE_DELAY * 12 + idx * 0.05}>
-                                <ProjectCard params={params} searchParams={searchParams} project={typeof project === 'number' ? getProjectById(project) : project} />
+                                <ProjectCard params={params} searchParams={searchParams} project={typeof project === 'number' ? getProjectById({id:project}) : project} />
                             </BlurFade>
                         </React.Suspense>
                     ))}

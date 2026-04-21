@@ -96,7 +96,7 @@ export async function Menu(props: Omit<AwaitedBaseParams, 'searchParams'>) {
     params
   } = props || {}
 
-  const __menu = await getNavbarMenuItems(params.domain)
+  const __menu = await getNavbarMenuItems({domain:params.domain})
 
   const menuToRender = __menu?.menu?.map((menu, idx) => {
 
@@ -131,7 +131,7 @@ export async function Socials(props: Omit<AwaitedBaseParams, 'searchParams'>) {
     params
   } = props || {}
 
-  const __socials = await getNavbarSocialMenuItems(params?.domain)
+  const __socials = await getNavbarSocialMenuItems({domain:params?.domain})
 
   const socialsToRender = __socials?.socialsLinks?.map((social, idx) => {
     return (

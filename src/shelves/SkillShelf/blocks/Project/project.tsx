@@ -29,7 +29,7 @@ export async function Project(props: BlockProps<'project'>) {
             <div className="grid grid-cols-1 sm:grid-cols-2 max-w-[800px] mx-auto border">
                 {projects?.map((project, idx) => (
                     <React.Suspense key={`project-${typeof project === 'number' ? project : project.id}`}>
-                            <ProjectCard params={params} searchParams={searchParams} project={typeof project === 'number' ? getProjectById(project) : project} />
+                            <ProjectCard params={params} searchParams={searchParams} project={typeof project === 'number' ? getProjectById({id:project}) : project} />
                     </React.Suspense>
                 ))}
             </div>

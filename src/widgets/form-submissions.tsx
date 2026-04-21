@@ -40,7 +40,7 @@ export function FormSubmissions(props: ClientWidget) {
         return null
     }
 
-    const formSubmissions = getRecentFormSubmissions(selectedTenantID)
+    const formSubmissions = getRecentFormSubmissions({tenantId:selectedTenantID})
     return (
         <ErrorBoundary fallbackRender={fallbackRender} onError={logError}>
             <React.Suspense fallback="Loading Submissions....">

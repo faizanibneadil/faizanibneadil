@@ -14,8 +14,8 @@ export async function Navbar(props: Omit<AwaitedBaseParams, 'searchParams'>) {
     params
   } = props || {}
 
-  const __menu = await getNavbarMenuItems(params.domain)
-  const __socials = await getNavbarSocialMenuItems(params?.domain)
+  const __menu = await getNavbarMenuItems({ domain: params.domain })
+  const __socials = await getNavbarSocialMenuItems({ domain: params?.domain })
 
   const MenuList = __menu?.menu?.map((item, idx) => {
     const href = formatHref({

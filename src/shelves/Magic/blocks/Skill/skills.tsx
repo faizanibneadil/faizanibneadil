@@ -62,7 +62,7 @@ export async function Skill(props: BlockProps<'skill'>) {
                 <div className="flex flex-wrap gap-1">
                     {providedSkills?.map((skill, id) => (
                         <Suspense key={`skill-${id}`} fallback={null}>
-                            <SkillRenderer width='2em' height='2em' skill={typeof skill === 'number' ? getSkillById(skill) : skill} id={id} />
+                            <SkillRenderer width='2em' height='2em' skill={typeof skill === 'number' ? getSkillById({id:skill}) : skill} id={id} />
                         </Suspense>
                     ))}
                 </div>

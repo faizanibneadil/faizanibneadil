@@ -81,7 +81,7 @@ export async function ProjectCard(props: { project: Project | Promise<Project> }
                 <div className="mt-2 flex flex-wrap gap-1">
                     {project?.skills?.map((skill, idx) => (
                         <React.Suspense key={`skill-${idx}`} fallback={null}>
-                            <RenderProjectSkill skill={typeof skill === 'number' ? getSkillById(skill) : skill} />
+                            <RenderProjectSkill skill={typeof skill === 'number' ? getSkillById({id:skill}) : skill} />
                         </React.Suspense>
                     ))}
                 </div>
