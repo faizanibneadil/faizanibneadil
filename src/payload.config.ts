@@ -20,9 +20,9 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-    // kv: redisKVAdapter({
-    //     redisURL: process.env.REDIS_URL
-    // }),
+    kv: redisKVAdapter({
+        redisURL: process.env.REDIS_URL
+    }),
     hooks: {
         afterError: [console.log]
     },
