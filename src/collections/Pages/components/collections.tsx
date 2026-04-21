@@ -21,7 +21,6 @@ const excludeCollection: CollectionSlug[] = [
     "industries",
     "integration",
     "portfolio-settings",
-    "payload-kv",
     "themes",
 ]
 

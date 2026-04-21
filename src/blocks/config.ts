@@ -37,36 +37,3 @@ export const blocks: Block[] = [
     FormBlock,
     Code,
 ]
-
-export const defaultBlocks: BlockSlug[] = [
-    'about',
-    'contact',
-    'hero',
-    'skill',
-    'education',
-    'experience',
-    'blogs-block',
-    'formBlock',
-]
-export const itSpecificBlock: BlockSlug[] = [
-    "achievement",
-    "certification",
-    "github-contributions",
-    "hackathon",
-    "project",
-    "publication",
-    "research",
-    'code-block'
-]
-export const pharmaSpecificBlocks: BlockSlug[] = [
-    'certification',
-    'license',
-    'research'
-]
-
-export const digitalArtistSpecificBlocks: BlockSlug[] = [
-    "achievement",
-    "certification",
-    "project",
-    "publication",
-]

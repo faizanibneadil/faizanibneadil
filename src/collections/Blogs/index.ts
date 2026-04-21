@@ -30,7 +30,6 @@ export const Blogs: CollectionConfig<'blogs'> = {
             type: 'tabs',
             tabs: [
                 {
-                    name: 'content',
                     label: 'Content',
                     fields: [
                         {
@@ -116,8 +115,9 @@ export const Blogs: CollectionConfig<'blogs'> = {
         slugField({
             name: 'slug',
             checkboxName: 'lockSlug',
-            slugify: ({ valueToSlugify }) => {
-                return slugify(valueToSlugify)
+            slugify: ({ valueToSlugify, data }) => {
+                const fieldToSlug = slugify(valueToSlugify)
+                return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),
     ],
@@ -125,5 +125,5 @@ export const Blogs: CollectionConfig<'blogs'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    // versions: VersionConfig(),
+    versions: true
 }

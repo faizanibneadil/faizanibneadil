@@ -29,16 +29,6 @@ export const RichTextLinkFeature = () => {
             return [
                 ..._defaultFields,
                 {
-                    type: 'select',
-                    name: 'linkStyle',
-                    defaultValue: 'normal',
-                    options: [
-                        { label: 'normal', value: 'normal' },
-                        { label: 'Glimpse Style Preview', value: 'GlimpseStyle' }
-                    ],
-                    required: true
-                },
-                {
                     name: 'rel',
                     label: 'Rel Attribute',
                     type: 'select',

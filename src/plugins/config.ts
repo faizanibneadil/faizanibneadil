@@ -15,6 +15,7 @@ import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintex
 import { isSuperAdmin } from "@/access/isSuperAdmin"
 import { getUserTenantIDs } from "@/utilities/getUserTenantIDs"
 import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant"
+import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import type { Config } from "payload"
 
 export const plugins: Plugin[] = [
@@ -224,14 +225,9 @@ export const plugins: Plugin[] = [
             endpoint: process.env.S3_ENDPOINT,
         },
     }),
-    // mcpPlugin({
-    //     userCollection: 'users',
-    //     collections: {
-    //         blogs: {
-    //             enabled: true
-    //         },
-    //     },
-    // }),
+    redirectsPlugin({
+        collections: ['pages'],
+    }),
     multiTenantPlugin<Config>({
         collections: {
             pages: {},
@@ -253,6 +249,7 @@ export const plugins: Plugin[] = [
             socials: { isGlobal: true },
             integration: { isGlobal: true },
             "portfolio-settings": { isGlobal: true },
+            redirects: {},
         },
         tenantField: {
             access: {

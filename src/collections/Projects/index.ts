@@ -30,7 +30,6 @@ export const Projects: CollectionConfig<'projects'> = {
             type: 'tabs',
             tabs: [
                 {
-                    name: 'content',
                     label: 'Content',
                     fields: [
                         {
@@ -78,7 +77,6 @@ export const Projects: CollectionConfig<'projects'> = {
                             hasMany: true,
                             admin: {
                                 description: 'Provide list of skills. You used to build this project',
-                                // appearance: 'drawer'
                             }
                         },
                         {
@@ -128,38 +126,91 @@ export const Projects: CollectionConfig<'projects'> = {
                         },
                         {
                             type: 'array',
-                            name: 'links',
+                            name: 'resources',
                             labels: { singular: 'Link', plural: 'Links' },
                             admin: {
                                 initCollapsed: true
                             },
                             fields: [
-                                Iconify(),
                                 {
                                     type: 'row',
                                     fields: [
                                         {
-                                            type: 'text',
-                                            label: 'Lable',
-                                            name: 'label',
-                                            required: true,
+                                            name: 'type',
+                                            type: 'radio',
                                             admin: {
+                                                layout: 'horizontal',
+                                                width: '50%',
+                                            },
+                                            defaultValue: 'internal',
+                                            options: [
+                                                {
+                                                    label: 'Internal link',
+                                                    value: 'internal',
+                                                },
+                                                {
+                                                    label: 'External URL',
+                                                    value: 'external',
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            name: 'newTab',
+                                            type: 'checkbox',
+                                            admin: {
+                                                style: {
+                                                    alignSelf: 'flex-end',
+                                                },
+                                                width: '50%',
+                                            },
+                                            label: 'Open in new tab',
+                                        },
+                                    ],
+                                },
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        {
+                                            type: 'relationship',
+                                            relationTo: ['pages'],
+                                            name: 'page',
+                                            label: 'Page',
+                                            admin: {
+                                                condition: (_, { type }) => type === 'internal',
                                                 width: '50%'
                                             }
                                         },
                                         {
                                             type: 'text',
-                                            name: 'link',
-                                            label: 'Link',
-                                            required: true,
+                                            name: 'url',
+                                            label: 'URL',
+                                            validate: (url: string | undefined | null) => {
+                                                try {
+                                                    if (!url) {
+                                                        return 'URL is required.'
+                                                    }
+                                                    new URL(url)
+                                                    return true
+                                                } catch (error) {
+                                                    return 'Invalid URL'
+                                                }
+                                            },
+                                            admin: {
+                                                condition: (_, { type }) => type === 'external',
+                                                width: '50%'
+                                            }
+                                        },
+                                        {
+                                            type: 'text',
+                                            name: 'label',
+                                            label: 'Label',
                                             admin: {
                                                 width: '50%'
                                             }
                                         }
                                     ]
                                 }
-                            ],
-                            maxRows: 5
+                            ]
                         },
                     ]
                 },
@@ -203,9 +254,9 @@ export const Projects: CollectionConfig<'projects'> = {
         slugField({
             name: 'slug',
             checkboxName: 'lockSlug',
-            slugify: ({ valueToSlugify }) => {
-                const slug = slugify(valueToSlugify)
-                return `${slug}-${Date.now()}`
+            slugify: ({ valueToSlugify, data }) => {
+                const fieldToSlug = slugify(valueToSlugify)
+                return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),
     ],
@@ -214,5 +265,5 @@ export const Projects: CollectionConfig<'projects'> = {
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
         beforeChange: [populatePublishedAt],
     },
-    // versions: VersionConfig(),
+    versions: true
 }

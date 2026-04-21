@@ -23,9 +23,6 @@ export const Certification: Block = {
             name: 'certifications',
             label: 'Certifications',
             hasMany: true,
-            admin:{
-                appearance:'drawer',
-            }
         }
     ]
 }

@@ -1,12 +1,8 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
-import { defaultBlocks, digitalArtistSpecificBlocks, itSpecificBlock, pharmaSpecificBlocks } from "@/blocks/config";
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
-import { ProtectRootPage } from "@/collections/Pages/hooks/ProtectRootPage";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
-import { SwapRootPage } from "@/collections/Pages/hooks/SwapRootPage";
 import { slugify } from "@/utilities/slugify";
-import { getTenantFromCookie } from "@payloadcms/plugin-multi-tenant/utilities";
 import {
     MetaDescriptionField,
     MetaImageField,
@@ -15,10 +11,6 @@ import {
     PreviewField,
 } from '@payloadcms/plugin-seo/fields';
 import { slugField, type CollectionConfig, APIError } from "payload";
-import { ProtectRootPageFromTrash } from "./hooks/ProtectRootPageFromTrash";
-import { RevalidateRootPageQuery } from "./hooks/RevalidateRootPageQuery";
-import { RevalidatePageModeQuery } from "./hooks/RevalidatePageModeQuery";
-import { RevalidatePageCollectionSlugQuery } from "./hooks/RevalidatePageCollectionSlugQuery";
 
 export const Pages: CollectionConfig<'pages'> = {
     slug: 'pages',
@@ -40,7 +32,6 @@ export const Pages: CollectionConfig<'pages'> = {
             type: 'tabs',
             tabs: [
                 {
-                    name: 'content',
                     label: 'Content',
                     fields: [
                         {
@@ -52,9 +43,6 @@ export const Pages: CollectionConfig<'pages'> = {
                                     Field: '@/collections/Pages/components/collections.tsx#Collections'
                                 },
                             },
-                            hooks: {
-                                afterChange: [RevalidatePageCollectionSlugQuery()]
-                            },
                         },
                         {
                             type: 'blocks',
@@ -62,28 +50,25 @@ export const Pages: CollectionConfig<'pages'> = {
                             label: 'Design You\'r Page',
                             blocks: [],
                             maxRows: 50,
-                            filterOptions: async ({ user }) => {
-                                const industry = typeof user?.industry === 'object' ? user?.industry?.slug : user?.industry
-                                if (typeof industry === 'string') {
-                                    switch (industry) {
-                                        case 'information-technolegy':
-                                            return [...itSpecificBlock, ...defaultBlocks]
-                                        case 'pharma':
-                                            return [...pharmaSpecificBlocks, ...defaultBlocks]
-                                        case 'digital-artist':
-                                            return [...digitalArtistSpecificBlocks, ...defaultBlocks]
-                                        default:
-                                            return true
-                                    }
-                                }
-                                return true
-                            },
-                            blockReferences: Array.from(new Set([
-                                ...defaultBlocks,
-                                ...itSpecificBlock,
-                                ...pharmaSpecificBlocks,
-                                ...digitalArtistSpecificBlocks
-                            ])),
+                            blockReferences: [
+                                'about',
+                                'achievement',
+                                'blogs-block',
+                                'certification',
+                                'code-block',
+                                'contact',
+                                'education',
+                                'experience',
+                                'formBlock',
+                                'github-contributions',
+                                'hackathon',
+                                'hero',
+                                'license',
+                                'project',
+                                'publication',
+                                'research',
+                                'skill'
+                            ],
                             admin: {
                                 initCollapsed: true,
                                 condition: ({ enableCollection }) => Boolean(enableCollection) === false,
@@ -130,57 +115,11 @@ export const Pages: CollectionConfig<'pages'> = {
         },
         {
             type: 'checkbox',
-            name: 'isRootPage',
-            label: 'Set as Main page',
-            admin: {
-                position: 'sidebar',
-                description: "Set this page as your portfolio's primary Home Page. Only one page can be active as the Main Page at a time."
-            },
-            required: true,
-            hooks: {
-                afterChange: [RevalidateRootPageQuery()]
-            },
-            validate: async (value, { req }) => {
-                // TODO: get tenant from doc
-                const selectedTenantId = getTenantFromCookie(req.headers, 'number')
-                if (value === false) {
-                    try {
-                        const pages = await req.payload.count({
-                            collection: 'pages',
-                            where: {
-                                and: [
-                                    { tenant: { equals: selectedTenantId } },
-                                    { isRootPage: { equals: true } }
-                                ]
-                            },
-                            req
-                        });
-
-                        if (pages.totalDocs === 0) {
-                            return "At least one landing page is required.";
-                        }
-                    } catch (error) {
-                        if (error instanceof APIError) {
-                            req.payload.logger.error({ error }, 'Payload Error')
-                            return error.message
-                        }
-                        req.payload.logger.error({ error }, 'Internal Server Error')
-                        return 'Internal Server Error'
-                    }
-                }
-                return true
-            },
-        },
-        {
-            type: 'checkbox',
             name: 'enableCollection',
             label: 'Enable Collection',
             admin: {
                 position: 'sidebar',
                 description: 'If you want to show your collections like: Blogs, Notes, Publications, Projects etc then you have to change collection.',
-            },
-            hooks: {
-                afterChange: [RevalidatePageModeQuery()]
             },
             required: true,
             defaultValue: false
@@ -192,37 +131,19 @@ export const Pages: CollectionConfig<'pages'> = {
                 position: 'sidebar',
             },
         },
-        // TODO: use custom solution for this field
         slugField({
             name: 'slug',
             checkboxName: 'lockSlug',
             slugify: ({ valueToSlugify, data }) => {
                 const fieldToSlug = slugify(valueToSlugify)
-                let prefix = ''
-
-                if (data?.enableCollection === true) {
-                    prefix = data?.content?.configuredCollectionSlug
-                }
-
-                if (data?.enableCollection === false) {
-                    prefix = 'pages'
-                }
-
-                return `${prefix}-${fieldToSlug}-${Date.now()}`
-
+                return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),
     ],
     hooks: {
-        afterChange: [
-            SwapRootPage(),
-            RevalidatePageAfterChange({ invalidateRootRoute: true }),
-        ],
+        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
-        beforeDelete: [ProtectRootPage()],
-        beforeChange: [
-            populatePublishedAt,
-            ProtectRootPageFromTrash()
-        ],
+        beforeChange: [populatePublishedAt],
     },
+    versions: true
 }
