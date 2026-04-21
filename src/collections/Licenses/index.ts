@@ -212,5 +212,10 @@ export const Licenses: CollectionConfig<'licenses'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    versions: true
+    versions: {
+        drafts: {
+            autosave: true,
+        },
+        maxPerDoc: 50,
+    },
 }
