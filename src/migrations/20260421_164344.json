@@ -799,7 +799,7 @@
           "name": "title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "content": {
           "name": "content",
@@ -848,7 +848,7 @@
           "name": "slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -869,6 +869,14 @@
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_blogs_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
         }
       },
       "indexes": {
@@ -976,6 +984,21 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "blogs__status_idx": {
+          "name": "blogs__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {
@@ -1051,7 +1074,7 @@
           "name": "version_title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_content": {
           "name": "version_content",
@@ -1100,7 +1123,7 @@
           "name": "version_slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_updated_at": {
           "name": "version_updated_at",
@@ -1120,6 +1143,14 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__blogs_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3) with time zone",
@@ -1133,6 +1164,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -1256,6 +1299,21 @@
           "method": "btree",
           "with": {}
         },
+        "_blogs_v_version_version__status_idx": {
+          "name": "_blogs_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "_blogs_v_created_at_idx": {
           "name": "_blogs_v_created_at_idx",
           "columns": [
@@ -1276,6 +1334,36 @@
           "columns": [
             {
               "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_blogs_v_latest_idx": {
+          "name": "_blogs_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_blogs_v_autosave_idx": {
+          "name": "_blogs_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1367,7 +1455,7 @@
           "name": "title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "configured_collection_slug": {
           "name": "configured_collection_slug",
@@ -1403,7 +1491,7 @@
           "name": "enable_collection",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": false
         },
         "published_at": {
@@ -1423,7 +1511,7 @@
           "name": "slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -1444,6 +1532,14 @@
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_pages_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
         }
       },
       "indexes": {
@@ -1536,6 +1632,21 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "pages__status_idx": {
+          "name": "pages__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {
@@ -1598,7 +1709,7 @@
           "name": "version_title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_configured_collection_slug": {
           "name": "version_configured_collection_slug",
@@ -1634,7 +1745,7 @@
           "name": "version_enable_collection",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": false
         },
         "version_published_at": {
@@ -1654,7 +1765,7 @@
           "name": "version_slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_updated_at": {
           "name": "version_updated_at",
@@ -1674,6 +1785,14 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__pages_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3) with time zone",
@@ -1687,6 +1806,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -1795,6 +1926,21 @@
           "method": "btree",
           "with": {}
         },
+        "_pages_v_version_version__status_idx": {
+          "name": "_pages_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "_pages_v_created_at_idx": {
           "name": "_pages_v_created_at_idx",
           "columns": [
@@ -1815,6 +1961,36 @@
           "columns": [
             {
               "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_latest_idx": {
+          "name": "_pages_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_pages_v_autosave_idx": {
+          "name": "_pages_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1995,7 +2171,7 @@
           "name": "title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "academy": {
           "name": "academy",
@@ -2071,6 +2247,14 @@
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_educations_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
         }
       },
       "indexes": {
@@ -2139,6 +2323,21 @@
           "columns": [
             {
               "expression": "deleted_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "educations__status_idx": {
+          "name": "educations__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -2483,7 +2682,7 @@
           "name": "version_title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_academy": {
           "name": "version_academy",
@@ -2558,6 +2757,14 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__educations_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3) with time zone",
@@ -2571,6 +2778,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -2664,6 +2883,21 @@
           "method": "btree",
           "with": {}
         },
+        "_educations_v_version_version__status_idx": {
+          "name": "_educations_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "_educations_v_created_at_idx": {
           "name": "_educations_v_created_at_idx",
           "columns": [
@@ -2684,6 +2918,36 @@
           "columns": [
             {
               "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_educations_v_latest_idx": {
+          "name": "_educations_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_educations_v_autosave_idx": {
+          "name": "_educations_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -3029,13 +3293,13 @@
           "name": "title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "thumbnail_id": {
           "name": "thumbnail_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "overview": {
           "name": "overview",
@@ -3114,7 +3378,7 @@
           "name": "slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -3135,6 +3399,14 @@
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_projects_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
         }
       },
       "indexes": {
@@ -3233,6 +3505,21 @@
           "columns": [
             {
               "expression": "deleted_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "projects__status_idx": {
+          "name": "projects__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -3590,13 +3877,13 @@
           "name": "version_title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_thumbnail_id": {
           "name": "version_thumbnail_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_overview": {
           "name": "version_overview",
@@ -3675,7 +3962,7 @@
           "name": "version_slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_updated_at": {
           "name": "version_updated_at",
@@ -3695,6 +3982,14 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__projects_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3) with time zone",
@@ -3708,6 +4003,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -3831,6 +4138,21 @@
           "method": "btree",
           "with": {}
         },
+        "_projects_v_version_version__status_idx": {
+          "name": "_projects_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "_projects_v_created_at_idx": {
           "name": "_projects_v_created_at_idx",
           "columns": [
@@ -3851,6 +4173,36 @@
           "columns": [
             {
               "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_projects_v_latest_idx": {
+          "name": "_projects_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_projects_v_autosave_idx": {
+          "name": "_projects_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -4756,7 +5108,7 @@
           "name": "title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "published_at": {
           "name": "published_at",
@@ -4857,7 +5209,7 @@
           "name": "slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -4878,6 +5230,14 @@
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_skills_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
         }
       },
       "indexes": {
@@ -4955,6 +5315,21 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "skills__status_idx": {
+          "name": "skills__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {
@@ -5004,7 +5379,7 @@
           "name": "version_title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_published_at": {
           "name": "version_published_at",
@@ -5105,7 +5480,7 @@
           "name": "version_slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_updated_at": {
           "name": "version_updated_at",
@@ -5125,6 +5500,14 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__skills_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3) with time zone",
@@ -5138,6 +5521,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -5231,6 +5626,21 @@
           "method": "btree",
           "with": {}
         },
+        "_skills_v_version_version__status_idx": {
+          "name": "_skills_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "_skills_v_created_at_idx": {
           "name": "_skills_v_created_at_idx",
           "columns": [
@@ -5251,6 +5661,36 @@
           "columns": [
             {
               "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_skills_v_latest_idx": {
+          "name": "_skills_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_skills_v_autosave_idx": {
+          "name": "_skills_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -5418,7 +5858,7 @@
           "name": "title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "description": {
           "name": "description",
@@ -5430,13 +5870,13 @@
           "name": "dates_to",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "dates_from": {
           "name": "dates_from",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "location": {
           "name": "location",
@@ -5448,7 +5888,7 @@
           "name": "image_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "meta_title": {
           "name": "meta_title",
@@ -5479,7 +5919,7 @@
           "name": "slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -5500,6 +5940,14 @@
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_hackathons_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
         }
       },
       "indexes": {
@@ -5598,6 +6046,21 @@
           "columns": [
             {
               "expression": "deleted_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "hackathons__status_idx": {
+          "name": "hackathons__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -5955,7 +6418,7 @@
           "name": "version_title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_description": {
           "name": "version_description",
@@ -5967,13 +6430,13 @@
           "name": "version_dates_to",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_dates_from": {
           "name": "version_dates_from",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_location": {
           "name": "version_location",
@@ -5985,7 +6448,7 @@
           "name": "version_image_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_meta_title": {
           "name": "version_meta_title",
@@ -6016,7 +6479,7 @@
           "name": "version_slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_updated_at": {
           "name": "version_updated_at",
@@ -6036,6 +6499,14 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__hackathons_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3) with time zone",
@@ -6049,6 +6520,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -6172,6 +6655,21 @@
           "method": "btree",
           "with": {}
         },
+        "_hackathons_v_version_version__status_idx": {
+          "name": "_hackathons_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "_hackathons_v_created_at_idx": {
           "name": "_hackathons_v_created_at_idx",
           "columns": [
@@ -6192,6 +6690,36 @@
           "columns": [
             {
               "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_hackathons_v_latest_idx": {
+          "name": "_hackathons_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_hackathons_v_autosave_idx": {
+          "name": "_hackathons_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -6550,14 +7078,14 @@
           "name": "title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "status": {
           "name": "status",
           "type": "enum_researches_status",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "role": {
           "name": "role",
@@ -6569,7 +7097,7 @@
           "name": "image_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "description": {
           "name": "description",
@@ -6581,7 +7109,7 @@
           "name": "dates_from",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "dates_to": {
           "name": "dates_to",
@@ -6624,7 +7152,7 @@
           "name": "slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -6645,6 +7173,14 @@
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_researches_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
         }
       },
       "indexes": {
@@ -6743,6 +7279,21 @@
           "columns": [
             {
               "expression": "deleted_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "researches__status_idx": {
+          "name": "researches__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -7100,14 +7651,14 @@
           "name": "version_title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_status": {
           "name": "version_status",
           "type": "enum__researches_v_version_status",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_role": {
           "name": "version_role",
@@ -7119,7 +7670,7 @@
           "name": "version_image_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_description": {
           "name": "version_description",
@@ -7131,7 +7682,7 @@
           "name": "version_dates_from",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_dates_to": {
           "name": "version_dates_to",
@@ -7174,7 +7725,7 @@
           "name": "version_slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_updated_at": {
           "name": "version_updated_at",
@@ -7194,6 +7745,14 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__researches_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3) with time zone",
@@ -7207,6 +7766,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -7330,6 +7901,21 @@
           "method": "btree",
           "with": {}
         },
+        "_researches_v_version_version__status_idx": {
+          "name": "_researches_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "_researches_v_created_at_idx": {
           "name": "_researches_v_created_at_idx",
           "columns": [
@@ -7350,6 +7936,36 @@
           "columns": [
             {
               "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_researches_v_latest_idx": {
+          "name": "_researches_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_researches_v_autosave_idx": {
+          "name": "_researches_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -7612,13 +8228,13 @@
           "name": "label",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "value": {
           "name": "value",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {
@@ -7796,7 +8412,7 @@
           "name": "title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "type": {
           "name": "type",
@@ -7864,7 +8480,7 @@
           "name": "slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -7879,6 +8495,14 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_achievements_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
         }
       },
       "indexes": {
@@ -7962,6 +8586,21 @@
           "columns": [
             {
               "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "achievements__status_idx": {
+          "name": "achievements__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -8211,13 +8850,13 @@
           "name": "label",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "value": {
           "name": "value",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "_uuid": {
           "name": "_uuid",
@@ -8413,7 +9052,7 @@
           "name": "version_title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_type": {
           "name": "version_type",
@@ -8481,7 +9120,7 @@
           "name": "version_slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_updated_at": {
           "name": "version_updated_at",
@@ -8494,6 +9133,14 @@
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__achievements_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
         },
         "created_at": {
           "name": "created_at",
@@ -8508,6 +9155,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -8616,6 +9275,21 @@
           "method": "btree",
           "with": {}
         },
+        "_achievements_v_version_version__status_idx": {
+          "name": "_achievements_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "_achievements_v_created_at_idx": {
           "name": "_achievements_v_created_at_idx",
           "columns": [
@@ -8636,6 +9310,36 @@
           "columns": [
             {
               "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_achievements_v_latest_idx": {
+          "name": "_achievements_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_achievements_v_autosave_idx": {
+          "name": "_achievements_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -8994,13 +9698,13 @@
           "name": "title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "issuer": {
           "name": "issuer",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "credential_id": {
           "name": "credential_id",
@@ -9012,7 +9716,7 @@
           "name": "image_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "description": {
           "name": "description",
@@ -9024,7 +9728,7 @@
           "name": "validity_issued_date",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "validity_expiry_date": {
           "name": "validity_expiry_date",
@@ -9068,7 +9772,7 @@
           "name": "slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -9089,6 +9793,14 @@
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_certifications_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
         }
       },
       "indexes": {
@@ -9187,6 +9899,21 @@
           "columns": [
             {
               "expression": "deleted_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "certifications__status_idx": {
+          "name": "certifications__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -9544,13 +10271,13 @@
           "name": "version_title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_issuer": {
           "name": "version_issuer",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_credential_id": {
           "name": "version_credential_id",
@@ -9562,7 +10289,7 @@
           "name": "version_image_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_description": {
           "name": "version_description",
@@ -9574,7 +10301,7 @@
           "name": "version_validity_issued_date",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_validity_expiry_date": {
           "name": "version_validity_expiry_date",
@@ -9618,7 +10345,7 @@
           "name": "version_slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_updated_at": {
           "name": "version_updated_at",
@@ -9638,6 +10365,14 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__certifications_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3) with time zone",
@@ -9651,6 +10386,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -9774,6 +10521,21 @@
           "method": "btree",
           "with": {}
         },
+        "_certifications_v_version_version__status_idx": {
+          "name": "_certifications_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "_certifications_v_created_at_idx": {
           "name": "_certifications_v_created_at_idx",
           "columns": [
@@ -9794,6 +10556,36 @@
           "columns": [
             {
               "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_certifications_v_latest_idx": {
+          "name": "_certifications_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_certifications_v_autosave_idx": {
+          "name": "_certifications_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -10152,26 +10944,26 @@
           "name": "title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "type": {
           "name": "type",
           "type": "enum_publications_type",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "publisher": {
           "name": "publisher",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "image_id": {
           "name": "image_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "description": {
           "name": "description",
@@ -10183,7 +10975,7 @@
           "name": "published_date",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "doi": {
           "name": "doi",
@@ -10220,7 +11012,7 @@
           "name": "slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -10241,6 +11033,14 @@
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_publications_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
         }
       },
       "indexes": {
@@ -10339,6 +11139,21 @@
           "columns": [
             {
               "expression": "deleted_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "publications__status_idx": {
+          "name": "publications__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -10696,26 +11511,26 @@
           "name": "version_title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_type": {
           "name": "version_type",
           "type": "enum__publications_v_version_type",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_publisher": {
           "name": "version_publisher",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_image_id": {
           "name": "version_image_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_description": {
           "name": "version_description",
@@ -10727,7 +11542,7 @@
           "name": "version_published_date",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_doi": {
           "name": "version_doi",
@@ -10764,7 +11579,7 @@
           "name": "version_slug",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_updated_at": {
           "name": "version_updated_at",
@@ -10784,6 +11599,14 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__publications_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3) with time zone",
@@ -10797,6 +11620,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -10920,6 +11755,21 @@
           "method": "btree",
           "with": {}
         },
+        "_publications_v_version_version__status_idx": {
+          "name": "_publications_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "_publications_v_created_at_idx": {
           "name": "_publications_v_created_at_idx",
           "columns": [
@@ -10940,6 +11790,36 @@
           "columns": [
             {
               "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_publications_v_latest_idx": {
+          "name": "_publications_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_publications_v_autosave_idx": {
+          "name": "_publications_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -11298,25 +12178,25 @@
           "name": "title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "issuing_authority": {
           "name": "issuing_authority",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "license_number": {
           "name": "license_number",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "image_id": {
           "name": "image_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "description": {
           "name": "description",
@@ -11328,13 +12208,13 @@
           "name": "validity_issued_date",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "validity_expiry_date": {
           "name": "validity_expiry_date",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "validity_status": {
           "name": "validity_status",
@@ -11369,6 +12249,14 @@
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_licenses_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
         }
       },
       "indexes": {
@@ -11437,6 +12325,21 @@
           "columns": [
             {
               "expression": "deleted_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "licenses__status_idx": {
+          "name": "licenses__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -11747,25 +12650,25 @@
           "name": "version_title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_issuing_authority": {
           "name": "version_issuing_authority",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_license_number": {
           "name": "version_license_number",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_image_id": {
           "name": "version_image_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_description": {
           "name": "version_description",
@@ -11777,13 +12680,13 @@
           "name": "version_validity_issued_date",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_validity_expiry_date": {
           "name": "version_validity_expiry_date",
           "type": "timestamp(3) with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_validity_status": {
           "name": "version_validity_status",
@@ -11817,6 +12720,14 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__licenses_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3) with time zone",
@@ -11830,6 +12741,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -11923,6 +12846,21 @@
           "method": "btree",
           "with": {}
         },
+        "_licenses_v_version_version__status_idx": {
+          "name": "_licenses_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "_licenses_v_created_at_idx": {
           "name": "_licenses_v_created_at_idx",
           "columns": [
@@ -11943,6 +12881,36 @@
           "columns": [
             {
               "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_licenses_v_latest_idx": {
+          "name": "_licenses_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_licenses_v_autosave_idx": {
+          "name": "_licenses_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -12277,7 +13245,7 @@
           "name": "title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "employment_type": {
           "name": "employment_type",
@@ -12348,6 +13316,14 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "_status": {
+          "name": "_status",
+          "type": "enum_experiences_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
         }
       },
       "indexes": {
@@ -12401,6 +13377,21 @@
           "columns": [
             {
               "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "experiences__status_idx": {
+          "name": "experiences__status_idx",
+          "columns": [
+            {
+              "expression": "_status",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -12603,7 +13594,7 @@
           "name": "version_title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "version_employment_type": {
           "name": "version_employment_type",
@@ -12673,6 +13664,14 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version__status": {
+          "name": "version__status",
+          "type": "enum__experiences_v_version_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'draft'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3) with time zone",
@@ -12686,6 +13685,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -12764,6 +13775,21 @@
           "method": "btree",
           "with": {}
         },
+        "_experiences_v_version_version__status_idx": {
+          "name": "_experiences_v_version_version__status_idx",
+          "columns": [
+            {
+              "expression": "version__status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "_experiences_v_created_at_idx": {
           "name": "_experiences_v_created_at_idx",
           "columns": [
@@ -12784,6 +13810,36 @@
           "columns": [
             {
               "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_experiences_v_latest_idx": {
+          "name": "_experiences_v_latest_idx",
+          "columns": [
+            {
+              "expression": "latest",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_experiences_v_autosave_idx": {
+          "name": "_experiences_v_autosave_idx",
+          "columns": [
+            {
+              "expression": "autosave",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -15601,12 +16657,52 @@
         "tenant-viewer"
       ]
     },
+    "public.enum_blogs_status": {
+      "name": "enum_blogs_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
+    "public.enum__blogs_v_version_status": {
+      "name": "enum__blogs_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
+    "public.enum_pages_status": {
+      "name": "enum_pages_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
+    "public.enum__pages_v_version_status": {
+      "name": "enum__pages_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
     "public.enum_educations_resources_type": {
       "name": "enum_educations_resources_type",
       "schema": "public",
       "values": [
         "internal",
         "external"
+      ]
+    },
+    "public.enum_educations_status": {
+      "name": "enum_educations_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
       ]
     },
     "public.enum__educations_v_version_resources_type": {
@@ -15617,12 +16713,28 @@
         "external"
       ]
     },
+    "public.enum__educations_v_version_status": {
+      "name": "enum__educations_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
     "public.enum_projects_resources_type": {
       "name": "enum_projects_resources_type",
       "schema": "public",
       "values": [
         "internal",
         "external"
+      ]
+    },
+    "public.enum_projects_status": {
+      "name": "enum_projects_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
       ]
     },
     "public.enum__projects_v_version_resources_type": {
@@ -15633,12 +16745,36 @@
         "external"
       ]
     },
+    "public.enum__projects_v_version_status": {
+      "name": "enum__projects_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
     "public.enum_menus_menu_type": {
       "name": "enum_menus_menu_type",
       "schema": "public",
       "values": [
         "internal",
         "external"
+      ]
+    },
+    "public.enum_skills_status": {
+      "name": "enum_skills_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
+    "public.enum__skills_v_version_status": {
+      "name": "enum__skills_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
       ]
     },
     "public.enum_hackathons_resources_type": {
@@ -15649,12 +16785,28 @@
         "external"
       ]
     },
+    "public.enum_hackathons_status": {
+      "name": "enum_hackathons_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
     "public.enum__hackathons_v_version_resources_type": {
       "name": "enum__hackathons_v_version_resources_type",
       "schema": "public",
       "values": [
         "internal",
         "external"
+      ]
+    },
+    "public.enum__hackathons_v_version_status": {
+      "name": "enum__hackathons_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
       ]
     },
     "public.enum_researches_resources_type": {
@@ -15669,10 +16821,8 @@
       "name": "enum_researches_status",
       "schema": "public",
       "values": [
-        "ongoing",
-        "completed",
-        "on_hold",
-        "under_review"
+        "draft",
+        "published"
       ]
     },
     "public.enum__researches_v_version_resources_type": {
@@ -15687,10 +16837,8 @@
       "name": "enum__researches_v_version_status",
       "schema": "public",
       "values": [
-        "ongoing",
-        "completed",
-        "on_hold",
-        "under_review"
+        "draft",
+        "published"
       ]
     },
     "public.enum_achievements_resources_type": {
@@ -15713,6 +16861,14 @@
         "other"
       ]
     },
+    "public.enum_achievements_status": {
+      "name": "enum_achievements_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
     "public.enum__achievements_v_version_resources_type": {
       "name": "enum__achievements_v_version_resources_type",
       "schema": "public",
@@ -15733,6 +16889,14 @@
         "other"
       ]
     },
+    "public.enum__achievements_v_version_status": {
+      "name": "enum__achievements_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
     "public.enum_certifications_resources_type": {
       "name": "enum_certifications_resources_type",
       "schema": "public",
@@ -15741,12 +16905,28 @@
         "external"
       ]
     },
+    "public.enum_certifications_status": {
+      "name": "enum_certifications_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
     "public.enum__certifications_v_version_resources_type": {
       "name": "enum__certifications_v_version_resources_type",
       "schema": "public",
       "values": [
         "internal",
         "external"
+      ]
+    },
+    "public.enum__certifications_v_version_status": {
+      "name": "enum__certifications_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
       ]
     },
     "public.enum_publications_resources_type": {
@@ -15768,6 +16948,14 @@
         "white_paper"
       ]
     },
+    "public.enum_publications_status": {
+      "name": "enum_publications_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
     "public.enum__publications_v_version_resources_type": {
       "name": "enum__publications_v_version_resources_type",
       "schema": "public",
@@ -15785,6 +16973,14 @@
         "conference",
         "patent",
         "white_paper"
+      ]
+    },
+    "public.enum__publications_v_version_status": {
+      "name": "enum__publications_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
       ]
     },
     "public.enum_licenses_resources_type": {
@@ -15805,6 +17001,14 @@
         "inactive"
       ]
     },
+    "public.enum_licenses_status": {
+      "name": "enum_licenses_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
     "public.enum__licenses_v_version_resources_type": {
       "name": "enum__licenses_v_version_resources_type",
       "schema": "public",
@@ -15821,6 +17025,14 @@
         "expired",
         "renewal",
         "inactive"
+      ]
+    },
+    "public.enum__licenses_v_version_status": {
+      "name": "enum__licenses_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
       ]
     },
     "public.enum_experiences_employment_type": {
@@ -15843,6 +17055,14 @@
         "hybrid"
       ]
     },
+    "public.enum_experiences_status": {
+      "name": "enum_experiences_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
+      ]
+    },
     "public.enum__experiences_v_version_employment_type": {
       "name": "enum__experiences_v_version_employment_type",
       "schema": "public",
@@ -15861,6 +17081,14 @@
         "on-site",
         "remote",
         "hybrid"
+      ]
+    },
+    "public.enum__experiences_v_version_status": {
+      "name": "enum__experiences_v_version_status",
+      "schema": "public",
+      "values": [
+        "draft",
+        "published"
       ]
     },
     "public.enum_integration_chat_bubble_type": {
@@ -15905,6 +17133,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "fcfd0988-938a-457d-b0ad-bbc14a9ed5b3",
+  "id": "fe9c6cd0-47e7-4b60-801f-19bedc837cef",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

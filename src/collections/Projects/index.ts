@@ -265,5 +265,10 @@ export const Projects: CollectionConfig<'projects'> = {
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
         beforeChange: [populatePublishedAt],
     },
-    versions: true
+    versions: {
+        drafts: {
+            autosave: true,
+        },
+        maxPerDoc: 50,
+    },
 }
