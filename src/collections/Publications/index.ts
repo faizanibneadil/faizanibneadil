@@ -1,9 +1,10 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { slugify } from "@/utilities/slugify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import type { CollectionConfig } from "payload";
+import { slugField, type CollectionConfig } from "payload";
 
 export const Publications: CollectionConfig<'publications'> = {
     slug: 'publications',
@@ -25,7 +26,6 @@ export const Publications: CollectionConfig<'publications'> = {
             type: 'tabs',
             tabs: [
                 {
-                    name: 'content',
                     label: 'Content',
                     fields: [
                         {
@@ -120,12 +120,82 @@ export const Publications: CollectionConfig<'publications'> = {
                                 {
                                     type: 'row',
                                     fields: [
-                                        { name: 'label', type: 'text', label: 'Label', required: true, admin: { placeholder: 'e.g., Read on IEEE Xplore' } },
-                                        { name: 'link', type: 'text', label: 'URL', required: true, admin: { placeholder: 'https://...' } }
+                                        {
+                                            name: 'type',
+                                            type: 'radio',
+                                            admin: {
+                                                layout: 'horizontal',
+                                                width: '50%',
+                                            },
+                                            defaultValue: 'internal',
+                                            options: [
+                                                {
+                                                    label: 'Internal link',
+                                                    value: 'internal',
+                                                },
+                                                {
+                                                    label: 'External URL',
+                                                    value: 'external',
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            name: 'newTab',
+                                            type: 'checkbox',
+                                            admin: {
+                                                style: {
+                                                    alignSelf: 'flex-end',
+                                                },
+                                                width: '50%',
+                                            },
+                                            label: 'Open in new tab',
+                                        },
+                                    ],
+                                },
+                                {
+                                    type: 'row',
+                                    fields: [
+                                        {
+                                            type: 'relationship',
+                                            relationTo: ['pages'],
+                                            name: 'page',
+                                            label: 'Page',
+                                            admin: {
+                                                condition: (_, { type }) => type === 'internal',
+                                                width: '50%'
+                                            }
+                                        },
+                                        {
+                                            type: 'text',
+                                            name: 'url',
+                                            label: 'URL',
+                                            validate: (url: string | undefined | null) => {
+                                                try {
+                                                    if (!url) {
+                                                        return 'URL is required.'
+                                                    }
+                                                    new URL(url)
+                                                    return true
+                                                } catch (error) {
+                                                    return 'Invalid URL'
+                                                }
+                                            },
+                                            admin: {
+                                                condition: (_, { type }) => type === 'external',
+                                                width: '50%'
+                                            }
+                                        },
+                                        {
+                                            type: 'text',
+                                            name: 'label',
+                                            label: 'Label',
+                                            admin: {
+                                                width: '50%'
+                                            }
+                                        }
                                     ]
                                 }
-                            ],
-                            maxRows: 3
+                            ]
                         },
                     ]
                 },
@@ -150,9 +220,18 @@ export const Publications: CollectionConfig<'publications'> = {
                 }
             ]
         },
+        slugField({
+            name: 'slug',
+            checkboxName: 'lockSlug',
+            slugify: ({ valueToSlugify, data }) => {
+                const fieldToSlug = slugify(valueToSlugify)
+                return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
+            },
+        }),
     ],
     hooks: {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
+    versions: true
 }

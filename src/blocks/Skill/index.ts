@@ -34,7 +34,6 @@ export const Skill: Block = {
             hasMany: true,
             maxRows: 50,
             admin: {
-                // appearance: 'drawer',
                 description: 'Choose specific skills you want to showcase.',
                 condition: (data, siblingData) => !siblingData?.showAllSkills,
             }

@@ -23,9 +23,6 @@ export const Achievement: Block = {
             name: 'achievements',
             label: 'Achievement',
             hasMany: true,
-            admin:{
-                appearance:'drawer',
-            }
         }
     ]
 }

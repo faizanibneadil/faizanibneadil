@@ -28,7 +28,7 @@ function skillsSettings(collection: CollectionSlug[]): GroupField[] {
                     name: slug,
                     collection: slug,
                     maxDepth: 0,
-                    on: ['educations', 'experiences'].includes(slug) ? 'skills' : 'content.skills',
+                    on: 'skills',
                     admin: {
                         allowCreate: false,
                         disableListColumn: true,
@@ -132,9 +132,9 @@ export const Skills: CollectionConfig<'skills'> = {
         slugField({
             name: 'slug',
             checkboxName: 'lockSlug',
-            slugify: ({ valueToSlugify }) => {
-                const slug = slugify(valueToSlugify)
-                return `${slug}-${Date.now()}`
+            slugify: ({ valueToSlugify, data }) => {
+                const fieldToSlug = slugify(valueToSlugify)
+                return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),
     ],
@@ -143,5 +143,5 @@ export const Skills: CollectionConfig<'skills'> = {
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })],
         beforeChange: [populatePublishedAt],
     },
-    // versions: VersionConfig(),
+    versions: true
 }

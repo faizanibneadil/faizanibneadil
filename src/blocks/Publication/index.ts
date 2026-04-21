@@ -23,9 +23,6 @@ export const Publication: Block = {
             name: 'publications',
             label: 'Publications',
             hasMany: true,
-            admin:{
-                appearance:'drawer',
-            }
         }
     ]
 }
