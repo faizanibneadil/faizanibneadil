@@ -238,5 +238,10 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
         afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
-    versions: true
+    versions: {
+        drafts: {
+            autosave: true,
+        },
+        maxPerDoc: 50,
+    },
 }

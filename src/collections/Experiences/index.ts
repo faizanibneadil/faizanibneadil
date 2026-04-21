@@ -121,5 +121,10 @@ export const Experiences: CollectionConfig<'experiences'> = {
             label: 'Description'
         },
     ],
-    versions: true
+    versions: {
+        drafts: {
+            autosave: true,
+        },
+        maxPerDoc: 50,
+    },
 }

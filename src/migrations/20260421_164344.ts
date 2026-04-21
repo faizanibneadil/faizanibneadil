@@ -4,35 +4,57 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_users_roles" AS ENUM('super-admin', 'user');
   CREATE TYPE "public"."enum_users_tenants_roles" AS ENUM('tenant-admin', 'tenant-viewer');
+  CREATE TYPE "public"."enum_blogs_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__blogs_v_version_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum_pages_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__pages_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_educations_resources_type" AS ENUM('internal', 'external');
+  CREATE TYPE "public"."enum_educations_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__educations_v_version_resources_type" AS ENUM('internal', 'external');
+  CREATE TYPE "public"."enum__educations_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_projects_resources_type" AS ENUM('internal', 'external');
+  CREATE TYPE "public"."enum_projects_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__projects_v_version_resources_type" AS ENUM('internal', 'external');
+  CREATE TYPE "public"."enum__projects_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_menus_menu_type" AS ENUM('internal', 'external');
+  CREATE TYPE "public"."enum_skills_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__skills_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_hackathons_resources_type" AS ENUM('internal', 'external');
+  CREATE TYPE "public"."enum_hackathons_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__hackathons_v_version_resources_type" AS ENUM('internal', 'external');
+  CREATE TYPE "public"."enum__hackathons_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_researches_resources_type" AS ENUM('internal', 'external');
-  CREATE TYPE "public"."enum_researches_status" AS ENUM('ongoing', 'completed', 'on_hold', 'under_review');
+  CREATE TYPE "public"."enum_researches_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__researches_v_version_resources_type" AS ENUM('internal', 'external');
-  CREATE TYPE "public"."enum__researches_v_version_status" AS ENUM('ongoing', 'completed', 'on_hold', 'under_review');
+  CREATE TYPE "public"."enum__researches_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_achievements_resources_type" AS ENUM('internal', 'external');
   CREATE TYPE "public"."enum_achievements_type" AS ENUM('award', 'honor', 'speaking-engagement', 'competition-winner', 'community-contribution', 'other');
+  CREATE TYPE "public"."enum_achievements_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__achievements_v_version_resources_type" AS ENUM('internal', 'external');
   CREATE TYPE "public"."enum__achievements_v_version_type" AS ENUM('award', 'honor', 'speaking-engagement', 'competition-winner', 'community-contribution', 'other');
+  CREATE TYPE "public"."enum__achievements_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_certifications_resources_type" AS ENUM('internal', 'external');
+  CREATE TYPE "public"."enum_certifications_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__certifications_v_version_resources_type" AS ENUM('internal', 'external');
+  CREATE TYPE "public"."enum__certifications_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_publications_resources_type" AS ENUM('internal', 'external');
   CREATE TYPE "public"."enum_publications_type" AS ENUM('research_paper', 'book', 'conference', 'patent', 'white_paper');
+  CREATE TYPE "public"."enum_publications_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__publications_v_version_resources_type" AS ENUM('internal', 'external');
   CREATE TYPE "public"."enum__publications_v_version_type" AS ENUM('research_paper', 'book', 'conference', 'patent', 'white_paper');
+  CREATE TYPE "public"."enum__publications_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_licenses_resources_type" AS ENUM('internal', 'external');
   CREATE TYPE "public"."enum_licenses_validity_status" AS ENUM('active', 'expired', 'renewal', 'inactive');
+  CREATE TYPE "public"."enum_licenses_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__licenses_v_version_resources_type" AS ENUM('internal', 'external');
   CREATE TYPE "public"."enum__licenses_v_version_validity_status" AS ENUM('active', 'expired', 'renewal', 'inactive');
+  CREATE TYPE "public"."enum__licenses_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_experiences_employment_type" AS ENUM('full-time', 'part-time', 'contract', 'freelance', 'internship');
   CREATE TYPE "public"."enum_experiences_job_type" AS ENUM('on-site', 'remote', 'hybrid');
+  CREATE TYPE "public"."enum_experiences_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__experiences_v_version_employment_type" AS ENUM('full-time', 'part-time', 'contract', 'freelance', 'internship');
   CREATE TYPE "public"."enum__experiences_v_version_job_type" AS ENUM('on-site', 'remote', 'hybrid');
+  CREATE TYPE "public"."enum__experiences_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum_integration_chat_bubble_type" AS ENUM('tawk');
   CREATE TYPE "public"."enum_forms_confirmation_type" AS ENUM('message', 'redirect');
   CREATE TYPE "public"."enum_forms_redirect_type" AS ENUM('reference', 'custom');
@@ -104,7 +126,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "blogs" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"tenant_id" integer,
-  	"title" varchar NOT NULL,
+  	"title" varchar,
   	"content" jsonb,
   	"description" jsonb,
   	"featured_image_id" integer,
@@ -112,17 +134,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"meta_description" varchar,
   	"meta_image_id" integer,
   	"lock_slug" boolean DEFAULT true,
-  	"slug" varchar NOT NULL,
+  	"slug" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"deleted_at" timestamp(3) with time zone
+  	"deleted_at" timestamp(3) with time zone,
+  	"_status" "enum_blogs_status" DEFAULT 'draft'
   );
   
   CREATE TABLE "_blogs_v" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_tenant_id" integer,
-  	"version_title" varchar NOT NULL,
+  	"version_title" varchar,
   	"version_content" jsonb,
   	"version_description" jsonb,
   	"version_featured_image_id" integer,
@@ -130,51 +153,58 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_meta_description" varchar,
   	"version_meta_image_id" integer,
   	"version_lock_slug" boolean DEFAULT true,
-  	"version_slug" varchar NOT NULL,
+  	"version_slug" varchar,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
   	"version_deleted_at" timestamp(3) with time zone,
+  	"version__status" "enum__blogs_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
   );
   
   CREATE TABLE "pages" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"tenant_id" integer,
-  	"title" varchar NOT NULL,
+  	"title" varchar,
   	"configured_collection_slug" varchar,
   	"layout" jsonb,
   	"meta_title" varchar,
   	"meta_description" varchar,
   	"meta_image_id" integer,
-  	"enable_collection" boolean DEFAULT false NOT NULL,
+  	"enable_collection" boolean DEFAULT false,
   	"published_at" timestamp(3) with time zone,
   	"lock_slug" boolean DEFAULT true,
-  	"slug" varchar NOT NULL,
+  	"slug" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"deleted_at" timestamp(3) with time zone
+  	"deleted_at" timestamp(3) with time zone,
+  	"_status" "enum_pages_status" DEFAULT 'draft'
   );
   
   CREATE TABLE "_pages_v" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_tenant_id" integer,
-  	"version_title" varchar NOT NULL,
+  	"version_title" varchar,
   	"version_configured_collection_slug" varchar,
   	"version_layout" jsonb,
   	"version_meta_title" varchar,
   	"version_meta_description" varchar,
   	"version_meta_image_id" integer,
-  	"version_enable_collection" boolean DEFAULT false NOT NULL,
+  	"version_enable_collection" boolean DEFAULT false,
   	"version_published_at" timestamp(3) with time zone,
   	"version_lock_slug" boolean DEFAULT true,
-  	"version_slug" varchar NOT NULL,
+  	"version_slug" varchar,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
   	"version_deleted_at" timestamp(3) with time zone,
+  	"version__status" "enum__pages_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
   );
   
   CREATE TABLE "educations_resources" (
@@ -190,7 +220,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "educations" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"tenant_id" integer,
-  	"title" varchar NOT NULL,
+  	"title" varchar,
   	"academy" varchar,
   	"degree" varchar,
   	"image_id" integer,
@@ -202,7 +232,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"dates_currently_studying" boolean DEFAULT false,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"deleted_at" timestamp(3) with time zone
+  	"deleted_at" timestamp(3) with time zone,
+  	"_status" "enum_educations_status" DEFAULT 'draft'
   );
   
   CREATE TABLE "educations_rels" (
@@ -229,7 +260,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_tenant_id" integer,
-  	"version_title" varchar NOT NULL,
+  	"version_title" varchar,
   	"version_academy" varchar,
   	"version_degree" varchar,
   	"version_image_id" integer,
@@ -242,8 +273,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
   	"version_deleted_at" timestamp(3) with time zone,
+  	"version__status" "enum__educations_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
   );
   
   CREATE TABLE "_educations_v_rels" (
@@ -268,8 +302,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "projects" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"tenant_id" integer,
-  	"title" varchar NOT NULL,
-  	"thumbnail_id" integer NOT NULL,
+  	"title" varchar,
+  	"thumbnail_id" integer,
   	"overview" jsonb,
   	"detailed_overview" jsonb,
   	"published_at" timestamp(3) with time zone,
@@ -282,10 +316,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"meta_description" varchar,
   	"meta_image_id" integer,
   	"lock_slug" boolean DEFAULT true,
-  	"slug" varchar NOT NULL,
+  	"slug" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"deleted_at" timestamp(3) with time zone
+  	"deleted_at" timestamp(3) with time zone,
+  	"_status" "enum_projects_status" DEFAULT 'draft'
   );
   
   CREATE TABLE "projects_rels" (
@@ -312,8 +347,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_tenant_id" integer,
-  	"version_title" varchar NOT NULL,
-  	"version_thumbnail_id" integer NOT NULL,
+  	"version_title" varchar,
+  	"version_thumbnail_id" integer,
   	"version_overview" jsonb,
   	"version_detailed_overview" jsonb,
   	"version_published_at" timestamp(3) with time zone,
@@ -326,12 +361,15 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_meta_description" varchar,
   	"version_meta_image_id" integer,
   	"version_lock_slug" boolean DEFAULT true,
-  	"version_slug" varchar NOT NULL,
+  	"version_slug" varchar,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
   	"version_deleted_at" timestamp(3) with time zone,
+  	"version__status" "enum__projects_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
   );
   
   CREATE TABLE "_projects_v_rels" (
@@ -398,7 +436,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "skills" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"tenant_id" integer,
-  	"title" varchar NOT NULL,
+  	"title" varchar,
   	"published_at" timestamp(3) with time zone,
   	"enable_label" boolean DEFAULT false,
   	"skill_custom_label" varchar,
@@ -413,17 +451,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"enable_publications_count" boolean DEFAULT false,
   	"enable_researches_count" boolean DEFAULT false,
   	"lock_slug" boolean DEFAULT true,
-  	"slug" varchar NOT NULL,
+  	"slug" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"deleted_at" timestamp(3) with time zone
+  	"deleted_at" timestamp(3) with time zone,
+  	"_status" "enum_skills_status" DEFAULT 'draft'
   );
   
   CREATE TABLE "_skills_v" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_tenant_id" integer,
-  	"version_title" varchar NOT NULL,
+  	"version_title" varchar,
   	"version_published_at" timestamp(3) with time zone,
   	"version_enable_label" boolean DEFAULT false,
   	"version_skill_custom_label" varchar,
@@ -438,12 +477,15 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_enable_publications_count" boolean DEFAULT false,
   	"version_enable_researches_count" boolean DEFAULT false,
   	"version_lock_slug" boolean DEFAULT true,
-  	"version_slug" varchar NOT NULL,
+  	"version_slug" varchar,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
   	"version_deleted_at" timestamp(3) with time zone,
+  	"version__status" "enum__skills_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
   );
   
   CREATE TABLE "hackathons_resources" (
@@ -459,20 +501,21 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "hackathons" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"tenant_id" integer,
-  	"title" varchar NOT NULL,
+  	"title" varchar,
   	"description" jsonb,
-  	"dates_to" timestamp(3) with time zone NOT NULL,
-  	"dates_from" timestamp(3) with time zone NOT NULL,
+  	"dates_to" timestamp(3) with time zone,
+  	"dates_from" timestamp(3) with time zone,
   	"location" varchar,
-  	"image_id" integer NOT NULL,
+  	"image_id" integer,
   	"meta_title" varchar,
   	"meta_description" varchar,
   	"meta_image_id" integer,
   	"lock_slug" boolean DEFAULT true,
-  	"slug" varchar NOT NULL,
+  	"slug" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"deleted_at" timestamp(3) with time zone
+  	"deleted_at" timestamp(3) with time zone,
+  	"_status" "enum_hackathons_status" DEFAULT 'draft'
   );
   
   CREATE TABLE "hackathons_rels" (
@@ -499,22 +542,25 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_tenant_id" integer,
-  	"version_title" varchar NOT NULL,
+  	"version_title" varchar,
   	"version_description" jsonb,
-  	"version_dates_to" timestamp(3) with time zone NOT NULL,
-  	"version_dates_from" timestamp(3) with time zone NOT NULL,
+  	"version_dates_to" timestamp(3) with time zone,
+  	"version_dates_from" timestamp(3) with time zone,
   	"version_location" varchar,
-  	"version_image_id" integer NOT NULL,
+  	"version_image_id" integer,
   	"version_meta_title" varchar,
   	"version_meta_description" varchar,
   	"version_meta_image_id" integer,
   	"version_lock_slug" boolean DEFAULT true,
-  	"version_slug" varchar NOT NULL,
+  	"version_slug" varchar,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
   	"version_deleted_at" timestamp(3) with time zone,
+  	"version__status" "enum__hackathons_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
   );
   
   CREATE TABLE "_hackathons_v_rels" (
@@ -539,22 +585,23 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "researches" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"tenant_id" integer,
-  	"title" varchar NOT NULL,
-  	"status" "enum_researches_status" NOT NULL,
+  	"title" varchar,
+  	"status" "enum_researches_status",
   	"role" varchar,
-  	"image_id" integer NOT NULL,
+  	"image_id" integer,
   	"description" jsonb,
-  	"dates_from" timestamp(3) with time zone NOT NULL,
+  	"dates_from" timestamp(3) with time zone,
   	"dates_to" timestamp(3) with time zone,
   	"dates_location" varchar,
   	"meta_title" varchar,
   	"meta_description" varchar,
   	"meta_image_id" integer,
   	"lock_slug" boolean DEFAULT true,
-  	"slug" varchar NOT NULL,
+  	"slug" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"deleted_at" timestamp(3) with time zone
+  	"deleted_at" timestamp(3) with time zone,
+  	"_status" "enum_researches_status" DEFAULT 'draft'
   );
   
   CREATE TABLE "researches_rels" (
@@ -581,24 +628,27 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_tenant_id" integer,
-  	"version_title" varchar NOT NULL,
-  	"version_status" "enum__researches_v_version_status" NOT NULL,
+  	"version_title" varchar,
+  	"version_status" "enum__researches_v_version_status",
   	"version_role" varchar,
-  	"version_image_id" integer NOT NULL,
+  	"version_image_id" integer,
   	"version_description" jsonb,
-  	"version_dates_from" timestamp(3) with time zone NOT NULL,
+  	"version_dates_from" timestamp(3) with time zone,
   	"version_dates_to" timestamp(3) with time zone,
   	"version_dates_location" varchar,
   	"version_meta_title" varchar,
   	"version_meta_description" varchar,
   	"version_meta_image_id" integer,
   	"version_lock_slug" boolean DEFAULT true,
-  	"version_slug" varchar NOT NULL,
+  	"version_slug" varchar,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
   	"version_deleted_at" timestamp(3) with time zone,
+  	"version__status" "enum__researches_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
   );
   
   CREATE TABLE "_researches_v_rels" (
@@ -614,8 +664,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
-  	"label" varchar NOT NULL,
-  	"value" varchar NOT NULL
+  	"label" varchar,
+  	"value" varchar
   );
   
   CREATE TABLE "achievements_resources" (
@@ -631,7 +681,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "achievements" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"tenant_id" integer,
-  	"title" varchar NOT NULL,
+  	"title" varchar,
   	"type" "enum_achievements_type",
   	"image_id" integer,
   	"description" jsonb,
@@ -642,9 +692,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"meta_description" varchar,
   	"meta_image_id" integer,
   	"lock_slug" boolean DEFAULT true,
-  	"slug" varchar NOT NULL,
+  	"slug" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"_status" "enum_achievements_status" DEFAULT 'draft'
   );
   
   CREATE TABLE "achievements_rels" (
@@ -660,8 +711,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
-  	"label" varchar NOT NULL,
-  	"value" varchar NOT NULL,
+  	"label" varchar,
+  	"value" varchar,
   	"_uuid" varchar
   );
   
@@ -680,7 +731,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_tenant_id" integer,
-  	"version_title" varchar NOT NULL,
+  	"version_title" varchar,
   	"version_type" "enum__achievements_v_version_type",
   	"version_image_id" integer,
   	"version_description" jsonb,
@@ -691,11 +742,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_meta_description" varchar,
   	"version_meta_image_id" integer,
   	"version_lock_slug" boolean DEFAULT true,
-  	"version_slug" varchar NOT NULL,
+  	"version_slug" varchar,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version__status" "enum__achievements_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
   );
   
   CREATE TABLE "_achievements_v_rels" (
@@ -720,22 +774,23 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "certifications" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"tenant_id" integer,
-  	"title" varchar NOT NULL,
-  	"issuer" varchar NOT NULL,
+  	"title" varchar,
+  	"issuer" varchar,
   	"credential_id" varchar,
-  	"image_id" integer NOT NULL,
+  	"image_id" integer,
   	"description" jsonb,
-  	"validity_issued_date" timestamp(3) with time zone NOT NULL,
+  	"validity_issued_date" timestamp(3) with time zone,
   	"validity_expiry_date" timestamp(3) with time zone,
   	"validity_is_lifetime" boolean DEFAULT false,
   	"meta_title" varchar,
   	"meta_description" varchar,
   	"meta_image_id" integer,
   	"lock_slug" boolean DEFAULT true,
-  	"slug" varchar NOT NULL,
+  	"slug" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"deleted_at" timestamp(3) with time zone
+  	"deleted_at" timestamp(3) with time zone,
+  	"_status" "enum_certifications_status" DEFAULT 'draft'
   );
   
   CREATE TABLE "certifications_rels" (
@@ -762,24 +817,27 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_tenant_id" integer,
-  	"version_title" varchar NOT NULL,
-  	"version_issuer" varchar NOT NULL,
+  	"version_title" varchar,
+  	"version_issuer" varchar,
   	"version_credential_id" varchar,
-  	"version_image_id" integer NOT NULL,
+  	"version_image_id" integer,
   	"version_description" jsonb,
-  	"version_validity_issued_date" timestamp(3) with time zone NOT NULL,
+  	"version_validity_issued_date" timestamp(3) with time zone,
   	"version_validity_expiry_date" timestamp(3) with time zone,
   	"version_validity_is_lifetime" boolean DEFAULT false,
   	"version_meta_title" varchar,
   	"version_meta_description" varchar,
   	"version_meta_image_id" integer,
   	"version_lock_slug" boolean DEFAULT true,
-  	"version_slug" varchar NOT NULL,
+  	"version_slug" varchar,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
   	"version_deleted_at" timestamp(3) with time zone,
+  	"version__status" "enum__certifications_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
   );
   
   CREATE TABLE "_certifications_v_rels" (
@@ -804,21 +862,22 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "publications" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"tenant_id" integer,
-  	"title" varchar NOT NULL,
-  	"type" "enum_publications_type" NOT NULL,
-  	"publisher" varchar NOT NULL,
-  	"image_id" integer NOT NULL,
+  	"title" varchar,
+  	"type" "enum_publications_type",
+  	"publisher" varchar,
+  	"image_id" integer,
   	"description" jsonb,
-  	"published_date" timestamp(3) with time zone NOT NULL,
+  	"published_date" timestamp(3) with time zone,
   	"doi" varchar,
   	"meta_title" varchar,
   	"meta_description" varchar,
   	"meta_image_id" integer,
   	"lock_slug" boolean DEFAULT true,
-  	"slug" varchar NOT NULL,
+  	"slug" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"deleted_at" timestamp(3) with time zone
+  	"deleted_at" timestamp(3) with time zone,
+  	"_status" "enum_publications_status" DEFAULT 'draft'
   );
   
   CREATE TABLE "publications_rels" (
@@ -845,23 +904,26 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_tenant_id" integer,
-  	"version_title" varchar NOT NULL,
-  	"version_type" "enum__publications_v_version_type" NOT NULL,
-  	"version_publisher" varchar NOT NULL,
-  	"version_image_id" integer NOT NULL,
+  	"version_title" varchar,
+  	"version_type" "enum__publications_v_version_type",
+  	"version_publisher" varchar,
+  	"version_image_id" integer,
   	"version_description" jsonb,
-  	"version_published_date" timestamp(3) with time zone NOT NULL,
+  	"version_published_date" timestamp(3) with time zone,
   	"version_doi" varchar,
   	"version_meta_title" varchar,
   	"version_meta_description" varchar,
   	"version_meta_image_id" integer,
   	"version_lock_slug" boolean DEFAULT true,
-  	"version_slug" varchar NOT NULL,
+  	"version_slug" varchar,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
   	"version_deleted_at" timestamp(3) with time zone,
+  	"version__status" "enum__publications_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
   );
   
   CREATE TABLE "_publications_v_rels" (
@@ -886,18 +948,19 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "licenses" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"tenant_id" integer,
-  	"title" varchar NOT NULL,
-  	"issuing_authority" varchar NOT NULL,
-  	"license_number" varchar NOT NULL,
-  	"image_id" integer NOT NULL,
+  	"title" varchar,
+  	"issuing_authority" varchar,
+  	"license_number" varchar,
+  	"image_id" integer,
   	"description" jsonb,
-  	"validity_issued_date" timestamp(3) with time zone NOT NULL,
-  	"validity_expiry_date" timestamp(3) with time zone NOT NULL,
+  	"validity_issued_date" timestamp(3) with time zone,
+  	"validity_expiry_date" timestamp(3) with time zone,
   	"validity_status" "enum_licenses_validity_status" DEFAULT 'active',
   	"location" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"deleted_at" timestamp(3) with time zone
+  	"deleted_at" timestamp(3) with time zone,
+  	"_status" "enum_licenses_status" DEFAULT 'draft'
   );
   
   CREATE TABLE "licenses_rels" (
@@ -923,20 +986,23 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_tenant_id" integer,
-  	"version_title" varchar NOT NULL,
-  	"version_issuing_authority" varchar NOT NULL,
-  	"version_license_number" varchar NOT NULL,
-  	"version_image_id" integer NOT NULL,
+  	"version_title" varchar,
+  	"version_issuing_authority" varchar,
+  	"version_license_number" varchar,
+  	"version_image_id" integer,
   	"version_description" jsonb,
-  	"version_validity_issued_date" timestamp(3) with time zone NOT NULL,
-  	"version_validity_expiry_date" timestamp(3) with time zone NOT NULL,
+  	"version_validity_issued_date" timestamp(3) with time zone,
+  	"version_validity_expiry_date" timestamp(3) with time zone,
   	"version_validity_status" "enum__licenses_v_version_validity_status" DEFAULT 'active',
   	"version_location" varchar,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
   	"version_deleted_at" timestamp(3) with time zone,
+  	"version__status" "enum__licenses_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
   );
   
   CREATE TABLE "_licenses_v_rels" (
@@ -961,7 +1027,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "experiences" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"tenant_id" integer,
-  	"title" varchar NOT NULL,
+  	"title" varchar,
   	"employment_type" "enum_experiences_employment_type",
   	"job_type" "enum_experiences_job_type",
   	"company" varchar,
@@ -972,7 +1038,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"logo_id" integer,
   	"description" jsonb,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"_status" "enum_experiences_status" DEFAULT 'draft'
   );
   
   CREATE TABLE "experiences_rels" (
@@ -987,7 +1054,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
   	"version_tenant_id" integer,
-  	"version_title" varchar NOT NULL,
+  	"version_title" varchar,
   	"version_employment_type" "enum__experiences_v_version_employment_type",
   	"version_job_type" "enum__experiences_v_version_job_type",
   	"version_company" varchar,
@@ -999,8 +1066,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_description" jsonb,
   	"version_updated_at" timestamp(3) with time zone,
   	"version_created_at" timestamp(3) with time zone,
+  	"version__status" "enum__experiences_v_version_status" DEFAULT 'draft',
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"latest" boolean,
+  	"autosave" boolean
   );
   
   CREATE TABLE "_experiences_v_rels" (
@@ -1397,6 +1467,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "blogs_updated_at_idx" ON "blogs" USING btree ("updated_at");
   CREATE INDEX "blogs_created_at_idx" ON "blogs" USING btree ("created_at");
   CREATE INDEX "blogs_deleted_at_idx" ON "blogs" USING btree ("deleted_at");
+  CREATE INDEX "blogs__status_idx" ON "blogs" USING btree ("_status");
   CREATE INDEX "_blogs_v_parent_idx" ON "_blogs_v" USING btree ("parent_id");
   CREATE INDEX "_blogs_v_version_version_tenant_idx" ON "_blogs_v" USING btree ("version_tenant_id");
   CREATE INDEX "_blogs_v_version_version_featured_image_idx" ON "_blogs_v" USING btree ("version_featured_image_id");
@@ -1405,14 +1476,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_blogs_v_version_version_updated_at_idx" ON "_blogs_v" USING btree ("version_updated_at");
   CREATE INDEX "_blogs_v_version_version_created_at_idx" ON "_blogs_v" USING btree ("version_created_at");
   CREATE INDEX "_blogs_v_version_version_deleted_at_idx" ON "_blogs_v" USING btree ("version_deleted_at");
+  CREATE INDEX "_blogs_v_version_version__status_idx" ON "_blogs_v" USING btree ("version__status");
   CREATE INDEX "_blogs_v_created_at_idx" ON "_blogs_v" USING btree ("created_at");
   CREATE INDEX "_blogs_v_updated_at_idx" ON "_blogs_v" USING btree ("updated_at");
+  CREATE INDEX "_blogs_v_latest_idx" ON "_blogs_v" USING btree ("latest");
+  CREATE INDEX "_blogs_v_autosave_idx" ON "_blogs_v" USING btree ("autosave");
   CREATE INDEX "pages_tenant_idx" ON "pages" USING btree ("tenant_id");
   CREATE INDEX "pages_meta_meta_image_idx" ON "pages" USING btree ("meta_image_id");
   CREATE UNIQUE INDEX "pages_slug_idx" ON "pages" USING btree ("slug");
   CREATE INDEX "pages_updated_at_idx" ON "pages" USING btree ("updated_at");
   CREATE INDEX "pages_created_at_idx" ON "pages" USING btree ("created_at");
   CREATE INDEX "pages_deleted_at_idx" ON "pages" USING btree ("deleted_at");
+  CREATE INDEX "pages__status_idx" ON "pages" USING btree ("_status");
   CREATE INDEX "_pages_v_parent_idx" ON "_pages_v" USING btree ("parent_id");
   CREATE INDEX "_pages_v_version_version_tenant_idx" ON "_pages_v" USING btree ("version_tenant_id");
   CREATE INDEX "_pages_v_version_meta_version_meta_image_idx" ON "_pages_v" USING btree ("version_meta_image_id");
@@ -1420,8 +1495,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_pages_v_version_version_updated_at_idx" ON "_pages_v" USING btree ("version_updated_at");
   CREATE INDEX "_pages_v_version_version_created_at_idx" ON "_pages_v" USING btree ("version_created_at");
   CREATE INDEX "_pages_v_version_version_deleted_at_idx" ON "_pages_v" USING btree ("version_deleted_at");
+  CREATE INDEX "_pages_v_version_version__status_idx" ON "_pages_v" USING btree ("version__status");
   CREATE INDEX "_pages_v_created_at_idx" ON "_pages_v" USING btree ("created_at");
   CREATE INDEX "_pages_v_updated_at_idx" ON "_pages_v" USING btree ("updated_at");
+  CREATE INDEX "_pages_v_latest_idx" ON "_pages_v" USING btree ("latest");
+  CREATE INDEX "_pages_v_autosave_idx" ON "_pages_v" USING btree ("autosave");
   CREATE INDEX "educations_resources_order_idx" ON "educations_resources" USING btree ("_order");
   CREATE INDEX "educations_resources_parent_id_idx" ON "educations_resources" USING btree ("_parent_id");
   CREATE INDEX "educations_tenant_idx" ON "educations" USING btree ("tenant_id");
@@ -1429,6 +1507,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "educations_updated_at_idx" ON "educations" USING btree ("updated_at");
   CREATE INDEX "educations_created_at_idx" ON "educations" USING btree ("created_at");
   CREATE INDEX "educations_deleted_at_idx" ON "educations" USING btree ("deleted_at");
+  CREATE INDEX "educations__status_idx" ON "educations" USING btree ("_status");
   CREATE INDEX "educations_rels_order_idx" ON "educations_rels" USING btree ("order");
   CREATE INDEX "educations_rels_parent_idx" ON "educations_rels" USING btree ("parent_id");
   CREATE INDEX "educations_rels_path_idx" ON "educations_rels" USING btree ("path");
@@ -1442,8 +1521,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_educations_v_version_version_updated_at_idx" ON "_educations_v" USING btree ("version_updated_at");
   CREATE INDEX "_educations_v_version_version_created_at_idx" ON "_educations_v" USING btree ("version_created_at");
   CREATE INDEX "_educations_v_version_version_deleted_at_idx" ON "_educations_v" USING btree ("version_deleted_at");
+  CREATE INDEX "_educations_v_version_version__status_idx" ON "_educations_v" USING btree ("version__status");
   CREATE INDEX "_educations_v_created_at_idx" ON "_educations_v" USING btree ("created_at");
   CREATE INDEX "_educations_v_updated_at_idx" ON "_educations_v" USING btree ("updated_at");
+  CREATE INDEX "_educations_v_latest_idx" ON "_educations_v" USING btree ("latest");
+  CREATE INDEX "_educations_v_autosave_idx" ON "_educations_v" USING btree ("autosave");
   CREATE INDEX "_educations_v_rels_order_idx" ON "_educations_v_rels" USING btree ("order");
   CREATE INDEX "_educations_v_rels_parent_idx" ON "_educations_v_rels" USING btree ("parent_id");
   CREATE INDEX "_educations_v_rels_path_idx" ON "_educations_v_rels" USING btree ("path");
@@ -1458,6 +1540,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "projects_updated_at_idx" ON "projects" USING btree ("updated_at");
   CREATE INDEX "projects_created_at_idx" ON "projects" USING btree ("created_at");
   CREATE INDEX "projects_deleted_at_idx" ON "projects" USING btree ("deleted_at");
+  CREATE INDEX "projects__status_idx" ON "projects" USING btree ("_status");
   CREATE INDEX "projects_rels_order_idx" ON "projects_rels" USING btree ("order");
   CREATE INDEX "projects_rels_parent_idx" ON "projects_rels" USING btree ("parent_id");
   CREATE INDEX "projects_rels_path_idx" ON "projects_rels" USING btree ("path");
@@ -1473,8 +1556,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_projects_v_version_version_updated_at_idx" ON "_projects_v" USING btree ("version_updated_at");
   CREATE INDEX "_projects_v_version_version_created_at_idx" ON "_projects_v" USING btree ("version_created_at");
   CREATE INDEX "_projects_v_version_version_deleted_at_idx" ON "_projects_v" USING btree ("version_deleted_at");
+  CREATE INDEX "_projects_v_version_version__status_idx" ON "_projects_v" USING btree ("version__status");
   CREATE INDEX "_projects_v_created_at_idx" ON "_projects_v" USING btree ("created_at");
   CREATE INDEX "_projects_v_updated_at_idx" ON "_projects_v" USING btree ("updated_at");
+  CREATE INDEX "_projects_v_latest_idx" ON "_projects_v" USING btree ("latest");
+  CREATE INDEX "_projects_v_autosave_idx" ON "_projects_v" USING btree ("autosave");
   CREATE INDEX "_projects_v_rels_order_idx" ON "_projects_v_rels" USING btree ("order");
   CREATE INDEX "_projects_v_rels_parent_idx" ON "_projects_v_rels" USING btree ("parent_id");
   CREATE INDEX "_projects_v_rels_path_idx" ON "_projects_v_rels" USING btree ("path");
@@ -1503,14 +1589,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "skills_updated_at_idx" ON "skills" USING btree ("updated_at");
   CREATE INDEX "skills_created_at_idx" ON "skills" USING btree ("created_at");
   CREATE INDEX "skills_deleted_at_idx" ON "skills" USING btree ("deleted_at");
+  CREATE INDEX "skills__status_idx" ON "skills" USING btree ("_status");
   CREATE INDEX "_skills_v_parent_idx" ON "_skills_v" USING btree ("parent_id");
   CREATE INDEX "_skills_v_version_version_tenant_idx" ON "_skills_v" USING btree ("version_tenant_id");
   CREATE INDEX "_skills_v_version_version_slug_idx" ON "_skills_v" USING btree ("version_slug");
   CREATE INDEX "_skills_v_version_version_updated_at_idx" ON "_skills_v" USING btree ("version_updated_at");
   CREATE INDEX "_skills_v_version_version_created_at_idx" ON "_skills_v" USING btree ("version_created_at");
   CREATE INDEX "_skills_v_version_version_deleted_at_idx" ON "_skills_v" USING btree ("version_deleted_at");
+  CREATE INDEX "_skills_v_version_version__status_idx" ON "_skills_v" USING btree ("version__status");
   CREATE INDEX "_skills_v_created_at_idx" ON "_skills_v" USING btree ("created_at");
   CREATE INDEX "_skills_v_updated_at_idx" ON "_skills_v" USING btree ("updated_at");
+  CREATE INDEX "_skills_v_latest_idx" ON "_skills_v" USING btree ("latest");
+  CREATE INDEX "_skills_v_autosave_idx" ON "_skills_v" USING btree ("autosave");
   CREATE INDEX "hackathons_resources_order_idx" ON "hackathons_resources" USING btree ("_order");
   CREATE INDEX "hackathons_resources_parent_id_idx" ON "hackathons_resources" USING btree ("_parent_id");
   CREATE INDEX "hackathons_tenant_idx" ON "hackathons" USING btree ("tenant_id");
@@ -1520,6 +1610,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "hackathons_updated_at_idx" ON "hackathons" USING btree ("updated_at");
   CREATE INDEX "hackathons_created_at_idx" ON "hackathons" USING btree ("created_at");
   CREATE INDEX "hackathons_deleted_at_idx" ON "hackathons" USING btree ("deleted_at");
+  CREATE INDEX "hackathons__status_idx" ON "hackathons" USING btree ("_status");
   CREATE INDEX "hackathons_rels_order_idx" ON "hackathons_rels" USING btree ("order");
   CREATE INDEX "hackathons_rels_parent_idx" ON "hackathons_rels" USING btree ("parent_id");
   CREATE INDEX "hackathons_rels_path_idx" ON "hackathons_rels" USING btree ("path");
@@ -1535,8 +1626,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_hackathons_v_version_version_updated_at_idx" ON "_hackathons_v" USING btree ("version_updated_at");
   CREATE INDEX "_hackathons_v_version_version_created_at_idx" ON "_hackathons_v" USING btree ("version_created_at");
   CREATE INDEX "_hackathons_v_version_version_deleted_at_idx" ON "_hackathons_v" USING btree ("version_deleted_at");
+  CREATE INDEX "_hackathons_v_version_version__status_idx" ON "_hackathons_v" USING btree ("version__status");
   CREATE INDEX "_hackathons_v_created_at_idx" ON "_hackathons_v" USING btree ("created_at");
   CREATE INDEX "_hackathons_v_updated_at_idx" ON "_hackathons_v" USING btree ("updated_at");
+  CREATE INDEX "_hackathons_v_latest_idx" ON "_hackathons_v" USING btree ("latest");
+  CREATE INDEX "_hackathons_v_autosave_idx" ON "_hackathons_v" USING btree ("autosave");
   CREATE INDEX "_hackathons_v_rels_order_idx" ON "_hackathons_v_rels" USING btree ("order");
   CREATE INDEX "_hackathons_v_rels_parent_idx" ON "_hackathons_v_rels" USING btree ("parent_id");
   CREATE INDEX "_hackathons_v_rels_path_idx" ON "_hackathons_v_rels" USING btree ("path");
@@ -1551,6 +1645,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "researches_updated_at_idx" ON "researches" USING btree ("updated_at");
   CREATE INDEX "researches_created_at_idx" ON "researches" USING btree ("created_at");
   CREATE INDEX "researches_deleted_at_idx" ON "researches" USING btree ("deleted_at");
+  CREATE INDEX "researches__status_idx" ON "researches" USING btree ("_status");
   CREATE INDEX "researches_rels_order_idx" ON "researches_rels" USING btree ("order");
   CREATE INDEX "researches_rels_parent_idx" ON "researches_rels" USING btree ("parent_id");
   CREATE INDEX "researches_rels_path_idx" ON "researches_rels" USING btree ("path");
@@ -1566,8 +1661,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_researches_v_version_version_updated_at_idx" ON "_researches_v" USING btree ("version_updated_at");
   CREATE INDEX "_researches_v_version_version_created_at_idx" ON "_researches_v" USING btree ("version_created_at");
   CREATE INDEX "_researches_v_version_version_deleted_at_idx" ON "_researches_v" USING btree ("version_deleted_at");
+  CREATE INDEX "_researches_v_version_version__status_idx" ON "_researches_v" USING btree ("version__status");
   CREATE INDEX "_researches_v_created_at_idx" ON "_researches_v" USING btree ("created_at");
   CREATE INDEX "_researches_v_updated_at_idx" ON "_researches_v" USING btree ("updated_at");
+  CREATE INDEX "_researches_v_latest_idx" ON "_researches_v" USING btree ("latest");
+  CREATE INDEX "_researches_v_autosave_idx" ON "_researches_v" USING btree ("autosave");
   CREATE INDEX "_researches_v_rels_order_idx" ON "_researches_v_rels" USING btree ("order");
   CREATE INDEX "_researches_v_rels_parent_idx" ON "_researches_v_rels" USING btree ("parent_id");
   CREATE INDEX "_researches_v_rels_path_idx" ON "_researches_v_rels" USING btree ("path");
@@ -1583,6 +1681,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE UNIQUE INDEX "achievements_slug_idx" ON "achievements" USING btree ("slug");
   CREATE INDEX "achievements_updated_at_idx" ON "achievements" USING btree ("updated_at");
   CREATE INDEX "achievements_created_at_idx" ON "achievements" USING btree ("created_at");
+  CREATE INDEX "achievements__status_idx" ON "achievements" USING btree ("_status");
   CREATE INDEX "achievements_rels_order_idx" ON "achievements_rels" USING btree ("order");
   CREATE INDEX "achievements_rels_parent_idx" ON "achievements_rels" USING btree ("parent_id");
   CREATE INDEX "achievements_rels_path_idx" ON "achievements_rels" USING btree ("path");
@@ -1599,8 +1698,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_achievements_v_version_version_slug_idx" ON "_achievements_v" USING btree ("version_slug");
   CREATE INDEX "_achievements_v_version_version_updated_at_idx" ON "_achievements_v" USING btree ("version_updated_at");
   CREATE INDEX "_achievements_v_version_version_created_at_idx" ON "_achievements_v" USING btree ("version_created_at");
+  CREATE INDEX "_achievements_v_version_version__status_idx" ON "_achievements_v" USING btree ("version__status");
   CREATE INDEX "_achievements_v_created_at_idx" ON "_achievements_v" USING btree ("created_at");
   CREATE INDEX "_achievements_v_updated_at_idx" ON "_achievements_v" USING btree ("updated_at");
+  CREATE INDEX "_achievements_v_latest_idx" ON "_achievements_v" USING btree ("latest");
+  CREATE INDEX "_achievements_v_autosave_idx" ON "_achievements_v" USING btree ("autosave");
   CREATE INDEX "_achievements_v_rels_order_idx" ON "_achievements_v_rels" USING btree ("order");
   CREATE INDEX "_achievements_v_rels_parent_idx" ON "_achievements_v_rels" USING btree ("parent_id");
   CREATE INDEX "_achievements_v_rels_path_idx" ON "_achievements_v_rels" USING btree ("path");
@@ -1615,6 +1717,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "certifications_updated_at_idx" ON "certifications" USING btree ("updated_at");
   CREATE INDEX "certifications_created_at_idx" ON "certifications" USING btree ("created_at");
   CREATE INDEX "certifications_deleted_at_idx" ON "certifications" USING btree ("deleted_at");
+  CREATE INDEX "certifications__status_idx" ON "certifications" USING btree ("_status");
   CREATE INDEX "certifications_rels_order_idx" ON "certifications_rels" USING btree ("order");
   CREATE INDEX "certifications_rels_parent_idx" ON "certifications_rels" USING btree ("parent_id");
   CREATE INDEX "certifications_rels_path_idx" ON "certifications_rels" USING btree ("path");
@@ -1630,8 +1733,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_certifications_v_version_version_updated_at_idx" ON "_certifications_v" USING btree ("version_updated_at");
   CREATE INDEX "_certifications_v_version_version_created_at_idx" ON "_certifications_v" USING btree ("version_created_at");
   CREATE INDEX "_certifications_v_version_version_deleted_at_idx" ON "_certifications_v" USING btree ("version_deleted_at");
+  CREATE INDEX "_certifications_v_version_version__status_idx" ON "_certifications_v" USING btree ("version__status");
   CREATE INDEX "_certifications_v_created_at_idx" ON "_certifications_v" USING btree ("created_at");
   CREATE INDEX "_certifications_v_updated_at_idx" ON "_certifications_v" USING btree ("updated_at");
+  CREATE INDEX "_certifications_v_latest_idx" ON "_certifications_v" USING btree ("latest");
+  CREATE INDEX "_certifications_v_autosave_idx" ON "_certifications_v" USING btree ("autosave");
   CREATE INDEX "_certifications_v_rels_order_idx" ON "_certifications_v_rels" USING btree ("order");
   CREATE INDEX "_certifications_v_rels_parent_idx" ON "_certifications_v_rels" USING btree ("parent_id");
   CREATE INDEX "_certifications_v_rels_path_idx" ON "_certifications_v_rels" USING btree ("path");
@@ -1646,6 +1752,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "publications_updated_at_idx" ON "publications" USING btree ("updated_at");
   CREATE INDEX "publications_created_at_idx" ON "publications" USING btree ("created_at");
   CREATE INDEX "publications_deleted_at_idx" ON "publications" USING btree ("deleted_at");
+  CREATE INDEX "publications__status_idx" ON "publications" USING btree ("_status");
   CREATE INDEX "publications_rels_order_idx" ON "publications_rels" USING btree ("order");
   CREATE INDEX "publications_rels_parent_idx" ON "publications_rels" USING btree ("parent_id");
   CREATE INDEX "publications_rels_path_idx" ON "publications_rels" USING btree ("path");
@@ -1661,8 +1768,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_publications_v_version_version_updated_at_idx" ON "_publications_v" USING btree ("version_updated_at");
   CREATE INDEX "_publications_v_version_version_created_at_idx" ON "_publications_v" USING btree ("version_created_at");
   CREATE INDEX "_publications_v_version_version_deleted_at_idx" ON "_publications_v" USING btree ("version_deleted_at");
+  CREATE INDEX "_publications_v_version_version__status_idx" ON "_publications_v" USING btree ("version__status");
   CREATE INDEX "_publications_v_created_at_idx" ON "_publications_v" USING btree ("created_at");
   CREATE INDEX "_publications_v_updated_at_idx" ON "_publications_v" USING btree ("updated_at");
+  CREATE INDEX "_publications_v_latest_idx" ON "_publications_v" USING btree ("latest");
+  CREATE INDEX "_publications_v_autosave_idx" ON "_publications_v" USING btree ("autosave");
   CREATE INDEX "_publications_v_rels_order_idx" ON "_publications_v_rels" USING btree ("order");
   CREATE INDEX "_publications_v_rels_parent_idx" ON "_publications_v_rels" USING btree ("parent_id");
   CREATE INDEX "_publications_v_rels_path_idx" ON "_publications_v_rels" USING btree ("path");
@@ -1675,6 +1785,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "licenses_updated_at_idx" ON "licenses" USING btree ("updated_at");
   CREATE INDEX "licenses_created_at_idx" ON "licenses" USING btree ("created_at");
   CREATE INDEX "licenses_deleted_at_idx" ON "licenses" USING btree ("deleted_at");
+  CREATE INDEX "licenses__status_idx" ON "licenses" USING btree ("_status");
   CREATE INDEX "licenses_rels_order_idx" ON "licenses_rels" USING btree ("order");
   CREATE INDEX "licenses_rels_parent_idx" ON "licenses_rels" USING btree ("parent_id");
   CREATE INDEX "licenses_rels_path_idx" ON "licenses_rels" USING btree ("path");
@@ -1687,8 +1798,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_licenses_v_version_version_updated_at_idx" ON "_licenses_v" USING btree ("version_updated_at");
   CREATE INDEX "_licenses_v_version_version_created_at_idx" ON "_licenses_v" USING btree ("version_created_at");
   CREATE INDEX "_licenses_v_version_version_deleted_at_idx" ON "_licenses_v" USING btree ("version_deleted_at");
+  CREATE INDEX "_licenses_v_version_version__status_idx" ON "_licenses_v" USING btree ("version__status");
   CREATE INDEX "_licenses_v_created_at_idx" ON "_licenses_v" USING btree ("created_at");
   CREATE INDEX "_licenses_v_updated_at_idx" ON "_licenses_v" USING btree ("updated_at");
+  CREATE INDEX "_licenses_v_latest_idx" ON "_licenses_v" USING btree ("latest");
+  CREATE INDEX "_licenses_v_autosave_idx" ON "_licenses_v" USING btree ("autosave");
   CREATE INDEX "_licenses_v_rels_order_idx" ON "_licenses_v_rels" USING btree ("order");
   CREATE INDEX "_licenses_v_rels_parent_idx" ON "_licenses_v_rels" USING btree ("parent_id");
   CREATE INDEX "_licenses_v_rels_path_idx" ON "_licenses_v_rels" USING btree ("path");
@@ -1701,6 +1815,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "experiences_logo_idx" ON "experiences" USING btree ("logo_id");
   CREATE INDEX "experiences_updated_at_idx" ON "experiences" USING btree ("updated_at");
   CREATE INDEX "experiences_created_at_idx" ON "experiences" USING btree ("created_at");
+  CREATE INDEX "experiences__status_idx" ON "experiences" USING btree ("_status");
   CREATE INDEX "experiences_rels_order_idx" ON "experiences_rels" USING btree ("order");
   CREATE INDEX "experiences_rels_parent_idx" ON "experiences_rels" USING btree ("parent_id");
   CREATE INDEX "experiences_rels_path_idx" ON "experiences_rels" USING btree ("path");
@@ -1710,8 +1825,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_experiences_v_version_version_logo_idx" ON "_experiences_v" USING btree ("version_logo_id");
   CREATE INDEX "_experiences_v_version_version_updated_at_idx" ON "_experiences_v" USING btree ("version_updated_at");
   CREATE INDEX "_experiences_v_version_version_created_at_idx" ON "_experiences_v" USING btree ("version_created_at");
+  CREATE INDEX "_experiences_v_version_version__status_idx" ON "_experiences_v" USING btree ("version__status");
   CREATE INDEX "_experiences_v_created_at_idx" ON "_experiences_v" USING btree ("created_at");
   CREATE INDEX "_experiences_v_updated_at_idx" ON "_experiences_v" USING btree ("updated_at");
+  CREATE INDEX "_experiences_v_latest_idx" ON "_experiences_v" USING btree ("latest");
+  CREATE INDEX "_experiences_v_autosave_idx" ON "_experiences_v" USING btree ("autosave");
   CREATE INDEX "_experiences_v_rels_order_idx" ON "_experiences_v_rels" USING btree ("order");
   CREATE INDEX "_experiences_v_rels_parent_idx" ON "_experiences_v_rels" USING btree ("parent_id");
   CREATE INDEX "_experiences_v_rels_path_idx" ON "_experiences_v_rels" USING btree ("path");
@@ -1884,35 +2002,57 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "payload_migrations" CASCADE;
   DROP TYPE "public"."enum_users_roles";
   DROP TYPE "public"."enum_users_tenants_roles";
+  DROP TYPE "public"."enum_blogs_status";
+  DROP TYPE "public"."enum__blogs_v_version_status";
+  DROP TYPE "public"."enum_pages_status";
+  DROP TYPE "public"."enum__pages_v_version_status";
   DROP TYPE "public"."enum_educations_resources_type";
+  DROP TYPE "public"."enum_educations_status";
   DROP TYPE "public"."enum__educations_v_version_resources_type";
+  DROP TYPE "public"."enum__educations_v_version_status";
   DROP TYPE "public"."enum_projects_resources_type";
+  DROP TYPE "public"."enum_projects_status";
   DROP TYPE "public"."enum__projects_v_version_resources_type";
+  DROP TYPE "public"."enum__projects_v_version_status";
   DROP TYPE "public"."enum_menus_menu_type";
+  DROP TYPE "public"."enum_skills_status";
+  DROP TYPE "public"."enum__skills_v_version_status";
   DROP TYPE "public"."enum_hackathons_resources_type";
+  DROP TYPE "public"."enum_hackathons_status";
   DROP TYPE "public"."enum__hackathons_v_version_resources_type";
+  DROP TYPE "public"."enum__hackathons_v_version_status";
   DROP TYPE "public"."enum_researches_resources_type";
   DROP TYPE "public"."enum_researches_status";
   DROP TYPE "public"."enum__researches_v_version_resources_type";
   DROP TYPE "public"."enum__researches_v_version_status";
   DROP TYPE "public"."enum_achievements_resources_type";
   DROP TYPE "public"."enum_achievements_type";
+  DROP TYPE "public"."enum_achievements_status";
   DROP TYPE "public"."enum__achievements_v_version_resources_type";
   DROP TYPE "public"."enum__achievements_v_version_type";
+  DROP TYPE "public"."enum__achievements_v_version_status";
   DROP TYPE "public"."enum_certifications_resources_type";
+  DROP TYPE "public"."enum_certifications_status";
   DROP TYPE "public"."enum__certifications_v_version_resources_type";
+  DROP TYPE "public"."enum__certifications_v_version_status";
   DROP TYPE "public"."enum_publications_resources_type";
   DROP TYPE "public"."enum_publications_type";
+  DROP TYPE "public"."enum_publications_status";
   DROP TYPE "public"."enum__publications_v_version_resources_type";
   DROP TYPE "public"."enum__publications_v_version_type";
+  DROP TYPE "public"."enum__publications_v_version_status";
   DROP TYPE "public"."enum_licenses_resources_type";
   DROP TYPE "public"."enum_licenses_validity_status";
+  DROP TYPE "public"."enum_licenses_status";
   DROP TYPE "public"."enum__licenses_v_version_resources_type";
   DROP TYPE "public"."enum__licenses_v_version_validity_status";
+  DROP TYPE "public"."enum__licenses_v_version_status";
   DROP TYPE "public"."enum_experiences_employment_type";
   DROP TYPE "public"."enum_experiences_job_type";
+  DROP TYPE "public"."enum_experiences_status";
   DROP TYPE "public"."enum__experiences_v_version_employment_type";
   DROP TYPE "public"."enum__experiences_v_version_job_type";
+  DROP TYPE "public"."enum__experiences_v_version_status";
   DROP TYPE "public"."enum_integration_chat_bubble_type";
   DROP TYPE "public"."enum_forms_confirmation_type";
   DROP TYPE "public"."enum_forms_redirect_type";
