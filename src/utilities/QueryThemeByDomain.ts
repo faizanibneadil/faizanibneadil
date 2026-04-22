@@ -4,10 +4,10 @@ import { isNumber } from "payload/shared"
 
 export const queryShelfByDomain = async ({ domain }: { domain: string }) => {
     const payload = await getPayload({ config })
-    const themeConfig = await payload.find({
+    const shelfConfig = await payload.find({
         collection: 'portfolio-settings',
         select: {
-            theme: true
+            shelf: true
         },
         where: {
             [`tenant.${isNumber(domain) ? 'id' : 'slug'}`]: {
@@ -17,7 +17,7 @@ export const queryShelfByDomain = async ({ domain }: { domain: string }) => {
         depth: 0,
     })
 
-    const theme = themeConfig?.docs?.at(0)
+    const theme = shelfConfig?.docs?.at(0)
     const themeID = typeof theme === 'object' ? theme.id : theme
 
     return themeID ?? 1

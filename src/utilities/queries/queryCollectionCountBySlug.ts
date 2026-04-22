@@ -1,4 +1,5 @@
 import config from '@payload-config'
+import { draftMode } from 'next/headers'
 import { CollectionSlug, getPayload } from 'payload'
 import { isNumber } from 'payload/shared'
 

@@ -18,6 +18,11 @@ export const Tenants: CollectionConfig<'tenants'> = {
     useAsTitle: 'name',
     // group: NavigationGroups.management
   },
+  defaultPopulate: {
+    domain: true,
+    name: true,
+    slug: true
+  },
   fields: [
     {
       name: 'name',

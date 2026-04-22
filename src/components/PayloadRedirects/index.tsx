@@ -2,7 +2,7 @@ import type React from 'react'
 import type { Page, } from '@/payload-types'
 
 import { getCachedDocument } from '@/utilities/getDocument'
-import { getCachedRedirects } from '@/utilities/getRedirects'
+import { queryRedirectsByDomain } from '@/utilities/getRedirects'
 import { notFound, redirect } from 'next/navigation'
 
 interface Props {
@@ -17,8 +17,8 @@ export const PayloadRedirects: React.FC<Props> = async ({
     url: urlFromProps,
     domain: domainFromProps
 }) => {
-    const redirects = await getCachedRedirects()()
-
+    const redirects = await queryRedirectsByDomain({domain: domainFromProps})
+    
     const redirectItem = redirects.find((redirect) => redirect.from === urlFromProps)
 
     if (redirectItem) {

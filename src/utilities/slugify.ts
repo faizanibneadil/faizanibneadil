@@ -1,4 +1,4 @@
-export const slugify = (val: string) => val.toString()
+export const slugify = (val: string) => val?.toString()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .trim()

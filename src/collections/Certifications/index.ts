@@ -2,6 +2,7 @@ import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin"
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
+import { generatePreviewPath } from "@/utilities/generatePreviewPath";
 import { slugify } from "@/utilities/slugify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
@@ -13,8 +14,22 @@ export const Certifications: CollectionConfig<'certifications'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        preview: generatePreview({ collection: 'certifications' }),
+        // livePreview: {
+        //     url: ({ data, req }) => generatePreviewPath({
+        //         collectionSlug: 'certifications',
+        //         req,
+        //         slug: data?.slug,
+        //         portfolioSlug: typeof data?.tenant === 'object' ? data?.tenant.slug : data?.tenant
+        //     })
+        // },
         defaultColumns: ['title', 'issuer', 'isLifetime', 'createdAt'],
+    },
+    defaultPopulate: {
+        meta: true,
+        resources: true,
+        skills: true,
+        slug: true,
+        tenant: true
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -241,6 +256,11 @@ export const Certifications: CollectionConfig<'certifications'> = {
             checkboxName: 'lockSlug',
             slugify: ({ valueToSlugify, data }) => {
                 const fieldToSlug = slugify(valueToSlugify)
+
+                if (!fieldToSlug) {
+                    return undefined
+                }
+
                 return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),

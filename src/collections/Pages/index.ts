@@ -2,6 +2,7 @@ import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin"
 import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { generatePreviewPath } from "@/utilities/generatePreviewPath";
 import { slugify } from "@/utilities/slugify";
 import {
     MetaDescriptionField,
@@ -18,7 +19,23 @@ export const Pages: CollectionConfig<'pages'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        defaultColumns: ['title', 'enableCollection']
+        defaultColumns: ['title', 'enableCollection'],
+        // livePreview: {
+        //     url: ({ data, req }) => generatePreviewPath({
+        //         collectionSlug: 'pages',
+        //         req,
+        //         slug: data?.slug,
+        //         portfolioSlug: typeof data?.tenant === 'object' ? data?.tenant.slug : data?.tenant
+        //     })
+        // }
+    },
+    defaultPopulate: {
+        tenant: true,
+        configuredCollectionSlug: true,
+        layout: true,
+        enableCollection: true,
+        meta: true,
+        slug: true,
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -136,6 +153,11 @@ export const Pages: CollectionConfig<'pages'> = {
             checkboxName: 'lockSlug',
             slugify: ({ valueToSlugify, data }) => {
                 const fieldToSlug = slugify(valueToSlugify)
+
+                if (!fieldToSlug) {
+                    return undefined
+                }
+
                 return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),

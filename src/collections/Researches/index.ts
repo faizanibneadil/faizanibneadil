@@ -2,6 +2,7 @@ import { isSuperAdmin } from "@/access/isSuperAdmin";
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { generatePreviewPath } from "@/utilities/generatePreviewPath";
 import { slugify } from "@/utilities/slugify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
@@ -11,13 +12,23 @@ export const Researches: CollectionConfig<'researches'> = {
     slug: 'researches',
     labels: { plural: 'Researches', singular: 'Research' },
     trash: true,
+    defaultPopulate: {
+        meta: true,
+        resources: true,
+        skills: true,
+        tenant: true,
+    },
     admin: {
         useAsTitle: 'title',
         defaultColumns: ['title', 'status', 'dates_from', 'createdAt'],
-        hidden: ({ user }) => {
-            // Your existing logic
-            return isSuperAdmin(user) ? false : user?.industry?.slug === 'digital-artist'
-        },
+        // livePreview: {
+        //     url: ({ data, req }) => generatePreviewPath({
+        //         collectionSlug: 'blogs',
+        //         req,
+        //         slug: data?.slug,
+        //         portfolioSlug: typeof data?.tenant === 'object' ? data?.tenant.slug : data?.tenant
+        //     })
+        // }
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -242,6 +253,11 @@ export const Researches: CollectionConfig<'researches'> = {
             checkboxName: 'lockSlug',
             slugify: ({ valueToSlugify, data }) => {
                 const fieldToSlug = slugify(valueToSlugify)
+
+                if (!fieldToSlug) {
+                    return undefined
+                }
+
                 return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),

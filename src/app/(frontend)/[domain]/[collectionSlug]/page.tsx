@@ -13,7 +13,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
     domain: params.domain
   })
 
-  const shelfID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
+  const shelfID = typeof settings?.shelf === 'object' ? settings?.shelf?.id : settings?.shelf
 
   if (Object.hasOwn(ShelvesMaps, shelfID!)) {
     const collectionsMap = ShelvesMaps?.[shelfID!]?.config?.collectionConfig?.collectionsMap
@@ -56,11 +56,11 @@ export default async function Page(props: PageProps) {
     domain: params.domain
   })
 
-  const shelfID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
+  const shelfID = typeof settings?.shelf === 'object' ? settings?.shelf?.id : settings?.shelf
 
-  const themeConfig = ShelvesMaps?.[shelfID!]
-  const collectionsMap = themeConfig?.config?.collectionConfig?.collectionsMap
-  const RenderCollection = themeConfig?.config?.collectionConfig?.RenderCollection
+  const shelfConfig = ShelvesMaps?.[shelfID!]
+  const collectionsMap = shelfConfig?.config?.collectionConfig?.collectionsMap
+  const RenderCollection = shelfConfig?.config?.collectionConfig?.RenderCollection
 
   const collection = await queryCollectionBySlug({
     collectionSlug: params.collectionSlug,

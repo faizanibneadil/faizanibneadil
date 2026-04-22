@@ -3,6 +3,7 @@ import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { RichTextLinkFeature } from "@/utilities/RichTextLinkFeature";
 import { generatePreview } from "@/utilities/generate-preview";
+import { generatePreviewPath } from "@/utilities/generatePreviewPath";
 import { slugify } from "@/utilities/slugify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 import { BlocksFeature, lexicalEditor } from "@payloadcms/richtext-lexical";
@@ -15,8 +16,17 @@ export const Blogs: CollectionConfig<'blogs'> = {
     trash: true,
     admin: {
         useAsTitle: 'title',
-        // group: NavigationGroups.portfolio,
-        preview: generatePreview({ collection: 'blogs' })
+        // livePreview: {
+        //     url: ({ data, req }) => generatePreviewPath({
+        //         collectionSlug: 'blogs',
+        //         req,
+        //         slug: data?.slug,
+        //         portfolioSlug: typeof data?.tenant === 'object' ? data?.tenant.slug : data?.tenant
+        //     })
+        // }
+    },
+    defaultPopulate: {
+        meta: true,
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -117,6 +127,11 @@ export const Blogs: CollectionConfig<'blogs'> = {
             checkboxName: 'lockSlug',
             slugify: ({ valueToSlugify, data }) => {
                 const fieldToSlug = slugify(valueToSlugify)
+
+                if (!fieldToSlug) {
+                    return undefined
+                }
+
                 return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),
