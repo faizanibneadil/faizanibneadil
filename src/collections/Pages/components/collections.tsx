@@ -21,7 +21,7 @@ const excludeCollection: CollectionSlug[] = [
     "industries",
     "integration",
     "portfolio-settings",
-    "themes",
+    "shelves",
 ]
 
 export function Collections(props: TextFieldClientProps) {
