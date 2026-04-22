@@ -1,4 +1,4 @@
-import type { Plugin } from "payload";
+import type { GroupField, Plugin, RelationshipField } from "payload";
 import { s3Storage } from '@payloadcms/storage-s3'
 import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";

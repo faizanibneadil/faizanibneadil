@@ -9,6 +9,10 @@ export const Experiences: CollectionConfig<'experiences'> = {
     admin: {
         useAsTitle: 'title'
     },
+    defaultPopulate: {
+        skills: true,
+        tenant: true,
+    },
     fields: [
         {
             type: 'text',

@@ -1,26 +1,20 @@
-import configPromise from '@payload-config'
+import config from '@payload-config'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
+import { isNumber } from 'payload/shared'
 
-export async function getRedirects(depth = 1) {
-    const payload = await getPayload({ config: configPromise })
+export const queryRedirectsByDomain = async ({ domain}:{domain:string}) => {
+    const payload = await getPayload({ config })
 
     const { docs: redirects } = await payload.find({
         collection: 'redirects',
-        depth,
         limit: 0,
         pagination: false,
+        where: {
+            [`tenant.${isNumber(domain) ? 'id' : 'slug'}`]: {
+                equals: domain
+            }
+        }
     })
-
     return redirects
 }
-
-/**
- * Returns a unstable_cache function mapped with the cache tag for 'redirects'.
- *
- * Cache all redirects together to avoid multiple fetches.
- */
-export const getCachedRedirects = () =>
-    unstable_cache(async () => getRedirects(), ['redirects'], {
-        tags: ['redirects'],
-    })

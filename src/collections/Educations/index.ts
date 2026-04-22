@@ -12,6 +12,11 @@ export const Educations: CollectionConfig<'educations'> = {
         useAsTitle: 'title', // Suggestion: Degree name or Course title
         defaultColumns: ['title', 'qualification_academy', 'dates_from', 'currentlyStudying'],
     },
+    defaultPopulate: {
+        resources: true,
+        skills: true,
+        tenant: true
+    },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,

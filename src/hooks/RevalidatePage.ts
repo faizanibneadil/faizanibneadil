@@ -1,25 +1,22 @@
 import { cache } from 'react'
 import type { Page } from '@/payload-types'
 import type { AppCollectionAfterChangeHook, AppCollectionAfterDeleteHook } from '@/types'
-import type { PayloadRequest } from 'payload'
+import type { CollectionSlug, PayloadRequest } from 'payload'
 import { generateRoute } from '@/utilities/generateRoute'
 import { getTenantFromCookie } from '@payloadcms/plugin-multi-tenant/utilities'
 import { revalidatePath, revalidateTag } from 'next/cache'
+import { queryPortfolioInfoById } from '@/utilities/queries/queryPortfolioInfoById'
 
-const getDomain = cache(async (req: PayloadRequest, tenantId?: number) => {
-    try {
-        const tenant = await req.payload?.findByID({
-            collection: 'tenants',
-            id: tenantId || getTenantFromCookie(req.headers, 'number') as number,
-            select: { domain: true },
-            req
-        })
-        return tenant?.domain
-    } catch (error) {
-        req.payload.logger.warn(error, 'Something went wrong to fetch domain')
-        return null
-    }
-})
+
+const formatRoute = ({
+    collectionSlug,
+    docSlug,
+    portfolio
+}: {
+    portfolio: string | number,
+    collectionSlug: (string & {}) | null | undefined | CollectionSlug,
+    docSlug: string
+}) => `/${portfolio}/${collectionSlug}/${docSlug}`
 
 export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
     invalidateRootRoute?: boolean
@@ -29,30 +26,44 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
         previousDoc,
         req,
         collection,
+        context
     }) => {
-        const domain = typeof doc?.tenant === 'number'
-            ? await getDomain(req, doc?.tenant)
+        const portfolioSlug = typeof doc?.tenant === 'number'
+            ? (await queryPortfolioInfoById({ tenantID: doc?.tenant }))?.domain
             : doc?.tenant?.domain
 
-        const slugFromConfig = doc?.configuredCollectionSlug
+        const portfolioId = typeof doc?.tenant === 'object'
+            ? doc?.tenant?.id
+            : doc?.tenant
 
-        if (domain) {
-            const { RootRoute, Route } = generateRoute({
-                domain,
-                slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
-            })
-            if (!req.context.disableRevalidate) {
-                invalidateRootRoute && req.payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
-                invalidateRootRoute && revalidatePath(RootRoute)
-                req.payload.logger.info(`Revalidating page at [PATH]:${Route}`)
-                revalidatePath(Route)
-                doc?.slug && req.payload.logger.info(`query-page-by-${doc?.slug}-${domain}`)
-                doc?.slug && revalidateTag(`query-page-by-${doc?.slug}-${domain}`, 'max')
-                slugFromConfig && req.payload.logger.info(`query-total-docs-by-${slugFromConfig}-${domain}`)
-                slugFromConfig && revalidateTag(`query-total-docs-by-${slugFromConfig}-${domain}`, 'max')
-                revalidateTag('pages-sitemap', 'max')
+        const collectionSlug = collection.slug === 'pages'
+            ? doc?.enableCollection
+                ? doc?.configuredCollectionSlug
+                : collection.slug
+            : collection.slug
+
+        const paths: string[] = []
+
+        if (!context.disableRevalidate) {
+            if (doc?._status === 'published') {
+                paths.push(formatRoute({ portfolio: portfolioId!, collectionSlug, docSlug: doc?.slug }))
+                paths.push(formatRoute({ portfolio: portfolioSlug!, collectionSlug, docSlug: doc?.slug }))
+            }
+
+            if (previousDoc?._status === 'published' && doc?._status !== 'published') {
+                paths.push(formatRoute({ portfolio: portfolioId!, collectionSlug, docSlug: previousDoc?.slug }))
+                paths.push(formatRoute({ portfolio: portfolioSlug!, collectionSlug, docSlug: previousDoc?.slug }))
             }
         }
+
+        if (Boolean(paths.length)) {
+            const uniquePaths = [...new Set(paths)]
+            uniquePaths.forEach(path => {
+                req.payload.logger.info(`invalidating => ${path}`)
+                revalidatePath(path)
+            })
+        }
+
         return doc
     }
 }
@@ -63,28 +74,37 @@ export const RevalidatePageAfterDelete: AppCollectionAfterDeleteHook<Page, {
     return async ({
         doc,
         req,
-        collection
+        collection,
+        context
     }) => {
-        const domain = typeof doc?.tenant === 'number'
-            ? await getDomain(req, doc?.tenant)
+        const portfolioSlug = typeof doc?.tenant === 'number'
+            ? (await queryPortfolioInfoById({ tenantID: doc?.tenant }))?.domain
             : doc?.tenant?.domain
-            
-        const slugFromConfig = doc?.configuredCollectionSlug
 
-        if (domain) {
-            const { RootRoute, Route } = generateRoute({
-                domain,
-                slug: collection?.slug === 'pages' ? doc?.slug : collection?.slug
+        const portfolioId = typeof doc?.tenant === 'object'
+            ? doc?.tenant?.id
+            : doc?.tenant
+
+        const collectionSlug = collection.slug === 'pages'
+            ? doc?.enableCollection
+                ? doc?.configuredCollectionSlug
+                : collection.slug
+            : collection.slug
+
+        const paths: string[] = []
+
+        if (!context.disableRevalidate) {
+            paths.push(formatRoute({ portfolio: portfolioId!, collectionSlug, docSlug: doc?.slug }))
+            paths.push(formatRoute({ portfolio: portfolioSlug!, collectionSlug, docSlug: doc?.slug }))
+
+        }
+
+        if (Boolean(paths.length)) {
+            const uniquePaths = [...new Set(paths)]
+            uniquePaths.forEach(path => {
+                req.payload.logger.info(`invalidating => ${path}`)
+                revalidatePath(path)
             })
-            if (!req.context.disableRevalidate) {
-                invalidateRootRoute && req.payload.logger.info(`Revalidating page at [PATH]:${RootRoute}`)
-                invalidateRootRoute && revalidatePath(RootRoute)
-                req.payload.logger.info(`Revalidating page at [PATH]:${Route}`)
-                revalidatePath(Route)
-                revalidateTag(`query-page-by-${doc?.slug}-${domain}`, 'max')
-                revalidateTag(`query-total-docs-by-${slugFromConfig}-${domain}`, 'max')
-                revalidateTag('pages-sitemap', 'max')
-            }
         }
 
         return doc

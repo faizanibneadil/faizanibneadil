@@ -1,6 +1,7 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
+import { generatePreviewPath } from "@/utilities/generatePreviewPath";
 import { slugify } from "@/utilities/slugify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
@@ -10,9 +11,23 @@ export const Publications: CollectionConfig<'publications'> = {
     slug: 'publications',
     labels: { plural: 'Publications', singular: 'Publication' },
     trash: true,
+    defaultPopulate: {
+        meta: true,
+        resources: true,
+        skills: true,
+        tenant: true
+    },
     admin: {
         useAsTitle: 'title',
         defaultColumns: ['title', 'publisher', 'publishedDate', 'type'],
+        // livePreview: {
+        //     url: ({ data, req }) => generatePreviewPath({
+        //         collectionSlug: 'publications',
+        //         req,
+        //         slug: data?.slug,
+        //         portfolioSlug: typeof data?.tenant === 'object' ? data?.tenant.slug : data?.tenant
+        //     })
+        // }
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -225,6 +240,11 @@ export const Publications: CollectionConfig<'publications'> = {
             checkboxName: 'lockSlug',
             slugify: ({ valueToSlugify, data }) => {
                 const fieldToSlug = slugify(valueToSlugify)
+
+                if (!fieldToSlug) {
+                    return undefined
+                }
+
                 return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),

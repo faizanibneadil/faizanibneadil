@@ -45,7 +45,11 @@ export const Users: CollectionConfig<'users'> = {
     // group: NavigationGroups.management,
   },
   auth: {
-    loginWithUsername: true
+    loginWithUsername: {
+      allowEmailLogin: true,
+      requireEmail: false,
+      requireUsername: false
+    }
   },
   endpoints: [externalUsersLogin, externalUsersSignUp],
   fields: [

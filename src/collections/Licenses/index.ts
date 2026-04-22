@@ -9,15 +9,13 @@ export const Licenses: CollectionConfig<'licenses'> = {
     slug: 'licenses',
     labels: { plural: 'Licenses', singular: 'License' },
     trash: true,
+    defaultPopulate: {
+        resources: true,
+        tenant: true,
+    },
     admin: {
         useAsTitle: 'title',
         defaultColumns: ['title', 'issuingAuthority', 'licenseNumber', 'status'],
-        hidden: ({ user }) => {
-            return false
-            if (isSuperAdmin(user)) return false;
-            // Sirf healthcare ya relevant industries ke liye show hoga
-            return user?.industry?.slug !== 'healthcare';
-        },
     },
     access: {
         create: superAdminOrTenantAdminAccess,

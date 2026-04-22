@@ -36,7 +36,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
         domain: params.domain
     })
 
-    const shelfID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
+    const shelfID = typeof settings?.shelf === 'object' ? settings?.shelf?.id : settings?.shelf
 
     if (Object.hasOwn(ShelvesMaps, shelfID!)) {
         const docMap = ShelvesMaps[shelfID!].config.documentConfig.docMap
@@ -84,17 +84,17 @@ export default async function Page(props: PageProps) {
         domain: params.domain
     })
 
-    const shelfID = typeof settings?.theme === 'object' ? settings?.theme?.id : settings?.theme
+    const shelfID = typeof settings?.shelf === 'object' ? settings?.shelf?.id : settings?.shelf
 
     if (!Object.hasOwn(ShelvesMaps, shelfID!)) {
         return 'Theme not found'
     }
 
-    const themeConfig = ShelvesMaps?.[shelfID!]
-    const blocksMap = themeConfig?.config?.blocksConfig.blocksMap
-    const RenderBlocks = themeConfig?.config?.RenderBlocks
-    const docMap = themeConfig?.config?.documentConfig?.docMap
-    const RenderDocumentView = themeConfig?.config?.documentConfig?.RenderDocumentView
+    const shelfConfig = ShelvesMaps?.[shelfID!]
+    const blocksMap = shelfConfig?.config?.blocksConfig.blocksMap
+    const RenderBlocks = shelfConfig?.config?.RenderBlocks
+    const docMap = shelfConfig?.config?.documentConfig?.docMap
+    const RenderDocumentView = shelfConfig?.config?.documentConfig?.RenderDocumentView
 
 
     if (Boolean(page?.layout?.length)) {

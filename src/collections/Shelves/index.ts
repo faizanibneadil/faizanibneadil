@@ -3,9 +3,9 @@ import { TitleField } from "@/fields/title";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { CollectionConfig } from "payload";
 
-export const Themes:CollectionConfig<'themes'> = {
-    slug: 'themes',
-    labels: { plural: 'Themes', singular: 'Theme' },
+export const Shelves:CollectionConfig<'shelves'> = {
+    slug: 'shelves',
+    labels: { plural: 'shelves', singular: 'shelf' },
     trash: true,
     // access: {
     //     create: isSuperAdminAccess,

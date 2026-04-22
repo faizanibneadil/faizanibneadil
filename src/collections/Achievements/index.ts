@@ -7,6 +7,7 @@ import { generatePreview } from "@/utilities/generate-preview";
 import { Iconify } from "@/fields/iconify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 import { slugify } from "@/utilities/slugify";
+import { generatePreviewPath } from "@/utilities/generatePreviewPath";
 
 export const Achievements: CollectionConfig<'achievements'> = {
     slug: 'achievements',
@@ -15,6 +16,22 @@ export const Achievements: CollectionConfig<'achievements'> = {
         useAsTitle: 'title',
         preview: generatePreview({ collection: 'achievements' }),
         defaultColumns: ['title', 'type', 'createdAt'],
+        // livePreview: {
+        //     url: ({ data, req }) => generatePreviewPath({
+        //         collectionSlug: 'achievements',
+        //         req,
+        //         slug: data?.slug,
+        //         portfolioSlug: typeof data?.tenant === 'object' ? data?.tenant.slug : data?.tenant
+        //     })
+        // }
+    },
+    defaultPopulate: {
+        meta: true,
+        slug: true,
+        resources: true,
+        tenant: true,
+        title: true,
+        skills: true,
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -247,6 +264,11 @@ export const Achievements: CollectionConfig<'achievements'> = {
             checkboxName: 'lockSlug',
             slugify: ({ valueToSlugify, data }) => {
                 const fieldToSlug = slugify(valueToSlugify)
+
+                if (!fieldToSlug) {
+                    return undefined
+                }
+
                 return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),

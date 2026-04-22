@@ -5,6 +5,7 @@ import { Iconify } from "@/fields/iconify";
 import { TitleField } from "@/fields/title";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreview } from "@/utilities/generate-preview";
+import { generatePreviewPath } from "@/utilities/generatePreviewPath";
 import { slugify } from "@/utilities/slugify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
 // import { VersionConfig } from "@/utilities/version-config";
@@ -15,19 +16,21 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
     slug: 'hackathons',
     labels: { plural: 'Hackathons', singular: 'Hackathon' },
     trash: true,
+    defaultPopulate: {
+        resources: true,
+        skills: true,
+        tenant: true
+    },
     admin: {
         useAsTitle: 'title',
-        // group: NavigationGroups.portfolio,
-        hidden: ({ user }) => {
-            if (isSuperAdmin(user)) {
-                return false
-            }
-            if (user?.industry.slug === 'information-technology') {
-                return false
-            }
-            return true
-        },
-        preview: generatePreview({ collection: 'hackathons' })
+        // livePreview: {
+        //     url: ({ data, req }) => generatePreviewPath({
+        //         collectionSlug: 'hackathons',
+        //         req,
+        //         slug: data?.slug,
+        //         portfolioSlug: typeof data?.tenant === 'object' ? data?.tenant.slug : data?.tenant
+        //     })
+        // }
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -230,6 +233,11 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
             checkboxName: 'lockSlug',
             slugify: ({ valueToSlugify, data }) => {
                 const fieldToSlug = slugify(valueToSlugify)
+
+                if (!fieldToSlug) {
+                    return undefined
+                }
+
                 return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),

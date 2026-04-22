@@ -141,7 +141,7 @@ export interface Config {
     experiences: Experience;
     integration: Integration;
     'portfolio-settings': PortfolioSetting;
-    themes: Theme;
+    shelves: Shelf;
     forms: Form;
     'form-submissions': FormSubmission;
     redirects: Redirect;
@@ -182,7 +182,7 @@ export interface Config {
     experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
     integration: IntegrationSelect<false> | IntegrationSelect<true>;
     'portfolio-settings': PortfolioSettingsSelect<false> | PortfolioSettingsSelect<true>;
-    themes: ThemesSelect<false> | ThemesSelect<true>;
+    shelves: ShelvesSelect<false> | ShelvesSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -209,20 +209,34 @@ export interface Config {
   };
 }
 export interface UserAuthOperations {
-  forgotPassword: {
-    username: string;
-  };
-  login: {
-    password: string;
-    username: string;
-  };
+  forgotPassword:
+    | {
+        email: string;
+      }
+    | {
+        username: string;
+      };
+  login:
+    | {
+        email: string;
+        password: string;
+      }
+    | {
+        password: string;
+        username: string;
+      };
   registerFirstUser: {
     password: string;
-    username: string;
+    username?: string;
+    email?: string;
   };
-  unlock: {
-    username: string;
-  };
+  unlock:
+    | {
+        email: string;
+      }
+    | {
+        username: string;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1793,7 +1807,7 @@ export interface User {
   createdAt: string;
   deletedAt?: string | null;
   email?: string | null;
-  username: string;
+  username?: string | null;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
   salt?: string | null;
@@ -1895,15 +1909,15 @@ export interface Integration {
 export interface PortfolioSetting {
   id: number;
   tenant?: (number | null) | Tenant;
-  theme?: (number | null) | Theme;
+  shelf?: (number | null) | Shelf;
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "themes".
+ * via the `definition` "shelves".
  */
-export interface Theme {
+export interface Shelf {
   id: number;
   title: string;
   thumbnail?: (number | null) | Media;
@@ -2051,8 +2065,8 @@ export interface PayloadLockedDocument {
         value: number | PortfolioSetting;
       } | null)
     | ({
-        relationTo: 'themes';
-        value: number | Theme;
+        relationTo: 'shelves';
+        value: number | Shelf;
       } | null)
     | ({
         relationTo: 'forms';
@@ -2691,15 +2705,15 @@ export interface IntegrationSelect<T extends boolean = true> {
  */
 export interface PortfolioSettingsSelect<T extends boolean = true> {
   tenant?: T;
-  theme?: T;
+  shelf?: T;
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "themes_select".
+ * via the `definition` "shelves_select".
  */
-export interface ThemesSelect<T extends boolean = true> {
+export interface ShelvesSelect<T extends boolean = true> {
   title?: T;
   thumbnail?: T;
   description?: T;
