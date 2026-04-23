@@ -1,34 +1,12 @@
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { TitleField } from "@/fields/title";
-import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
-import { RichTextLinkFeature } from "@/utilities/RichTextLinkFeature";
-import { generatePreview } from "@/utilities/generate-preview";
-import { generatePreviewPath } from "@/utilities/generatePreviewPath";
 import { slugify } from "@/utilities/slugify";
 import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from "@payloadcms/plugin-seo/fields";
-import { BlocksFeature, lexicalEditor } from "@payloadcms/richtext-lexical";
-import { slugField, type CollectionConfig } from "payload";
+import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { CollectionConfig, slugField } from "payload";
 
-
-export const Blogs: CollectionConfig<'blogs'> = {
-    slug: 'blogs',
-    labels: { plural: 'Blogs', singular: 'Blog' },
-    trash: true,
-    admin: {
-        useAsTitle: 'title',
-        // livePreview: {
-        //     url: ({ data, req }) => generatePreviewPath({
-        //         collectionSlug: 'blogs',
-        //         req,
-        //         slug: data?.slug,
-        //         portfolioSlug: typeof data?.tenant === 'object' ? data?.tenant.slug : data?.tenant
-        //     })
-        // }
-    },
-    defaultPopulate: {
-        meta: true,
-        categories: true
-    },
+export const Gallery: CollectionConfig<'gallery'> = {
+    slug: 'gallery',
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,
@@ -44,45 +22,18 @@ export const Blogs: CollectionConfig<'blogs'> = {
                     label: 'Content',
                     fields: [
                         {
-                            type: 'richText',
-                            name: 'content',
-                            label: false,
-                            editor: lexicalEditor({
-                                features({ defaultFeatures, rootFeatures, }) {
-                                    return [
-                                        ...rootFeatures,
-                                        RichTextLinkFeature(),
-                                        BlocksFeature({
-                                            blocks: ['formBlock', 'project', 'code-block'],
-                                            inlineBlocks: ['linkBadge', 'glimpseLink']
-                                        }),
-                                    ]
-                                },
-                            })
+                            type: 'upload',
+                            name: 'image',
+                            relationTo: 'media',
                         },
                         {
                             type: 'richText',
                             name: 'description',
-                            label: false,
-                            admin: {
-                                description: 'Blog short description.'
-                            },
                             editor: lexicalEditor({
                                 features({ defaultFeatures, rootFeatures, }) {
-                                    return [...defaultFeatures, ...rootFeatures]
+                                    return [...rootFeatures]
                                 },
                             })
-                        },
-                        {
-                            type: 'upload',
-                            name: 'featured_image',
-                            label: 'Featured Image',
-                            relationTo: 'media',
-                            hasMany: false,
-                            // required: true,
-                            admin: {
-                                position: 'sidebar'
-                            },
                         },
                         {
                             type: 'array',
@@ -233,15 +184,5 @@ export const Blogs: CollectionConfig<'blogs'> = {
                 return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),
-    ],
-    hooks: {
-        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
-        afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
-    },
-    versions: {
-        drafts: {
-            autosave: true,
-        },
-        maxPerDoc: 50,
-    },
+    ]
 }

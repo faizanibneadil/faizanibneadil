@@ -142,6 +142,8 @@ export interface Config {
     integration: Integration;
     'portfolio-settings': PortfolioSetting;
     shelves: Shelf;
+    categories: Category;
+    gallery: Gallery;
     forms: Form;
     'form-submissions': FormSubmission;
     redirects: Redirect;
@@ -183,6 +185,8 @@ export interface Config {
     integration: IntegrationSelect<false> | IntegrationSelect<true>;
     'portfolio-settings': PortfolioSettingsSelect<false> | PortfolioSettingsSelect<true>;
     shelves: ShelvesSelect<false> | ShelvesSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    gallery: GallerySelect<false> | GallerySelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -1422,6 +1426,22 @@ export interface Blog {
     [k: string]: unknown;
   } | null;
   featured_image?: (number | null) | Media;
+  /**
+   * Add relevant links to verify this achievement (e.g., News articles, YouTube, or Event sites).
+   */
+  resources?:
+    | {
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1430,6 +1450,7 @@ export interface Blog {
      */
     image?: (number | null) | Media;
   };
+  categories?: (number | Category)[] | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -1439,6 +1460,17 @@ export interface Blog {
   createdAt: string;
   deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1942,6 +1974,63 @@ export interface Shelf {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery".
+ */
+export interface Gallery {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  image?: (number | null) | Media;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Add relevant links to verify this achievement (e.g., News articles, YouTube, or Event sites).
+   */
+  resources?:
+    | {
+        type?: ('internal' | 'external') | null;
+        newTab?: boolean | null;
+        page?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  categories?: (number | Category)[] | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  lockSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
@@ -2069,6 +2158,14 @@ export interface PayloadLockedDocument {
         value: number | Shelf;
       } | null)
     | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'gallery';
+        value: number | Gallery;
+      } | null)
+    | ({
         relationTo: 'forms';
         value: number | Form;
       } | null)
@@ -2189,6 +2286,16 @@ export interface BlogsSelect<T extends boolean = true> {
   content?: T;
   description?: T;
   featured_image?: T;
+  resources?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
   meta?:
     | T
     | {
@@ -2196,6 +2303,7 @@ export interface BlogsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  categories?: T;
   lockSlug?: T;
   slug?: T;
   updatedAt?: T;
@@ -2720,6 +2828,48 @@ export interface ShelvesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery_select".
+ */
+export interface GallerySelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  image?: T;
+  description?: T;
+  resources?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        page?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  categories?: T;
+  lockSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
