@@ -19,6 +19,8 @@ import { Experiences } from '@/collections/Experiences'
 import { Integration } from '@/collections/Integration'
 import { PortfolioSettings } from './PortfolioSettings'
 import { Shelves } from './Shelves'
+import { Categories } from './Categories'
+import { Gallery } from './Gallery'
 
 export const collections = [
     Users,
@@ -41,5 +43,7 @@ export const collections = [
     Experiences,
     Integration,
     PortfolioSettings,
-    Shelves
+    Shelves,
+    Categories,
+    Gallery
 ]

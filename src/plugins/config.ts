@@ -250,6 +250,8 @@ export const plugins: Plugin[] = [
             integration: { isGlobal: true },
             "portfolio-settings": { isGlobal: true },
             redirects: {},
+            categories: {},
+            gallery: {}
         },
         tenantField: {
             access: {

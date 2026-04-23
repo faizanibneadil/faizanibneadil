@@ -5,7 +5,6 @@ import dynamic from "next/dynamic"
 
 export const __MagicCollectionsMap: CollectionMapType = {
     blogs: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/Magic/collections/blogs").then(({ Blogs }) => ({
             default: Blogs
         })), { ssr: true }),
@@ -49,7 +48,6 @@ export const __MagicCollectionsMap: CollectionMapType = {
         }
     },
     projects: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/Magic/collections/projects").then(({ Projects }) => ({
             default: Projects
         })), { ssr: true }),
@@ -93,7 +91,6 @@ export const __MagicCollectionsMap: CollectionMapType = {
         }
     },
     achievements: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/Magic/collections/achievements").then(({ Achievements }) => ({
             default: Achievements
         })), { ssr: true }),
@@ -107,7 +104,6 @@ export const __MagicCollectionsMap: CollectionMapType = {
         skeleton: () => <p>Display achievements skeleton</p>
     },
     certifications: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/Magic/collections/certifications").then(({ Certifications }) => ({
             default: Certifications
         })), { ssr: true }),
@@ -121,7 +117,6 @@ export const __MagicCollectionsMap: CollectionMapType = {
         skeleton: () => <p>Display certifications skeleton</p>
     },
     hackathons: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/Magic/collections/hackathons").then(({ Hackathons }) => ({
             default: Hackathons
         })), { ssr: true }),
@@ -135,7 +130,6 @@ export const __MagicCollectionsMap: CollectionMapType = {
         skeleton: () => <p>Display hackathon skeleton</p>
     },
     publications: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/Magic/collections/publications").then(({ Publications }) => ({
             default: Publications
         })), { ssr: true }),
@@ -149,7 +143,6 @@ export const __MagicCollectionsMap: CollectionMapType = {
         skeleton: () => <p>Display publications skeleton</p>
     },
     researches: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/Magic/collections/researches").then(({ Researches }) => ({
             default: Researches
         })), { ssr: true }),

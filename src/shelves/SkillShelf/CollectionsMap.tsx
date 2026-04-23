@@ -5,7 +5,6 @@ import dynamic from "next/dynamic"
 
 export const __SkillshelfCollectionsMap: CollectionMapType = {
     blogs: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/SkillShelf/collections/blogs").then(({ Blogs }) => ({
             default: Blogs
         })), { ssr: true }),
@@ -49,7 +48,6 @@ export const __SkillshelfCollectionsMap: CollectionMapType = {
         }
     },
     projects: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/SkillShelf/collections/projects").then(({ Projects }) => ({
             default: Projects
         })), { ssr: true }),
@@ -93,7 +91,6 @@ export const __SkillshelfCollectionsMap: CollectionMapType = {
         }
     },
     achievements: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/SkillShelf/collections/achievements").then(({ Achievements }) => ({
             default: Achievements
         })), { ssr: true }),
@@ -107,7 +104,6 @@ export const __SkillshelfCollectionsMap: CollectionMapType = {
         skeleton: () => <p>Display achievements skeleton</p>
     },
     certifications: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/SkillShelf/collections/certifications").then(({ Certifications }) => ({
             default: Certifications
         })), { ssr: true }),
@@ -121,7 +117,6 @@ export const __SkillshelfCollectionsMap: CollectionMapType = {
         skeleton: () => <p>Display certifications skeleton</p>
     },
     hackathons: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/SkillShelf/collections/hackathons").then(({ Hackathons }) => ({
             default: Hackathons
         })), { ssr: true }),
@@ -135,7 +130,6 @@ export const __SkillshelfCollectionsMap: CollectionMapType = {
         skeleton: () => <p>Display hackathon skeleton</p>
     },
     publications: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/SkillShelf/collections/publications").then(({ Publications }) => ({
             default: Publications
         })), { ssr: true }),
@@ -149,7 +143,6 @@ export const __SkillshelfCollectionsMap: CollectionMapType = {
         skeleton: () => <p>Display publications skeleton</p>
     },
     researches: {
-        enableDocumentView: true,
         component: dynamic(() => import("@/shelves/SkillShelf/collections/researches").then(({ Researches }) => ({
             default: Researches
         })), { ssr: true }),

@@ -81,6 +81,7 @@ export const externalUsersLogin: Endpoint = {
           collection: 'users',
           data: {
             username: foundUser.docs[0].username!,
+            email: foundUser.docs[0].email!,
             password,
           },
           req,

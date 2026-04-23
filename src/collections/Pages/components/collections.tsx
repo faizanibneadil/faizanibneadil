@@ -23,6 +23,15 @@ const excludeCollection: CollectionSlug[] = [
     "portfolio-settings",
     "shelves",
 ]
+/**
+ * 
+ * TODO: we can do same thing by using custom property on collection
+ * define custom property in every collection like:
+ * custom: {
+ *      enableDocumentView: Boolean
+ * }
+ * then filter enableDocumentView flags collection and render here.
+ */
 
 export function Collections(props: TextFieldClientProps) {
     const { path } = props || {}

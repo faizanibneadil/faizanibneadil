@@ -92,7 +92,6 @@ export type CollectionMapType = {
         } & AwaitedBaseParams>,
         skeleton: React.ComponentType<{}>,
         metadata: (args: { doc: Page }) => Metadata | Promise<Metadata>,
-        enableDocumentView: boolean
     }
 }
 
