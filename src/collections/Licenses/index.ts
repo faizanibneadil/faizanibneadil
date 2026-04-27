@@ -12,6 +12,15 @@ export const Licenses: CollectionConfig<'licenses'> = {
     defaultPopulate: {
         resources: true,
         tenant: true,
+        _status: true,
+        createdAt: true,
+        description: true,
+        image: true,
+        issuingAuthority: true,
+        licenseNumber: true,
+        location: true,
+        title: true,
+        validity: true
     },
     admin: {
         useAsTitle: 'title',

@@ -19,6 +19,18 @@ export const Projects: CollectionConfig<'projects'> = {
         resources: true,
         tenant: true,
         skills: true,
+        _status: true,
+        createdAt: true,
+        credential: true,
+        dates: true,
+        deletedAt: true,
+        detailedOverview: true,
+        overview: true,
+        publishedAt: true,
+        slug: true,
+        thumbnail: true,
+        title: true,
+        updatedAt: true
     },
     admin: {
         useAsTitle: 'title',

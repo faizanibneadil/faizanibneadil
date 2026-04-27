@@ -12,6 +12,11 @@ export const Menus: CollectionConfig<'menus'> = {
         read: () => true,
         update: superAdminOrTenantAdminAccess,
     },
+    defaultPopulate: {
+        createdAt: true,
+        menu: true,
+        tenant: true
+    },
     fields: [
         {
             type: 'array',

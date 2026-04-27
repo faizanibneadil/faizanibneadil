@@ -13,6 +13,17 @@ export const Gallery: CollectionConfig<'gallery'> = {
         read: () => true,
         update: superAdminOrTenantAdminAccess,
     },
+    defaultPopulate: {
+        categories: true,
+        createdAt: true,
+        description: true,
+        image: true,
+        meta: true,
+        resources: true,
+        slug: true,
+        tenant: true,
+        title: true,
+    },
     fields: [
         TitleField(),
         {

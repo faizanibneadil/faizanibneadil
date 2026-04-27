@@ -32,6 +32,14 @@ export const Achievements: CollectionConfig<'achievements'> = {
         tenant: true,
         title: true,
         skills: true,
+        _status: true,
+        createdAt: true,
+        dates: true,
+        description: true,
+        image: true,
+        stats: true,
+        type: true,
+        updatedAt: true
     },
     access: {
         create: superAdminOrTenantAdminAccess,

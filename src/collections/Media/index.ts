@@ -4,10 +4,25 @@ import { superAdminOrTenantAdminAccess } from '@/access/superAdminOrTenantAdmin'
 // import { NavigationGroups } from '@/constants'
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from '@/hooks/RevalidatePage'
 
-export const Media: CollectionConfig = {
+export const Media: CollectionConfig<'media'> = {
   slug: 'media',
   labels: { plural: 'Media', singular: 'Media' },
   trash: true,
+  defaultPopulate:{
+    alt: true,
+    createdAt: true,
+    filename: true,
+    filesize: true,
+    focalX: true,
+    focalY: true,
+    height: true,
+    mimeType: true,
+    tenant: true,
+    thumbnailURL: true,
+    updatedAt: true,
+    url: true,
+    width: true
+  },
   admin: { 
     // group: NavigationGroups.portfolio 
   },

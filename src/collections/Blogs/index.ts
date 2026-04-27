@@ -27,7 +27,18 @@ export const Blogs: CollectionConfig<'blogs'> = {
     },
     defaultPopulate: {
         meta: true,
-        categories: true
+        categories: true,
+        _status: true,
+        content: true,
+        createdAt: true,
+        deletedAt: true,
+        description: true,
+        featured_image: true,
+        resources: true,
+        slug: true,
+        tenant: true,
+        title: true,
+        updatedAt: true
     },
     access: {
         create: superAdminOrTenantAdminAccess,
