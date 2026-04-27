@@ -15,7 +15,16 @@ export const Educations: CollectionConfig<'educations'> = {
     defaultPopulate: {
         resources: true,
         skills: true,
-        tenant: true
+        tenant: true,
+        _status: true,
+        academy: true,
+        createdAt: true,
+        dates: true,
+        degree: true,
+        description: true,
+        details: true,
+        image: true,
+        title: true,
     },
     access: {
         create: superAdminOrTenantAdminAccess,

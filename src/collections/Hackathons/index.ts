@@ -19,7 +19,16 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
     defaultPopulate: {
         resources: true,
         skills: true,
-        tenant: true
+        tenant: true,
+        _status: true,
+        createdAt: true,
+        dates: true,
+        description: true,
+        image: true,
+        location: true,
+        meta: true,
+        slug: true,
+        title: true
     },
     admin: {
         useAsTitle: 'title',

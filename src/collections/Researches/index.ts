@@ -17,6 +17,15 @@ export const Researches: CollectionConfig<'researches'> = {
         resources: true,
         skills: true,
         tenant: true,
+        _status:true,
+        createdAt:true,
+        dates:true,
+        description:true,
+        image:true,
+        role:true,
+        slug:true,
+        status:true,
+        title:true
     },
     admin: {
         useAsTitle: 'title',

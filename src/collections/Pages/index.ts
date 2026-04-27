@@ -36,6 +36,11 @@ export const Pages: CollectionConfig<'pages'> = {
         enableCollection: true,
         meta: true,
         slug: true,
+        _status: true,
+        createdAt: true,
+        publishedAt: true,
+        title: true,
+        updatedAt: true
     },
     access: {
         create: superAdminOrTenantAdminAccess,

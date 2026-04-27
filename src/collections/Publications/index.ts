@@ -15,7 +15,18 @@ export const Publications: CollectionConfig<'publications'> = {
         meta: true,
         resources: true,
         skills: true,
-        tenant: true
+        tenant: true,
+        _status: true,
+        createdAt: true,
+        description: true,
+        doi: true,
+        image:true,
+        publishedDate:true,
+        publisher:true,
+        slug:true,
+        title:true,
+        type:true,
+        updatedAt:true
     },
     admin: {
         useAsTitle: 'title',

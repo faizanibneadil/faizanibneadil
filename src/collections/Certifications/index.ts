@@ -29,7 +29,15 @@ export const Certifications: CollectionConfig<'certifications'> = {
         resources: true,
         skills: true,
         slug: true,
-        tenant: true
+        tenant: true,
+        _status: true,
+        createdAt: true,
+        credentialId: true,
+        description: true,
+        image: true,
+        issuer: true,
+        title: true,
+        validity: true
     },
     access: {
         create: superAdminOrTenantAdminAccess,

@@ -12,6 +12,19 @@ export const Experiences: CollectionConfig<'experiences'> = {
     defaultPopulate: {
         skills: true,
         tenant: true,
+        company: true,
+        description: true,
+        employmentType: true,
+        _status: true,
+        createdAt: true,
+        end: true,
+        jobType: true,
+        location: true,
+        logo: true,
+        start: true,
+        title: true,
+        updatedAt: true,
+        website: true
     },
     fields: [
         {
