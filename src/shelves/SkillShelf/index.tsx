@@ -2,8 +2,11 @@ import type { ShelfConfig } from "@/types";
 import { Suspense } from "react";
 import { __SkillshelfBlocksMap } from "./BlocksMap";
 import { __SkillshelfCollectionsMap } from "./CollectionsMap";
-import { Navbar } from "./components/navbar";
 import { __SkillshelfDocMap } from "./DocumentMap";
+import dynamic from "next/dynamic";
+const Navbar = dynamic(() => import("./components/navbar").then(({ Navbar }) => ({
+    default: Navbar
+})))
 
 export const __SkillshelfThemeConfig: ShelfConfig = {
     themeMeta: {
@@ -55,7 +58,9 @@ export const __SkillshelfThemeConfig: ShelfConfig = {
         layout: (props) => {
             return (
                 <div className="min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto">
-                    <Navbar params={props.params as any} />
+                    <Suspense fallback={null}>
+                        <Navbar params={props.params as any} />
+                    </Suspense>
                     {props.children}
                 </div>
             )

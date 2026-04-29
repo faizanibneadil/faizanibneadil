@@ -12,6 +12,9 @@ import { generatePreviewPath } from "@/utilities/generatePreviewPath";
 export const Achievements: CollectionConfig<'achievements'> = {
     slug: 'achievements',
     labels: { plural: 'Achievements', singular: 'Achievement' },
+    custom: {
+        enableCollectionView:true
+    },
     admin: {
         useAsTitle: 'title',
         preview: generatePreview({ collection: 'achievements' }),

@@ -3,10 +3,10 @@ import { draftMode } from 'next/headers'
 import { CollectionSlug, getPayload } from 'payload'
 import { isNumber } from 'payload/shared'
 
-export const queryCollectionCountBySlug = async ({ 
+export const queryCollectionCountBySlug = async ({
     collectionSlug,
-    domain 
-}: { 
+    domain
+}: {
     collectionSlug: CollectionSlug,
     domain: string
 }) => {
@@ -15,9 +15,18 @@ export const queryCollectionCountBySlug = async ({
     const result = await payload.count({
         collection: collectionSlug,
         where: {
-            [`tenant.${isNumber(domain) ? 'id' : 'slug'}`]:{
-                equals: domain
-            }
+            and: [
+                {
+                    [`tenant.${isNumber(domain) ? 'id' : 'slug'}`]: {
+                        equals: domain
+                    },
+                },
+                {
+                    _status: {
+                        equals: 'published'
+                    }
+                }
+            ]
         }
     })
 

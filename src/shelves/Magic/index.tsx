@@ -3,9 +3,12 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { __MagicBlocksMap } from "./BlocksMap";
 import { __MagicCollectionsMap } from "./CollectionsMap";
-import { Navbar } from "./components/navbar";
 import { TawkChatBubble } from "./components/tawk-chat-bubbles";
 import { __MagicDocMap } from "./DocumentMap";
+import dynamic from "next/dynamic";
+const Navbar = dynamic(() => import("./components/navbar").then(({ Navbar }) => ({
+    default: Navbar
+})));
 
 export const __MagicThemeConfig: ShelfConfig = {
     themeMeta: {
@@ -37,7 +40,7 @@ export const __MagicThemeConfig: ShelfConfig = {
         },
         documentConfig: {
             docMap: __MagicDocMap,
-            RenderDocumentView: async ({ collectionSlug, doc, docMap, params, searchParams}) => {
+            RenderDocumentView: async ({ collectionSlug, doc, docMap, params, searchParams }) => {
 
                 if (Object.hasOwn(docMap, collectionSlug)) {
                     const Collection = docMap[collectionSlug]?.component
@@ -52,7 +55,9 @@ export const __MagicThemeConfig: ShelfConfig = {
             return (
                 <div className="min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-10 px-6">
                     {props.children}
-                    <Navbar params={props.params as any} />
+                    <Suspense fallback={null}>
+                        <Navbar params={props.params as any} />
+                    </Suspense>
                     <ErrorBoundary fallback={null}>
                         <Suspense fallback={null}>
                             <TawkChatBubble params={props?.params as any} />

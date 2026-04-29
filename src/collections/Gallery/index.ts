@@ -7,6 +7,13 @@ import { CollectionConfig, slugField } from "payload";
 
 export const Gallery: CollectionConfig<'gallery'> = {
     slug: 'gallery',
+    labels: { plural: 'Galleries', singular: 'Gallery' },
+    admin: {
+        custom: {
+            enableCollectionView:true
+        },
+        useAsTitle: 'title'
+    },
     access: {
         create: superAdminOrTenantAdminAccess,
         delete: superAdminOrTenantAdminAccess,

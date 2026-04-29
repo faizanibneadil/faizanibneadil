@@ -1,4 +1,5 @@
 import config from '@payload-config'
+import { cacheLife, cacheTag } from 'next/cache'
 // import { draftMode } from 'next/headers'
 import { CollectionSlug, getPayload } from 'payload'
 import { isNumber } from 'payload/shared'
@@ -11,6 +12,9 @@ export const queryCollectionViewBySlug = async ({
     slug: string,
     domain: string
 }) => {
+    "use cache"
+    cacheLife('weeks')
+    cacheTag(`${domain}_${collectionSlug}_${slug}`)
     // const { isEnabled: draft } = await draftMode()
     const payload = await getPayload({ config })
 
@@ -33,7 +37,11 @@ export const queryCollectionViewBySlug = async ({
                         equals: domain
                     }
                 },
-                // ...(draft ? [] : [{ _status: { equals: 'published' } }]),
+                {
+                    _status: {
+                        equals: 'published'
+                    }
+                }
             ]
         },
     })

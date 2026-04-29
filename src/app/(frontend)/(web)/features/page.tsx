@@ -1,3 +1,4 @@
+'use cache'
 import { FeatureSection } from "@/components/feature-section";
 import { getServerSideURL } from "@/utilities/getURL";
 import type { Metadata } from "next";
@@ -14,7 +15,7 @@ export const metadata:Metadata = {
     }
 }
 
-export default function Page() {
+export default async function Page() {
     return (
         <section className="min-h-screen place-content-center p-4">
             <FeatureSection />

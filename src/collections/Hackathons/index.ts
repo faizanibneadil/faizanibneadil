@@ -31,6 +31,9 @@ export const Hackathons: CollectionConfig<'hackathons'> = {
         title: true
     },
     admin: {
+        custom: {
+            enableCollectionView:true
+        },
         useAsTitle: 'title',
         // livePreview: {
         //     url: ({ data, req }) => generatePreviewPath({

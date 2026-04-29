@@ -2,6 +2,7 @@ import { CollectionSlug, getPayload } from "payload";
 
 import config from '@payload-config';
 import { isNumber } from "payload/shared";
+import { cacheLife, cacheTag } from "next/cache";
 // import { draftMode } from "next/headers";
 
 export const queryPageByConfiguredCollection = async ({
@@ -11,6 +12,10 @@ export const queryPageByConfiguredCollection = async ({
     collectionSlug: CollectionSlug,
     domain: string
 }) => {
+    "use cache"
+    cacheLife('weeks')
+    cacheTag(`${domain}_${collectionSlug}`)
+
     // const { isEnabled: draft } = await draftMode()
     const payload = await getPayload({ config })
     const page = await payload.find({
@@ -32,7 +37,11 @@ export const queryPageByConfiguredCollection = async ({
                         equals: domain
                     }
                 },
-                // ...(draft ? [] : [{ _status: { equals: 'published' } }]),
+                {
+                    _status: {
+                        equals: 'published'
+                    }
+                }
             ]
         },
     })

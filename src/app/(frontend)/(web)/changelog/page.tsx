@@ -1,3 +1,4 @@
+'use cache'
 import { getServerSideURL } from "@/utilities/getURL"
 import type { Metadata } from "next"
 
@@ -14,6 +15,6 @@ export const metadata:Metadata = {
     }
 }
 
-export default function Page(){
+export default async function Page(){
     return 'changelog'
 }

@@ -8,14 +8,16 @@ import { NavbarClient } from "./navbar.client";
 import { NavLabel } from "./NavLabel.client";
 import { ModeToggle } from "@/components/mode-toggle";
 import { formatHref } from "@/utilities/fomatHref";
+import { queryMenu } from "@/utilities/queries/queryMenu";
+import { querySocials } from "@/utilities/queries/querySocials";
 
 export async function Navbar(props: Omit<AwaitedBaseParams, 'searchParams'>) {
   const {
     params
   } = props || {}
 
-  const __menu = await getNavbarMenuItems({ domain: params.domain })
-  const __socials = await getNavbarSocialMenuItems({ domain: params?.domain })
+  const __menu = await queryMenu({ domain: params.domain })
+  const __socials = await querySocials({ domain: params?.domain })
 
   const MenuList = __menu?.menu?.map((item, idx) => {
     const href = formatHref({
