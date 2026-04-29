@@ -1,27 +1,22 @@
 import config from '@payload-config'
 import { cacheLife, cacheTag } from 'next/cache'
-import { draftMode } from 'next/headers'
 import { getPayload } from 'payload'
 import { isNumber } from 'payload/shared'
 
-export const queryPortfolioSettings = async ({
-    domain
-}: {
-    domain: string
-}) => {
+export const querySocials = async ({ domain }: { domain: string }) => {
     "use cache"
     cacheLife('weeks')
-    cacheTag(`${domain}`)
+    cacheTag(String(domain))
+
     const payload = await getPayload({ config })
-    const settings = await payload.find({
-        collection: 'portfolio-settings',
-       
+    const socials = (await payload.find({
+        collection: 'socials',
+        limit: 1,
         where: {
             [`tenant.${isNumber(domain) ? 'id' : 'slug'}`]: {
                 equals: domain
             }
         }
-    })
-
-    return settings?.docs?.at(0)
+    }))?.docs?.at(0)
+    return socials
 }

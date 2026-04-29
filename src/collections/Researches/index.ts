@@ -28,6 +28,9 @@ export const Researches: CollectionConfig<'researches'> = {
         title:true
     },
     admin: {
+        custom: {
+            enableCollectionView:true
+        },
         useAsTitle: 'title',
         defaultColumns: ['title', 'status', 'dates_from', 'createdAt'],
         // livePreview: {

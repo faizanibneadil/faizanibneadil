@@ -15,6 +15,9 @@ export const Blogs: CollectionConfig<'blogs'> = {
     labels: { plural: 'Blogs', singular: 'Blog' },
     trash: true,
     admin: {
+        custom: {
+            enableCollectionView:true
+        },
         useAsTitle: 'title',
         // livePreview: {
         //     url: ({ data, req }) => generatePreviewPath({

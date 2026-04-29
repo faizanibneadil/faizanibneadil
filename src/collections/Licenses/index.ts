@@ -23,6 +23,9 @@ export const Licenses: CollectionConfig<'licenses'> = {
         validity: true
     },
     admin: {
+        custom: {
+        enableCollectionView:true
+    },
         useAsTitle: 'title',
         defaultColumns: ['title', 'issuingAuthority', 'licenseNumber', 'status'],
     },

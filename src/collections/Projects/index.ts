@@ -33,6 +33,9 @@ export const Projects: CollectionConfig<'projects'> = {
         updatedAt: true
     },
     admin: {
+        custom: {
+            enableCollectionView:true
+        },
         useAsTitle: 'title',
         // livePreview: {
         //     url: ({ data, req }) => generatePreviewPath({

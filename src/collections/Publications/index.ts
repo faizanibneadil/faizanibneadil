@@ -10,6 +10,9 @@ import { slugField, type CollectionConfig } from "payload";
 export const Publications: CollectionConfig<'publications'> = {
     slug: 'publications',
     labels: { plural: 'Publications', singular: 'Publication' },
+    custom: {
+        enableCollectionView:true
+    },
     trash: true,
     defaultPopulate: {
         meta: true,
@@ -29,6 +32,9 @@ export const Publications: CollectionConfig<'publications'> = {
         updatedAt:true
     },
     admin: {
+        custom: {
+            enableCollectionView:true
+        },
         useAsTitle: 'title',
         defaultColumns: ['title', 'publisher', 'publishedDate', 'type'],
         // livePreview: {

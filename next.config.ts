@@ -45,6 +45,14 @@ export default async (pase: unknown, { defaultConfig }: { defaultConfig: NextCon
         }),
       ],
     },
-    // cacheComponents:true,
+    cacheComponents:true,
+    logging: {
+      browserToTerminal: true,
+      fetches: {
+        fullUrl: true,
+        hmrRefreshes: true
+      },
+      serverFunctions: true
+    }
   }, { devBundleServerPackages: false })
 }

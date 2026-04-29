@@ -1,37 +1,7 @@
 'use client'
-import { useMemo } from 'react'
-import { ReactSelect, useConfig, useField, RadioGroupField } from '@payloadcms/ui'
-import type { CollectionSlug, TextFieldClientProps } from 'payload'
-// import { CircleCheck } from "lucide-react";
+import { ReactSelect, useConfig, useField } from '@payloadcms/ui'
+import type { TextFieldClientProps } from 'payload'
 
-
-const excludeCollection: CollectionSlug[] = [
-    "users",
-    "media",
-    "pages",
-    "tenants",
-    "menus",
-    "socials",
-    "payload-locked-documents",
-    "payload-preferences",
-    "payload-migrations",
-    "forms",
-    "form-submissions",
-    "skills",
-    "industries",
-    "integration",
-    "portfolio-settings",
-    "shelves",
-]
-/**
- * 
- * TODO: we can do same thing by using custom property on collection
- * define custom property in every collection like:
- * custom: {
- *      enableDocumentView: Boolean
- * }
- * then filter enableDocumentView flags collection and render here.
- */
 
 export function Collections(props: TextFieldClientProps) {
     const { path } = props || {}
@@ -40,19 +10,14 @@ export function Collections(props: TextFieldClientProps) {
 
     const { config: { collections } } = useConfig()
 
-    const options = useMemo(() => {
-        let opts = []
-        for (const { slug } of collections) {
-            if (excludeCollection.includes(slug)) {
-                continue
-            }
-            opts.push({
-                label: slug.charAt(0).toUpperCase() + slug.slice(1),
-                value: slug,
-            })
-        }
-        return opts
-    }, [collections?.length])
+    const enableCollectionViewCollections = collections?.filter(collection => {
+        return Boolean(collection.admin?.custom?.enableCollectionView)
+    })
+
+    const options = enableCollectionViewCollections.map(({ slug }) => ({
+        label: slug.charAt(0).toUpperCase() + slug.slice(1),
+        value: slug,
+    }))
 
 
     const defaultValue = options?.find(opts => {

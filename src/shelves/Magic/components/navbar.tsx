@@ -18,6 +18,8 @@ import { Skeleton } from "../../../components/ui/skeleton";
 import { getLinkInfo } from "@/utilities/getLinkInfo";
 import { Glimpse, GlimpseContent, GlimpseDescription, GlimpseImage, GlimpseTitle, GlimpseTrigger } from "@/components/kibo-ui/glimpse";
 import { formatHref } from "@/utilities/fomatHref";
+import { queryMenu } from "@/utilities/queries/queryMenu";
+import { querySocials } from "@/utilities/queries/querySocials";
 
 const FallbackLink = () => (
   <a
@@ -96,7 +98,7 @@ export async function Menu(props: Omit<AwaitedBaseParams, 'searchParams'>) {
     params
   } = props || {}
 
-  const __menu = await getNavbarMenuItems({domain:params.domain})
+  const __menu = await queryMenu({domain:params.domain})
 
   const menuToRender = __menu?.menu?.map((menu, idx) => {
 
@@ -131,7 +133,7 @@ export async function Socials(props: Omit<AwaitedBaseParams, 'searchParams'>) {
     params
   } = props || {}
 
-  const __socials = await getNavbarSocialMenuItems({domain:params?.domain})
+  const __socials = await querySocials({domain:params?.domain})
 
   const socialsToRender = __socials?.socialsLinks?.map((social, idx) => {
     return (

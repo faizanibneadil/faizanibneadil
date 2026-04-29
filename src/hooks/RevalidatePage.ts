@@ -16,7 +16,7 @@ const formatRoute = ({
     portfolio: string | number,
     collectionSlug: (string & {}) | null | undefined | CollectionSlug,
     docSlug: string
-}) => `/${portfolio}/${collectionSlug}/${docSlug}`
+}) => [`/${portfolio}/${collectionSlug}/${docSlug}`, `/${portfolio}/${collectionSlug}`, `/${portfolio}`]
 
 export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
     invalidateRootRoute?: boolean
@@ -46,13 +46,13 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
 
         if (!context.disableRevalidate) {
             if (doc?._status === 'published') {
-                paths.push(formatRoute({ portfolio: portfolioId!, collectionSlug, docSlug: doc?.slug }))
-                paths.push(formatRoute({ portfolio: portfolioSlug!, collectionSlug, docSlug: doc?.slug }))
+                paths.push(...formatRoute({ portfolio: portfolioId!, collectionSlug, docSlug: doc?.slug }))
+                paths.push(...formatRoute({ portfolio: portfolioSlug!, collectionSlug, docSlug: doc?.slug }))
             }
 
             if (previousDoc?._status === 'published' && doc?._status !== 'published') {
-                paths.push(formatRoute({ portfolio: portfolioId!, collectionSlug, docSlug: previousDoc?.slug }))
-                paths.push(formatRoute({ portfolio: portfolioSlug!, collectionSlug, docSlug: previousDoc?.slug }))
+                paths.push(...formatRoute({ portfolio: portfolioId!, collectionSlug, docSlug: previousDoc?.slug }))
+                paths.push(...formatRoute({ portfolio: portfolioSlug!, collectionSlug, docSlug: previousDoc?.slug }))
             }
         }
 
@@ -60,7 +60,10 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
             const uniquePaths = [...new Set(paths)]
             uniquePaths.forEach(path => {
                 req.payload.logger.info(`invalidating => ${path}`)
+                const pathToTag = path?.split('/').filter(Boolean).join('_')
+                // console.log({ pathToTag })
                 revalidatePath(path)
+                revalidateTag(pathToTag, 'max')
             })
         }
 
@@ -94,8 +97,8 @@ export const RevalidatePageAfterDelete: AppCollectionAfterDeleteHook<Page, {
         const paths: string[] = []
 
         if (!context.disableRevalidate) {
-            paths.push(formatRoute({ portfolio: portfolioId!, collectionSlug, docSlug: doc?.slug }))
-            paths.push(formatRoute({ portfolio: portfolioSlug!, collectionSlug, docSlug: doc?.slug }))
+            paths.push(...formatRoute({ portfolio: portfolioId!, collectionSlug, docSlug: doc?.slug }))
+            paths.push(...formatRoute({ portfolio: portfolioSlug!, collectionSlug, docSlug: doc?.slug }))
 
         }
 

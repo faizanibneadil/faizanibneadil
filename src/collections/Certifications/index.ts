@@ -13,6 +13,9 @@ export const Certifications: CollectionConfig<'certifications'> = {
     labels: { plural: 'Certifications', singular: 'Certificate' },
     trash: true,
     admin: {
+        custom: {
+            enableCollectionView:true
+        },
         useAsTitle: 'title',
         // livePreview: {
         //     url: ({ data, req }) => generatePreviewPath({

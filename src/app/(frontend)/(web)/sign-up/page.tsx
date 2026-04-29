@@ -1,3 +1,4 @@
+'use cache'
 // import { DualModeImage } from "@/components/dual-mode-image";
 // import { SignUp } from "../_components/signup";
 
@@ -21,15 +22,15 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-    const industries = await sdk.find({
-        collection: 'industries',
-        pagination: false,
-    })
+    // const industries = await sdk.find({
+    //     collection: 'industries',
+    //     pagination: false,
+    // })
     return (
         <div className="relative w-full md:h-screen md:overflow-hidden">
             <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col justify-center px-4">
                 <div className="mx-auto space-y-4 sm:w-sm">
-                    <SignUpForm industries={industries.docs} />
+                    {/* <SignUpForm industries={industries.docs} /> */}
                     <p className="mt-8 text-muted-foreground text-sm">
                         By clicking continue, you agree to our{" "}
                         <a

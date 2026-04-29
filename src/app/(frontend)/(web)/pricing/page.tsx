@@ -1,3 +1,4 @@
+'use cache'
 import * as PricingCard from "@/components/pricing-card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -17,7 +18,7 @@ export const metadata:Metadata = {
     }
 }
 
-export default function Page() {
+export default async function Page() {
 	const features = [
 		"1 Portfolio",
 	];
