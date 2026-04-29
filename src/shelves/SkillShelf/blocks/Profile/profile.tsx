@@ -7,7 +7,7 @@ import { getMediaUrl } from "@/utilities/getURL";
 
 const BLUR_FADE_DELAY = 0.04;
 
-export async function Hero(props: BlockProps<'hero'>) {
+export async function Profile(props: BlockProps<'profile'>) {
     const {
         blockProps,
         params,
@@ -24,7 +24,7 @@ export async function Hero(props: BlockProps<'hero'>) {
     } = blockProps || {}
 
     return (
-        <section id="hero" aria-label={blockName ?? blockType} className="rounded-lg bg-border shadow">
+        <section id="profile" aria-label={blockName ?? blockType} className="rounded-lg bg-border shadow">
             <div className="mx-auto w-full max-w-2xl">
                 <div className="flex items-center justify-center rounded-lg border bg-background p-4">
                     <div className="flex-col flex flex-1 space-y-1.5">

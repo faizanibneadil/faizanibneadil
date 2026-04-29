@@ -1,4 +1,4 @@
-import { Hero } from '@/blocks/Hero'
+import { Profile } from '@/blocks/Profile'
 import { Contact } from '@/blocks/Contact'
 import { Education } from '@/blocks/Education'
 import { Project } from '@/blocks/Project'
@@ -16,10 +16,11 @@ import type { Block, BlockSlug } from 'payload'
 import { BlogsBlock } from '@/blocks/Blogs'
 import { FormBlock } from '@/blocks/Form'
 import { Code } from '@/blocks/Code'
+import { ColumnsBlock } from './Columns'
 
 
 export const blocks: Block[] = [
-    Hero,
+    Profile,
     Contact,
     Education,
     Project,
@@ -36,4 +37,5 @@ export const blocks: Block[] = [
     BlogsBlock,
     FormBlock,
     Code,
+    ColumnsBlock
 ]

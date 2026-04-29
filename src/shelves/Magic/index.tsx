@@ -6,6 +6,7 @@ import { __MagicCollectionsMap } from "./CollectionsMap";
 import { TawkChatBubble } from "./components/tawk-chat-bubbles";
 import { __MagicDocMap } from "./DocumentMap";
 import dynamic from "next/dynamic";
+import { MagicRichText } from "./components/RichText";
 const Navbar = dynamic(() => import("./components/navbar").then(({ Navbar }) => ({
     default: Navbar
 })));
@@ -93,9 +94,11 @@ export const __MagicThemeConfig: ShelfConfig = {
                 })
             }
         },
-
+        RenderHero: ({ heroProps, params, searchParams}) => {
+            return <MagicRichText className="text-xs" data={heroProps?.heroContent} params={params} searchParams={searchParams} />
+        },
         skeleton: (props) => {
-            const HeroSkeleton = props.blocksMap?.hero?.skeleton
+            const ProfileSkeleton = props.blocksMap?.profile?.skeleton
             const AboutSkeleton = props.blocksMap?.about?.skeleton
             const GithubContributionsSkeleton = props.blocksMap?.["github-contributions"]?.skeleton
             const ExperienceSkeleton = props.blocksMap?.experience?.skeleton
@@ -104,7 +107,7 @@ export const __MagicThemeConfig: ShelfConfig = {
             const ContactSkeleton = props.blocksMap?.contact?.skeleton
             return (
                 <div>
-                    {HeroSkeleton && <HeroSkeleton />}
+                    {ProfileSkeleton && <ProfileSkeleton />}
                     {AboutSkeleton && <AboutSkeleton />}
                     {GithubContributionsSkeleton && <GithubContributionsSkeleton />}
                     {ExperienceSkeleton && <ExperienceSkeleton />}

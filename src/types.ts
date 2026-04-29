@@ -8,7 +8,7 @@ import type {
     PaginatedDocs,
     DataFromCollectionSlug
 } from "payload"
-import type { Page, Config as PayloadConfig } from "./payload-types"
+import type { IHeroPropsType, Page, Config as PayloadConfig } from "./payload-types"
 import { Metadata } from "next"
 
 export type Config = { invalidateRootRoute?: boolean }
@@ -147,6 +147,7 @@ export type ShelfConfig = {
         RenderBlocks: React.ComponentType<AwaitedBaseParams & {
             blocks: PayloadConfig['blocks'][keyof PayloadConfig['blocks']][] | null | undefined,
             blocksMap: BlocksMapType
-        }>
+        }>,
+        RenderHero: React.ComponentType<AwaitedBaseParams & { heroProps: Page['hero'] }>
     }
 }

@@ -4,6 +4,7 @@ import { __SkillshelfBlocksMap } from "./BlocksMap";
 import { __SkillshelfCollectionsMap } from "./CollectionsMap";
 import { __SkillshelfDocMap } from "./DocumentMap";
 import dynamic from "next/dynamic";
+import { SkillShelfRichText } from "./components/RichText";
 const Navbar = dynamic(() => import("./components/navbar").then(({ Navbar }) => ({
     default: Navbar
 })))
@@ -29,8 +30,12 @@ export const __SkillshelfThemeConfig: ShelfConfig = {
                 if (Object.hasOwn(collectionsMap, params.collectionSlug)) {
                     const Collection = collectionsMap[params.collectionSlug]?.component
 
-                    // @ts-expect-error
-                    return <Collection collection={collection} params={params} searchParams={searchParams} />
+                    return (
+                        <div className="min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto">
+                            {/* @ts-expect-error */}
+                            <Collection collection={collection} params={params} searchParams={searchParams} />
+                        </div>
+                    )
                 }
 
                 return null
@@ -57,12 +62,14 @@ export const __SkillshelfThemeConfig: ShelfConfig = {
         },
         layout: (props) => {
             return (
-                <div className="min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto">
-                    <Suspense fallback={null}>
-                        <Navbar params={props.params as any} />
-                    </Suspense>
+                <>
+                    <div className="max-w-2xl mx-auto">
+                        <Suspense fallback={null}>
+                            <Navbar params={props.params as any} />
+                        </Suspense>
+                    </div>
                     {props.children}
-                </div>
+                </>
             )
         },
         RenderBlocks: ({
@@ -74,32 +81,39 @@ export const __SkillshelfThemeConfig: ShelfConfig = {
             const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
             if (hasBlocks) {
                 return (
-                    <div className="bg-border rounded-lg">
-                        {blocks.map((block, index) => {
-                            const { blockType } = block
+                    <div className="min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto">
+                        <div className="bg-border rounded-lg">
+                            {blocks.map((block, index) => {
+                                const { blockType } = block
 
-                            if (Object.hasOwn(blocksMap, blockType)) {
-                                const Block = blocksMap[blockType]?.component
-                                const Skeleton = blocksMap[blockType]?.skeleton!
+                                if (Object.hasOwn(blocksMap, blockType)) {
+                                    const Block = blocksMap[blockType]?.component
+                                    const Skeleton = blocksMap[blockType]?.skeleton!
 
-                                if (Block) {
-                                    return (
-                                        <Suspense key={`${blockType}-${index}`} fallback={<Skeleton />}>
-                                            {/* @ts-expect-error there may be some mismatch between the expected types here */}
-                                            <Block blockProps={block} params={params} searchParams={searchParams} />
-                                        </Suspense>
-                                    )
+                                    if (Block) {
+                                        return (
+                                            <Suspense key={`${blockType}-${index}`} fallback={<Skeleton />}>
+                                                {/* @ts-expect-error there may be some mismatch between the expected types here */}
+                                                <Block blockProps={block} params={params} searchParams={searchParams} />
+                                            </Suspense>
+                                        )
+                                    }
                                 }
-                            }
-                            return null
-                        })}
+                                return null
+                            })}
+                        </div>
                     </div>
                 )
             }
             return null
         },
+        RenderHero: ({ heroProps, params, searchParams }) => {
+            return (
+                <SkillShelfRichText data={heroProps?.heroContent} params={params} searchParams={searchParams} />
+            )
+        },
         skeleton: (props) => {
-            const HeroSkeleton = props.blocksMap?.hero?.skeleton
+            const ProfileSkeleton = props.blocksMap?.profile?.skeleton
             const AboutSkeleton = props.blocksMap?.about?.skeleton
             const GithubContributionsSkeleton = props.blocksMap?.["github-contributions"]?.skeleton
             const ExperienceSkeleton = props.blocksMap?.experience?.skeleton
@@ -108,7 +122,7 @@ export const __SkillshelfThemeConfig: ShelfConfig = {
             const ContactSkeleton = props.blocksMap?.contact?.skeleton
             return (
                 <div>
-                    {HeroSkeleton && <HeroSkeleton />}
+                    {ProfileSkeleton && <ProfileSkeleton />}
                     {AboutSkeleton && <AboutSkeleton />}
                     {GithubContributionsSkeleton && <GithubContributionsSkeleton />}
                     {ExperienceSkeleton && <ExperienceSkeleton />}
