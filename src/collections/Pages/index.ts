@@ -3,6 +3,7 @@ import { TitleField } from "@/fields/title";
 import { populatePublishedAt } from "@/hooks/populatePublishedAt";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { generatePreviewPath } from "@/utilities/generatePreviewPath";
+import { RichTextLinkFeature } from "@/utilities/RichTextLinkFeature";
 import { slugify } from "@/utilities/slugify";
 import {
     MetaDescriptionField,
@@ -11,6 +12,7 @@ import {
     OverviewField,
     PreviewField,
 } from '@payloadcms/plugin-seo/fields';
+import { BlocksFeature, lexicalEditor } from "@payloadcms/richtext-lexical";
 import { slugField, type CollectionConfig, APIError } from "payload";
 
 export const Pages: CollectionConfig<'pages'> = {
@@ -40,7 +42,8 @@ export const Pages: CollectionConfig<'pages'> = {
         createdAt: true,
         publishedAt: true,
         title: true,
-        updatedAt: true
+        updatedAt: true,
+        hero: true
     },
     access: {
         create: superAdminOrTenantAdminAccess,
@@ -53,6 +56,28 @@ export const Pages: CollectionConfig<'pages'> = {
         {
             type: 'tabs',
             tabs: [
+                {
+                    label: 'Hero',
+                    name: 'hero',
+                    interfaceName: 'IHeroPropsType',
+                    fields: [{
+                        type: 'richText',
+                        name: 'heroContent',
+                        label: false,
+                        editor: lexicalEditor({
+                            features: ({ defaultFeatures, rootFeatures}) => {
+                                return [
+                                    ...rootFeatures,
+                                    BlocksFeature({
+                                        blocks: ['columns-block', 'profile','about'],
+                                        inlineBlocks: ['glimpseLink','linkBadge']
+                                    }),
+                                    RichTextLinkFeature()
+                                ]
+                            }
+                        })
+                    }]
+                },
                 {
                     label: 'Content',
                     fields: [
@@ -84,7 +109,7 @@ export const Pages: CollectionConfig<'pages'> = {
                                 'formBlock',
                                 'github-contributions',
                                 'hackathon',
-                                'hero',
+                                'profile',
                                 'license',
                                 'project',
                                 'publication',

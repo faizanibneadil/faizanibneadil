@@ -2,12 +2,16 @@ import { BlocksMapType } from "@/types";
 import dynamic from "next/dynamic";
 
 export const __SkillshelfBlocksMap: BlocksMapType = {
-    hero: {
-        skeleton: dynamic(() => import("@/shelves/SkillShelf/blocks/Hero/hero-skeleton").then(({ HeroSkeleton }) => ({
-            default: HeroSkeleton
+    "columns-block": {
+        component: () => null,
+        skeleton: () => null
+    },
+    profile: {
+        skeleton: dynamic(() => import("@/shelves/SkillShelf/blocks/Profile/profile-skeleton").then(({ ProfileSkeleton }) => ({
+            default: ProfileSkeleton
         }))),
-        component: dynamic(() => import("@/shelves/SkillShelf/blocks/Hero/hero").then(({ Hero }) => ({
-            default: Hero
+        component: dynamic(() => import("@/shelves/SkillShelf/blocks/Profile/profile").then(({ Profile }) => ({
+            default: Profile
         })))
     },
     contact: {

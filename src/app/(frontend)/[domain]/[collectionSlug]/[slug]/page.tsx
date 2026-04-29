@@ -95,10 +95,16 @@ export default async function Page(props: PageProps) {
     const RenderBlocks = shelfConfig?.config?.RenderBlocks
     const docMap = shelfConfig?.config?.documentConfig?.docMap
     const RenderDocumentView = shelfConfig?.config?.documentConfig?.RenderDocumentView
+    const RenderHero = shelfConfig?.config?.RenderHero
 
 
     if (Boolean(page?.layout?.length)) {
-        return <RenderBlocks blocks={page?.layout} blocksMap={blocksMap} params={params} searchParams={searchParams} />
+        return (
+            <>
+                <RenderHero heroProps={page?.hero} params={params} searchParams={searchParams} />
+                <RenderBlocks blocks={page?.layout} blocksMap={blocksMap} params={params} searchParams={searchParams} />
+            </>
+        )
     }
 
     const doc = await queryCollectionViewBySlug({
@@ -110,6 +116,7 @@ export default async function Page(props: PageProps) {
     return (
         <Suspense fallback='Redirecting ...'>
             <PayloadRedirects domain={params?.domain} url={`/${params?.domain}/${params?.collectionSlug}/${params?.slug}`} />
+            <RenderHero heroProps={page?.hero} params={params} searchParams={searchParams} />
             <RenderDocumentView collectionSlug={params?.collectionSlug} doc={doc} docMap={docMap} params={params} searchParams={searchParams} />
         </Suspense>
     )

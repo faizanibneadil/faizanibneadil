@@ -1,10 +1,9 @@
 import type { Block } from 'payload'
 import { RevalidateProfileAvatar } from './hooks/RevalidateProfileAvatar'
 
-// TODO: change from hero to profile
-export const Hero: Block = {
-    slug: 'hero',
-    interfaceName: 'IHeroProps',
+export const Profile: Block = {
+    slug: 'profile',
+    interfaceName: 'IProfileProps',
     fields: [
         {
             type: 'text',

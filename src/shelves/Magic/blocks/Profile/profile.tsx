@@ -7,7 +7,7 @@ import { getMediaUrl } from "@/utilities/getURL";
 
 const BLUR_FADE_DELAY = 0.04;
 
-export async function Hero(props: BlockProps<'hero'>) {
+export async function Profile(props: BlockProps<'profile'>) {
     const {
         blockProps,
         params,

@@ -10,6 +10,7 @@ import { TGlimpseLink } from "@/payload-types";
 import { BlockProps } from "@/types";
 import { getLinkInfo } from "@/utilities/getLinkInfo";
 import { getServerSideURL } from "@/utilities/getURL";
+import Link from "next/link";
 
 
 export async function GlimpseLink(props: { blockProps: TGlimpseLink } & Omit<BlockProps<'glimpseLink'>, 'blockProps'>) {
@@ -40,18 +41,18 @@ export async function GlimpseLink(props: { blockProps: TGlimpseLink } & Omit<Blo
 
     if (info?.title === null && info?.description === null && info?.image === null) {
         return (
-            <a href={url ?? '#'}>
+            <Link href={url ?? '#'}>
                 {label}
-            </a>
+            </Link>
         )
     }
 
     return (
         <Glimpse closeDelay={0} openDelay={0}>
             <GlimpseTrigger asChild>
-                <a href={url ?? '#'}>
+                <Link href={url ?? '#'}>
                     {label}
-                </a>
+                </Link>
             </GlimpseTrigger>
             <GlimpseContent className="w-80 z-[9999]">
                 <GlimpseImage src={info?.image ?? ""} />

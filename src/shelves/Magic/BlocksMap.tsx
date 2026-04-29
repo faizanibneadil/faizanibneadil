@@ -2,12 +2,16 @@ import { BlocksMapType } from "@/types";
 import dynamic from "next/dynamic";
 
 export const __MagicBlocksMap: BlocksMapType = {
-    hero: {
-        skeleton: dynamic(() => import("@/shelves/Magic/blocks/Hero/hero-skeleton").then(({ HeroSkeleton }) => ({
-            default: HeroSkeleton
+    "columns-block": {
+        component: () => null,
+        skeleton: () => null
+    },
+    profile: {
+        skeleton: dynamic(() => import("@/shelves/Magic/blocks/Profile/profile-skeleton").then(({ ProfileSkeleton }) => ({
+            default: ProfileSkeleton
         }))),
-        component: dynamic(() => import("@/shelves/Magic/blocks/Hero/hero").then(({ Hero }) => ({
-            default: Hero
+        component: dynamic(() => import("@/shelves/Magic/blocks/Profile/profile").then(({ Profile }) => ({
+            default: Profile
         })))
     },
     contact: {

@@ -15,7 +15,7 @@ export async function Navbar(props: Omit<AwaitedBaseParams, 'searchParams'>) {
   const {
     params
   } = props || {}
-
+  
   const __menu = await queryMenu({ domain: params.domain })
   const __socials = await querySocials({ domain: params?.domain })
 

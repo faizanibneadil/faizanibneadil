@@ -2,6 +2,7 @@ import { PayloadRedirects } from "@/components/PayloadRedirects";
 import { ShelvesMaps } from "@/shelves";
 import type { PageProps } from "@/types";
 import { queryCollectionBySlug } from "@/utilities/queries/queryCollectionBySlug";
+import { queryHero } from "@/utilities/queries/queryHero";
 import { queryPageByConfiguredCollection } from "@/utilities/queries/queryPageByConfiguiredCollection";
 import { queryPortfolioSettings } from "@/utilities/queries/queryPortfolioSettings";
 import type { Metadata } from "next";
@@ -61,16 +62,21 @@ export default async function Page(props: PageProps) {
   const shelfConfig = ShelvesMaps?.[shelfID!]
   const collectionsMap = shelfConfig?.config?.collectionConfig?.collectionsMap
   const RenderCollection = shelfConfig?.config?.collectionConfig?.RenderCollection
+  const RenderHero = shelfConfig?.config?.RenderHero
 
-  const collection = await queryCollectionBySlug({
+  const [collection, hero] = await Promise.all([queryCollectionBySlug({
     collectionSlug: params.collectionSlug,
     domain: params.domain
-  })
+  }), queryHero({
+    collectionSlug: params.collectionSlug,
+    domain: params.domain
+  })])
 
 
   return (
     <Suspense fallback='loading ...'>
       <PayloadRedirects domain={params.domain} url={`/${params.collectionSlug}`} />
+      <RenderHero heroProps={hero} params={params} searchParams={searchParams} />
       <RenderCollection collection={collection} collectionsMap={collectionsMap} params={params} searchParams={searchParams} />
     </Suspense>
   )

@@ -11,6 +11,9 @@ const CodeBlock = dynamic(() => import('../blocks/Code/CodeBlock').then(({ CodeB
 const FormBlock = dynamic(() => import('../blocks/Form/form-block').then(({ FormBlock }) => ({
     default: FormBlock
 })))
+const RichTextProfile = dynamic(() => import('../blocks/RichTextProfile').then(({ RichTextProfile }) => ({
+    default: RichTextProfile
+})))
 const LinkBadge = dynamic(() => import('../inlineBlocks/LinkBadge').then(({ LinkBadge }) => ({
     default: LinkBadge
 })))
@@ -50,6 +53,8 @@ export function SkillShelfRichText(props: {
         searchParams={searchParamsFromProps}
         enableProse={enableProse}
         blocks={{
+            profile: ({ node }) => <RichTextProfile blockProps={node.fields} params={props.params} searchParams={props.searchParams} />,
+            "columns-block": () => <div>Columns Block</div>,
             "code-block": ({ node }) => <CodeBlock blockProps={node.fields} params={props.params} searchParams={props.searchParams} />,
             formBlock: ({ node }) => <FormBlock blockProps={node.fields} params={props.params} searchParams={props.searchParams} />
         }}

@@ -5,14 +5,14 @@ import type { RelationshipField } from "payload"
 export const RichTextLinkFeature = () => {
     return LinkFeature({
         maxDepth: 5,
-        enabledCollections: ['blogs', 'pages', 'projects'],
+        enabledCollections: ['blogs', 'pages', 'projects', 'achievements', 'blogs', 'certifications', 'forms', 'gallery', 'hackathons', 'licenses', 'publications', 'researches'],
         fields: ({ config, defaultFields }) => {
             const _defaultFields = defaultFields.map(field => {
                 if ('name' in field && field.name === 'doc') {
                     return {
                         ...field,
                         filterOptions: ({ req: { headers } }) => {
-                            const selectedTenant = getTenantFromCookie(headers,'number')
+                            const selectedTenant = getTenantFromCookie(headers, 'number')
                             if (selectedTenant) {
                                 return {
                                     'tenant.id': {

@@ -100,7 +100,7 @@ export interface Config {
     users: UserAuthOperations;
   };
   blocks: {
-    hero: IHeroProps;
+    profile: IProfileProps;
     contact: IContactProps;
     education: TEducationProps;
     project: IProjectProps;
@@ -117,6 +117,7 @@ export interface Config {
     'blogs-block': IBlogsBlockProps;
     formBlock: TFormBlockProps;
     'code-block': TCodeBlockProps;
+    'columns-block': IColumnsBlockPropsType;
     linkBadge: TLinkBadge;
     glimpseLink: TGlimpseLink;
   };
@@ -244,15 +245,15 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "IHeroProps".
+ * via the `definition` "IProfileProps".
  */
-export interface IHeroProps {
+export interface IProfileProps {
   nameOnResume?: string | null;
   headline?: string | null;
   profile?: (number | null) | Media;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'hero';
+  blockType: 'profile';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -529,6 +530,7 @@ export interface Page {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
+  hero?: IHeroPropsType;
   configuredCollectionSlug?: string | null;
   layout?:
     | (
@@ -543,7 +545,7 @@ export interface Page {
         | TFormBlockProps
         | IGithubContributionProps
         | IHackathonProps
-        | IHeroProps
+        | IProfileProps
         | ILicenseProps
         | IProjectProps
         | IPublicationProps
@@ -573,6 +575,27 @@ export interface Page {
   createdAt: string;
   deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IHeroPropsType".
+ */
+export interface IHeroPropsType {
+  heroContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1805,6 +1828,39 @@ export interface ISkillProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IColumnsBlockPropsType".
+ */
+export interface IColumnsBlockPropsType {
+  columns?:
+    | {
+        blocks?:
+          | (
+              | IAchievementProps
+              | IBlogsBlockProps
+              | ICertificationProps
+              | TCodeBlockProps
+              | IContactProps
+              | TEducationProps
+              | IExperienceProps
+              | TFormBlockProps
+              | IGithubContributionProps
+              | IHackathonProps
+              | ILicenseProps
+              | IProjectProps
+              | IPublicationProps
+              | IResearchProps
+              | ISkillProps
+            )[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'columns-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TLinkBadge".
  */
 export interface TLinkBadge {
@@ -2318,6 +2374,7 @@ export interface BlogsSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  hero?: T | IHeroPropsTypeSelect<T>;
   configuredCollectionSlug?: T;
   layout?: T | {};
   meta?:
@@ -2335,6 +2392,13 @@ export interface PagesSelect<T extends boolean = true> {
   createdAt?: T;
   deletedAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IHeroPropsType_select".
+ */
+export interface IHeroPropsTypeSelect<T extends boolean = true> {
+  heroContent?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
