@@ -17,6 +17,7 @@ import { getUserTenantIDs } from "@/utilities/getUserTenantIDs"
 import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant"
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import type { Config } from "payload"
+import { InvalidateRedirectCache } from "@/hooks/InvalidateRedirects";
 
 export const plugins: Plugin[] = [
     formBuilderPlugin({
@@ -227,6 +228,11 @@ export const plugins: Plugin[] = [
     }),
     redirectsPlugin({
         collections: ['pages'],
+        overrides: {
+            hooks: {
+                afterChange: [InvalidateRedirectCache]
+            }
+        }
     }),
     multiTenantPlugin<Config>({
         collections: {
