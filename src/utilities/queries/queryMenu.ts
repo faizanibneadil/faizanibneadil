@@ -7,7 +7,7 @@ import { isNumber } from "payload/shared"
 export const queryMenu = async ({ domain }: { domain: string }) => {
     "use cache"
     cacheLife('weeks')
-    cacheTag(String(domain))
+    cacheTag(`menu_${domain}`)
     const payload = await getPayload({config})
     const menu = await payload.find({
         collection: 'menus',

@@ -7,6 +7,7 @@ import {
 } from "@/hooks/RevalidatePage";
 // import { VersionConfig } from "@/utilities/version-config";
 import type { CollectionConfig } from "payload";
+import { InvalidateSocialsCache } from "./hooks/InvalidateSocials";
 
 export const Socials: CollectionConfig<'socials'> = {
     slug: 'socials',
@@ -55,7 +56,10 @@ export const Socials: CollectionConfig<'socials'> = {
         },
     ],
     hooks: {
-        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterChange: [
+            RevalidatePageAfterChange({ invalidateRootRoute: true }),
+            InvalidateSocialsCache
+        ],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
     // versions: VersionConfig(),

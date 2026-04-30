@@ -114,7 +114,7 @@ export default async function Page(props: PageProps) {
     })
 
     return (
-        <Suspense fallback='Redirecting ...'>
+        <Suspense fallback={null}>
             <PayloadRedirects domain={params?.domain} url={`/${params?.domain}/${params?.collectionSlug}/${params?.slug}`} />
             <RenderHero heroProps={page?.hero} params={params} searchParams={searchParams} />
             <RenderDocumentView collectionSlug={params?.collectionSlug} doc={doc} docMap={docMap} params={params} searchParams={searchParams} />

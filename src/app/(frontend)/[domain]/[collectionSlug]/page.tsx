@@ -64,17 +64,20 @@ export default async function Page(props: PageProps) {
   const RenderCollection = shelfConfig?.config?.collectionConfig?.RenderCollection
   const RenderHero = shelfConfig?.config?.RenderHero
 
-  const [collection, hero] = await Promise.all([queryCollectionBySlug({
-    collectionSlug: params.collectionSlug,
-    domain: params.domain
-  }), queryHero({
-    collectionSlug: params.collectionSlug,
-    domain: params.domain
-  })])
+  const [collection, hero] = await Promise.all([
+    queryCollectionBySlug({
+      collectionSlug: params.collectionSlug,
+      domain: params.domain
+    }), 
+    queryHero({
+      collectionSlug: params.collectionSlug,
+      domain: params.domain
+    })
+  ])
 
 
   return (
-    <Suspense fallback='loading ...'>
+    <Suspense fallback={null}>
       <PayloadRedirects domain={params.domain} url={`/${params.collectionSlug}`} />
       <RenderHero heroProps={hero} params={params} searchParams={searchParams} />
       <RenderCollection collection={collection} collectionsMap={collectionsMap} params={params} searchParams={searchParams} />
