@@ -6,7 +6,7 @@ import { isNumber } from 'payload/shared'
 export const querySocials = async ({ domain }: { domain: string }) => {
     "use cache"
     cacheLife('weeks')
-    cacheTag(String(domain))
+    cacheTag(`socials_${domain}`)
 
     const payload = await getPayload({ config })
     const socials = (await payload.find({

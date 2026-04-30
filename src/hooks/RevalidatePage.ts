@@ -36,10 +36,8 @@ export const RevalidatePageAfterChange: AppCollectionAfterChangeHook<Page, {
             ? doc?.tenant?.id
             : doc?.tenant
 
-        const collectionSlug = collection.slug === 'pages'
-            ? doc?.enableCollection
-                ? doc?.configuredCollectionSlug
-                : collection.slug
+        const collectionSlug = collection.slug === 'pages' && doc?.enableCollection
+            ? doc?.configuredCollectionSlug
             : collection.slug
 
         const paths: string[] = []

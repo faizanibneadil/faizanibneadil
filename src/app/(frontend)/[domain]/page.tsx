@@ -6,7 +6,7 @@ export default async function DomainPage(props: PageProps) {
   const [params, searchParams] = await Promise.all([props.params, props.searchParams])
 
   return (
-    <Suspense fallback='Redirecting ...'>
+    <Suspense fallback={null}>
       <PayloadRedirects domain={params.domain} url={`/${params.domain}`} />
     </Suspense>
   )

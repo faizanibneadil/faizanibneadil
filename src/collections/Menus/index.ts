@@ -2,6 +2,7 @@ import type { CollectionConfig } from "payload";
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { RevalidatePageAfterChange, RevalidatePageAfterDelete } from "@/hooks/RevalidatePage";
 import { Iconify } from "@/fields/iconify";
+import { InvalidateMenuCache } from "./hooks/InvalidateMenu";
 
 export const Menus: CollectionConfig<'menus'> = {
     slug: 'menus',
@@ -108,7 +109,10 @@ export const Menus: CollectionConfig<'menus'> = {
         },
     ],
     hooks: {
-        afterChange: [RevalidatePageAfterChange({ invalidateRootRoute: true })],
+        afterChange: [
+            RevalidatePageAfterChange({ invalidateRootRoute: true }),
+            InvalidateMenuCache
+        ],
         afterDelete: [RevalidatePageAfterDelete({ invalidateRootRoute: true })]
     },
 }
