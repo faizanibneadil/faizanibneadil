@@ -163,6 +163,9 @@ export const Skills: CollectionConfig<'skills'> = {
             checkboxName: 'lockSlug',
             slugify: ({ valueToSlugify, data }) => {
                 const fieldToSlug = slugify(valueToSlugify)
+                if(!fieldToSlug){
+                    return undefined
+                }
                 return `${fieldToSlug}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
             },
         }),

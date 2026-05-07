@@ -1,4 +1,5 @@
-import { ShelvesMaps } from "@/shelves";
+// import { ShelvesMaps } from "@/shelves";
+import { getShelfConfig } from "@/utilities/getShelfConfig";
 import { queryPortfolioSettings } from "@/utilities/queries/queryPortfolioSettings";
 import { Suspense } from "react";
 
@@ -11,14 +12,13 @@ async function RenderLayout({ paramsPromise, children }: {
         domain: params.domain
     });
 
-    const shelfID = typeof settings?.shelf === 'object' ? settings.shelf?.id : settings?.shelf;
+    const { shelfID, ShelfLayout } = getShelfConfig({
+        shelf: settings?.shelf
+    })
 
-    if (shelfID && Object.hasOwn(ShelvesMaps, shelfID)) {
-        const Layout = ShelvesMaps[shelfID]?.config?.layout;
-        return <Layout params={params} themeId={shelfID}>{children}</Layout>
-    }
-
-    return null;
+    return Boolean(shelfID)
+        ? <ShelfLayout params={params} themeId={shelfID!}>{children}</ShelfLayout>
+        : null
 }
 
 export default function Layout(props: React.PropsWithChildren<{

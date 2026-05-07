@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
 import { cn } from '@/lib/utils'
-import type { TCodeBlockProps, TFormBlockProps, TLinkBadge, TGlimpseLink, IColumnsBlockPropsType, IProfileProps } from '@/payload-types'
+import type { TCodeBlockProps, TFormBlockProps, TLinkBadge, TGlimpseLink, IColumnsBlockPropsType, IProfileProps, IAboutProps } from '@/payload-types'
 import type { PageProps } from '@/types'
 import {
   DefaultNodeTypes,
@@ -21,7 +21,7 @@ const CodeBlock = dynamic(() => import('@/shelves/Magic/blocks/Code/CodeBlock').
 
 type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<TFormBlockProps | TCodeBlockProps | IColumnsBlockPropsType | IProfileProps>
+  | SerializedBlockNode<TFormBlockProps | TCodeBlockProps | IColumnsBlockPropsType | IProfileProps | IAboutProps>
   | SerializedInlineBlockNode<TLinkBadge | TGlimpseLink>
 
 const jsxConverters: (args: {

@@ -53,6 +53,11 @@ export function SkillShelfRichText(props: {
         searchParams={searchParamsFromProps}
         enableProse={enableProse}
         blocks={{
+            about: ({ node }) => (
+                <div className="w-full max-w-2xl mx-auto">
+                    <SkillShelfRichText data={node.fields.content} params={props?.params} searchParams={props.searchParams} />
+                </div>
+            ),
             profile: ({ node }) => <RichTextProfile blockProps={node.fields} params={props.params} searchParams={props.searchParams} />,
             "columns-block": () => <div>Columns Block</div>,
             "code-block": ({ node }) => <CodeBlock blockProps={node.fields} params={props.params} searchParams={props.searchParams} />,

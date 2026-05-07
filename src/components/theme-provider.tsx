@@ -7,7 +7,7 @@ import { Suspense } from "react";
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
     <Suspense fallback={null}>
-      <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+      <NextThemesProvider {...props}>{children}</NextThemesProvider>
     </Suspense>
   )
 }
