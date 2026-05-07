@@ -1,9 +1,11 @@
 import { PayloadRedirects } from "@/components/PayloadRedirects";
-import { ShelvesMaps } from "@/shelves";
+// import { ShelvesMaps } from "@/shelves";
 import type { PageProps } from "@/types";
-import { queryCollectionBySlug } from "@/utilities/queries/queryCollectionBySlug";
-import { queryHero } from "@/utilities/queries/queryHero";
-import { queryPageByConfiguredCollection } from "@/utilities/queries/queryPageByConfiguiredCollection";
+import { getShelfConfig } from "@/utilities/getShelfConfig";
+import { hasShelf } from "@/utilities/hasShelf";
+// import { queryCollectionBySlug } from "@/utilities/queries/queryCollectionBySlug";
+// import { queryHero } from "@/utilities/queries/queryHero";
+// import { queryPageByConfiguredCollection } from "@/utilities/queries/queryPageByConfiguiredCollection";
 import { queryPortfolioSettings } from "@/utilities/queries/queryPortfolioSettings";
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -14,11 +16,17 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
     domain: params.domain
   })
 
-  const shelfID = typeof settings?.shelf === 'object' ? settings?.shelf?.id : settings?.shelf
+  const {
+    shelfID,
+    collectionsMap,
+    queryPageByConfiguredCollection
+  } = getShelfConfig({
+    shelf: settings?.shelf,
+    params: params,
+    searchParams: searchParams
+  })
 
-  if (Object.hasOwn(ShelvesMaps, shelfID!)) {
-    const collectionsMap = ShelvesMaps?.[shelfID!]?.config?.collectionConfig?.collectionsMap
-
+  if (hasShelf(shelfID!)) {
     if (!Object.keys(collectionsMap).includes(params.collectionSlug)) {
       return {
         title: '404 - Not Found.',
@@ -26,10 +34,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
       }
     }
 
-    const page = await queryPageByConfiguredCollection({
-      collectionSlug: params.collectionSlug,
-      domain: params.domain
-    })
+    const page = await queryPageByConfiguredCollection()
 
     const metadata = collectionsMap[params.collectionSlug]?.metadata
 
@@ -49,6 +54,9 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 
 export default async function Page(props: PageProps) {
   const [params, searchParams] = await Promise.all([props.params, props.searchParams])
+
+  const url = `/${params.domain}/${params.collectionSlug}`
+  
   // const queryCount = await queryCollectionCountBySlug({
   //   collectionSlug: params.collectionSlug,
   //   domain: params.domain
@@ -57,28 +65,24 @@ export default async function Page(props: PageProps) {
     domain: params.domain
   })
 
-  const shelfID = typeof settings?.shelf === 'object' ? settings?.shelf?.id : settings?.shelf
+  const {
+    RenderCollection,
+    RenderHero,
+    collectionsMap,
+    queryCollectionBySlug,
+    queryHero
+  } = getShelfConfig({
+    shelf: settings?.shelf,
+    params: params,
+    searchParams: searchParams
+  })
 
-  const shelfConfig = ShelvesMaps?.[shelfID!]
-  const collectionsMap = shelfConfig?.config?.collectionConfig?.collectionsMap
-  const RenderCollection = shelfConfig?.config?.collectionConfig?.RenderCollection
-  const RenderHero = shelfConfig?.config?.RenderHero
-
-  const [collection, hero] = await Promise.all([
-    queryCollectionBySlug({
-      collectionSlug: params.collectionSlug,
-      domain: params.domain
-    }), 
-    queryHero({
-      collectionSlug: params.collectionSlug,
-      domain: params.domain
-    })
-  ])
+  const [collection, hero] = await Promise.all([queryCollectionBySlug(), queryHero()])
 
 
   return (
     <Suspense fallback={null}>
-      <PayloadRedirects domain={params.domain} url={`/${params.collectionSlug}`} />
+      <PayloadRedirects domain={params.domain} url={url} />
       <RenderHero heroProps={hero} params={params} searchParams={searchParams} />
       <RenderCollection collection={collection} collectionsMap={collectionsMap} params={params} searchParams={searchParams} />
     </Suspense>

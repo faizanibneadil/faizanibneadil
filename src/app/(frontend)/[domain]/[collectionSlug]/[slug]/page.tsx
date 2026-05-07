@@ -1,11 +1,13 @@
-import RenderCollection from '@/app/(frontend)/[domain]/[collectionSlug]/page'
+import RenderCollectionPage from '@/app/(frontend)/[domain]/[collectionSlug]/page'
 import { PayloadRedirects } from "@/components/PayloadRedirects"
-import { ShelvesMaps } from "@/shelves"
+// import { ShelvesMaps } from "@/shelves"
 import type { PageProps } from "@/types"
-import { queryCollectionViewBySlug } from '@/utilities/queries/queryCollectionViewBySlug'
-import { queryPageBySlug } from '@/utilities/queries/queryPageBySlug'
+import { getShelfConfig } from '@/utilities/getShelfConfig'
+import { hasShelf } from '@/utilities/hasShelf'
+// import { queryCollectionViewBySlug } from '@/utilities/queries/queryCollectionViewBySlug'
+// import { queryPageBySlug } from '@/utilities/queries/queryPageBySlug'
 import { queryPortfolioSettings } from '@/utilities/queries/queryPortfolioSettings'
-import { LexicalEditorViewMap } from '@payloadcms/richtext-lexical'
+// import { LexicalEditorViewMap } from '@payloadcms/richtext-lexical'
 import type { Metadata } from "next"
 import { CollectionSlug } from 'payload'
 import { Suspense } from "react"
@@ -13,6 +15,21 @@ import { Suspense } from "react"
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
     const [params, searchParams] = await Promise.all([props.params, props.searchParams])
+
+    const settings = await queryPortfolioSettings({
+        domain: params.domain
+    })
+
+    const { 
+        shelfID, 
+        docMap, 
+        queryCollectionViewBySlug,
+        queryPageBySlug
+    } = getShelfConfig({
+        shelf: settings?.shelf,
+        params: params,
+        searchParams: searchParams
+    })
 
     let page = await queryPageBySlug({
         slug: params.slug,
@@ -32,20 +49,9 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
         })
     }
 
-    const settings = await queryPortfolioSettings({
-        domain: params.domain
-    })
-
-    const shelfID = typeof settings?.shelf === 'object' ? settings?.shelf?.id : settings?.shelf
-
-    if (Object.hasOwn(ShelvesMaps, shelfID!)) {
-        const docMap = ShelvesMaps[shelfID!].config.documentConfig.docMap
+    if (hasShelf(shelfID!)) {
         if (!page && Object.hasOwn(docMap, params.collectionSlug)) {
-            const doc = await queryCollectionViewBySlug({
-                collectionSlug: params.collectionSlug,
-                domain: params.domain,
-                slug: params.slug
-            })
+            const doc = await queryCollectionViewBySlug()
             const metadata = docMap?.[params?.collectionSlug]?.metadata
 
             if (typeof metadata === 'function') {
@@ -66,39 +72,43 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 export default async function Page(props: PageProps) {
     const [params, searchParams] = await Promise.all([props.params, props.searchParams])
 
-    const page = await queryPageBySlug({
-        domain: params.domain,
-        slug: params.slug
-    })
-
-    if (page?.enableCollection) {
-        return (
-            <Suspense fallback={null}>
-                <PayloadRedirects domain={params.domain} url={`/${params.collectionSlug}/${params.slug}`} />
-                <RenderCollection params={Promise.resolve({ ...params, collectionSlug: page?.configuredCollectionSlug as CollectionSlug })} searchParams={Promise.resolve({ ...searchParams })} />
-            </Suspense>
-        )
-    }
+    const url = `/${params.domain}/${params.collectionSlug}/${params.slug}`
 
     const settings = await queryPortfolioSettings({
         domain: params.domain
     })
 
-    const shelfID = typeof settings?.shelf === 'object' ? settings?.shelf?.id : settings?.shelf
+    const {
+        RenderBlocks,
+        RenderDocumentView,
+        RenderHero,
+        blocksMap,
+        docMap,
+        shelfID,
+        queryCollectionViewBySlug,
+        queryPageBySlug
+    } = getShelfConfig({
+        shelf: settings?.shelf,
+        params: params,
+        searchParams: searchParams
+    })
 
-    if (!Object.hasOwn(ShelvesMaps, shelfID!)) {
-        return 'Theme not found'
+    const page = await queryPageBySlug()
+
+    if (page?.enableCollection) {
+        return (
+            <Suspense fallback={null}>
+                <PayloadRedirects domain={params.domain} url={url} />
+                <RenderCollectionPage params={Promise.resolve({ ...params, collectionSlug: page?.configuredCollectionSlug as CollectionSlug })} searchParams={Promise.resolve({ ...searchParams })} />
+            </Suspense>
+        )
     }
 
-    const shelfConfig = ShelvesMaps?.[shelfID!]
-    const blocksMap = shelfConfig?.config?.blocksConfig.blocksMap
-    const RenderBlocks = shelfConfig?.config?.RenderBlocks
-    const docMap = shelfConfig?.config?.documentConfig?.docMap
-    const RenderDocumentView = shelfConfig?.config?.documentConfig?.RenderDocumentView
-    const RenderHero = shelfConfig?.config?.RenderHero
+    if (!hasShelf(shelfID!)) {
+        return 'Shelf not found'
+    }
 
-
-    if (Boolean(page?.layout?.length)) {
+    if (Boolean(page?.enableCollection) === false) {
         return (
             <>
                 <RenderHero heroProps={page?.hero} params={params} searchParams={searchParams} />
@@ -107,15 +117,11 @@ export default async function Page(props: PageProps) {
         )
     }
 
-    const doc = await queryCollectionViewBySlug({
-        collectionSlug: params.collectionSlug,
-        domain: params.domain,
-        slug: params.slug
-    })
+    const doc = await queryCollectionViewBySlug()
 
     return (
         <Suspense fallback={null}>
-            <PayloadRedirects domain={params?.domain} url={`/${params?.domain}/${params?.collectionSlug}/${params?.slug}`} />
+            <PayloadRedirects domain={params?.domain} url={url} />
             <RenderHero heroProps={page?.hero} params={params} searchParams={searchParams} />
             <RenderDocumentView collectionSlug={params?.collectionSlug} doc={doc} docMap={docMap} params={params} searchParams={searchParams} />
         </Suspense>
