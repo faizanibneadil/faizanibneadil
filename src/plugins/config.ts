@@ -1,6 +1,6 @@
-import type { GroupField, Plugin, RelationshipField } from "payload";
+import type { Access, GroupField, Plugin, RelationshipField } from "payload";
 import { s3Storage } from '@payloadcms/storage-s3'
-import { mcpPlugin } from '@payloadcms/plugin-mcp'
+// import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { superAdminOrTenantAdminAccess } from "@/access/superAdminOrTenantAdmin";
 import { RevalidateFormById } from "@/hooks/RevalidateFormById";
 import { RevalidatePageAfterChange } from "@/hooks/RevalidatePage";
@@ -18,6 +18,8 @@ import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant"
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import type { Config } from "payload"
 import { InvalidateRedirectCache } from "@/hooks/InvalidateRedirects";
+import { Redirect } from "@/payload-types";
+import { queryPortfolioInfoById } from "@/utilities/queries/queryPortfolioInfoById";
 
 export const plugins: Plugin[] = [
     formBuilderPlugin({

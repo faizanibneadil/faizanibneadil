@@ -1,16 +1,13 @@
+import { Suspense } from "react"
 import RenderCollectionPage from '@/app/(frontend)/[domain]/[collectionSlug]/page'
 import { PayloadRedirects } from "@/components/PayloadRedirects"
-// import { ShelvesMaps } from "@/shelves"
 import type { PageProps } from "@/types"
 import { getShelfConfig } from '@/utilities/getShelfConfig'
 import { hasShelf } from '@/utilities/hasShelf'
-// import { queryCollectionViewBySlug } from '@/utilities/queries/queryCollectionViewBySlug'
-// import { queryPageBySlug } from '@/utilities/queries/queryPageBySlug'
 import { queryPortfolioSettings } from '@/utilities/queries/queryPortfolioSettings'
 // import { LexicalEditorViewMap } from '@payloadcms/richtext-lexical'
 import type { Metadata } from "next"
 import { CollectionSlug } from 'payload'
-import { Suspense } from "react"
 
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {

@@ -1,8 +1,6 @@
-import type { Collection, Endpoint } from 'payload'
+import type { Endpoint } from 'payload'
 
-import { headersWithCors } from '@payloadcms/next/utilities'
-import { APIError, generatePayloadCookie } from 'payload'
-import { User } from '@/payload-types'
+import { APIError } from 'payload'
 
 // A custom endpoint that can be reached by POST request
 // at: /api/users/external-users/login
@@ -41,7 +39,8 @@ export const externalUsersSignUp: Endpoint = {
     const alreadyRegisteredUser = await req.payload.find({
       collection: 'users',
       where: { email: { equals: email } },
-      limit: 1
+      limit: 1,
+      req
     })
 
     if (alreadyRegisteredUser?.docs?.length === 1) {
@@ -50,7 +49,8 @@ export const externalUsersSignUp: Endpoint = {
 
     const alreadyRegisteredTenant = await req.payload.find({
       collection: 'tenants',
-      where: { 'domain': { equals: username } }
+      where: { 'domain': { equals: username } },
+      req
     })
 
     if (alreadyRegisteredTenant?.docs?.length === 1) {
@@ -58,7 +58,6 @@ export const externalUsersSignUp: Endpoint = {
     }
 
     if (alreadyRegisteredUser?.docs?.length === 0 && alreadyRegisteredTenant?.docs?.length === 0) {
-      const transactionID = req.payload.db.beginTransaction()
       try {
 
         const t = await req.payload.create({
@@ -68,7 +67,7 @@ export const externalUsersSignUp: Endpoint = {
             slug: username,
             domain: username
           },
-          req: { transactionID: transactionID as Promise<string | number> }
+          req
         })
 
         const user = await req.payload.create({
@@ -84,16 +83,13 @@ export const externalUsersSignUp: Endpoint = {
               tenant: t
             }]
           },
-          req: { transactionID: transactionID as Promise<string | number> }
+          req
         })
-
-        await req.payload.db.commitTransaction(transactionID as Promise<string | number>)
 
         return Response.json({ user }, {
           status: 200,
         })
       } catch (error) {
-        await req.payload.db.rollbackTransaction(transactionID as Promise<string | number> )
         req.payload.logger.error(error, 'Something went wrong to register user.')
         throw new APIError(`Something went wrong in register process.`, 400, null, true)
       }
