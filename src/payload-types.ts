@@ -1891,6 +1891,12 @@ export interface User {
   roles?: TUserRole;
   tenants?: TUserTenants;
   industry?: (number | null) | Industry;
+  onBoardingProgress?: {
+    enablePortfolioInfo?: boolean | null;
+    enableIndustry?: boolean | null;
+    enableSystemRedirects?: boolean | null;
+    enableHomePage?: boolean | null;
+  };
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -2284,6 +2290,14 @@ export interface UsersSelect<T extends boolean = true> {
   roles?: T;
   tenants?: T | TUserTenantsSelect<T>;
   industry?: T;
+  onBoardingProgress?:
+    | T
+    | {
+        enablePortfolioInfo?: T;
+        enableIndustry?: T;
+        enableSystemRedirects?: T;
+        enableHomePage?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;

@@ -14,25 +14,48 @@ import { Industry } from "@/payload-types";
 
 const SignUpFormSchema = z.object({
     email: z
-        .string()
+        .string({ error: 'Email is required.'})
+        .trim()
         .min(1, 'Email is required')
         .email('Invalid email address')
         .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Email cannot contain spaces or invalid format'),
     password: z
-        .string()
+        .string({ error: 'Password is required.' })
+        .trim()
         .min(6, 'Minimum 6 characters')
         .max(20, 'Maximum 20 characters')
-        .refine((s) => !s.includes(' '), 'Password cannot contain spaces'),
+        .refine((s) => !s.includes(' '), {
+            message: 'Password cannot contain spaces'
+        }),
+    confirmPassword: z
+        .string({ error: 'Confirm Password is required.' })
+        .trim()
+        .min(6, 'Minimum 6 characters')
+        .max(20, 'Maximum 20 characters')
+        .refine((s) => !s.includes(' '), {
+            message: 'Confirm Password cannot contain spaces'
+        }),
     username: z
         .string({ error: 'Username is required.' })
+        .trim()
         .min(6, 'Minimum 6 characters')
         .max(24, 'Maximum 24 characters')
         .regex(/^[a-zA-Z0-9-]+$/, 'Only letters, numbers, and hyphens (-) are allowed. No spaces or special characters.')
-        .refine((s) => !s.startsWith('-') && !s.endsWith('-'), 'Username cannot start or end with a hyphen'),
-    industry: z.string().min(1, 'Field is required'),
-    terms: z.boolean().refine((val) => val === true, {
+        .refine((s) => !s.startsWith('-') && !s.endsWith('-'), {
+            message: 'Username cannot start or end with a hyphen'
+        }),
+    industry: z.string({ error: 'Industry is required.'}).min(1, 'Industry is required'),
+    terms: z.boolean({ error: 'You must accept the terms and conditions.'}).refine((val) => val === true, {
         message: "You must accept the terms and conditions.",
     }),
+}).superRefine(({ password, confirmPassword }, ctx) => {
+    if (password !== confirmPassword) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['confirmPassword'],
+            message: 'Passwords do not match'
+        })
+    }
 })
 
 export function SignUpForm(props: {
@@ -148,14 +171,36 @@ export function SignUpForm(props: {
                 />
                 <FormField
                     control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Confirm Password</FormLabel>
+                            <FormControl>
+                                <Input
+                                    className="bg-background"
+                                    placeholder="Confirm password"
+                                    type="password"
+                                    {...field}
+                                    disabled={form.formState.isSubmitting}
+                                />
+                            </FormControl>
+                            <FormDescription className="text-xs">
+                                Must contain uppercase, lowercase, and number
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
                     name='industry'
                     render={({ field }) => (
                         <FormItem>
-                            {/* <FormLabel>Field</FormLabel> */}
+                            <FormLabel>Industry</FormLabel>
                             <FormControl>
                                 <Select name="industry" defaultValue={field.value} onValueChange={field.onChange} disabled={form.formState.isSubmitting}>
                                     <SelectTrigger className="w-full">
-                                        <SelectValue id="field" placeholder="Select a field" />
+                                        <SelectValue id="field" placeholder="Select a Industry" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {industries?.map(field => (

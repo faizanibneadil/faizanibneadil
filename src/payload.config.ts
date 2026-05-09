@@ -15,6 +15,7 @@ import { jobs } from '@/jobs'
 import { endpoints } from '@/endpoints'
 import { inlineBlock } from '@/inlineBlocks'
 import { redisKVAdapter } from '@payloadcms/kv-redis'
+import { SeedIndustries } from './seed/seed-industries'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -148,13 +149,8 @@ export default buildConfig({
     // database-adapter-config-end
     sharp,
     onInit: async (payload) => {
-        await payload.kv.set('test-kv', {
-            isWorking: true
-        })
+        await SeedIndustries(payload)
         payload.logger.info('App is initialized ...')
-        payload.logger.info('Finding home page in pages collection...')
-        const result = await payload.kv.get('test-kv')
-        console.log({ result })
 
     },
     plugins: [...plugins],

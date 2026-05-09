@@ -19,6 +19,12 @@ export default async (pase: unknown, { defaultConfig }: { defaultConfig: NextCon
     typedRoutes: false,
     turbopack: {
       root: path.resolve(dirname),
+      // rules: {
+      //   '*.svg': {
+      //     loaders: ['@svgr/webpack'],
+      //     as: '*.js',
+      //   },
+      // },
     },
     devIndicators: {
       position: 'bottom-right'
@@ -29,7 +35,7 @@ export default async (pase: unknown, { defaultConfig }: { defaultConfig: NextCon
         '.js': ['.ts', '.tsx', '.js', '.jsx'],
         '.mjs': ['.mts', '.mjs'],
       }
-  
+
       return webpackConfig
     },
     images: {
@@ -45,7 +51,7 @@ export default async (pase: unknown, { defaultConfig }: { defaultConfig: NextCon
         }),
       ],
     },
-    cacheComponents:true,
+    cacheComponents: true,
     logging: {
       browserToTerminal: true,
       fetches: {

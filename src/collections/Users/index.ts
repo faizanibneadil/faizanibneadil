@@ -121,6 +121,33 @@ export const Users: CollectionConfig<'users'> = {
           return false
         }
       }
+    },
+    {
+      type: 'group',
+      name: 'onBoardingProgress',
+      saveToJWT: true,
+      fields: [
+        {
+          type: 'checkbox',
+          name: 'enablePortfolioInfo',
+          defaultValue: false
+        },
+        {
+          type: 'checkbox',
+          name: 'enableIndustry',
+          defaultValue: false
+        },
+        {
+          type: 'checkbox',
+          name: 'enableSystemRedirects',
+          defaultValue: false
+        },
+        {
+          type: 'checkbox',
+          name: 'enableHomePage',
+          defaultValue: false
+        }
+      ]
     }
   ],
   // The following hook sets a cookie based on the domain a user logs in from.

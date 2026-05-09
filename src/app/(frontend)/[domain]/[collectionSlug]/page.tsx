@@ -1,14 +1,10 @@
+import { Suspense } from "react";
 import { PayloadRedirects } from "@/components/PayloadRedirects";
-// import { ShelvesMaps } from "@/shelves";
 import type { PageProps } from "@/types";
 import { getShelfConfig } from "@/utilities/getShelfConfig";
 import { hasShelf } from "@/utilities/hasShelf";
-// import { queryCollectionBySlug } from "@/utilities/queries/queryCollectionBySlug";
-// import { queryHero } from "@/utilities/queries/queryHero";
-// import { queryPageByConfiguredCollection } from "@/utilities/queries/queryPageByConfiguiredCollection";
 import { queryPortfolioSettings } from "@/utilities/queries/queryPortfolioSettings";
 import type { Metadata } from "next";
-import { Suspense } from "react";
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const [params, searchParams] = await Promise.all([props.params, props.searchParams])
@@ -56,7 +52,7 @@ export default async function Page(props: PageProps) {
   const [params, searchParams] = await Promise.all([props.params, props.searchParams])
 
   const url = `/${params.domain}/${params.collectionSlug}`
-  
+
   // const queryCount = await queryCollectionCountBySlug({
   //   collectionSlug: params.collectionSlug,
   //   domain: params.domain
