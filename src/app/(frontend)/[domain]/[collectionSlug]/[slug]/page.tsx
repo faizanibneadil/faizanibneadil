@@ -17,9 +17,9 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
         domain: params.domain
     })
 
-    const { 
-        shelfID, 
-        docMap, 
+    const {
+        shelfID,
+        docMap,
         queryCollectionViewBySlug,
         queryPageBySlug
     } = getShelfConfig({
@@ -90,7 +90,23 @@ export default async function Page(props: PageProps) {
         searchParams: searchParams
     })
 
+
+    if (!hasShelf(shelfID!)) {
+        return 'Shelf not found'
+    }
+
     const page = await queryPageBySlug()
+
+    if (Boolean(page) === false) {
+        const doc = await queryCollectionViewBySlug()
+        return (
+            <Suspense fallback={null}>
+                <PayloadRedirects domain={params?.domain} url={url} />
+                <RenderHero heroProps={page?.hero} params={params} searchParams={searchParams} />
+                <RenderDocumentView collectionSlug={params?.collectionSlug} doc={doc} docMap={docMap} params={params} searchParams={searchParams} />
+            </Suspense>
+        )
+    }
 
     if (page?.enableCollection) {
         return (
@@ -101,26 +117,12 @@ export default async function Page(props: PageProps) {
         )
     }
 
-    if (!hasShelf(shelfID!)) {
-        return 'Shelf not found'
-    }
-
-    if (Boolean(page?.enableCollection) === false) {
-        return (
-            <>
-                <RenderHero heroProps={page?.hero} params={params} searchParams={searchParams} />
-                <RenderBlocks blocks={page?.layout} blocksMap={blocksMap} params={params} searchParams={searchParams} />
-            </>
-        )
-    }
-
-    const doc = await queryCollectionViewBySlug()
-
     return (
-        <Suspense fallback={null}>
-            <PayloadRedirects domain={params?.domain} url={url} />
+        <>
             <RenderHero heroProps={page?.hero} params={params} searchParams={searchParams} />
-            <RenderDocumentView collectionSlug={params?.collectionSlug} doc={doc} docMap={docMap} params={params} searchParams={searchParams} />
-        </Suspense>
+            <RenderBlocks blocks={page?.layout} blocksMap={blocksMap} params={params} searchParams={searchParams} />
+        </>
     )
+
+
 }

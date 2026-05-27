@@ -53,8 +53,10 @@ export const __SkillshelfThemeConfig: ShelfConfig = {
 
                 if (Object.hasOwn(docMap, collectionSlug)) {
                     const Collection = docMap[collectionSlug]?.component
-                    // @ts-expect-error
-                    return <Collection entity={doc} params={params} />
+                    return <div className="max-w-2xl mx-auto">
+                     {/* @ts-expect-error */}
+                    <Collection entity={doc} params={params} />
+                    </div>
                 }
 
                 return '404 - Document not found'
