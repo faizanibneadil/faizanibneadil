@@ -34,7 +34,7 @@ export async function AchievementEntity(props: DocProps<'achievements'>) {
     [&>*:not([data-type='block'])]:bg-background
     [&>*:not([data-type='block'])]:p-4
     [&>br]:hidden">
-                    <SkillShelfRichText className="text-xs" data={entity.description} params={params} searchParams={searchParams} />
+                    <SkillShelfRichText className="text-xs" data={entity?.description} params={params} searchParams={searchParams} />
                 </div>
             </div>
             {entity?.resources && entity?.resources.length > 0 && (
